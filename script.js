@@ -112,22 +112,77 @@ class AnjaneyaBorewells {
 
     initializeAnimations() {
         // Add fade-in class to elements that should animate
-        const animateElements = document.querySelectorAll('.service-card, .faq-item, .contact-item');
-        animateElements.forEach(el => el.classList.add('fade-in'));
+        const serviceCards = document.querySelectorAll('.service-card');
+        const faqItems = document.querySelectorAll('.faq-item');
+        const contactItems = document.querySelectorAll('.contact-item');
+        const calculatorContainer = document.querySelector('.calculator-container');
+        
+        serviceCards.forEach((el, index) => {
+            el.classList.add('fade-in');
+            el.style.animationDelay = `${index * 0.2}s`;
+        });
+        
+        faqItems.forEach((el, index) => {
+            el.classList.add('fade-in-left');
+            el.style.animationDelay = `${index * 0.1}s`;
+        });
+        
+        contactItems.forEach((el, index) => {
+            el.classList.add('fade-in-right');
+            el.style.animationDelay = `${index * 0.1}s`;
+        });
+        
+        if (calculatorContainer) {
+            calculatorContainer.classList.add('fade-in');
+        }
     }
 
     setupIntersectionObserver() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    
+                    // Add staggered animation for child elements
+                    const children = entry.target.querySelectorAll('.service-card, .faq-item, .contact-item');
+                    children.forEach((child, index) => {
+                        setTimeout(() => {
+                            child.classList.add('visible');
+                        }, index * 100);
+                    });
                 }
             });
-        }, { threshold: 0.1 });
+        }, observerOptions);
 
-        document.querySelectorAll('.fade-in').forEach(el => {
+        // Observe all animated elements
+        document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right').forEach(el => {
             observer.observe(el);
         });
+        
+        // Add parallax effect to hero background
+        this.addParallaxEffect();
+    }
+    
+    addParallaxEffect() {
+        const heroBackground = document.querySelector('.hero-background');
+        const hero = document.querySelector('.hero');
+        
+        if (heroBackground && hero) {
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const rate = scrolled * -0.5;
+                const heroHeight = hero.offsetHeight;
+                
+                if (scrolled < heroHeight) {
+                    heroBackground.style.transform = `translateY(${rate}px)`;
+                }
+            });
+        }
     }
 
 
@@ -262,6 +317,63 @@ class AnjaneyaBorewells {
             
             if (footerTagline && companyInfo.tagline) {
                 footerTagline.textContent = companyInfo.tagline;
+            }
+            
+            // Update footer-bottom copyright text
+            const footerBottom = document.querySelector('.footer-bottom p');
+            if (footerBottom && companyInfo.footerText) {
+                footerBottom.innerHTML = companyInfo.footerText;
+            }
+            
+            // Update social media links
+            if (settings.socialMedia) {
+                const socialMedia = settings.socialMedia;
+                
+                const facebookLink = document.getElementById('facebookLink');
+                if (facebookLink && socialMedia.facebook) {
+                    facebookLink.href = socialMedia.facebook;
+                }
+                
+                const instagramLink = document.getElementById('instagramLink');
+                if (instagramLink && socialMedia.instagram) {
+                    instagramLink.href = socialMedia.instagram;
+                }
+                
+                const whatsappLink = document.getElementById('whatsappLink');
+                if (whatsappLink && socialMedia.whatsapp) {
+                    whatsappLink.href = socialMedia.whatsapp;
+                }
+                
+                // Update WhatsApp URL based on primary phone if social media WhatsApp not set
+                if (whatsappLink && companyInfo.phone1 && !socialMedia.whatsapp) {
+                    const cleanPhone = companyInfo.phone1.replace(/[\s\-\(\)]/g, '');
+                    whatsappLink.href = `https://wa.me/${cleanPhone}`;
+                }
+                
+                const youtubeLink = document.getElementById('youtubeLink');
+                if (youtubeLink && socialMedia.youtube) {
+                    youtubeLink.href = socialMedia.youtube;
+                }
+                
+                const linkedinLink = document.getElementById('linkedinLink');
+                if (linkedinLink && socialMedia.linkedin) {
+                    linkedinLink.href = socialMedia.linkedin;
+                }
+            }
+            
+            // Update Get Quote buttons to use WhatsApp with primary phone
+            if (companyInfo.phone1) {
+                const cleanPhone = companyInfo.phone1.replace(/[\s\-\(\)]/g, '');
+                const navWhatsappBtn = document.getElementById('navWhatsappBtn');
+                const heroWhatsappBtn = document.getElementById('heroWhatsappBtn');
+                
+                if (navWhatsappBtn) {
+                    navWhatsappBtn.href = `https://wa.me/${cleanPhone}?text=Hi! I'm interested in getting a quote for borewell drilling services. Please provide me with more information.`;
+                }
+                
+                if (heroWhatsappBtn) {
+                    heroWhatsappBtn.href = `https://wa.me/${cleanPhone}?text=Hi! I would like to get a free quote for borewell drilling. Can you please help me with the pricing and details?`;
+                }
             }
             
             // Show notification

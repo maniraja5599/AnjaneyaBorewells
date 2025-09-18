@@ -184,6 +184,40 @@
                     <label for="address">Address</label>
                     <textarea id="address" name="address" rows="3" required>6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001</textarea>
                 </div>
+                <div class="form-group">
+                    <label for="footerText">Footer Copyright Text</label>
+                    <input type="text" id="footerText" name="footerText" value="© 2024 Anjaneya Borewells. All rights reserved." required>
+                </div>
+            </div>
+            
+            <!-- Social Media Links -->
+            <div class="admin-section">
+                <h3>Social Media Links</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="facebookUrl">Facebook URL</label>
+                        <input type="url" id="facebookUrl" name="facebookUrl" value="https://facebook.com/anjaneyaborewells" placeholder="https://facebook.com/yourpage">
+                    </div>
+                    <div class="form-group">
+                        <label for="instagramUrl">Instagram URL</label>
+                        <input type="url" id="instagramUrl" name="instagramUrl" value="https://instagram.com/anjaneyaborewells" placeholder="https://instagram.com/yourhandle">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="whatsappUrl">WhatsApp URL</label>
+                        <input type="url" id="whatsappUrl" name="whatsappUrl" value="https://wa.me/918300030123" placeholder="https://wa.me/1234567890" readonly>
+                        <small>This URL is automatically generated from the Primary Phone number</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="youtubeUrl">YouTube URL</label>
+                        <input type="url" id="youtubeUrl" name="youtubeUrl" value="https://youtube.com/@anjaneyaborewells" placeholder="https://youtube.com/@yourchannel">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="linkedinUrl">LinkedIn URL</label>
+                    <input type="url" id="linkedinUrl" name="linkedinUrl" value="https://linkedin.com/company/anjaneyaborewells" placeholder="https://linkedin.com/company/yourcompany">
+                </div>
             </div>
             
             <!-- Calculator Defaults -->
@@ -206,11 +240,11 @@
             </div>
             
             <div class="admin-actions">
-                <button type="submit" class="btn btn-primary">Save Settings</button>
-                <button type="button" class="btn btn-secondary" id="resetBtn">Reset to Defaults</button>
-                <button type="button" class="btn btn-secondary" id="refreshBtn">Refresh Main Page</button>
-                <button type="button" class="btn btn-secondary" id="exportBtn">Export Settings</button>
-                <button type="button" class="btn btn-secondary" id="importBtn">Import Settings</button>
+                <button type="submit" class="btn btn-primary ripple">Save Settings</button>
+                <button type="button" class="btn btn-secondary ripple" id="resetBtn">Reset to Defaults</button>
+                <button type="button" class="btn btn-secondary ripple" id="refreshBtn">Refresh Main Page</button>
+                <button type="button" class="btn btn-secondary ripple" id="exportBtn">Export Settings</button>
+                <button type="button" class="btn btn-secondary ripple" id="importBtn">Import Settings</button>
             </div>
             
             <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #22c55e;">
@@ -250,7 +284,15 @@
                         phone1: '+91 83000 30123',
                         phone2: '+91 965 965 7777',
                         email: 'anjaneyaborewells@gmail.com',
-                        address: '6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001'
+                        address: '6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001',
+                        footerText: '© 2024 Anjaneya Borewells. All rights reserved.'
+                    },
+                    socialMedia: {
+                        facebook: 'https://facebook.com/anjaneyaborewells',
+                        instagram: 'https://instagram.com/anjaneyaborewells',
+                        whatsapp: 'https://wa.me/918300030123',
+                        youtube: 'https://youtube.com/@anjaneyaborewells',
+                        linkedin: 'https://linkedin.com/company/anjaneyaborewells'
                     }
                 };
             }
@@ -277,6 +319,21 @@
                 document.getElementById('phone2').value = this.settings.companyInfo.phone2;
                 document.getElementById('email').value = this.settings.companyInfo.email;
                 document.getElementById('address').value = this.settings.companyInfo.address;
+                document.getElementById('footerText').value = this.settings.companyInfo.footerText;
+                
+                // Social media links
+                if (this.settings.socialMedia) {
+                    document.getElementById('facebookUrl').value = this.settings.socialMedia.facebook || '';
+                    document.getElementById('instagramUrl').value = this.settings.socialMedia.instagram || '';
+                    document.getElementById('whatsappUrl').value = this.settings.socialMedia.whatsapp || '';
+                    document.getElementById('youtubeUrl').value = this.settings.socialMedia.youtube || '';
+                    document.getElementById('linkedinUrl').value = this.settings.socialMedia.linkedin || '';
+                }
+                
+                // Auto-generate WhatsApp URL from primary phone if not already set
+                if (this.settings.companyInfo.phone1) {
+                    this.updateWhatsAppUrl(this.settings.companyInfo.phone1);
+                }
                 
                 // Calculator defaults
                 document.getElementById('defaultTotalDepth').value = this.settings.defaultTotalDepth;
@@ -288,6 +345,11 @@
                 document.getElementById('adminForm').addEventListener('submit', (e) => {
                     e.preventDefault();
                     this.saveSettings();
+                });
+                
+                // Auto-update WhatsApp URL when primary phone changes
+                document.getElementById('phone1').addEventListener('input', (e) => {
+                    this.updateWhatsAppUrl(e.target.value);
                 });
                 
                 document.getElementById('resetBtn').addEventListener('click', () => {
@@ -323,6 +385,16 @@
                 });
             }
             
+            updateWhatsAppUrl(phoneNumber) {
+                if (phoneNumber) {
+                    // Clean the phone number (remove spaces, dashes, etc.)
+                    const cleanPhone = phoneNumber.replace(/[\s\-\(\)]/g, '');
+                    // Generate WhatsApp URL
+                    const whatsappUrl = `https://wa.me/${cleanPhone}`;
+                    document.getElementById('whatsappUrl').value = whatsappUrl;
+                }
+            }
+            
             saveSettings() {
                 const formData = new FormData(document.getElementById('adminForm'));
                 const data = Object.fromEntries(formData);
@@ -342,6 +414,17 @@
                 this.settings.companyInfo.phone2 = data.phone2;
                 this.settings.companyInfo.email = data.email;
                 this.settings.companyInfo.address = data.address;
+                this.settings.companyInfo.footerText = data.footerText;
+                
+                // Social media links
+                if (!this.settings.socialMedia) {
+                    this.settings.socialMedia = {};
+                }
+                this.settings.socialMedia.facebook = data.facebookUrl || '';
+                this.settings.socialMedia.instagram = data.instagramUrl || '';
+                this.settings.socialMedia.whatsapp = data.whatsappUrl || '';
+                this.settings.socialMedia.youtube = data.youtubeUrl || '';
+                this.settings.socialMedia.linkedin = data.linkedinUrl || '';
                 
                 // Save to localStorage
                 localStorage.setItem('anjaneya-admin-settings', JSON.stringify(this.settings));
