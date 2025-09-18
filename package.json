@@ -1,0 +1,51 @@
+{
+  "name": "anjaneya-borewells",
+  "version": "1.0.0",
+  "description": "Professional borewell drilling services website with cost calculator and admin panel",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx live-server --port=3000 --open=/index.html",
+    "build": "echo 'No build step required for static site'",
+    "deploy": "echo 'Deploy to your preferred hosting service'",
+    "lint": "echo 'No linting configured - using vanilla JS/CSS'",
+    "format": "prettier --write '**/*.{html,css,js,md}'",
+    "serve": "python -m http.server 8000"
+  },
+  "keywords": [
+    "borewell",
+    "drilling",
+    "water-well",
+    "calculator",
+    "tamil-nadu",
+    "namakkal",
+    "trichy"
+  ],
+  "author": "Anjaneya Borewells",
+  "license": "MIT",
+  "homepage": "https://anjaneyaborewells.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maniraja5599/AnjaneyaBorewells.git"
+  },
+  "bugs": {
+    "url": "https://github.com/maniraja5599/AnjaneyaBorewells/issues"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "prettier": "^3.0.0",
+    "serve": "^14.2.0"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}

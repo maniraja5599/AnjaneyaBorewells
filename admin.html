@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Anjaneya Borewells</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .admin-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--bg-white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .admin-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: var(--border-radius);
+        }
+        
+        .admin-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <a href="index.html" class="back-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="15,18 9,12 15,6"></polyline>
+            </svg>
+            Back to Website
+        </a>
+        
+        <div class="admin-header">
+            <h1>Admin Panel</h1>
+            <p>Update rates, settings, and company information</p>
+        </div>
+        
+        <div class="success-message" id="successMessage">
+            Settings saved successfully!
+        </div>
+        
+        <form id="adminForm">
+            <!-- Pricing Settings -->
+            <div class="admin-section">
+                <h3>Pricing Settings</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="pvc7Rate">7" PVC Rate per ft (Rs.)</label>
+                        <input type="number" id="pvc7Rate" name="pvc7Rate" value="450" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pvc10Rate">10" PVC Rate per ft (Rs.)</label>
+                        <input type="number" id="pvc10Rate" name="pvc10Rate" value="750" min="0" step="0.01" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="defaultDrillingRate">Default Drilling Rate per ft (Rs.)</label>
+                        <input type="number" id="defaultDrillingRate" name="defaultDrillingRate" value="50" min="0" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="defaultGst">Default GST Percentage (%)</label>
+                        <input type="number" id="defaultGst" name="defaultGst" value="18" min="0" max="100" step="0.01" required>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Company Information -->
+            <div class="admin-section">
+                <h3>Company Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="companyName">Company Name</label>
+                        <input type="text" id="companyName" name="companyName" value="Anjaneya Borewells" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tagline">Tagline</label>
+                        <input type="text" id="tagline" name="tagline" value="Makers of Green India!" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="phone1">Primary Phone</label>
+                        <input type="tel" id="phone1" name="phone1" value="+91 83000 30123" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone2">Secondary Phone</label>
+                        <input type="tel" id="phone2" name="phone2" value="+91 965 965 7777" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" value="anjaneyaborewells@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" rows="3" required>6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001</textarea>
+                </div>
+            </div>
+            
+            <!-- Calculator Defaults -->
+            <div class="admin-section">
+                <h3>Calculator Defaults</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="defaultTotalDepth">Default Total Depth (ft)</label>
+                        <input type="number" id="defaultTotalDepth" name="defaultTotalDepth" value="800" min="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="defaultPvc7Length">Default 7" PVC Length (ft)</label>
+                        <input type="number" id="defaultPvc7Length" name="defaultPvc7Length" value="30" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="defaultPvc10Length">Default 10" PVC Length (ft)</label>
+                    <input type="number" id="defaultPvc10Length" name="defaultPvc10Length" value="15" min="0" required>
+                </div>
+            </div>
+            
+            <div class="admin-actions">
+                <button type="submit" class="btn btn-primary">Save Settings</button>
+                <button type="button" class="btn btn-secondary" id="resetBtn">Reset to Defaults</button>
+                <button type="button" class="btn btn-secondary" id="refreshBtn">Refresh Main Page</button>
+                <button type="button" class="btn btn-secondary" id="exportBtn">Export Settings</button>
+                <button type="button" class="btn btn-secondary" id="importBtn">Import Settings</button>
+            </div>
+            
+            <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #22c55e;">
+                <h4 style="color: #065f46; margin-top: 0;">💡 Tips:</h4>
+                <ul style="color: #065f46; margin: 0;">
+                    <li>Changes are automatically synced to the main website</li>
+                    <li>If changes don't appear, refresh the main page or click "Refresh Main Page"</li>
+                    <li>Settings are saved in your browser's local storage</li>
+                    <li>Use "Export Settings" to backup your configuration</li>
+                </ul>
+            </div>
+        </form>
+        
+        <input type="file" id="importFile" accept=".json" style="display: none;">
+    </div>
+    
+    <script>
+        class AdminPanel {
+            constructor() {
+                this.settings = this.getDefaultSettings();
+                this.loadSettings();
+                this.setupEventListeners();
+            }
+            
+            getDefaultSettings() {
+                return {
+                    pvc7Rate: 450,
+                    pvc10Rate: 750,
+                    defaultDrillingRate: 50,
+                    defaultGst: 18,
+                    defaultTotalDepth: 800,
+                    defaultPvc7Length: 30,
+                    defaultPvc10Length: 15,
+                    companyInfo: {
+                        name: 'Anjaneya Borewells',
+                        tagline: 'Makers of Green India!',
+                        phone1: '+91 83000 30123',
+                        phone2: '+91 965 965 7777',
+                        email: 'anjaneyaborewells@gmail.com',
+                        address: '6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001'
+                    }
+                };
+            }
+            
+            loadSettings() {
+                const saved = localStorage.getItem('anjaneya-admin-settings');
+                if (saved) {
+                    this.settings = { ...this.settings, ...JSON.parse(saved) };
+                }
+                this.populateForm();
+            }
+            
+            populateForm() {
+                // Pricing settings
+                document.getElementById('pvc7Rate').value = this.settings.pvc7Rate;
+                document.getElementById('pvc10Rate').value = this.settings.pvc10Rate;
+                document.getElementById('defaultDrillingRate').value = this.settings.defaultDrillingRate;
+                document.getElementById('defaultGst').value = this.settings.defaultGst;
+                
+                // Company information
+                document.getElementById('companyName').value = this.settings.companyInfo.name;
+                document.getElementById('tagline').value = this.settings.companyInfo.tagline;
+                document.getElementById('phone1').value = this.settings.companyInfo.phone1;
+                document.getElementById('phone2').value = this.settings.companyInfo.phone2;
+                document.getElementById('email').value = this.settings.companyInfo.email;
+                document.getElementById('address').value = this.settings.companyInfo.address;
+                
+                // Calculator defaults
+                document.getElementById('defaultTotalDepth').value = this.settings.defaultTotalDepth;
+                document.getElementById('defaultPvc7Length').value = this.settings.defaultPvc7Length;
+                document.getElementById('defaultPvc10Length').value = this.settings.defaultPvc10Length;
+            }
+            
+            setupEventListeners() {
+                document.getElementById('adminForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.saveSettings();
+                });
+                
+                document.getElementById('resetBtn').addEventListener('click', () => {
+                    if (confirm('Are you sure you want to reset all settings to defaults?')) {
+                        this.resetToDefaults();
+                    }
+                });
+                
+                document.getElementById('exportBtn').addEventListener('click', () => {
+                    this.exportSettings();
+                });
+                
+                document.getElementById('importBtn').addEventListener('click', () => {
+                    document.getElementById('importFile').click();
+                });
+                
+                document.getElementById('refreshBtn').addEventListener('click', () => {
+                    // Force trigger settings sync first
+                    window.dispatchEvent(new CustomEvent('anjaneyaSettingsUpdated', {
+                        detail: {
+                            settings: this.settings,
+                            timestamp: Date.now(),
+                            source: 'manual-refresh'
+                        }
+                    }));
+                    
+                    // Open main page in new tab to refresh it
+                    window.open('index.html', '_blank');
+                });
+                
+                document.getElementById('importFile').addEventListener('change', (e) => {
+                    this.importSettings(e.target.files[0]);
+                });
+            }
+            
+            saveSettings() {
+                const formData = new FormData(document.getElementById('adminForm'));
+                const data = Object.fromEntries(formData);
+                
+                // Update settings object
+                this.settings.pvc7Rate = parseFloat(data.pvc7Rate);
+                this.settings.pvc10Rate = parseFloat(data.pvc10Rate);
+                this.settings.defaultDrillingRate = parseFloat(data.defaultDrillingRate);
+                this.settings.defaultGst = parseFloat(data.defaultGst);
+                this.settings.defaultTotalDepth = parseInt(data.defaultTotalDepth);
+                this.settings.defaultPvc7Length = parseInt(data.defaultPvc7Length);
+                this.settings.defaultPvc10Length = parseInt(data.defaultPvc10Length);
+                
+                this.settings.companyInfo.name = data.companyName;
+                this.settings.companyInfo.tagline = data.tagline;
+                this.settings.companyInfo.phone1 = data.phone1;
+                this.settings.companyInfo.phone2 = data.phone2;
+                this.settings.companyInfo.email = data.email;
+                this.settings.companyInfo.address = data.address;
+                
+                // Save to localStorage
+                localStorage.setItem('anjaneya-admin-settings', JSON.stringify(this.settings));
+                localStorage.setItem('anjaneya-settings', JSON.stringify({
+                    pvc7Rate: this.settings.pvc7Rate,
+                    pvc10Rate: this.settings.pvc10Rate,
+                    drillingRate: this.settings.defaultDrillingRate,
+                    gstPercentage: this.settings.defaultGst,
+                    totalDepth: this.settings.defaultTotalDepth,
+                    pvc7Length: this.settings.defaultPvc7Length,
+                    pvc10Length: this.settings.defaultPvc10Length
+                }));
+                
+                // Trigger custom event for same-tab communication
+                window.dispatchEvent(new CustomEvent('anjaneyaSettingsUpdated', {
+                    detail: {
+                        settings: this.settings,
+                        timestamp: Date.now()
+                    }
+                }));
+                
+                // Also trigger storage event for cross-tab communication
+                window.dispatchEvent(new StorageEvent('storage', {
+                    key: 'anjaneya-settings',
+                    newValue: localStorage.getItem('anjaneya-settings'),
+                    storageArea: localStorage
+                }));
+                
+                this.showSuccess('Settings saved and synced to main website!');
+            }
+            
+            resetToDefaults() {
+                this.settings = this.getDefaultSettings();
+                localStorage.removeItem('anjaneya-admin-settings');
+                localStorage.removeItem('anjaneya-settings');
+                this.populateForm();
+                this.showSuccess('Settings reset to defaults!');
+            }
+            
+            exportSettings() {
+                const dataStr = JSON.stringify(this.settings, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `anjaneya-settings-${new Date().toISOString().split('T')[0]}.json`;
+                link.click();
+                
+                URL.revokeObjectURL(url);
+            }
+            
+            importSettings(file) {
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const importedSettings = JSON.parse(e.target.result);
+                        this.settings = { ...this.settings, ...importedSettings };
+                        this.populateForm();
+                        this.showSuccess('Settings imported successfully!');
+                    } catch (error) {
+                        alert('Error importing settings. Please check the file format.');
+                    }
+                };
+                reader.readAsText(file);
+            }
+            
+            showSuccess(message = 'Settings saved successfully!') {
+                const successMessage = document.getElementById('successMessage');
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            }
+        }
+        
+        // Initialize admin panel
+        document.addEventListener('DOMContentLoaded', () => {
+            new AdminPanel();
+            
+        });
+    </script>
+</body>
+</html>
