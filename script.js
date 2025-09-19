@@ -702,70 +702,77 @@ class CostCalculator {
             return;
         }
 
+        // Show loading state
+        const downloadBtn = document.getElementById('downloadPdfBtn');
+        const originalText = downloadBtn.innerHTML;
+        downloadBtn.innerHTML = '<span class="loading-spinner"></span> Generating PDF...';
+        downloadBtn.disabled = true;
+
         const inputs = this.getInputs();
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
-        // Add header with background color
+        // Simple green header
         doc.setFillColor(34, 197, 94); // Green background
         doc.rect(0, 0, 210, 35, 'F');
         
-        // Company header with white text
+        // Company header
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(24);
         doc.setFont('helvetica', 'bold');
         doc.text('Anjaneya Borewells', 20, 15);
-        doc.setFontSize(14);
+        doc.setFontSize(12);
         doc.setFont('helvetica', 'normal');
         doc.text('Makers of Green India!', 20, 22);
         doc.setFontSize(10);
-        doc.text('Professional Borewell Drilling Services', 20, 28);
-        doc.text('Phone: +91 83000 30123 | +91 965 965 7777', 20, 32);
+        doc.text('Phone: +91 83000 30123 | +91 965 965 7777', 20, 28);
+
+        // Quote info (top right)
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'bold');
+        const quoteNum = `QUOTE-${Date.now().toString().slice(-6)}`;
+        doc.text(`Quote #: ${quoteNum}`, 140, 15);
+        doc.text(`Date: ${new Date().toLocaleDateString('en-IN')}`, 140, 22);
 
         // Reset text color
         doc.setTextColor(0, 0, 0);
 
-        // Quote details with border
-        doc.setDrawColor(34, 197, 94);
-        doc.setLineWidth(0.5);
-        doc.rect(15, 45, 180, 15);
+        // Quote title
         doc.setFontSize(18);
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(34, 197, 94);
-        doc.text('BOREWELL COST ESTIMATE', 20, 55);
+        doc.text('BOREWELL COST ESTIMATE', 20, 50);
         doc.setTextColor(0, 0, 0);
 
-        // Project details section
-        doc.setFillColor(248, 250, 252); // Light gray background
-        doc.rect(15, 70, 180, 40, 'F');
+        // Project details
         doc.setFontSize(14);
         doc.setFont('helvetica', 'bold');
-        doc.text('Project Details', 20, 80);
+        doc.text('Project Details', 20, 65);
         doc.setFontSize(11);
         doc.setFont('helvetica', 'normal');
-        doc.text(`Total Depth: ${inputs.totalDepth} ft`, 25, 88);
-        doc.text(`7" PVC Length: ${inputs.pvc7Length} ft (Rs.${this.defaults.pvc7Rate}/ft)`, 25, 94);
-        doc.text(`10" PVC Length: ${inputs.pvc10Length} ft (Rs.${this.defaults.pvc10Rate}/ft)`, 25, 100);
-        doc.text(`Drilling Rate: Rs.${inputs.drillingRate}/ft`, 25, 106);
+        doc.text(`Total Depth: ${inputs.totalDepth} ft`, 25, 75);
+        doc.text(`7" PVC Length: ${inputs.pvc7Length} ft (Rs. ${this.defaults.pvc7Rate}/ft)`, 25, 82);
+        doc.text(`10" PVC Length: ${inputs.pvc10Length} ft (Rs. ${this.defaults.pvc10Rate}/ft)`, 25, 89);
+        doc.text(`Drilling Rate: Rs. ${inputs.drillingRate}/ft`, 25, 96);
 
-        // Cost breakdown table
+        // Cost breakdown
         doc.setFontSize(14);
         doc.setFont('helvetica', 'bold');
-        doc.text('Cost Breakdown', 20, 125);
+        doc.text('Cost Breakdown', 20, 110);
         
         // Table headers
         doc.setFillColor(34, 197, 94);
-        doc.rect(15, 130, 180, 8, 'F');
+        doc.rect(15, 115, 180, 8, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(10);
         doc.setFont('helvetica', 'bold');
-        doc.text('Description', 20, 136);
-        doc.text('Amount (Rs.)', 160, 136);
+        doc.text('Description', 20, 121);
+        doc.text('Amount', 160, 121);
         
         // Table rows
         doc.setTextColor(0, 0, 0);
         doc.setFont('helvetica', 'normal');
-        let yPos = 145;
+        let yPos = 130;
         
         const costItems = [
             { desc: '7" PVC Cost', amount: results.pvc7Cost },
@@ -782,41 +789,64 @@ class CostCalculator {
                 doc.rect(15, yPos - 3, 180, 8, 'F');
             }
             
+            if (item.desc === 'Subtotal') {
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(34, 197, 94);
+            } else {
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(0, 0, 0);
+            }
+            
             doc.text(item.desc, 20, yPos);
-            doc.text(item.amount.toLocaleString('en-IN'), 160, yPos);
+            doc.text(`Rs. ${item.amount.toLocaleString('en-IN')}`, 160, yPos);
             yPos += 8;
         });
 
-        // Total cost section with highlight
+        // Total cost section
         doc.setFillColor(34, 197, 94);
         doc.rect(15, yPos - 3, 180, 12, 'F');
         doc.setTextColor(255, 255, 255);
         doc.setFontSize(12);
         doc.setFont('helvetica', 'bold');
         doc.text('TOTAL COST', 20, yPos + 2);
-        doc.text(results.totalCost.toLocaleString('en-IN'), 160, yPos + 2);
+        doc.text(`Rs. ${results.totalCost.toLocaleString('en-IN')}`, 160, yPos + 2);
         
         yPos += 12;
         doc.text('Per Foot Rate', 20, yPos + 2);
-        doc.text(results.perFootRate.toLocaleString('en-IN'), 160, yPos + 2);
+        doc.text(`Rs. ${results.perFootRate.toLocaleString('en-IN')}`, 160, yPos + 2);
 
-        // Company details footer
+        // Company details
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
         doc.text('Company Address: 6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001', 20, yPos + 20);
-        doc.text('Email: anjaneyaborewells@gmail.com', 20, yPos + 25);
+        doc.text('Email: anjaneyaborewells@gmail.com', 20, yPos + 27);
         
-        // Footer with border
-        doc.setDrawColor(200, 200, 200);
-        doc.rect(15, yPos + 35, 180, 15);
+        // Terms and conditions
         doc.setFontSize(8);
-        doc.text(`Generated on: ${new Date().toLocaleDateString('en-IN')} at ${new Date().toLocaleTimeString('en-IN')}`, 20, yPos + 42);
-        doc.text('This is an estimate. Final costs may vary based on actual ground conditions and requirements.', 20, yPos + 47);
-        doc.text('Valid for 30 days from the date of generation.', 20, yPos + 52);
+        doc.text('This is an estimate. Final costs may vary based on actual ground conditions.', 20, yPos + 35);
+        doc.text('Quote valid for 30 days from the date of generation.', 20, yPos + 42);
+        
+        // Footer with generation date/time at bottom
+        doc.setDrawColor(34, 197, 94);
+        doc.setLineWidth(0.5);
+        doc.line(15, yPos + 50, 195, yPos + 50);
+        
+        doc.setFontSize(8);
+        doc.setFont('helvetica', 'italic');
+        doc.setTextColor(100, 116, 139);
+        doc.text(`Generated on: ${new Date().toLocaleDateString('en-IN')} at ${new Date().toLocaleTimeString('en-IN')}`, 20, yPos + 58);
+        doc.text('Powered by Anjaneya Borewells Digital Platform', 20, yPos + 65);
 
-        // Save the PDF
-        doc.save(`Anjaneya-Borewells-Quote-${new Date().toISOString().split('T')[0]}.pdf`);
+        // Save with enhanced filename
+        const timestamp = new Date().toISOString().split('T')[0];
+        doc.save(`Anjaneya-Borewells-Premium-Quote-${timestamp}-${quoteNum}.pdf`);
+
+        // Restore button state
+        setTimeout(() => {
+            downloadBtn.innerHTML = originalText;
+            downloadBtn.disabled = false;
+        }, 1000);
     }
 }
 
