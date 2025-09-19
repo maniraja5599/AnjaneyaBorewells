@@ -511,6 +511,42 @@ p {
     transform: scaleX(1);
 }
 
+.btn-calculator {
+    background: linear-gradient(135deg, #000000, #000000);
+    color: white;
+    border: 2px solid #fdfdfd;
+    position: relative;
+    overflow: hidden;
+}
+
+
+.btn-calculator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn-calculator:hover::before {
+    left: 100%;
+}
+
+.btn-calculator:hover {
+    background: linear-gradient(135deg, #d97706, #b45309);
+    border-color: #d97706;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+}
+
+.btn-calculator:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
 .btn-large {
     padding: 16px 32px;
     font-size: 1.125rem;
@@ -547,12 +583,153 @@ p {
     padding: 16px 20px;
 }
 
-.nav-brand h1 {
+/* Company Name with Advanced Effects */
+.company-name {
     font-size: 1.5rem;
-    color: var(--primary-color);
-    margin-bottom: 0;
+    font-weight: 700;
+    margin: 0;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
+.company-text {
+    background: linear-gradient(45deg, 
+        #ff6b35,    /* Orange */
+        #f7931e,    /* Amber */
+        #22c55e,    /* Green */
+        #06b6d4,    /* Cyan */
+        #3b82f6,    /* Blue */
+        #8b5cf6,    /* Purple */
+        #ec4899,    /* Pink */
+        #ef4444);   /* Red */
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientText 6s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 0 30px rgba(255, 107, 53, 0.4);
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+    min-height: 1.5em;
+    display: inline-block;
+}
+
+.company-text::after {
+    content: '|';
+    display: inline-block;
+    animation: blink 1s infinite;
+    color: var(--primary-color);
+    margin-left: 2px;
+}
+
+/* Keep cursor always visible - remove this rule */
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+.company-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, 
+        rgba(34, 197, 94, 0.2), 
+        rgba(16, 185, 129, 0.2), 
+        rgba(5, 150, 105, 0.2));
+    border-radius: 8px;
+    filter: blur(20px);
+    opacity: 0;
+    z-index: 1;
+    transition: opacity 0.3s ease;
+    animation: pulseGlow 3s ease-in-out infinite;
+}
+
+.company-name:hover .company-glow {
+    opacity: 1;
+}
+
+.company-name:hover .company-text {
+    transform: scale(1.05);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes gradientText {
+    0% { background-position: 0% 50%; }
+    12.5% { background-position: 25% 25%; }
+    25% { background-position: 100% 50%; }
+    37.5% { background-position: 75% 75%; }
+    50% { background-position: 50% 100%; }
+    62.5% { background-position: 25% 75%; }
+    75% { background-position: 0% 100%; }
+    87.5% { background-position: 75% 25%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { 
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+/* Tamil Slogan Styling with Colors */
+.tamil-slogan {
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin: 4px 0 0 0;
+    font-family: 'Noto Sans Tamil', 'Tamil Sangam MN', serif;
+    background: linear-gradient(135deg, 
+        #f59e0b,    /* Amber */
+        #ef4444,    /* Red */
+        #ec4899,    /* Pink */
+        #8b5cf6);   /* Purple */
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: tamilGradient 4s ease-in-out infinite;
+    position: relative;
+    display: block;
+    text-align: left;
+    letter-spacing: 0.5px;
+    min-height: 1.2em;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    width: 100%;
+    filter: drop-shadow(0 1px 3px rgba(245, 158, 11, 0.3));
+}
+
+.tamil-slogan.visible {
+    opacity: 1;
+}
+
+.tamil-slogan::after {
+    content: '|';
+    display: inline-block;
+    animation: blink 1s infinite;
+    color: #666;
+    margin-left: 2px;
+}
+
+/* Tamil Gradient Animation */
+@keyframes tamilGradient {
+    0%, 100% { background-position: 0% 50%; }
+    25% { background-position: 100% 25%; }
+    50% { background-position: 100% 100%; }
+    75% { background-position: 0% 75%; }
+}
+
+/* Legacy tagline styles for other instances */
 .tagline {
     font-size: 0.875rem;
     color: var(--text-light);
@@ -658,6 +835,22 @@ p {
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
+}
+
+.hero-contact {
+    margin: 2.5rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.hero-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .hero-title {
@@ -1456,10 +1649,16 @@ html, body {
         align-items: center;
     }
     
+    .hero-contact {
+        margin: 2rem 0;
+        gap: 1rem;
+    }
+    
     .hero-actions {
         flex-direction: column;
         align-items: center;
         gap: 1rem;
+        margin-top: 1.5rem;
     }
     
     .btn {
@@ -1586,6 +1785,16 @@ html, body {
     .hero-subtitle {
         font-size: 1rem;
         margin-bottom: 1.5rem;
+    }
+    
+    .hero-contact {
+        margin: 1.5rem 0;
+        gap: 0.75rem;
+    }
+    
+    .hero-actions {
+        margin-top: 1rem;
+        gap: 0.75rem;
     }
     
     .section-header h2 {

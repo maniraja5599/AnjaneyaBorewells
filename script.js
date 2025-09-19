@@ -12,6 +12,7 @@ class AnjaneyaBorewells {
         this.setupEventListeners();
         this.initializeAnimations();
         this.setupIntersectionObserver();
+        this.initTypewriterEffect();
     }
 
     setupEventListeners() {
@@ -185,6 +186,48 @@ class AnjaneyaBorewells {
         }
     }
 
+    initTypewriterEffect() {
+        const companyText = document.getElementById('companyText');
+        const tamilSlogan = document.getElementById('tamilSlogan');
+        
+        if (!companyText || !tamilSlogan) return;
+        
+        const companyName = 'ANJANEYA BOREWELLS';
+        const tamilText = 'ஆழமான நம்பிக்கை!';
+        
+        let companyIndex = 0;
+        let tamilIndex = 0;
+        
+        // Type company name first
+        const typeCompanyName = () => {
+            if (companyIndex < companyName.length) {
+                companyText.textContent = companyName.slice(0, companyIndex + 1);
+                companyIndex++;
+                setTimeout(typeCompanyName, 150); // 150ms delay between letters
+            } else {
+                // Company name complete, start Tamil text (keep cursor)
+                setTimeout(() => {
+                    tamilSlogan.classList.add('visible');
+                    setTimeout(typeTamilText, 500); // Wait 500ms before starting Tamil
+                }, 1000); // Wait 1 second after company name
+            }
+        };
+        
+        // Type Tamil slogan
+        const typeTamilText = () => {
+            if (tamilIndex < tamilText.length) {
+                tamilSlogan.textContent = tamilText.slice(0, tamilIndex + 1);
+                tamilIndex++;
+                setTimeout(typeTamilText, 200); // 200ms delay between characters
+            } else {
+                // Tamil text complete (keep cursor blinking)
+                // No action needed - cursors remain visible
+            }
+        };
+        
+        // Start the animation after a short delay
+        setTimeout(typeCompanyName, 1000);
+    }
 
     toggleFAQ(question) {
         const faqItem = question.closest('.faq-item');
@@ -361,19 +404,16 @@ class AnjaneyaBorewells {
                 }
             }
             
-            // Update Get Quote buttons to use WhatsApp with primary phone
+            // Update Get Quote buttons to use WhatsApp with primary phone (except heroWhatsappBtn which goes to calculator)
             if (companyInfo.phone1) {
                 const cleanPhone = companyInfo.phone1.replace(/[\s\-\(\)]/g, '');
                 const navWhatsappBtn = document.getElementById('navWhatsappBtn');
-                const heroWhatsappBtn = document.getElementById('heroWhatsappBtn');
                 
                 if (navWhatsappBtn) {
                     navWhatsappBtn.href = `https://wa.me/${cleanPhone}?text=Hi! I'm interested in getting a quote for borewell drilling services. Please provide me with more information.`;
                 }
                 
-                if (heroWhatsappBtn) {
-                    heroWhatsappBtn.href = `https://wa.me/${cleanPhone}?text=Hi! I would like to get a free quote for borewell drilling. Can you please help me with the pricing and details?`;
-                }
+                // heroWhatsappBtn always goes to calculator - no WhatsApp override
             }
             
             // Show notification

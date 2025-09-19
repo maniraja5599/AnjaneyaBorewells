@@ -50,7 +50,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
@@ -59,8 +59,11 @@
     <nav class="navbar" id="navbar">
         <div class="container">
             <div class="nav-brand">
-                <h1>Anjaneya Borewells</h1>
-                <p class="tagline">Makers of Green India!</p>
+                <h1 class="company-name">
+                    <span class="company-text" id="companyText"></span>
+                    <span class="company-glow"></span>
+                </h1>
+                <p class="tagline tamil-slogan" id="tamilSlogan"></p>
             </div>
             <div class="nav-menu" id="navMenu">
                 <a href="#home" class="nav-link">Home</a>
@@ -96,7 +99,7 @@
                     </a>
                 </div>
             <div class="hero-actions">
-                <a href="https://wa.me/918300030123?text=Hi! I would like to get a free quote for borewell drilling. Can you please help me with the pricing and details?" target="_blank" class="btn btn-primary btn-large ripple" id="heroWhatsappBtn">Get Free Quote</a>
+                <a href="#calculator" class="btn btn-calculator btn-large ripple" id="heroWhatsappBtn">Get Free Quote</a>
                 <a href="#services" class="btn btn-secondary btn-large ripple">Our Services</a>
             </div>
             </div>
