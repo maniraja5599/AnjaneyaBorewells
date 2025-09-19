@@ -108,6 +108,8 @@
             }
         }
     </style>
+    <script src="api-service.js"></script>
+    <script src="admin-api.js"></script>
 </head>
 <body>
     <div class="admin-container">
@@ -265,6 +267,7 @@
         class AdminPanel {
             constructor() {
                 this.settings = this.getDefaultSettings();
+                this.apiService = window.apiService;
                 this.loadSettings();
                 this.setupEventListeners();
             }
@@ -297,12 +300,23 @@
                 };
             }
             
-            loadSettings() {
-                const saved = localStorage.getItem('anjaneya-admin-settings');
-                if (saved) {
-                    this.settings = { ...this.settings, ...JSON.parse(saved) };
+            async loadSettings() {
+                try {
+                    this.showNotification('Loading settings from server...', 'info');
+                    const response = await this.apiService.getSettingsWithFallback();
+                    
+                    if (response.success) {
+                        this.settings = { ...this.getDefaultSettings(), ...response.data };
+                        this.populateForm();
+                        
+                        const source = response.source === 'localStorage' ? ' (offline mode)' : '';
+                        this.showNotification(`Settings loaded successfully${source}`, 'success');
+                    }
+                } catch (error) {
+                    console.error('Error loading settings:', error);
+                    this.showNotification('Error loading settings. Using defaults.', 'error');
+                    this.populateForm();
                 }
-                this.populateForm();
             }
             
             populateForm() {

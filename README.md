@@ -1,266 +1,140 @@
-# Anjaneya Borewells Website
-
-A production-ready, responsive website for Anjaneya Borewells - professional water well drilling services. Features a cost calculator, admin panel, and modern design with SEO optimization.
+# Anjaneya Borewells - Professional Website with Server-Side Admin Panel
 
 ## 🚀 Features
 
-### Core Features
-- **Responsive Design**: Mobile-first approach with clean, modern UI
-- **Cost Calculator**: Interactive calculator with real-time updates and PDF export
-- **Admin Panel**: Simple interface to update rates, settings, and company information
-- **SEO Optimized**: Meta tags, structured data, and accessibility features
-- **Contact Forms**: Email integration with anti-spam measures
-- **PDF Generation**: Downloadable quotes with company branding
+- **Professional Website**: Modern, responsive design with advanced animations
+- **Cost Calculator**: Interactive borewell cost estimation tool
+- **Admin Panel**: Server-side data management for settings and content
+- **Mobile Responsive**: Optimized for all devices
+- **3D Background**: Animated cube patterns
+- **Typewriter Effect**: Dynamic company name and Tamil slogan animation
 
-### Calculator Features
-- **Material Cost Calculation**: 7" PVC (₹450/ft), 10" PVC (₹750/ft)
-- **Drilling Cost**: Configurable rate per foot with slab-tier support
-- **Tax Calculations**: GST percentage calculations
-- **Live Updates**: Real-time calculation as inputs change
-- **PDF Export**: Professional quote generation with company details
-- **Input Validation**: Prevents invalid inputs and provides warnings
+## 🛠️ Setup Instructions
 
-### Admin Features
-- **Rate Management**: Update PVC rates, drilling rates, taxes
-- **Company Info**: Manage contact details, address, branding
-- **Default Settings**: Configure calculator defaults
-- **Import/Export**: Backup and restore settings
-- **Real-time Sync**: Changes reflect immediately on the website
+### Prerequisites
+- **Node.js** (version 14 or higher)
+- **npm** (comes with Node.js)
 
-## 📁 Project Structure
+### Installation
 
-```
-anjaneya-borewells/
-├── index.html              # Main website
-├── admin.html              # Admin panel
-├── styles.css              # Main stylesheet
-├── script.js               # Main JavaScript
-├── api/                    # API endpoints
-│   ├── contact.js          # Contact form handler
-│   └── callback.js         # Callback request handler
-├── .env.example           # Environment variables template
-├── package.json           # Dependencies and scripts
-├── netlify.toml          # Netlify deployment config
-├── vercel.json           # Vercel deployment config
-├── manifest.json         # PWA manifest
-├── sw.js                 # Service worker
-└── README.md             # This file
-```
-
-## 🛠️ Installation & Setup
-
-### Option 1: Static Hosting (Recommended)
-
-1. **Clone or download** the project files
-2. **Upload to hosting service**:
-   - Netlify: Drag and drop the folder
-   - Vercel: Connect GitHub repository
-   - GitHub Pages: Push to repository
-
-### Option 2: Local Development
-
-1. **Clone the repository**:
+1. **Install Dependencies**:
    ```bash
-   git clone <repository-url>
-   cd anjaneya-borewells
+   npm install
    ```
 
-2. **Serve locally**:
+2. **Start the Server**:
    ```bash
-   # Using Python
-   python -m http.server 8000
-   
-   # Using Node.js
-   npx serve .
-   
-   # Using PHP
-   php -S localhost:8000
+   npm start
    ```
 
-3. **Open in browser**: `http://localhost:8000`
+3. **Development Mode** (with auto-restart):
+   ```bash
+   npm run dev
+   ```
 
-## ⚙️ Configuration
+### Access Points
 
-### Admin Panel Access
-1. Navigate to `/admin.html` on your website
-2. Update rates, company information, and defaults
-3. Settings are saved to browser's localStorage
-4. Changes reflect immediately on the main website
+- **Main Website**: http://localhost:3000
+- **Admin Panel**: http://localhost:3000/admin
+- **API Health Check**: http://localhost:3000/api/health
 
-### Environment Variables (Optional)
-Create `.env` file for email functionality:
-```env
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=your-email@gmail.com
-SMTP_PASS=your-app-password
-EMAIL_FROM=anjaneyaborewells@gmail.com
+## 📊 API Endpoints
+
+### Settings Management
+- `GET /api/settings` - Get all settings
+- `POST /api/settings` - Update settings
+- `POST /api/settings/reset` - Reset to defaults
+- `GET /api/settings/backup` - Download settings backup
+
+### Data Structure
+```json
+{
+  "companyInfo": {
+    "name": "Anjaneya Borewells",
+    "phone1": "+91 83000 30123",
+    "phone2": "+91 965 965 7777",
+    "email": "anjaneyaborewells@gmail.com",
+    "address": "...",
+    "footerText": "© 2025 Anjaneya Borewells. All rights reserved."
+  },
+  "socialMedia": {
+    "facebook": "...",
+    "instagram": "...",
+    "whatsapp": "...",
+    "youtube": "...",
+    "linkedin": "..."
+  },
+  "pricing": {
+    "pvc7Rate": 450,
+    "pvc10Rate": 750,
+    "drillingRate": 50,
+    "gstPercentage": 18
+  }
+}
 ```
 
-## 🧪 Testing
+## 🔧 Admin Panel Features
 
-### Run Unit Tests
-```bash
-node tests/calculator.test.js
-```
+### Server-Side Storage
+- **Persistent Data**: Settings stored in `data/settings.json`
+- **Automatic Backup**: Local storage fallback when server unavailable
+- **Real-time Status**: Server connection indicator
+- **Backup Downloads**: Export settings as JSON files
 
-### Manual Testing Checklist
-- [ ] Calculator calculates correctly with different inputs
-- [ ] PDF generation works properly
-- [ ] Admin panel saves and loads settings
-- [ ] Contact forms submit successfully
-- [ ] Mobile responsiveness on different devices
-- [ ] SEO meta tags are present
-- [ ] All links and navigation work
+### Enhanced Admin Features
+- **Live Server Status**: Green (online) / Red (offline) indicator
+- **Backup Downloads**: One-click settings backup
+- **Fallback Mode**: Works offline with localStorage
+- **Real-time Updates**: Instant synchronization across tabs
+
+## 📱 Mobile Responsive
+
+The website is fully optimized for:
+- **Desktop** (1024px+)
+- **Tablet** (768px - 1024px)
+- **Mobile** (480px - 768px)
+- **Small Mobile** (360px - 480px)
+
+## 🎨 Design Features
+
+- **Rainbow Logo**: Animated gradient company name
+- **Tamil Slogan**: "ஆழமான நம்பிக்கை!" with typewriter effect
+- **3D Cubes**: Animated background with dark outer shells
+- **Glass Morphism**: Modern UI effects throughout
+- **Professional Colors**: Fixed green and gray color scheme
+
+## 🔒 Security Notes
+
+- Settings are stored in local JSON files
+- No sensitive data should be stored in the settings
+- For production, consider using a proper database
+- Implement authentication for admin panel access
 
 ## 🚀 Deployment
 
-### Netlify (Recommended)
-1. **Connect repository** to Netlify
-2. **Build settings**:
-   - Build command: `echo "No build required"`
-   - Publish directory: `/`
-3. **Deploy**: Automatic deployment on push
-
-### Vercel
-1. **Import project** from GitHub
-2. **Framework preset**: Other
-3. **Build settings**:
-   - Build command: `echo "Static site"`
-   - Output directory: `.`
-4. **Deploy**: Automatic deployment
-
-### Traditional Hosting
-1. **Upload files** via FTP/SFTP
-2. **Ensure** all files are in the root directory
-3. **Set** `index.html` as the default page
-4. **Test** all functionality
-
-## 📊 Calculator Configuration
-
-### Default Rates (Configurable via Admin)
-- **7" PVC**: ₹450 per foot
-- **10" PVC**: ₹750 per foot
-- **Drilling Rate**: ₹50 per foot
-- **GST**: 18%
-- **Contingency**: 5%
-
-### Slab-Based Pricing (Future Enhancement)
-The calculator is designed to support slab-based pricing tiers:
-```javascript
-// Example slab configuration
-const slabRates = [
-    { from: 0, to: 100, rate: 60 },
-    { from: 101, to: 300, rate: 55 },
-    { from: 301, to: 500, rate: 50 },
-    { from: 501, to: 1000, rate: 45 },
-    { from: 1001, to: Infinity, rate: 40 }
-];
+### Local Development
+```bash
+npm start
 ```
 
-## 🎨 Customization
+### Production Deployment
+1. **Heroku**: Use the included `server.js`
+2. **Vercel**: Configure for Node.js deployment
+3. **DigitalOcean**: Use PM2 for process management
+4. **Netlify**: Use serverless functions
 
-### Branding
-- **Colors**: Update CSS variables in `styles.css`
-- **Logo**: Replace SVG icons with your logo
-- **Company Info**: Update in admin panel or directly in HTML
+### Environment Variables
+- `PORT`: Server port (default: 3000)
+- `NODE_ENV`: Environment (development/production)
 
-### Calculator Customization
-- **Add new materials**: Extend the calculator form
-- **Change rates**: Use admin panel or edit `script.js`
-- **Modify calculations**: Update `performCalculation()` method
+## 📞 Contact Information
 
-### Styling
-- **CSS Variables**: Located at the top of `styles.css`
-- **Responsive Breakpoints**: Modify media queries
-- **Animations**: Adjust transition durations and effects
-
-## 📱 Browser Support
-
-- **Modern Browsers**: Chrome 60+, Firefox 60+, Safari 12+, Edge 79+
-- **Mobile**: iOS Safari 12+, Chrome Mobile 60+
-- **Features**: CSS Grid, Flexbox, ES6+, LocalStorage
-
-## 🔧 Troubleshooting
-
-### Common Issues
-
-1. **Calculator not updating**:
-   - Check browser console for JavaScript errors
-   - Ensure all input fields have valid values
-   - Verify localStorage is enabled
-
-2. **PDF not generating**:
-   - Check if jsPDF library is loaded
-   - Ensure browser supports PDF generation
-   - Try different browser
-
-3. **Admin panel not saving**:
-   - Check localStorage permissions
-   - Clear browser cache and try again
-   - Verify all required fields are filled
-
-4. **Mobile layout issues**:
-   - Clear browser cache
-   - Check viewport meta tag
-   - Test on different devices
-
-### Performance Optimization
-- **Images**: Use WebP format when possible
-- **CSS**: Minify stylesheet for production
-- **JavaScript**: Minify script files
-- **Caching**: Set appropriate cache headers
-
-## 📈 Analytics & Monitoring
-
-### Google Analytics (Optional)
-Add tracking code to `index.html`:
-```html
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_TRACKING_ID"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'GA_TRACKING_ID');
-</script>
-```
-
-### Performance Monitoring
-- **Core Web Vitals**: Monitor LCP, FID, CLS
-- **Page Speed**: Use Google PageSpeed Insights
-- **Mobile Testing**: Test on real devices
-
-## 🤝 Contributing
-
-1. **Fork** the repository
-2. **Create** a feature branch
-3. **Make** your changes
-4. **Test** thoroughly
-5. **Submit** a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 📞 Support
-
-For technical support or questions:
-- **Email**: anjaneyaborewells@gmail.com
 - **Phone**: +91 83000 30123, +91 965 965 7777
-- **Address**: 6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001
+- **Email**: anjaneyaborewells@gmail.com
+- **Address**: Namakkal, Tamil Nadu 637001
 
-## 🚀 Future Enhancements
-
-- [ ] Slab-based pricing tiers
-- [ ] Multi-language support
-- [ ] Advanced project management
-- [ ] Customer portal
-- [ ] Payment integration
-- [ ] SMS notifications
-- [ ] Progressive Web App (PWA)
-- [ ] Advanced analytics dashboard
+## 🎯 Tamil Slogan
+**"ஆழமான நம்பிக்கை!"** - Deep Trust!
 
 ---
-
-**Built with ❤️ for Anjaneya Borewells - Makers of Green India!**
+© 2025 Anjaneya Borewells. All rights reserved.

@@ -595,24 +595,12 @@ p {
 }
 
 .company-text {
-    background: linear-gradient(45deg, 
-        #ff6b35,    /* Orange */
-        #f7931e,    /* Amber */
-        #22c55e,    /* Green */
-        #06b6d4,    /* Cyan */
-        #3b82f6,    /* Blue */
-        #8b5cf6,    /* Purple */
-        #ec4899,    /* Pink */
-        #ef4444);   /* Red */
-    background-size: 400% 400%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradientText 6s ease-in-out infinite;
+    color: var(--primary-color);
+    font-weight: 800;
     position: relative;
     z-index: 2;
-    text-shadow: 0 0 30px rgba(255, 107, 53, 0.4);
-    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.15));
+    text-shadow: 0 2px 4px rgba(34, 197, 94, 0.2);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
     min-height: 1.5em;
     display: inline-block;
 }
@@ -659,17 +647,7 @@ p {
     filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
 }
 
-@keyframes gradientText {
-    0% { background-position: 0% 50%; }
-    12.5% { background-position: 25% 25%; }
-    25% { background-position: 100% 50%; }
-    37.5% { background-position: 75% 75%; }
-    50% { background-position: 50% 100%; }
-    62.5% { background-position: 25% 75%; }
-    75% { background-position: 0% 100%; }
-    87.5% { background-position: 75% 25%; }
-    100% { background-position: 0% 50%; }
-}
+/* Gradient animation removed - using fixed colors */
 
 @keyframes pulseGlow {
     0%, 100% { 
@@ -682,22 +660,13 @@ p {
     }
 }
 
-/* Tamil Slogan Styling with Colors */
+/* Tamil Slogan Styling with Fixed Colors */
 .tamil-slogan {
     font-size: 0.75rem;
     font-weight: 600;
     margin: 4px 0 0 0;
     font-family: 'Noto Sans Tamil', 'Tamil Sangam MN', serif;
-    background: linear-gradient(135deg, 
-        #f59e0b,    /* Amber */
-        #ef4444,    /* Red */
-        #ec4899,    /* Pink */
-        #8b5cf6);   /* Purple */
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: tamilGradient 4s ease-in-out infinite;
+    color: #666666;
     position: relative;
     display: block;
     text-align: left;
@@ -706,7 +675,7 @@ p {
     opacity: 0;
     transition: opacity 0.5s ease;
     width: 100%;
-    filter: drop-shadow(0 1px 3px rgba(245, 158, 11, 0.3));
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
 
 .tamil-slogan.visible {
@@ -721,13 +690,7 @@ p {
     margin-left: 2px;
 }
 
-/* Tamil Gradient Animation */
-@keyframes tamilGradient {
-    0%, 100% { background-position: 0% 50%; }
-    25% { background-position: 100% 25%; }
-    50% { background-position: 100% 100%; }
-    75% { background-position: 0% 75%; }
-}
+/* Tamil gradient animation removed - using fixed color */
 
 /* Legacy tagline styles for other instances */
 .tagline {

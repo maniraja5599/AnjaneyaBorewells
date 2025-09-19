@@ -901,12 +901,41 @@ class FormHandler {
         const formData = new FormData(form);
         const data = Object.fromEntries(formData);
 
+        // Validate required fields
+        if (!data.name || data.name.trim() === '') {
+            this.showError('Name is required');
+            return;
+        }
+
         try {
-            await this.submitForm(this.contactEndpoint, data);
-            this.showSuccess('Message sent successfully! We will get back to you soon.');
-            form.reset();
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            // Use API service for contact form submission
+            const response = await window.apiService.submitContact(data);
+            
+            if (response.success) {
+                this.showSuccess(response.message || 'Message sent successfully! We will contact you soon.');
+                form.reset();
+            } else {
+                this.showError(response.error || 'Failed to send message. Please try again.');
+            }
+
+            // Restore button
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+
         } catch (error) {
+            console.error('Contact form error:', error);
             this.showError('Failed to send message. Please try again or call us directly.');
+            
+            // Restore button
+            const submitBtn = form.querySelector('button[type="submit"]');
+            submitBtn.textContent = 'Send Message';
+            submitBtn.disabled = false;
         }
     }
 
