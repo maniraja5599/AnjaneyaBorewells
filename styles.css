@@ -137,6 +137,51 @@ html {
     }
 }
 
+@keyframes gradientFlow {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    25% {
+        background-position: 50% 0%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    75% {
+        background-position: 50% 100%;
+    }
+}
+
+@keyframes morphing {
+    0%, 100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1) rotate(5deg);
+        opacity: 0.8;
+    }
+}
+
+@keyframes slidePattern {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    25% {
+        transform: translateX(-10px) translateY(-5px);
+    }
+    50% {
+        transform: translateX(0) translateY(-10px);
+    }
+    75% {
+        transform: translateX(10px) translateY(-5px);
+    }
+    100% {
+        transform: translateX(0) translateY(0);
+    }
+}
+
+
 /* Intersection Observer animations */
 .fade-in {
     opacity: 0;
@@ -575,21 +620,27 @@ p {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+    background: 
+        linear-gradient(45deg, #f0fdf4 0%, #ecfdf5 25%, #f0fdf4 50%, #dcfce7 75%, #f0fdf4 100%);
+    background-size: 300% 300%;
+    animation: gradientFlow 12s ease-in-out infinite;
     overflow: hidden;
 }
 
 .hero::before {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
-    animation: float 6s ease-in-out infinite;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(ellipse at 0% 0%, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(11, 197, 36, 0.1) 0%, transparent 50%);
+    animation: morphing 8s ease-in-out infinite;
     z-index: 1;
 }
+
 
 .hero-background {
     position: absolute;
@@ -597,9 +648,8 @@ p {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%2322c55e" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-    opacity: 0.3;
-    animation: pulse 4s ease-in-out infinite;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="cube3d1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23064e3b" stop-opacity="0.6"/><stop offset="30%" stop-color="%230a5d4a" stop-opacity="0.5"/><stop offset="70%" stop-color="%23126e00" stop-opacity="0.4"/><stop offset="100%" stop-color="%23000000" stop-opacity="0.7"/></linearGradient><linearGradient id="cube3d2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="%23052e16" stop-opacity="0.65"/><stop offset="30%" stop-color="%23064e3b" stop-opacity="0.5"/><stop offset="70%" stop-color="%230a5d4a" stop-opacity="0.45"/><stop offset="100%" stop-color="%23000000" stop-opacity="0.75"/></linearGradient><linearGradient id="cube3d3" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="%23000000" stop-opacity="0.8"/><stop offset="25%" stop-color="%23052e16" stop-opacity="0.6"/><stop offset="75%" stop-color="%23064e3b" stop-opacity="0.4"/><stop offset="100%" stop-color="%230a5d4a" stop-opacity="0.3"/></linearGradient><pattern id="3d-cubes" width="50" height="50" patternUnits="userSpaceOnUse"><g class="cube1"><rect x="7.5" y="7.5" width="5" height="5" fill="url(%23cube3d1)" transform="rotate(45 10 10)"><animateTransform attributeName="transform" type="rotate" values="45 10 10;405 10 10;45 10 10" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0.5;0.55;0.6;0.55;0.5;0.45;0.4" dur="8s" repeatCount="indefinite"/></rect><rect x="8.5" y="8.5" width="3" height="3" fill="%23ffffff" transform="rotate(45 10 10)"><animateTransform attributeName="transform" type="rotate" values="45 10 10;405 10 10;45 10 10" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.45;0.55;0.6;0.65;0.6;0.55;0.5;0.45" dur="8s" repeatCount="indefinite"/></rect></g><g class="cube2"><rect x="34.5" y="11.5" width="5" height="5" fill="url(%23cube3d2)" transform="rotate(45 37 14)"><animateTransform attributeName="transform" type="rotate" values="45 37 14;-315 37 14;45 37 14" dur="5s" begin="1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.35;0.42;0.48;0.5;0.48;0.42;0.38;0.35" dur="7s" begin="1s" repeatCount="indefinite"/></rect><rect x="35.5" y="12.5" width="3" height="3" fill="%23ffffff" transform="rotate(45 37 14)"><animateTransform attributeName="transform" type="rotate" values="45 37 14;-315 37 14;45 37 14" dur="5s" begin="1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0.48;0.52;0.55;0.52;0.48;0.42;0.4" dur="7s" begin="1s" repeatCount="indefinite"/></rect></g><g class="cube3"><rect x="19.5" y="24.5" width="5" height="5" fill="url(%23cube3d3)" transform="rotate(45 22 27)"><animateTransform attributeName="transform" type="translate" values="0 0;0 -5;0 5;0 0" dur="5s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.38;0.44;0.48;0.5;0.48;0.44;0.4;0.38" dur="6.5s" begin="0.5s" repeatCount="indefinite"/></rect><rect x="20.5" y="25.5" width="3" height="3" fill="%23ffffff" transform="rotate(45 22 27)"><animateTransform attributeName="transform" type="translate" values="0 0;0 -5;0 5;0 0" dur="5s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.42;0.48;0.52;0.55;0.52;0.48;0.44;0.42" dur="6.5s" begin="0.5s" repeatCount="indefinite"/></rect></g><g class="cube4"><rect x="41.5" y="34.5" width="5" height="5" fill="url(%23cube3d1)" transform="rotate(45 44 37)"><animateTransform attributeName="transform" type="scale" values="1;1.2;1.5;1.8;1.5;1.2;1;1" dur="6s" begin="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.32;0.38;0.42;0.45;0.42;0.38;0.34;0.32" dur="7.5s" begin="2s" repeatCount="indefinite"/></rect><rect x="42.5" y="35.5" width="3" height="3" fill="%23ffffff" transform="rotate(45 44 37)"><animateTransform attributeName="transform" type="scale" values="1;1.2;1.5;1.8;1.5;1.2;1;1" dur="6s" begin="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.35;0.42;0.48;0.5;0.48;0.42;0.38;0.35" dur="7.5s" begin="2s" repeatCount="indefinite"/></rect></g><g class="cube5"><rect x="14.5" y="39.5" width="5" height="5" fill="url(%23cube3d2)" transform="rotate(45 17 42)"><animateTransform attributeName="transform" type="translate" values="0 0;-3 0;3 0;0 0" dur="4.5s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.36;0.4;0.44;0.46;0.44;0.4;0.38;0.36" dur="6s" begin="1.5s" repeatCount="indefinite"/></rect><rect x="15.5" y="40.5" width="3" height="3" fill="%23ffffff" transform="rotate(45 17 42)"><animateTransform attributeName="transform" type="translate" values="0 0;-3 0;3 0;0 0" dur="4.5s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0.45;0.48;0.5;0.48;0.45;0.42;0.4" dur="6s" begin="1.5s" repeatCount="indefinite"/></rect></g></pattern></defs><rect width="100" height="100" fill="url(%233d-cubes)"/></svg>');
+    opacity: 0.35;
 }
 
 .hero-content {
@@ -1164,7 +1214,188 @@ section {
     padding: 1.5rem;
 }
 
+/* Phone Number Highlighting */
+.phone-highlight {
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    color: #000000 !important;
+    padding: 12px 20px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 3px solid var(--primary-color);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 8px 25px rgba(34, 197, 94, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.phone-highlight::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(145deg, 
+        rgba(34, 197, 94, 0.1), 
+        rgba(34, 197, 94, 0.05),
+        rgba(34, 197, 94, 0.1));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 13px;
+}
+
+.phone-highlight::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, 
+        var(--primary-color), 
+        #10b981, 
+        var(--primary-color), 
+        #059669);
+    background-size: 400% 400%;
+    border-radius: 18px;
+    z-index: -1;
+    animation: gradientShift 3s ease-in-out infinite;
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.phone-highlight:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 15px 35px rgba(34, 197, 94, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+    color: #059669 !important;
+}
+
+.phone-highlight:hover::before {
+    opacity: 1;
+}
+
+.phone-highlight:active {
+    transform: translateY(-1px) scale(1);
+    box-shadow: 
+        0 8px 20px rgba(34, 197, 94, 0.2),
+        inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.phone-highlight .phone-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    animation: phoneRing 2.5s ease-in-out infinite;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+
+@keyframes phoneRing {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    10%, 30% { transform: rotate(-8deg) scale(1.1); }
+    20% { transform: rotate(8deg) scale(1.1); }
+    40%, 60% { transform: rotate(0deg) scale(1); }
+}
+
+.phone-highlight.pulse {
+    animation: phonePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes phonePulse {
+    0%, 100% { 
+        box-shadow: 
+            0 8px 25px rgba(34, 197, 94, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+    }
+    50% { 
+        box-shadow: 
+            0 8px 25px rgba(34, 197, 94, 0.3),
+            0 0 30px rgba(34, 197, 94, 0.2),
+            inset 0 1px 0 rgba(255, 255, 255, 0.9),
+            inset 0 -1px 0 rgba(0, 0, 0, 0.05);
+    }
+}
+
+/* Touch-friendly enhancements */
+@media (hover: none) and (pointer: coarse) {
+    .btn, .phone-highlight, .social-link, .nav-menu a {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .phone-highlight:hover {
+        transform: none;
+        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+    }
+    
+    .phone-highlight:active {
+        transform: scale(0.98);
+        box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+    }
+}
+
+/* Prevent horizontal scroll on mobile */
+html, body {
+    overflow-x: hidden;
+}
+
+/* Improve text readability on mobile */
+@media (max-width: 768px) {
+    body {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+    }
+    
+    /* Better tap targets */
+    a, button, input, select, textarea {
+        -webkit-tap-highlight-color: rgba(34, 197, 94, 0.2);
+    }
+    
+    /* Improve form usability on mobile */
+    input[type="tel"], input[type="email"], input[type="text"] {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+}
+
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .container {
+        padding: 0 20px;
+    }
+    
+    .calculator-container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
+    
+    .calculator-results {
+        position: static;
+        margin-top: 2rem;
+    }
+    
+    .hero-background {
+        opacity: 0.25;
+    }
+}
+
 @media (max-width: 768px) {
     .container {
         padding: 0 16px;
@@ -1180,51 +1411,97 @@ section {
         flex-direction: column;
         padding: 1rem;
         box-shadow: var(--shadow);
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+        z-index: 1000;
     }
     
     .nav-menu.active {
         display: flex;
     }
     
+    .nav-menu a {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border-color);
+        width: 100%;
+        text-align: center;
+    }
+    
+    .nav-menu a:last-child {
+        border-bottom: none;
+    }
+    
     .nav-toggle {
         display: flex;
     }
     
+    .hero {
+        padding: 80px 0 60px;
+        min-height: 70vh;
+    }
+    
     .hero-title {
         font-size: 2.5rem;
+        line-height: 1.2;
+        margin-bottom: 1rem;
     }
     
     .hero-subtitle {
         font-size: 1.125rem;
+        margin-bottom: 2rem;
     }
     
     .hero-contact {
         flex-direction: column;
         gap: 16px;
+        align-items: center;
     }
     
     .hero-actions {
         flex-direction: column;
         align-items: center;
+        gap: 1rem;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+        padding: 14px 24px;
+        font-size: 1rem;
+    }
+    
+    .phone-highlight {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+        padding: 12px 20px;
+        font-size: 1.1rem;
+        margin: 8px 0;
     }
     
     .social-links {
         justify-content: center;
-        gap: 0.75rem;
+        gap: 1rem;
+        margin-top: 1rem;
     }
     
     .social-link {
-        width: 36px;
-        height: 36px;
+        width: 44px;
+        height: 44px;
     }
     
     .social-link svg {
-        width: 18px;
-        height: 18px;
+        width: 20px;
+        height: 20px;
     }
     
     .services-grid {
         grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .service-card {
+        padding: 2rem 1.5rem;
     }
     
     .calculator-container {
@@ -1232,40 +1509,83 @@ section {
         gap: 2rem;
     }
     
+    .calculator-form {
+        padding: 1.5rem;
+    }
+    
     .contact-content {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
     
+    .contact-info {
+        text-align: center;
+    }
+    
     .footer-content {
         grid-template-columns: 1fr;
         text-align: center;
+        gap: 2rem;
     }
     
     .form-row {
         grid-template-columns: 1fr;
+        gap: 1rem;
     }
     
     .form-actions {
         flex-direction: column;
+        gap: 1rem;
     }
     
     .results-actions {
         flex-direction: column;
+        gap: 1rem;
     }
     
     .section-header h2 {
         font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .section-header p {
+        font-size: 1rem;
     }
     
     section {
         padding: 60px 0;
     }
+    
+    .modal-content {
+        margin: 20px 10px;
+        width: calc(100% - 20px);
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .hero-background {
+        opacity: 0.2;
+    }
 }
 
 @media (max-width: 480px) {
+    .container {
+        padding: 0 12px;
+    }
+    
+    .hero {
+        padding: 60px 0 40px;
+        min-height: 60vh;
+    }
+    
     .hero-title {
         font-size: 2rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
     }
     
     .section-header h2 {
@@ -1274,11 +1594,75 @@ section {
     
     .service-card,
     .calculator-form {
-        padding: 1.5rem;
+        padding: 1.25rem;
+    }
+    
+    .phone-highlight {
+        padding: 10px 16px;
+        font-size: 1rem;
+    }
+    
+    .btn {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 10px 14px;
+        font-size: 0.9rem;
     }
     
     .modal-content {
-        margin: 10px;
+        margin: 10px 5px;
+        width: calc(100% - 10px);
+    }
+    
+    .modal-body {
+        padding: 1rem;
+    }
+    
+    .social-link {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .social-link svg {
+        width: 18px;
+        height: 18px;
+    }
+    
+    section {
+        padding: 40px 0;
+    }
+    
+    .hero-background {
+        opacity: 0.15;
+    }
+}
+
+@media (max-width: 360px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .hero-title {
+        font-size: 1.75rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .phone-highlight {
+        font-size: 0.9rem;
+        padding: 8px 14px;
+    }
+    
+    .btn {
+        font-size: 0.85rem;
+        padding: 10px 16px;
     }
 }
 
