@@ -28,6 +28,11 @@ class AnjaneyaBorewells {
                         block: 'start'
                     });
                 }
+                
+                // Close mobile menu if it's open (for nav-link clicks)
+                if (link.classList.contains('nav-link') || link.id === 'navWhatsappBtn') {
+                    this.navigation.closeMobileMenu();
+                }
             });
         });
 
@@ -127,6 +132,27 @@ class AnjaneyaBorewells {
         // Mobile navigation toggle
         document.getElementById('navToggle')?.addEventListener('click', () => {
             this.navigation.toggleMobileMenu();
+        });
+        
+        // Close mobile menu when clicking outside of it
+        document.addEventListener('click', (e) => {
+            const navMenu = document.getElementById('navMenu');
+            const navToggle = document.getElementById('navToggle');
+            const navbar = document.getElementById('navbar');
+            
+            if (navMenu && navMenu.classList.contains('active')) {
+                // Check if click is outside the navbar and not on the toggle button
+                if (!navbar.contains(e.target) && !navToggle.contains(e.target)) {
+                    this.navigation.closeMobileMenu();
+                }
+            }
+        });
+        
+        // Close mobile menu when pressing Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.navigation.closeMobileMenu();
+            }
         });
     }
 
@@ -490,6 +516,16 @@ class Navigation {
     toggleMobileMenu() {
         this.navMenu.classList.toggle('active');
         this.navToggle.classList.toggle('active');
+    }
+    
+    closeMobileMenu() {
+        this.navMenu.classList.remove('active');
+        this.navToggle.classList.remove('active');
+    }
+    
+    openMobileMenu() {
+        this.navMenu.classList.add('active');
+        this.navToggle.classList.add('active');
     }
 }
 
