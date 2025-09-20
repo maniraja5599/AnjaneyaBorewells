@@ -1599,7 +1599,7 @@ img {
     }
     
     .hero-background {
-        opacity: 0.2;
+        opacity: 0.35;
         z-index: 1;
     }
 }
@@ -1620,29 +1620,60 @@ img {
         right: 0;
         bottom: 0;
         background: 
-            radial-gradient(circle at 20% 20%, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.12) 0%, transparent 50%),
-            radial-gradient(circle at 60% 40%, rgba(5, 150, 105, 0.1) 0%, transparent 50%);
+            radial-gradient(circle at 20% 20%, rgba(34, 197, 94, 0.25) 0%, transparent 60%),
+            radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.2) 0%, transparent 60%),
+            radial-gradient(circle at 60% 40%, rgba(5, 150, 105, 0.18) 0%, transparent 55%),
+            radial-gradient(circle at 40% 80%, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
+            linear-gradient(45deg, transparent 48%, rgba(34, 197, 94, 0.05) 50%, transparent 52%);
         animation: mobileFloatingDots 8s ease-in-out infinite;
         z-index: 2;
+    }
+    
+    /* Additional mobile visual enhancement */
+    .hero-background::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: 
+            repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 20px,
+                rgba(34, 197, 94, 0.03) 20px,
+                rgba(34, 197, 94, 0.03) 40px
+            );
+        animation: mobilePatternMove 12s linear infinite;
+        z-index: 1;
+    }
+    
+    @keyframes mobilePatternMove {
+        0% {
+            transform: translateX(-40px);
+        }
+        100% {
+            transform: translateX(40px);
+        }
     }
     
     @keyframes mobileFloatingDots {
         0%, 100% {
             transform: translate(0, 0) scale(1);
-            opacity: 0.6;
-        }
-        25% {
-            transform: translate(-10px, -15px) scale(1.1);
             opacity: 0.8;
         }
+        25% {
+            transform: translate(-15px, -20px) scale(1.2);
+            opacity: 1;
+        }
         50% {
-            transform: translate(15px, -10px) scale(0.9);
-            opacity: 0.7;
+            transform: translate(20px, -15px) scale(0.9);
+            opacity: 0.9;
         }
         75% {
-            transform: translate(-5px, 10px) scale(1.05);
-            opacity: 0.9;
+            transform: translate(-10px, 15px) scale(1.1);
+            opacity: 1;
         }
     }
     
@@ -1972,7 +2003,7 @@ img {
     }
     
     .hero-background {
-        opacity: 0.18;
+        opacity: 0.3;
         z-index: 1;
     }
 }
@@ -1987,19 +2018,24 @@ img {
     /* Simplified animation for smaller mobile screens */
     .hero-background::after {
         background: 
-            radial-gradient(circle at 25% 25%, rgba(34, 197, 94, 0.2) 0%, transparent 40%),
-            radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.15) 0%, transparent 40%);
+            radial-gradient(circle at 25% 25%, rgba(34, 197, 94, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.25) 0%, transparent 50%),
+            radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.2) 0%, transparent 45%);
         animation: simpleMobileFloat 6s ease-in-out infinite;
     }
     
     @keyframes simpleMobileFloat {
         0%, 100% {
-            transform: translateY(0px);
-            opacity: 0.7;
-        }
-        50% {
-            transform: translateY(-8px);
+            transform: translateY(0px) scale(1);
             opacity: 0.9;
+        }
+        33% {
+            transform: translateY(-12px) scale(1.1);
+            opacity: 1;
+        }
+        66% {
+            transform: translateY(8px) scale(0.95);
+            opacity: 0.95;
         }
     }
     
@@ -2124,7 +2160,7 @@ img {
     }
     
     .hero-background {
-        opacity: 0.15;
+        opacity: 0.25;
         z-index: 1;
     }
 }
