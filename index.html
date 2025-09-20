@@ -388,25 +388,47 @@
                     <form id="calculatorForm">
                         <div class="form-group">
                             <label for="totalDepth">Total Depth (ft)</label>
-                            <input type="number" id="totalDepth" name="totalDepth" value="800" min="1" required>
+                            <div class="input-with-buttons">
+                                <input type="number" id="totalDepth" name="totalDepth" value="800" min="1" required>
+                                <div class="input-buttons">
+                                    <button type="button" class="input-btn input-btn-up" data-target="totalDepth" data-step="50">▲</button>
+                                    <button type="button" class="input-btn input-btn-down" data-target="totalDepth" data-step="50">▼</button>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="pvc7Length">7" PVC Length (ft)</label>
-                                <input type="number" id="pvc7Length" name="pvc7Length" value="30" min="0" required>
-                            
+                                <div class="input-with-buttons">
+                                    <input type="number" id="pvc7Length" name="pvc7Length" value="30" min="0" required>
+                                    <div class="input-buttons">
+                                        <button type="button" class="input-btn input-btn-up" data-target="pvc7Length" data-step="5">▲</button>
+                                        <button type="button" class="input-btn input-btn-down" data-target="pvc7Length" data-step="5">▼</button>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="pvc10Length">10" PVC Length (ft)</label>
-                                <input type="number" id="pvc10Length" name="pvc10Length" value="15" min="0" required>
-                                
+                                <div class="input-with-buttons">
+                                    <input type="number" id="pvc10Length" name="pvc10Length" value="15" min="0" required>
+                                    <div class="input-buttons">
+                                        <button type="button" class="input-btn input-btn-up" data-target="pvc10Length" data-step="5">▲</button>
+                                        <button type="button" class="input-btn input-btn-down" data-target="pvc10Length" data-step="5">▼</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="drillingRate">Base Drilling Rate per ft (Rs.)</label>
-                            <input type="number" id="drillingRate" name="drillingRate" value="90" min="1" required>
+                            <div class="input-with-buttons">
+                                <input type="number" id="drillingRate" name="drillingRate" value="90" min="1" required>
+                                <div class="input-buttons">
+                                    <button type="button" class="input-btn input-btn-up" data-target="drillingRate" data-step="5">▲</button>
+                                    <button type="button" class="input-btn input-btn-down" data-target="drillingRate" data-step="5">▼</button>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -419,7 +441,13 @@
                             </div>
                             <div class="form-group" id="gstPercentageGroup">
                                 <label for="gstPercentage">GST Percentage (%)</label>
-                                <input type="number" id="gstPercentage" name="gstPercentage" value="18" min="0" max="100" step="0.01" required>
+                                <div class="input-with-buttons">
+                                    <input type="number" id="gstPercentage" name="gstPercentage" value="18" min="0" max="100" step="0.01" required>
+                                    <div class="input-buttons">
+                                        <button type="button" class="input-btn input-btn-up" data-target="gstPercentage" data-step="1">▲</button>
+                                        <button type="button" class="input-btn input-btn-down" data-target="gstPercentage" data-step="1">▼</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

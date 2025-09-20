@@ -169,6 +169,34 @@ class AnjaneyaBorewells {
                 this.navigation.closeMobileMenu();
             }
         });
+        
+        // Mobile input increment/decrement buttons
+        document.querySelectorAll('.input-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = button.getAttribute('data-target');
+                const step = parseFloat(button.getAttribute('data-step')) || 1;
+                const isUp = button.classList.contains('input-btn-up');
+                const input = document.getElementById(targetId);
+                
+                if (input) {
+                    const currentValue = parseFloat(input.value) || 0;
+                    const min = parseFloat(input.getAttribute('min')) || 0;
+                    const max = parseFloat(input.getAttribute('max')) || Infinity;
+                    
+                    let newValue;
+                    if (isUp) {
+                        newValue = Math.min(currentValue + step, max);
+                    } else {
+                        newValue = Math.max(currentValue - step, min);
+                    }
+                    
+                    input.value = newValue;
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                    input.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+        });
     }
 
     initializeAnimations() {

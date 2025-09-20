@@ -1097,6 +1097,71 @@ input[type="number"]::-webkit-inner-spin-button {
     margin: 0;
 }
 
+/* Mobile Input Buttons */
+.input-with-buttons {
+    display: flex;
+    align-items: center;
+    position: relative;
+    flex: 1;
+}
+
+.input-with-buttons input {
+    flex: 1;
+    margin: 0;
+}
+
+.input-buttons {
+    display: flex;
+    flex-direction: column;
+    margin-left: 8px;
+}
+
+.input-btn {
+    width: 32px;
+    height: 20px;
+    border: 1px solid var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.input-btn-up {
+    border-radius: 4px 4px 0 0;
+    border-bottom: 0.5px solid var(--primary-color);
+}
+
+.input-btn-down {
+    border-radius: 0 0 4px 4px;
+    border-top: 0.5px solid var(--primary-color);
+}
+
+.input-btn:hover {
+    background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+    transform: scale(1.05);
+}
+
+.input-btn:active {
+    transform: scale(0.95);
+    background: var(--primary-dark);
+}
+
+/* Hide buttons on desktop, show only on mobile */
+@media (min-width: 769px) {
+    .input-buttons {
+        display: none;
+    }
+}
+
 .form-group input:hover,
 .form-group select:hover,
 .form-group textarea:hover {
@@ -2013,6 +2078,18 @@ img {
         margin-top: 1px;
         color: var(--text-dark) !important;
         background-color: var(--bg-white) !important;
+    }
+    
+    /* Mobile input buttons styling */
+    .input-with-buttons {
+        flex: 1;
+        display: flex;
+        align-items: center;
+    }
+    
+    .input-with-buttons input {
+        flex: 1;
+        margin-right: 0;
     }
     
     .form-group small {
