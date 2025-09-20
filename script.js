@@ -588,8 +588,11 @@ class CostCalculator {
         
         // Trigger initial calculation after page loads
         setTimeout(() => {
-            this.calculate();
-        }, 100);
+            this.updateFormDefaults();
+            setTimeout(() => {
+                this.calculate();
+            }, 50);
+        }, 200);
     }
 
     loadSettings() {
@@ -807,12 +810,19 @@ class CostCalculator {
 
         // Subtotal
         const subtotal = materialCost + drillingCost + boreBataCost;
+        console.log('Subtotal calculation:', {
+            materialCost,
+            drillingCost,
+            boreBataCost,
+            subtotal
+        });
 
         // Taxes
         const gstAmount = (subtotal * gstPercentage) / 100;
 
         // Total
         const totalCost = subtotal + gstAmount;
+        console.log('Final totals:', { gstAmount, totalCost });
 
         // Per foot rate
         const perFootRate = totalDepth > 0 ? totalCost / totalDepth : 0;
