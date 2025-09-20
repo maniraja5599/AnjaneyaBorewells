@@ -66,11 +66,19 @@ class AnjaneyaBorewells {
             this.formHandler.handleCallbackForm();
         });
 
-        // Calculator input changes
+        // Calculator input changes - trigger calculation on any input change
         document.querySelectorAll('#calculatorForm input').forEach(input => {
             input.addEventListener('input', () => {
                 this.calculator.calculate();
             });
+            input.addEventListener('change', () => {
+                this.calculator.calculate();
+            });
+        });
+
+        // GST toggle functionality
+        document.getElementById('gstToggle')?.addEventListener('change', (e) => {
+            this.calculator.handleGstToggle(e.target.checked);
         });
 
         // Reset button
@@ -489,7 +497,7 @@ class CostCalculator {
             totalDepth: 800,
             pvc7Length: 30,
             pvc10Length: 15,
-            drillingRate: 50,
+            drillingRate: 90,
             gstPercentage: 18,
             pvc7Rate: 450,
             pvc10Rate: 750
@@ -655,13 +663,27 @@ class CostCalculator {
     }
 
     getInputs() {
+        const gstToggle = document.getElementById('gstToggle');
+        const gstEnabled = gstToggle ? gstToggle.checked : false;
+        
         return {
             totalDepth: parseFloat(document.getElementById('totalDepth').value) || 0,
             pvc7Length: parseFloat(document.getElementById('pvc7Length').value) || 0,
             pvc10Length: parseFloat(document.getElementById('pvc10Length').value) || 0,
             drillingRate: parseFloat(document.getElementById('drillingRate').value) || 0,
-            gstPercentage: parseFloat(document.getElementById('gstPercentage').value) || 0
+            gstPercentage: gstEnabled ? (parseFloat(document.getElementById('gstPercentage').value) || 0) : 0,
+            gstEnabled: gstEnabled
         };
+    }
+
+    handleGstToggle(isEnabled) {
+        const gstPercentageGroup = document.getElementById('gstPercentageGroup');
+        if (isEnabled) {
+            gstPercentageGroup.classList.remove('hidden');
+        } else {
+            gstPercentageGroup.classList.add('hidden');
+        }
+        this.calculate();
     }
 
     performCalculation(inputs) {
@@ -677,11 +699,15 @@ class CostCalculator {
         const pvc10Cost = pvc10Length * this.defaults.pvc10Rate;
         const materialCost = pvc7Cost + pvc10Cost;
 
-        // Drilling cost
-        const drillingCost = totalDepth * drillingRate;
+        // Calculate drilling cost using slab rates
+        const slabCalculation = this.calculateSlabRate(totalDepth, drillingRate);
+        const drillingCost = slabCalculation.totalCost;
+
+        // Bore Bata cost (fixed ₹2000 per bore)
+        const boreBataCost = 2000;
 
         // Subtotal
-        const subtotal = materialCost + drillingCost;
+        const subtotal = materialCost + drillingCost + boreBataCost;
 
         // Taxes
         const gstAmount = (subtotal * gstPercentage) / 100;
@@ -696,11 +722,61 @@ class CostCalculator {
             pvc7Cost,
             pvc10Cost,
             drillingCost,
+            boreBataCost,
             subtotal,
             gstAmount,
             totalCost,
             perFootRate,
-            gstPercentage
+            gstPercentage,
+            slabCalculation
+        };
+    }
+
+    calculateSlabRate(totalDepth, baseRate) {
+        // Calculate progressive rates based on base rate
+        // Rate progression: base, base+5, base+15, base+35, base+65, base+105, base+155, base+215, base+315, base+415, base+515, base+615, base+715, base+815
+        const rateIncrements = [0, 5, 15, 35, 65, 105, 155, 215, 315, 415, 515, 615, 715, 815];
+        const slabDetails = [];
+        let totalCost = 0;
+        let remainingDepth = totalDepth;
+
+        for (let i = 0; i < rateIncrements.length && remainingDepth > 0; i++) {
+            const rate = baseRate + rateIncrements[i];
+            let depthInThisSlab;
+            
+            if (i === 0) {
+                // First slab: 300 feet at base rate
+                depthInThisSlab = Math.min(300, remainingDepth);
+            } else if (i < 8) {
+                // Slabs 2-8: 100 feet each
+                depthInThisSlab = Math.min(100, remainingDepth);
+            } else {
+                // Slabs 9+: 100 feet each (after 1000 feet)
+                depthInThisSlab = Math.min(100, remainingDepth);
+            }
+
+            if (depthInThisSlab > 0) {
+                const slabCost = depthInThisSlab * rate;
+                totalCost += slabCost;
+                
+                const startDepth = totalDepth - remainingDepth + 1;
+                const endDepth = startDepth + depthInThisSlab - 1;
+                
+                slabDetails.push({
+                    range: `${startDepth}-${endDepth} ft`,
+                    rate: rate,
+                    depth: depthInThisSlab,
+                    cost: slabCost
+                });
+                
+                remainingDepth -= depthInThisSlab;
+            }
+        }
+
+        return {
+            totalCost,
+            slabDetails,
+            averageRate: totalDepth > 0 ? totalCost / totalDepth : 0
         };
     }
 
@@ -710,16 +786,80 @@ class CostCalculator {
             return;
         }
 
+        const gstToggle = document.getElementById('gstToggle');
+        const gstEnabled = gstToggle ? gstToggle.checked : false;
+
+        // Display slab breakdown first
+        this.displaySlabBreakdown(results.slabCalculation);
+        
+        // Display drilling cost
+        document.getElementById('drillingCost').textContent = this.formatCurrency(results.drillingCost);
+        
+        // Display PVC costs
+        document.getElementById('pvcCost').textContent = this.formatCurrency(results.pvc7Cost + results.pvc10Cost);
+        
+        // Display Bore Bata cost (fixed ₹2000)
+        document.getElementById('boreBataCost').textContent = this.formatCurrency(results.boreBataCost);
+        
+        // Display individual PVC costs
         document.getElementById('pvc7Cost').textContent = this.formatCurrency(results.pvc7Cost);
         document.getElementById('pvc10Cost').textContent = this.formatCurrency(results.pvc10Cost);
-        document.getElementById('drillingCost').textContent = this.formatCurrency(results.drillingCost);
+        
         document.getElementById('subtotal').textContent = this.formatCurrency(results.subtotal);
-        document.getElementById('gstAmount').textContent = this.formatCurrency(results.gstAmount);
+        
+        // Update GST display based on toggle state
+        const gstAmountElement = document.getElementById('gstAmount');
+        const gstLabelElement = gstAmountElement.parentElement.querySelector('span:first-child');
+        
+        if (gstEnabled) {
+            gstAmountElement.textContent = this.formatCurrency(results.gstAmount);
+            gstLabelElement.textContent = `GST (${results.gstPercentage}%):`;
+            gstAmountElement.parentElement.style.display = 'flex';
+        } else {
+            gstAmountElement.textContent = this.formatCurrency(0);
+            gstLabelElement.textContent = 'GST (0%):';
+            gstAmountElement.parentElement.style.display = 'none';
+        }
+        
         document.getElementById('totalCost').textContent = this.formatCurrency(results.totalCost);
         document.getElementById('perFootRate').textContent = this.formatCurrency(results.perFootRate);
 
         // Show results section
         document.getElementById('calculatorResults').style.display = 'block';
+    }
+
+    displaySlabBreakdown(slabCalculation) {
+        const slabBreakdown = document.getElementById('slabBreakdown');
+        const slabDetails = document.getElementById('slabDetails');
+        
+        if (slabCalculation.slabDetails.length > 1) {
+            // Show breakdown if multiple slabs
+            slabBreakdown.style.display = 'block';
+            
+            let html = '';
+            slabCalculation.slabDetails.forEach(slab => {
+                html += `
+                    <div class="slab-item">
+                        <span class="slab-range">${slab.range}</span>
+                        <span class="slab-rate">₹${slab.rate}/ft</span>
+                        <span class="slab-cost">${this.formatCurrency(slab.cost)}</span>
+                    </div>
+                `;
+            });
+            
+            html += `
+                <div class="slab-item">
+                    <span>Total Drilling Cost</span>
+                    <span></span>
+                    <span class="slab-cost">${this.formatCurrency(slabCalculation.totalCost)}</span>
+                </div>
+            `;
+            
+            slabDetails.innerHTML = html;
+        } else {
+            // Hide breakdown if single slab
+            slabBreakdown.style.display = 'none';
+        }
     }
 
     hideResults() {

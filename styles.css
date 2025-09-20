@@ -429,7 +429,7 @@ h4 { font-size: 1.25rem; }
 
 p {
     margin-bottom: 1rem;
-    color: var(--text-light);
+    color: #c9cac7;
 }
 
 /* Buttons */
@@ -1906,6 +1906,177 @@ html, body {
     }
 }
 
+/* Page Separator Styles */
+.page-separator {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--border-color) 20%, var(--primary-color) 50%, var(--border-color) 80%, transparent 100%);
+    margin: 40px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.page-separator::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 8px;
+    height: 8px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px var(--bg-white), 0 0 0 6px var(--primary-color);
+}
+
+/* Icon Styles */
+.icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.section-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    display: inline-block;
+    vertical-align: middle;
+    color: var(--primary-color);
+}
+
+/* GST Toggle Styles */
+.gst-control {
+    margin-bottom: 15px;
+}
+
+.gst-toggle-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.gst-toggle-label input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-slider {
+    position: relative;
+    width: 50px;
+    height: 24px;
+    background-color: var(--border-color);
+    border-radius: 12px;
+    margin-right: 12px;
+    transition: background-color 0.3s ease;
+    display: inline-block;
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.gst-toggle-label input[type="checkbox"]:checked + .toggle-slider {
+    background-color: var(--primary-color);
+}
+
+.gst-toggle-label input[type="checkbox"]:checked + .toggle-slider::before {
+    transform: translateX(26px);
+}
+
+.toggle-text {
+    font-size: 1rem;
+    user-select: none;
+}
+
+#gstPercentageGroup {
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.gst-toggle-label input[type="checkbox"]:checked ~ #gstPercentageGroup,
+#gstPercentageGroup:not(.hidden) {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#gstPercentageGroup input {
+    background-color: var(--bg-light);
+    color: var(--text-light);
+}
+
+.gst-toggle-label input[type="checkbox"]:checked ~ #gstPercentageGroup input {
+    background-color: var(--bg-white);
+    color: var(--text-dark);
+}
+
+/* Slab Rate Breakdown Styles */
+.slab-breakdown {
+    margin: 15px 0;
+    padding: 15px;
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    border-left: 4px solid var(--primary-color);
+}
+
+.slab-header {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.slab-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.slab-item:last-child {
+    border-bottom: none;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 2px solid var(--primary-color);
+}
+
+.slab-range {
+    color: var(--text-light);
+}
+
+.slab-rate {
+    font-weight: 500;
+}
+
+.slab-cost {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.form-help {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    margin-top: 5px;
+    font-style: italic;
+}
+
 /* Gallery Section Styles */
 .gallery {
     background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-white) 100%);
@@ -2074,5 +2245,27 @@ html, body {
         display: block;
         margin: 10px 0;
         width: 100%;
+    }
+    
+    .page-separator {
+        margin: 30px 0;
+    }
+    
+    .page-separator::before {
+        width: 6px;
+        height: 6px;
+        box-shadow: 0 0 0 3px var(--bg-white), 0 0 0 4px var(--primary-color);
+    }
+    
+    .icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+    }
+    
+    .section-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
     }
 }
