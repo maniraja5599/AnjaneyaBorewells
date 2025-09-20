@@ -898,6 +898,9 @@ class CostCalculator {
         const gstToggle = document.getElementById('gstToggle');
         const gstEnabled = gstToggle ? gstToggle.checked : false;
 
+        // Get current inputs
+        const inputs = this.getInputs();
+
         // Display input summary
         this.displayInputSummary();
 
