@@ -795,15 +795,12 @@ class CostCalculator {
         // Display drilling cost
         document.getElementById('drillingCost').textContent = this.formatCurrency(results.drillingCost);
         
-        // Display PVC costs
-        document.getElementById('pvcCost').textContent = this.formatCurrency(results.pvc7Cost + results.pvc10Cost);
-        
-        // Display Bore Bata cost (fixed ₹2000)
-        document.getElementById('boreBataCost').textContent = this.formatCurrency(results.boreBataCost);
-        
         // Display individual PVC costs
         document.getElementById('pvc7Cost').textContent = this.formatCurrency(results.pvc7Cost);
         document.getElementById('pvc10Cost').textContent = this.formatCurrency(results.pvc10Cost);
+        
+        // Display Bore Bata cost (fixed ₹2000)
+        document.getElementById('boreBataCost').textContent = this.formatCurrency(results.boreBataCost);
         
         document.getElementById('subtotal').textContent = this.formatCurrency(results.subtotal);
         
@@ -822,7 +819,6 @@ class CostCalculator {
         }
         
         document.getElementById('totalCost').textContent = this.formatCurrency(results.totalCost);
-        document.getElementById('perFootRate').textContent = this.formatCurrency(results.perFootRate);
 
         // Show results section
         document.getElementById('calculatorResults').style.display = 'block';
