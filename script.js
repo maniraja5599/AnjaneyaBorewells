@@ -585,6 +585,11 @@ class CostCalculator {
         };
         
         this.loadSettings();
+        
+        // Trigger initial calculation after page loads
+        setTimeout(() => {
+            this.calculate();
+        }, 100);
     }
 
     loadSettings() {
@@ -884,12 +889,19 @@ class CostCalculator {
         document.getElementById('drillingCost').textContent = this.formatCurrency(results.drillingCost);
         
         // Display individual PVC costs with details
-        const pvc7Details = inputs.pvc7Length > 0 ? 
-            `${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = ${this.formatCurrency(results.pvc7Cost)}` : 
-            this.formatCurrency(0);
-        const pvc10Details = inputs.pvc10Length > 0 ? 
-            `${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = ${this.formatCurrency(results.pvc10Cost)}` : 
-            this.formatCurrency(0);
+        let pvc7Details, pvc10Details;
+        
+        if (inputs.pvc7Length > 0) {
+            pvc7Details = `${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = ${this.formatCurrency(results.pvc7Cost)}`;
+        } else {
+            pvc7Details = this.formatCurrency(0);
+        }
+        
+        if (inputs.pvc10Length > 0) {
+            pvc10Details = `${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = ${this.formatCurrency(results.pvc10Cost)}`;
+        } else {
+            pvc10Details = this.formatCurrency(0);
+        }
             
         document.getElementById('pvc7Cost').textContent = pvc7Details;
         document.getElementById('pvc10Cost').textContent = pvc10Details;
