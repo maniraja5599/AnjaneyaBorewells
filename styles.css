@@ -1079,7 +1079,22 @@ section {
     font-size: 1rem;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: var(--bg-white);
+    color: var(--text-dark);
     position: relative;
+}
+
+/* Specific styling for number inputs */
+input[type="number"] {
+    color: var(--text-dark) !important;
+    background-color: var(--bg-white) !important;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .form-group input:hover,
@@ -1996,6 +2011,8 @@ img {
         box-sizing: border-box;
         flex: 1;
         margin-top: 1px;
+        color: var(--text-dark) !important;
+        background-color: var(--bg-white) !important;
     }
     
     .form-group small {
@@ -2204,6 +2221,8 @@ img {
         font-size: 0.85rem;
         flex: 1;
         margin-top: 1px;
+        color: var(--text-dark) !important;
+        background-color: var(--bg-white) !important;
     }
     
     /* Adjust help text positioning for smaller screens */

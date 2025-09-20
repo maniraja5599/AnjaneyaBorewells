@@ -604,6 +604,10 @@ class CostCalculator {
         }
         if (drillingRateEl) {
             drillingRateEl.value = this.defaults.drillingRate;
+            // Force the input to display the value
+            drillingRateEl.setAttribute('value', this.defaults.drillingRate);
+            // Trigger input event to ensure visibility
+            drillingRateEl.dispatchEvent(new Event('input', { bubbles: true }));
         }
         if (gstPercentageEl) {
             gstPercentageEl.value = this.defaults.gstPercentage;
