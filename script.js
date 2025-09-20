@@ -883,9 +883,16 @@ class CostCalculator {
         // Display drilling cost
         document.getElementById('drillingCost').textContent = this.formatCurrency(results.drillingCost);
         
-        // Display individual PVC costs
-        document.getElementById('pvc7Cost').textContent = this.formatCurrency(results.pvc7Cost);
-        document.getElementById('pvc10Cost').textContent = this.formatCurrency(results.pvc10Cost);
+        // Display individual PVC costs with details
+        const pvc7Details = inputs.pvc7Length > 0 ? 
+            `${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = ${this.formatCurrency(results.pvc7Cost)}` : 
+            this.formatCurrency(0);
+        const pvc10Details = inputs.pvc10Length > 0 ? 
+            `${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = ${this.formatCurrency(results.pvc10Cost)}` : 
+            this.formatCurrency(0);
+            
+        document.getElementById('pvc7Cost').textContent = pvc7Details;
+        document.getElementById('pvc10Cost').textContent = pvc10Details;
         
         // Display Bore Bata cost (fixed ₹2000)
         document.getElementById('boreBataCost').textContent = this.formatCurrency(results.boreBataCost);
@@ -1116,13 +1123,28 @@ class CostCalculator {
             });
         }
         
-        // Other cost items
-        const otherCostItems = [
-            { desc: '7" PVC Cost', amount: results.pvc7Cost },
-            { desc: '10" PVC Cost', amount: results.pvc10Cost },
+        // Other cost items with detailed PVC information
+        const otherCostItems = [];
+        
+        // Add detailed PVC costs
+        if (inputs.pvc7Length > 0) {
+            otherCostItems.push({
+                desc: `7" PVC: ${inputs.pvc7Length} ft x Rs.${this.defaults.pvc7Rate}/ft`,
+                amount: results.pvc7Cost
+            });
+        }
+        if (inputs.pvc10Length > 0) {
+            otherCostItems.push({
+                desc: `10" PVC: ${inputs.pvc10Length} ft x Rs.${this.defaults.pvc10Rate}/ft`,
+                amount: results.pvc10Cost
+            });
+        }
+        
+        // Add other items
+        otherCostItems.push(
             { desc: 'Bore Bata (per bore)', amount: results.boreBataCost },
             { desc: 'Subtotal', amount: results.subtotal }
-        ];
+        );
         
         // Add GST if enabled
         const gstToggle = document.getElementById('gstToggle');
@@ -1301,8 +1323,14 @@ class CostCalculator {
         }
         
         message += `• Total Drilling: ${this.formatCurrency(results.drillingCost)}\n`;
-        message += `• 7" PVC Cost: ${this.formatCurrency(results.pvc7Cost)}\n`;
-        message += `• 10" PVC Cost: ${this.formatCurrency(results.pvc10Cost)}\n`;
+        
+        // Add detailed PVC information
+        if (inputs.pvc7Length > 0) {
+            message += `• 7" PVC: ${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = ${this.formatCurrency(results.pvc7Cost)}\n`;
+        }
+        if (inputs.pvc10Length > 0) {
+            message += `• 10" PVC: ${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = ${this.formatCurrency(results.pvc10Cost)}\n`;
+        }
         message += `• Bore Bata: ${this.formatCurrency(results.boreBataCost)}\n`;
         message += `• Subtotal: ${this.formatCurrency(results.subtotal)}\n`;
         
