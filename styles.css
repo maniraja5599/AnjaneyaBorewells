@@ -741,6 +741,13 @@ p {
     gap: 16px;
 }
 
+/* Smaller Get Quote button in navigation */
+#navWhatsappBtn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    min-height: auto;
+}
+
 .nav-toggle {
     display: none;
     flex-direction: column;
@@ -780,7 +787,7 @@ p {
 /* Hero Section */
 .hero {
     position: relative;
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     align-items: center;
     background: 
@@ -1680,6 +1687,13 @@ img {
         order: 2;
     }
     
+    /* Mobile Get Quote button */
+    #navWhatsappBtn {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        min-height: auto;
+    }
+    
     .nav-brand {
         order: 1;
         flex: 1;
@@ -1706,8 +1720,8 @@ img {
     }
     
     .hero {
-        padding: 120px 0 60px;
-        min-height: 85vh;
+        padding: 80px 0 60px;
+        height: 100vh;
         overflow: visible;
         position: relative;
     }
@@ -1990,8 +2004,8 @@ img {
     }
     
     .hero {
-        padding: 100px 0 50px;
-        min-height: 75vh;
+        padding: 80px 0 50px;
+        height: 100vh;
         overflow: visible;
         position: relative;
     }
