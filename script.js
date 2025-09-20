@@ -85,6 +85,21 @@ class AnjaneyaBorewells {
             input.addEventListener('change', () => {
                 this.calculator.calculate();
             });
+            
+            // Select all text on focus for easier editing (especially on mobile)
+            input.addEventListener('focus', (e) => {
+                // Small delay to ensure the focus event completes
+                setTimeout(() => {
+                    e.target.select();
+                }, 50);
+            });
+            
+            // Also select all on click for mobile devices
+            input.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    e.target.select();
+                }
+            });
         });
 
         // GST toggle functionality
