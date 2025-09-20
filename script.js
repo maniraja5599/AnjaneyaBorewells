@@ -96,6 +96,11 @@ class AnjaneyaBorewells {
             this.calculator.downloadPDF();
         });
 
+        // Save as Image
+        document.getElementById('saveImageBtn')?.addEventListener('click', () => {
+            this.calculator.saveAsImage();
+        });
+
         // Email modal
         document.getElementById('sendEmailBtn')?.addEventListener('click', () => {
             this.modal.open('emailModal');
@@ -1023,6 +1028,58 @@ class CostCalculator {
             downloadBtn.innerHTML = originalText;
             downloadBtn.disabled = false;
         }, 1000);
+    }
+
+    saveAsImage() {
+        const resultsContainer = document.getElementById('calculatorResults');
+        if (!resultsContainer) {
+            alert('No results to save');
+            return;
+        }
+
+        // Show loading state
+        const saveBtn = document.getElementById('saveImageBtn');
+        const originalText = saveBtn.innerHTML;
+        saveBtn.innerHTML = '<span class="loading-spinner"></span> Saving Image...';
+        saveBtn.disabled = true;
+
+        // Use html2canvas to capture the results section
+        if (typeof html2canvas !== 'undefined') {
+            html2canvas(resultsContainer, {
+                backgroundColor: '#ffffff',
+                scale: 2,
+                useCORS: true,
+                allowTaint: true
+            }).then(canvas => {
+                // Create download link
+                const link = document.createElement('a');
+                link.download = `anjaneya-borewell-quote-${new Date().toISOString().split('T')[0]}.png`;
+                link.href = canvas.toDataURL('image/png');
+                
+                // Trigger download
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                // Restore button state
+                saveBtn.innerHTML = originalText;
+                saveBtn.disabled = false;
+            }).catch(error => {
+                console.error('Error saving image:', error);
+                alert('Failed to save image. Please try again.');
+                
+                // Restore button state
+                saveBtn.innerHTML = originalText;
+                saveBtn.disabled = false;
+            });
+        } else {
+            // Fallback: try to use browser's built-in screenshot capability
+            alert('Image saving feature requires additional setup. Please use the PDF download option instead.');
+            
+            // Restore button state
+            saveBtn.innerHTML = originalText;
+            saveBtn.disabled = false;
+        }
     }
 }
 
