@@ -16,8 +16,8 @@ class AnjaneyaBorewells {
     }
 
     setupEventListeners() {
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(link => {
+        // Smooth scrolling for navigation links (only for internal hash links)
+        document.querySelectorAll('a[href^="#"]:not([href^="https://"]):not([href^="http://"])').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetId = link.getAttribute('href');
@@ -29,6 +29,12 @@ class AnjaneyaBorewells {
                     });
                 }
             });
+        });
+
+        // Get Quote button goes to calculator section
+        document.getElementById('navWhatsappBtn')?.addEventListener('click', (e) => {
+            // Let the smooth scrolling handle navigation to #calculator
+            console.log('Get Quote button clicked - going to calculator');
         });
 
         // Window scroll events
@@ -417,17 +423,8 @@ class AnjaneyaBorewells {
                 }
             }
             
-            // Update Get Quote buttons to use WhatsApp with primary phone (except heroWhatsappBtn which goes to calculator)
-            if (companyInfo.phone1) {
-                const cleanPhone = companyInfo.phone1.replace(/[\s\-\(\)]/g, '');
-                const navWhatsappBtn = document.getElementById('navWhatsappBtn');
-                
-                if (navWhatsappBtn) {
-                    navWhatsappBtn.href = `https://wa.me/${cleanPhone}?text=Hi! I'm interested in getting a quote for borewell drilling services. Please provide me with more information.`;
-                }
-                
-                // heroWhatsappBtn always goes to calculator - no WhatsApp override
-            }
+            // Both Get Quote buttons now go to calculator section
+            // No WhatsApp override needed - they use href="#calculator"
             
             // Show notification
             this.showCompanyUpdateNotification();
