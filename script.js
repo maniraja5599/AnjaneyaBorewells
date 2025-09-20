@@ -748,7 +748,9 @@ class CostCalculator {
 
     calculate() {
         const inputs = this.getInputs();
+        console.log('Calculator inputs:', inputs); // Debug log
         const results = this.performCalculation(inputs);
+        console.log('Calculator results:', results); // Debug log
         this.displayResults(results);
     }
 
@@ -785,9 +787,16 @@ class CostCalculator {
         }
 
         // Material costs
+        console.log('PVC calculation debug:', {
+            pvc7Length, 
+            pvc10Length, 
+            pvc7Rate: this.defaults.pvc7Rate, 
+            pvc10Rate: this.defaults.pvc10Rate
+        });
         const pvc7Cost = pvc7Length * this.defaults.pvc7Rate;
         const pvc10Cost = pvc10Length * this.defaults.pvc10Rate;
         const materialCost = pvc7Cost + pvc10Cost;
+        console.log('PVC costs:', { pvc7Cost, pvc10Cost, materialCost });
 
         // Calculate drilling cost using slab rates
         const slabCalculation = this.calculateSlabRate(totalDepth, drillingRate);
