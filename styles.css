@@ -812,7 +812,8 @@ p {
     right: 0;
     bottom: 0;
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><linearGradient id="cube3d1" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23064e3b" stop-opacity="0.6"/><stop offset="30%" stop-color="%230a5d4a" stop-opacity="0.5"/><stop offset="70%" stop-color="%23126e00" stop-opacity="0.4"/><stop offset="100%" stop-color="%23000000" stop-opacity="0.7"/></linearGradient><linearGradient id="cube3d2" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="%23052e16" stop-opacity="0.65"/><stop offset="30%" stop-color="%23064e3b" stop-opacity="0.5"/><stop offset="70%" stop-color="%230a5d4a" stop-opacity="0.45"/><stop offset="100%" stop-color="%23000000" stop-opacity="0.75"/></linearGradient><linearGradient id="cube3d3" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" stop-color="%23000000" stop-opacity="0.8"/><stop offset="25%" stop-color="%23052e16" stop-opacity="0.6"/><stop offset="75%" stop-color="%23064e3b" stop-opacity="0.4"/><stop offset="100%" stop-color="%230a5d4a" stop-opacity="0.3"/></linearGradient><pattern id="3d-cubes" width="50" height="50" patternUnits="userSpaceOnUse"><g class="cube1"><rect x="7.5" y="7.5" width="5" height="5" fill="url(%23cube3d1)" transform="rotate(45 10 10)"><animateTransform attributeName="transform" type="rotate" values="45 10 10;405 10 10;45 10 10" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0.5;0.55;0.6;0.55;0.5;0.45;0.4" dur="8s" repeatCount="indefinite"/></rect><rect x="8.5" y="8.5" width="3" height="3" fill="%23ffffff" transform="rotate(45 10 10)"><animateTransform attributeName="transform" type="rotate" values="45 10 10;405 10 10;45 10 10" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.45;0.55;0.6;0.65;0.6;0.55;0.5;0.45" dur="8s" repeatCount="indefinite"/></rect></g><g class="cube2"><rect x="34.5" y="11.5" width="5" height="5" fill="url(%23cube3d2)" transform="rotate(45 37 14)"><animateTransform attributeName="transform" type="rotate" values="45 37 14;-315 37 14;45 37 14" dur="5s" begin="1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.35;0.42;0.48;0.5;0.48;0.42;0.38;0.35" dur="7s" begin="1s" repeatCount="indefinite"/></rect><rect x="35.5" y="12.5" width="3" height="3" fill="%23ffffff" transform="rotate(45 37 14)"><animateTransform attributeName="transform" type="rotate" values="45 37 14;-315 37 14;45 37 14" dur="5s" begin="1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0.48;0.52;0.55;0.52;0.48;0.42;0.4" dur="7s" begin="1s" repeatCount="indefinite"/></rect></g><g class="cube3"><rect x="19.5" y="24.5" width="5" height="5" fill="url(%23cube3d3)" transform="rotate(45 22 27)"><animateTransform attributeName="transform" type="translate" values="0 0;0 -5;0 5;0 0" dur="5s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.38;0.44;0.48;0.5;0.48;0.44;0.4;0.38" dur="6.5s" begin="0.5s" repeatCount="indefinite"/></rect><rect x="20.5" y="25.5" width="3" height="3" fill="%23ffffff" transform="rotate(45 22 27)"><animateTransform attributeName="transform" type="translate" values="0 0;0 -5;0 5;0 0" dur="5s" begin="0.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.42;0.48;0.52;0.55;0.52;0.48;0.44;0.42" dur="6.5s" begin="0.5s" repeatCount="indefinite"/></rect></g><g class="cube4"><rect x="41.5" y="34.5" width="5" height="5" fill="url(%23cube3d1)" transform="rotate(45 44 37)"><animateTransform attributeName="transform" type="scale" values="1;1.2;1.5;1.8;1.5;1.2;1;1" dur="6s" begin="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.32;0.38;0.42;0.45;0.42;0.38;0.34;0.32" dur="7.5s" begin="2s" repeatCount="indefinite"/></rect><rect x="42.5" y="35.5" width="3" height="3" fill="%23ffffff" transform="rotate(45 44 37)"><animateTransform attributeName="transform" type="scale" values="1;1.2;1.5;1.8;1.5;1.2;1;1" dur="6s" begin="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.35;0.42;0.48;0.5;0.48;0.42;0.38;0.35" dur="7.5s" begin="2s" repeatCount="indefinite"/></rect></g><g class="cube5"><rect x="14.5" y="39.5" width="5" height="5" fill="url(%23cube3d2)" transform="rotate(45 17 42)"><animateTransform attributeName="transform" type="translate" values="0 0;-3 0;3 0;0 0" dur="4.5s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.36;0.4;0.44;0.46;0.44;0.4;0.38;0.36" dur="6s" begin="1.5s" repeatCount="indefinite"/></rect><rect x="15.5" y="40.5" width="3" height="3" fill="%23ffffff" transform="rotate(45 17 42)"><animateTransform attributeName="transform" type="translate" values="0 0;-3 0;3 0;0 0" dur="4.5s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.4;0.45;0.48;0.5;0.48;0.45;0.42;0.4" dur="6s" begin="1.5s" repeatCount="indefinite"/></rect></g></pattern></defs><rect width="100" height="100" fill="url(%233d-cubes)"/></svg>');
-    opacity: 0.35;
+    opacity: 0.25;
+    z-index: 1;
 }
 
 .hero-content {
@@ -849,6 +850,9 @@ p {
     -webkit-text-fill-color: transparent;
     background-clip: text;
     animation: fadeInUp 1s ease 0.2s both;
+    text-align: center;
+    position: relative;
+    z-index: 10;
 }
 
 .hero-subtitle {
@@ -859,6 +863,10 @@ p {
     margin-left: auto;
     margin-right: auto;
     animation: fadeInUp 1s ease 0.4s both;
+    text-align: center;
+    position: relative;
+    z-index: 10;
+    line-height: 1.5;
 }
 
 .hero-contact {
@@ -1584,7 +1592,8 @@ img {
     }
     
     .hero-background {
-        opacity: 0.25;
+        opacity: 0.15;
+        z-index: 1;
     }
 }
 
@@ -1662,9 +1671,10 @@ img {
     }
     
     .hero {
-        padding: 100px 0 60px;
-        min-height: 80vh;
+        padding: 120px 0 60px;
+        min-height: 85vh;
         overflow: visible;
+        position: relative;
     }
     
     .hero-content {
@@ -1672,14 +1682,23 @@ img {
         max-width: 100%;
         padding: 0 16px;
         box-sizing: border-box;
+        position: relative;
+        z-index: 10;
     }
     
     .hero-title {
-        font-size: 2.5rem;
-        line-height: 1.2;
-        margin-bottom: 1rem;
+        font-size: 2.2rem;
+        line-height: 1.3;
+        margin-bottom: 1.5rem;
         word-wrap: break-word;
         overflow-wrap: break-word;
+        text-align: center;
+        color: var(--text-dark) !important;
+        background: none !important;
+        -webkit-text-fill-color: var(--text-dark) !important;
+        position: relative;
+        z-index: 10;
+        padding: 0 8px;
     }
     
     .hero-subtitle {
@@ -1687,6 +1706,12 @@ img {
         margin-bottom: 2rem;
         word-wrap: break-word;
         overflow-wrap: break-word;
+        text-align: center;
+        color: var(--text-light);
+        position: relative;
+        z-index: 10;
+        padding: 0 8px;
+        line-height: 1.5;
     }
     
     .hero-contact {
@@ -1898,7 +1923,8 @@ img {
     }
     
     .hero-background {
-        opacity: 0.2;
+        opacity: 0.1;
+        z-index: 1;
     }
 }
 
@@ -1910,9 +1936,10 @@ img {
     }
     
     .hero {
-        padding: 80px 0 40px;
-        min-height: 70vh;
+        padding: 100px 0 50px;
+        min-height: 75vh;
         overflow: visible;
+        position: relative;
     }
     
     .hero-content {
@@ -1920,14 +1947,23 @@ img {
         max-width: 100%;
         padding: 0 12px;
         box-sizing: border-box;
+        position: relative;
+        z-index: 10;
     }
     
     .hero-title {
-        font-size: 2rem;
-        margin-bottom: 0.75rem;
+        font-size: 1.8rem;
+        margin-bottom: 1rem;
         word-wrap: break-word;
         overflow-wrap: break-word;
-        line-height: 1.3;
+        line-height: 1.4;
+        text-align: center;
+        color: var(--text-dark) !important;
+        background: none !important;
+        -webkit-text-fill-color: var(--text-dark) !important;
+        position: relative;
+        z-index: 10;
+        padding: 0 8px;
     }
     
     .hero-subtitle {
@@ -1935,7 +1971,12 @@ img {
         margin-bottom: 1.5rem;
         word-wrap: break-word;
         overflow-wrap: break-word;
-        line-height: 1.5;
+        line-height: 1.6;
+        text-align: center;
+        color: var(--text-light);
+        position: relative;
+        z-index: 10;
+        padding: 0 8px;
     }
     
     .hero-contact {
@@ -2015,7 +2056,8 @@ img {
     }
     
     .hero-background {
-        opacity: 0.15;
+        opacity: 0.08;
+        z-index: 1;
     }
 }
 
@@ -2038,10 +2080,18 @@ img {
     }
     
     .hero-title {
-        font-size: 1.75rem;
+        font-size: 1.6rem;
         word-wrap: break-word;
         overflow-wrap: break-word;
-        line-height: 1.3;
+        line-height: 1.4;
+        text-align: center;
+        color: var(--text-dark) !important;
+        background: none !important;
+        -webkit-text-fill-color: var(--text-dark) !important;
+        position: relative;
+        z-index: 10;
+        padding: 0 8px;
+        margin-bottom: 1rem;
     }
     
     .section-header h2 {
