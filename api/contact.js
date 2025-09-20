@@ -120,7 +120,7 @@ export default async function handler(req, res) {
                     
                     <div style="background: #ecfdf5; padding: 20px; border-radius: 8px; margin: 20px 0;">
                         <h3 style="color: #065f46; margin-top: 0;">Contact Information</h3>
-                        <p><strong>Phone:</strong> +91 83000 30123, +91 965 965 7777</p>
+                        <p><strong>Phone:</strong> +91 965 965 7777, +91 944 33 73573</p>
                         <p><strong>Email:</strong> anjaneyaborewells@gmail.com</p>
                         <p><strong>Address:</strong> 6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001</p>
                     </div>
@@ -143,7 +143,7 @@ export default async function handler(req, res) {
                 ${message}
                 
                 Contact Information:
-                Phone: +91 83000 30123, +91 965 965 7777
+                Phone: +91 965 965 7777, +91 944 33 73573
                 Email: anjaneyaborewells@gmail.com
                 Address: 6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001
                 

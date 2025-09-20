@@ -77,8 +77,8 @@ async function ensureDataDirectory() {
 const defaultSettings = {
     companyInfo: {
         name: "Anjaneya Borewells",
-        phone1: "+91 83000 30123",
-        phone2: "+91 965 965 7777",
+        phone1: "+91 965 965 7777",
+        phone2: "+91 944 33 73573",
         email: "anjaneyaborewells@gmail.com",
         address: "6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001",
         footerText: "© 2025 Anjaneya Borewells. All rights reserved."
@@ -86,7 +86,7 @@ const defaultSettings = {
     socialMedia: {
         facebook: "https://facebook.com/anjaneyaborewells",
         instagram: "https://instagram.com/anjaneyaborewells",
-        whatsapp: "https://wa.me/918300030123",
+        whatsapp: "https://wa.me/919659657777",
         youtube: "https://youtube.com/@anjaneyaborewells",
         linkedin: "https://linkedin.com/company/anjaneyaborewells"
     },
@@ -232,30 +232,89 @@ app.post('/api/contact', async (req, res) => {
             });
         }
         
-        // Prepare email data
-        const emailData = createContactEmailTemplate({
+        // Log the submission to console and file
+        const submissionData = {
             name: name.trim(),
             phone: phone ? phone.trim() : '',
             address: address ? address.trim() : '',
-            message: message ? message.trim() : ''
-        });
+            message: message ? message.trim() : '',
+            timestamp: new Date().toISOString(),
+            timestampIST: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+        };
         
-        // Send email
-        await transporter.sendMail(emailData);
+        console.log(`📧 Contact form submitted:`, submissionData);
         
-        // Log the submission
-        console.log(`📧 Contact form submitted by: ${name} at ${new Date().toISOString()}`);
+        // Save to file for manual processing
+        try {
+            await ensureDataDirectory();
+            const contactsFile = path.join(__dirname, 'data', 'contacts.json');
+            let contacts = [];
+            
+            try {
+                const existingData = await fs.readFile(contactsFile, 'utf8');
+                contacts = JSON.parse(existingData);
+            } catch (error) {
+                // File doesn't exist, start with empty array
+            }
+            
+            contacts.push(submissionData);
+            await fs.writeFile(contactsFile, JSON.stringify(contacts, null, 2));
+            
+            console.log(`💾 Contact saved to file: ${contactsFile}`);
+        } catch (fileError) {
+            console.error('Error saving contact to file:', fileError);
+        }
+        
+        // Try to send email (optional - won't fail if email not configured)
+        try {
+            const emailData = createContactEmailTemplate(submissionData);
+            await transporter.sendMail(emailData);
+            console.log(`📧 Email sent successfully to manirajankg@gmail.com`);
+        } catch (emailError) {
+            console.log(`⚠️ Email not sent (configuration needed):`, emailError.message);
+            // Don't fail the request if email fails
+        }
         
         res.json({
             success: true,
-            message: 'Message sent successfully! We will contact you soon.'
+            message: 'Message received successfully! We will contact you soon.'
         });
         
     } catch (error) {
-        console.error('Error sending contact email:', error);
+        console.error('Error processing contact form:', error);
         res.status(500).json({
             success: false,
-            error: 'Failed to send message. Please try again or contact us directly.'
+            error: 'Failed to process message. Please try again or contact us directly.'
+        });
+    }
+});
+
+// Get contact submissions
+app.get('/api/contacts', async (req, res) => {
+    try {
+        const contactsFile = path.join(__dirname, 'data', 'contacts.json');
+        
+        try {
+            const data = await fs.readFile(contactsFile, 'utf8');
+            const contacts = JSON.parse(data);
+            
+            res.json({
+                success: true,
+                data: contacts.reverse(), // Most recent first
+                count: contacts.length
+            });
+        } catch (error) {
+            res.json({
+                success: true,
+                data: [],
+                count: 0,
+                message: 'No contact submissions yet'
+            });
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            error: 'Failed to load contact submissions'
         });
     }
 });

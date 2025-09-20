@@ -260,7 +260,7 @@ class AnjaneyaBorewells {
             }
             
             // Update phone numbers in navigation
-            const navPhoneLink = document.querySelector('a[href^="tel:+918300030123"]');
+            const navPhoneLink = document.querySelector('a[href^="tel:+919659657777"]');
             if (navPhoneLink && companyInfo.phone1) {
                 navPhoneLink.href = `tel:${companyInfo.phone1.replace(/\s+/g, '')}`;
             }
@@ -765,7 +765,7 @@ class CostCalculator {
         doc.setFont('helvetica', 'normal');
         doc.text('Makers of Green India!', 20, 22);
         doc.setFontSize(10);
-        doc.text('Phone: +91 83000 30123 | +91 965 965 7777', 20, 28);
+        doc.text('Phone: +91 965 965 7777 | +91 944 33 73573', 20, 28);
 
         // Quote info (top right)
         doc.setFontSize(10);
@@ -1076,8 +1076,8 @@ class AdminPanel {
             companyInfo: {
                 name: 'Anjaneya Borewells',
                 tagline: 'Makers of Green India!',
-                phone1: '+91 83000 30123',
-                phone2: '+91 965 965 7777',
+                phone1: '+91 965 965 7777',
+                phone2: '+91 944 33 73573',
                 email: 'anjaneyaborewells@gmail.com',
                 address: '6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal'
             }

@@ -51,8 +51,8 @@
 {
   "companyInfo": {
     "name": "Anjaneya Borewells",
-    "phone1": "+91 83000 30123",
-    "phone2": "+91 965 965 7777",
+    "phone1": "+91 965 965 7777",
+    "phone2": "+91 944 33 73573",
     "email": "anjaneyaborewells@gmail.com",
     "address": "...",
     "footerText": "© 2025 Anjaneya Borewells. All rights reserved."
@@ -129,7 +129,7 @@ npm start
 
 ## 📞 Contact Information
 
-- **Phone**: +91 83000 30123, +91 965 965 7777
+- **Phone**: +91 965 965 7777, +91 944 33 73573
 - **Email**: anjaneyaborewells@gmail.com
 - **Address**: Namakkal, Tamil Nadu 637001
 
