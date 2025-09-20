@@ -1970,8 +1970,8 @@ img {
         max-width: 100%;
         box-sizing: border-box;
         display: flex;
-        align-items: center;
-        gap: 10px;
+        align-items: flex-start;
+        gap: 12px;
         margin-bottom: 1rem;
     }
     
@@ -1980,9 +1980,12 @@ img {
         font-weight: 500;
         color: var(--text-dark);
         margin-bottom: 0;
-        min-width: 120px;
+        min-width: 140px;
         flex-shrink: 0;
-        font-size: 0.9rem;
+        font-size: 0.85rem;
+        line-height: 1.2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .form-group input,
@@ -1992,13 +1995,17 @@ img {
         max-width: 100%;
         box-sizing: border-box;
         flex: 1;
+        margin-top: 1px;
     }
     
     .form-group small {
         display: block;
         width: 100%;
         margin-top: 0.25rem;
-        font-size: 0.8rem;
+        margin-left: 152px;
+        font-size: 0.75rem;
+        color: var(--text-light);
+        font-style: italic;
     }
     
     /* Special handling for GST toggle */
@@ -2176,23 +2183,33 @@ img {
     
     .form-group {
         display: flex;
-        align-items: center;
-        gap: 8px;
+        align-items: flex-start;
+        gap: 10px;
         margin-bottom: 1rem;
     }
     
     .form-group label {
-        min-width: 100px;
-        font-size: 0.85rem;
+        min-width: 120px;
+        font-size: 0.8rem;
         margin-bottom: 0;
+        line-height: 1.2;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
     }
     
     .form-group input,
     .form-group select,
     .form-group textarea {
-        padding: 10px 14px;
-        font-size: 0.9rem;
+        padding: 10px 12px;
+        font-size: 0.85rem;
         flex: 1;
+        margin-top: 1px;
+    }
+    
+    /* Adjust help text positioning for smaller screens */
+    .form-group small {
+        margin-left: 130px;
+        font-size: 0.7rem;
     }
     
     /* Stack vertically on very small screens if needed */
@@ -2206,6 +2223,11 @@ img {
         .form-group label {
             min-width: auto;
             width: 100%;
+        }
+        
+        .form-group small {
+            margin-left: 0;
+            margin-top: 5px;
         }
     }
     
