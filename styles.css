@@ -2235,6 +2235,7 @@ section {
     text-align: center;
     width: 100%;
     box-sizing: border-box;
+    flex: 1;
 }
 
 .settings-icon-btn::before {
@@ -2282,6 +2283,8 @@ section {
 .gst-toggle-compact {
     display: flex;
     align-items: center;
+    flex: 1;
+    width: 100%;
 }
 
 .gst-toggle-label-compact {
@@ -2304,6 +2307,7 @@ section {
     text-align: center;
     width: 100%;
     box-sizing: border-box;
+    flex: 1;
 }
 
 .gst-toggle-label-compact:hover {
