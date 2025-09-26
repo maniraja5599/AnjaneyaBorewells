@@ -980,18 +980,22 @@ class CostCalculator {
 
     handleDrillingTypeChange(drillingType) {
         const depthInputsCard = document.getElementById('depthInputsCard');
-        const totalDepthGroup = document.getElementById('totalDepthGroup');
         
         if (drillingType === 'repair') {
             // Show the grouped depth inputs card for Rebore
-            depthInputsCard.style.display = 'block';
-            totalDepthGroup.style.display = 'none';
+            if (depthInputsCard) {
+                depthInputsCard.style.display = 'block';
+            }
         } else {
-            // Show the single total depth input for New Drilling
-            depthInputsCard.style.display = 'none';
-            totalDepthGroup.style.display = 'block';
+            // Hide the grouped depth inputs card for New Drilling
+            if (depthInputsCard) {
+                depthInputsCard.style.display = 'none';
+            }
             // Reset old bore depth when switching to new drilling
-            document.getElementById('oldBoreDepth').value = 0;
+            const oldBoreDepth = document.getElementById('oldBoreDepth');
+            if (oldBoreDepth) {
+                oldBoreDepth.value = 0;
+            }
         }
         this.calculate();
     }
