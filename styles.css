@@ -1698,9 +1698,9 @@ section {
 /* Live Total Cost Display */
 .live-total-display {
     background: linear-gradient(135deg, var(--primary-color), #059669);
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2);
     position: relative;
     overflow: hidden;
     margin-bottom: 1rem;
@@ -1709,7 +1709,7 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 80px;
+    min-height: 60px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -1725,7 +1725,7 @@ section {
 }
 
 .total-amount {
-    font-size: 3rem;
+    font-size: 2.2rem;
     font-weight: 800;
     color: white;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -1748,15 +1748,15 @@ section {
 /* Mobile responsive for live total display */
 @media (max-width: 768px) {
     .live-total-display {
-        padding: 1rem 0.75rem;
+        padding: 0.75rem 1rem;
         margin-bottom: 0.75rem;
-        min-height: 50px;
-        border-radius: 12px;
+        min-height: 45px;
+        border-radius: 10px;
         width: 100%;
     }
     
     .total-amount {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
         line-height: 1.2;
         word-break: break-all;
         max-width: 100%;
@@ -1768,13 +1768,13 @@ section {
 
 @media (max-width: 480px) {
     .live-total-display {
-        padding: 0.75rem 0.5rem;
-        min-height: 45px;
+        padding: 0.5rem 0.75rem;
+        min-height: 40px;
         width: 100%;
     }
     
     .total-amount {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
         width: 100%;
     }
 }
@@ -1782,12 +1782,12 @@ section {
 @media (max-width: 360px) {
     .live-total-display {
         padding: 0.5rem;
-        min-height: 40px;
+        min-height: 35px;
         width: 100%;
     }
     
     .total-amount {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
         width: 100%;
     }
 }
