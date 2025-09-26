@@ -1729,6 +1729,10 @@ section {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     animation: pulse 2s infinite;
     margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 @keyframes pulse {
@@ -1739,13 +1743,41 @@ section {
 /* Mobile responsive for live total display */
 @media (max-width: 768px) {
     .live-total-display {
-        padding: 1.5rem;
+        padding: 1rem 0.75rem;
         margin-bottom: 0.75rem;
-        min-height: 60px;
+        min-height: 50px;
+        border-radius: 12px;
     }
     
     .total-amount {
-        font-size: 2.2rem;
+        font-size: 1.8rem;
+        line-height: 1.2;
+        word-break: break-all;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+@media (max-width: 480px) {
+    .live-total-display {
+        padding: 0.75rem 0.5rem;
+        min-height: 45px;
+    }
+    
+    .total-amount {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .live-total-display {
+        padding: 0.5rem;
+        min-height: 40px;
+    }
+    
+    .total-amount {
+        font-size: 1.3rem;
     }
 }
 
