@@ -926,6 +926,7 @@ class CostCalculator {
         const results = this.performCalculation(inputs);
         console.log('Calculator results:', results); // Debug log
         this.displayResults(results);
+        this.updateLiveCalculator(results);
     }
 
     // Unified GST enabled check for both desktop and mobile toggles
@@ -1361,6 +1362,34 @@ class CostCalculator {
 
     formatCurrency(amount) {
         return `Rs.${amount.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+    }
+
+    updateLiveCalculator(results) {
+        if (!results) return;
+        
+        // Update drilling cost
+        const drillingCostEl = document.getElementById('liveDrillingCost');
+        if (drillingCostEl) {
+            drillingCostEl.textContent = this.formatCurrency(results.drillingCost);
+        }
+        
+        // Update PVC cost
+        const pvcCostEl = document.getElementById('livePvcCost');
+        if (pvcCostEl) {
+            pvcCostEl.textContent = this.formatCurrency(results.pvcCost);
+        }
+        
+        // Update GST cost
+        const gstCostEl = document.getElementById('liveGstCost');
+        if (gstCostEl) {
+            gstCostEl.textContent = this.formatCurrency(results.gstAmount);
+        }
+        
+        // Update total cost
+        const totalCostEl = document.getElementById('liveTotalCost');
+        if (totalCostEl) {
+            totalCostEl.textContent = this.formatCurrency(results.totalCost);
+        }
     }
 
     downloadPDF() {
