@@ -1393,7 +1393,7 @@ class CostCalculator {
 
         const inputs = this.getInputs();
         const { jsPDF } = window.jspdf;
-        const doc = new jsPDF();
+        const doc = new jsPDF('p', 'mm', 'a4'); // Explicitly set A4 size
 
         // Company header section
         doc.setTextColor(76, 175, 80); // Green color for company name
@@ -1560,6 +1560,15 @@ class CostCalculator {
         
         yPos += 25;
 
+        // Check if we need a new page for terms and conditions
+        const currentPageHeight = doc.internal.pageSize.getHeight();
+        const remainingSpace = currentPageHeight - yPos;
+        
+        if (remainingSpace < 80) { // If less than 80mm remaining, add new page
+            doc.addPage();
+            yPos = 20; // Reset position for new page
+        }
+        
         // Terms and conditions
         doc.setTextColor(0, 0, 0);
         doc.setFont('helvetica', 'bold');
@@ -1577,22 +1586,22 @@ class CostCalculator {
         yPos += 6;
         doc.text('• Final costs may vary based on site conditions', 20, yPos);
         
-        yPos += 15;
+        yPos += 12;
         
         // Thank you section
         doc.setTextColor(76, 175, 80);
         doc.setFont('helvetica', 'bold');
-        doc.setFontSize(16);
+        doc.setFontSize(14); // Slightly smaller
         doc.text('THANK YOU!', 20, yPos);
         
-        yPos += 10;
+        yPos += 8;
         
         // Company signature
         doc.setTextColor(0, 0, 0);
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(10);
         doc.text('For ANJANEYA BOREWELLS', 20, yPos);
-        yPos += 15;
+        yPos += 12;
         doc.text('Authorized Signatory', 20, yPos);
         
         // Generated date and time in bottom right corner
@@ -1607,9 +1616,13 @@ class CostCalculator {
             hour12: true 
         })}`;
         
+        // Ensure we have enough space at bottom
+        const pageHeight = doc.internal.pageSize.getHeight();
+        const bottomMargin = 15;
+        
         doc.setFontSize(8);
         doc.setTextColor(100, 100, 100); // Gray color
-        doc.text(generatedDateTime, 190, doc.internal.pageSize.getHeight() - 10, { align: 'right' });
+        doc.text(generatedDateTime, 190, pageHeight - bottomMargin, { align: 'right' });
 
         // Save with professional filename
         const timestamp = new Date().toISOString().split('T')[0];
