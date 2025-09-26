@@ -1710,6 +1710,8 @@ section {
     align-items: center;
     justify-content: center;
     min-height: 80px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .live-total-display::before {
@@ -1733,6 +1735,9 @@ section {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 100%;
+    width: 100%;
+    text-align: center;
+    display: block;
 }
 
 @keyframes pulse {
@@ -1747,6 +1752,7 @@ section {
         margin-bottom: 0.75rem;
         min-height: 50px;
         border-radius: 12px;
+        width: 100%;
     }
     
     .total-amount {
@@ -1754,6 +1760,7 @@ section {
         line-height: 1.2;
         word-break: break-all;
         max-width: 100%;
+        width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
     }
@@ -1763,10 +1770,12 @@ section {
     .live-total-display {
         padding: 0.75rem 0.5rem;
         min-height: 45px;
+        width: 100%;
     }
     
     .total-amount {
         font-size: 1.5rem;
+        width: 100%;
     }
 }
 
@@ -1774,10 +1783,12 @@ section {
     .live-total-display {
         padding: 0.5rem;
         min-height: 40px;
+        width: 100%;
     }
     
     .total-amount {
         font-size: 1.3rem;
+        width: 100%;
     }
 }
 
