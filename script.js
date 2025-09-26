@@ -56,6 +56,9 @@ class AnjaneyaBorewells {
             this.navigation.closeMobileMenu();
         });
 
+        // Sync Total Depth fields between main form and repair section
+        this.setupTotalDepthSync();
+
         // Window scroll events
         window.addEventListener('scroll', () => {
             this.navigation.handleScroll();
@@ -178,6 +181,47 @@ class AnjaneyaBorewells {
         document.getElementById('whatsappCallbackBtn')?.addEventListener('click', () => {
             this.calculator.sendWhatsAppQuote();
         });
+    }
+
+    setupTotalDepthSync() {
+        const mainTotalDepth = document.getElementById('totalDepth');
+        const repairTotalDepth = document.getElementById('totalDepthRepair');
+        
+        if (mainTotalDepth && repairTotalDepth) {
+            // Sync from main form to repair section
+            mainTotalDepth.addEventListener('input', () => {
+                repairTotalDepth.value = mainTotalDepth.value;
+                // Trigger calculation
+                if (this.calculator) {
+                    this.calculator.calculate();
+                }
+            });
+            
+            mainTotalDepth.addEventListener('change', () => {
+                repairTotalDepth.value = mainTotalDepth.value;
+                // Trigger calculation
+                if (this.calculator) {
+                    this.calculator.calculate();
+                }
+            });
+            
+            // Sync from repair section to main form
+            repairTotalDepth.addEventListener('input', () => {
+                mainTotalDepth.value = repairTotalDepth.value;
+                // Trigger calculation
+                if (this.calculator) {
+                    this.calculator.calculate();
+                }
+            });
+            
+            repairTotalDepth.addEventListener('change', () => {
+                mainTotalDepth.value = repairTotalDepth.value;
+                // Trigger calculation
+                if (this.calculator) {
+                    this.calculator.calculate();
+                }
+            });
+        }
     }
 
     setupInputButtons() {
@@ -671,7 +715,7 @@ class CostCalculator {
 
     setupEventListeners() {
         // Add event listeners for all form inputs to trigger recalculation
-        const formInputs = ['totalDepth', 'totalDepthNew', 'pvc7Length', 'pvc10Length', 'drillingRate', 'gstPercentage', 'oldBoreDepth'];
+        const formInputs = ['totalDepth', 'totalDepthRepair', 'pvc7Length', 'pvc10Length', 'drillingRate', 'gstPercentage', 'oldBoreDepth'];
         
         formInputs.forEach(inputId => {
             const input = document.getElementById(inputId);
@@ -732,7 +776,7 @@ class CostCalculator {
     updateFormDefaults() {
         // Update form field values
         const totalDepthEl = document.getElementById('totalDepth');
-        const totalDepthNewEl = document.getElementById('totalDepthNew');
+        const totalDepthRepairEl = document.getElementById('totalDepthRepair');
         const pvc7LengthEl = document.getElementById('pvc7Length');
         const pvc10LengthEl = document.getElementById('pvc10Length');
         const drillingRateEl = document.getElementById('drillingRate');
@@ -740,8 +784,8 @@ class CostCalculator {
         if (totalDepthEl) {
             totalDepthEl.value = this.defaults.totalDepth;
         }
-        if (totalDepthNewEl) {
-            totalDepthNewEl.value = this.defaults.totalDepth;
+        if (totalDepthRepairEl) {
+            totalDepthRepairEl.value = this.defaults.totalDepth;
         }
         if (pvc7LengthEl) {
             pvc7LengthEl.value = this.defaults.pvc7Length;
@@ -906,11 +950,11 @@ class CostCalculator {
         let totalDepth = 0;
         
         if (drillingType === 'repair') {
-            // For repair, use the totalDepth field
-            totalDepth = parseFloat(document.getElementById('totalDepth').value) || 0;
+            // For repair, use the totalDepthRepair field
+            totalDepth = parseFloat(document.getElementById('totalDepthRepair').value) || 0;
         } else {
-            // For new drilling, use the totalDepthNew field
-            totalDepth = parseFloat(document.getElementById('totalDepthNew').value) || 0;
+            // For new drilling, use the totalDepth field
+            totalDepth = parseFloat(document.getElementById('totalDepth').value) || 0;
         }
         
         console.log('Drilling type:', drillingType, 'Total depth:', totalDepth); // Debug log
