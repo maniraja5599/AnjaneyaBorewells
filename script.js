@@ -1367,25 +1367,7 @@ class CostCalculator {
     updateLiveCalculator(results) {
         if (!results) return;
         
-        // Update drilling cost
-        const drillingCostEl = document.getElementById('liveDrillingCost');
-        if (drillingCostEl) {
-            drillingCostEl.textContent = this.formatCurrency(results.drillingCost);
-        }
-        
-        // Update PVC cost
-        const pvcCostEl = document.getElementById('livePvcCost');
-        if (pvcCostEl) {
-            pvcCostEl.textContent = this.formatCurrency(results.pvcCost);
-        }
-        
-        // Update GST cost
-        const gstCostEl = document.getElementById('liveGstCost');
-        if (gstCostEl) {
-            gstCostEl.textContent = this.formatCurrency(results.gstAmount);
-        }
-        
-        // Update total cost
+        // Update total cost using existing cost breakdown data
         const totalCostEl = document.getElementById('liveTotalCost');
         if (totalCostEl) {
             totalCostEl.textContent = this.formatCurrency(results.totalCost);
