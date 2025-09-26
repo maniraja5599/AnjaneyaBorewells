@@ -2429,10 +2429,268 @@ class HiddenSettingsManager {
     }
 }
 
+// Enterprise-Level Features
+class EnterpriseFeatures {
+    constructor() {
+        this.initScrollAnimations();
+        this.initLightbox();
+        this.initTestimonialCarousel();
+        this.initStatsCounters();
+        this.initProgressBars();
+    }
+
+    initScrollAnimations() {
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animated');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with animation classes
+        document.querySelectorAll('.animate-on-scroll, .animate-left, .animate-right, .animate-scale').forEach(el => {
+            observer.observe(el);
+        });
+    }
+
+    initLightbox() {
+        const photoItems = document.querySelectorAll('.photo-item');
+        const lightbox = this.createLightbox();
+
+        photoItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                const img = item.querySelector('img');
+                if (img) {
+                    this.openLightbox(lightbox, img.src, img.alt);
+                }
+            });
+        });
+    }
+
+    createLightbox() {
+        const lightbox = document.createElement('div');
+        lightbox.className = 'lightbox';
+        lightbox.innerHTML = `
+            <div class="lightbox-content">
+                <img src="" alt="" style="max-width: 100%; max-height: 100%; border-radius: 8px;">
+                <button class="lightbox-close">&times;</button>
+            </div>
+        `;
+        document.body.appendChild(lightbox);
+
+        // Close lightbox events
+        lightbox.querySelector('.lightbox-close').addEventListener('click', () => {
+            this.closeLightbox(lightbox);
+        });
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                this.closeLightbox(lightbox);
+            }
+        });
+
+        // ESC key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                this.closeLightbox(lightbox);
+            }
+        });
+
+        return lightbox;
+    }
+
+    openLightbox(lightbox, src, alt) {
+        const img = lightbox.querySelector('img');
+        img.src = src;
+        img.alt = alt;
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeLightbox(lightbox) {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    initTestimonialCarousel() {
+        const carousel = document.querySelector('.testimonial-carousel');
+        if (!carousel) return;
+
+        const slides = carousel.querySelectorAll('.testimonial-slide');
+        const dots = carousel.querySelectorAll('.carousel-dot');
+        let currentSlide = 0;
+
+        const showSlide = (index) => {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active', 'prev');
+                if (i === index) {
+                    slide.classList.add('active');
+                } else if (i < index) {
+                    slide.classList.add('prev');
+                }
+            });
+
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+        };
+
+        // Auto-advance carousel
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }, 5000);
+
+        // Dot navigation
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                currentSlide = index;
+                showSlide(currentSlide);
+            });
+        });
+
+        showSlide(0);
+    }
+
+    initStatsCounters() {
+        const counters = document.querySelectorAll('.stats-counter');
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        counters.forEach(counter => {
+            observer.observe(counter);
+        });
+    }
+
+    animateCounter(element) {
+        const target = parseInt(element.textContent);
+        const duration = 2000;
+        const increment = target / (duration / 16);
+        let current = 0;
+
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current);
+        }, 16);
+    }
+
+    initProgressBars() {
+        const progressBars = document.querySelectorAll('.progress-fill');
+        const observerOptions = {
+            threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const progressBar = entry.target;
+                    const width = progressBar.dataset.width || '100%';
+                    progressBar.style.width = width;
+                    observer.unobserve(progressBar);
+                }
+            });
+        }, observerOptions);
+
+        progressBars.forEach(bar => {
+            observer.observe(bar);
+        });
+    }
+}
+
+// Enhanced Form Validation
+class EnterpriseFormValidation {
+    constructor() {
+        this.initValidation();
+    }
+
+    initValidation() {
+        const inputs = document.querySelectorAll('input, select, textarea');
+        
+        inputs.forEach(input => {
+            input.addEventListener('blur', () => this.validateField(input));
+            input.addEventListener('input', () => this.clearErrors(input));
+        });
+    }
+
+    validateField(field) {
+        const value = field.value.trim();
+        const type = field.type;
+        const required = field.hasAttribute('required');
+
+        if (required && !value) {
+            this.showError(field, 'This field is required');
+            return false;
+        }
+
+        if (type === 'email' && value) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                this.showError(field, 'Please enter a valid email address');
+                return false;
+            }
+        }
+
+        if (type === 'tel' && value) {
+            const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+            if (!phoneRegex.test(value.replace(/\s/g, ''))) {
+                this.showError(field, 'Please enter a valid phone number');
+                return false;
+            }
+        }
+
+        this.clearErrors(field);
+        return true;
+    }
+
+    showError(field, message) {
+        this.clearErrors(field);
+        
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'field-error';
+        errorDiv.textContent = message;
+        errorDiv.style.color = '#ef4444';
+        errorDiv.style.fontSize = '0.875rem';
+        errorDiv.style.marginTop = '0.25rem';
+        
+        field.parentNode.appendChild(errorDiv);
+        field.style.borderColor = '#ef4444';
+    }
+
+    clearErrors(field) {
+        const existingError = field.parentNode.querySelector('.field-error');
+        if (existingError) {
+            existingError.remove();
+        }
+        field.style.borderColor = '';
+    }
+}
+
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
     window.anjaneyaApp = new AnjaneyaBorewells();
     window.hiddenSettings = new HiddenSettingsManager();
+    window.enterpriseFeatures = new EnterpriseFeatures();
+    window.formValidation = new EnterpriseFormValidation();
     
         // Calculate initial values
         window.anjaneyaApp.calculator.calculate();
