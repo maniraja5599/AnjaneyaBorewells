@@ -1549,8 +1549,8 @@ class CostCalculator {
                 // Professional table layout
                 doc.text(formattedRange, 20, yPos + 2);
                 doc.text(`${slab.range.split('-')[1] - slab.range.split('-')[0] + 1} ft`, 120, yPos + 2);
-                doc.text(`₹${slab.rate}/ft`, 150, yPos + 2);
-                doc.text(`₹${slab.cost.toLocaleString('en-IN')}`, 170, yPos + 2);
+                doc.text(`Rs.${slab.rate}/ft`, 150, yPos + 2);
+                doc.text(`Rs.${slab.cost.toLocaleString('en-IN')}`, 170, yPos + 2);
                 yPos += 8;
             });
             
@@ -1564,7 +1564,7 @@ class CostCalculator {
             doc.setFont('helvetica', 'bold');
             doc.setTextColor(34, 197, 94);
             doc.text('TOTAL DRILLING COST', 20, yPos + 2);
-            doc.text(`₹${results.drillingCost.toLocaleString('en-IN')}`, 170, yPos + 2);
+            doc.text(`Rs.${results.drillingCost.toLocaleString('en-IN')}`, 170, yPos + 2);
             yPos += 10;
         } else {
             // Single slab - show as regular drilling cost
@@ -1596,7 +1596,7 @@ class CostCalculator {
             otherCostItems.push({
                 desc: `7" PVC Pipe`,
                 qty: `${inputs.pvc7Length} ft`,
-                rate: `₹${this.defaults.pvc7Rate}/ft`,
+                rate: `Rs.${this.defaults.pvc7Rate}/ft`,
                 amount: results.pvc7Cost
             });
         }
@@ -1604,14 +1604,14 @@ class CostCalculator {
             otherCostItems.push({
                 desc: `10" PVC Pipe`,
                 qty: `${inputs.pvc10Length} ft`,
-                rate: `₹${this.defaults.pvc10Rate}/ft`,
+                rate: `Rs.${this.defaults.pvc10Rate}/ft`,
                 amount: results.pvc10Cost
             });
         }
         
         // Add other professional items
         otherCostItems.push(
-            { desc: 'Bore Bata (per bore)', qty: '1 unit', rate: '₹500', amount: results.boreBataCost },
+            { desc: 'Bore Bata (per bore)', qty: '1 unit', rate: 'Rs.500', amount: results.boreBataCost },
             { desc: 'SUBTOTAL', qty: '', rate: '', amount: results.subtotal }
         );
         
@@ -1656,7 +1656,7 @@ class CostCalculator {
             doc.text(item.desc, 20, yPos + 2);
             doc.text(item.qty, 120, yPos + 2);
             doc.text(item.rate, 150, yPos + 2);
-            doc.text(`₹${item.amount.toLocaleString('en-IN')}`, 170, yPos + 2);
+            doc.text(`Rs.${item.amount.toLocaleString('en-IN')}`, 170, yPos + 2);
             yPos += 8;
         });
 
@@ -1667,7 +1667,7 @@ class CostCalculator {
         doc.setFontSize(14);
         doc.setFont('helvetica', 'bold');
         doc.text('TOTAL PROJECT COST', 20, yPos + 3);
-        doc.text(`₹${results.totalCost.toLocaleString('en-IN')}`, 170, yPos + 3);
+        doc.text(`Rs.${results.totalCost.toLocaleString('en-IN')}`, 170, yPos + 3);
         
         // Professional border for total
         doc.setDrawColor(34, 197, 94);
