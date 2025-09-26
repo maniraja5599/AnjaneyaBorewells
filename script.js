@@ -1396,31 +1396,30 @@ class CostCalculator {
         const doc = new jsPDF();
 
         // Company header section
-        doc.setTextColor(0, 0, 0);
+        doc.setTextColor(76, 175, 80); // Green color for company name
         doc.setFontSize(20);
         doc.setFont('helvetica', 'bold');
         doc.text('ANJANEYA BOREWELLS', 20, 25);
 
+        doc.setTextColor(0, 0, 0); // Reset to black for other details
         doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
         doc.text('6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001', 20, 35);
         doc.text('Phone: +91 965 965 7777 | +91 944 33 73573', 20, 42);
         doc.text('Email: anjaneyaborewells@gmail.com', 20, 49);
 
-        let yPos = 60;
-
-        // Quotation title and details
+        // Quotation title in top right corner
         doc.setTextColor(76, 175, 80);
-        doc.setFontSize(24);
+        doc.setFontSize(16); // Reduced size
         doc.setFont('helvetica', 'bold');
-        doc.text('QUOTATION', 20, yPos);
+        doc.text('QUOTATION', 150, 25);
 
         // Reset text color
         doc.setTextColor(0, 0, 0);
 
         const quoteNum = `ABW/QUO/${new Date().getFullYear()}/${Date.now().toString().slice(-4)}`;
 
-        yPos += 15;
+        let yPos = 60;
 
         // Quotation details
         doc.setFontSize(11);
@@ -1586,6 +1585,22 @@ class CostCalculator {
         doc.text('For ANJANEYA BOREWELLS', 20, yPos);
         yPos += 15;
         doc.text('Authorized Signatory', 20, yPos);
+        
+        // Generated date and time in bottom right corner
+        const now = new Date();
+        const generatedDateTime = `Generated on: ${now.toLocaleDateString('en-IN', { 
+            day: '2-digit', 
+            month: '2-digit', 
+            year: 'numeric' 
+        })} at ${now.toLocaleTimeString('en-IN', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: true 
+        })}`;
+        
+        doc.setFontSize(8);
+        doc.setTextColor(100, 100, 100); // Gray color
+        doc.text(generatedDateTime, 190, doc.internal.pageSize.getHeight() - 10, { align: 'right' });
 
         // Save with professional filename
         const timestamp = new Date().toISOString().split('T')[0];
