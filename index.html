@@ -605,34 +605,25 @@
                             </div>
                         </div>
 
-                        <!-- Drilling Configuration Card -->
-                        <div class="form-group">
-                            <div class="drilling-config-card">
-                                <div class="card-header">
-                                    <div class="card-title">Drilling Configuration</div>
+                        <!-- Total Depth and Base Drilling Rate -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="totalDepthNew">Total Depth (ft)</label>
+                                <div class="input-with-buttons">
+                                    <input type="number" id="totalDepthNew" name="totalDepthNew" value="800" min="1" required>
+                                    <div class="input-buttons">
+                                        <button type="button" class="input-btn input-btn-up" data-target="totalDepthNew" data-step="50">▲</button>
+                                        <button type="button" class="input-btn input-btn-down" data-target="totalDepthNew" data-step="50">▼</button>
+                                    </div>
                                 </div>
-                                <div class="card-content">
-                                    <div class="input-row">
-                                        <div class="input-group">
-                                            <label for="totalDepthNew">Total Depth (ft)</label>
-                                            <div class="input-with-buttons">
-                                                <input type="number" id="totalDepthNew" name="totalDepthNew" value="800" min="1" required>
-                                                <div class="input-buttons">
-                                                    <button type="button" class="input-btn input-btn-up" data-target="totalDepthNew" data-step="50">▲</button>
-                                                    <button type="button" class="input-btn input-btn-down" data-target="totalDepthNew" data-step="50">▼</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="input-group">
-                                            <label for="drillingRate">Base Drilling Rate per ft (Rs.)</label>
-                                            <div class="input-with-buttons">
-                                                <input type="number" id="drillingRate" name="drillingRate" value="90" min="1" required>
-                                                <div class="input-buttons">
-                                                    <button type="button" class="input-btn input-btn-up" data-target="drillingRate" data-step="1">▲</button>
-                                                    <button type="button" class="input-btn input-btn-down" data-target="drillingRate" data-step="1">▼</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="drillingRate">Base Drilling Rate per ft (Rs.)</label>
+                                <div class="input-with-buttons">
+                                    <input type="number" id="drillingRate" name="drillingRate" value="90" min="1" required>
+                                    <div class="input-buttons">
+                                        <button type="button" class="input-btn input-btn-up" data-target="drillingRate" data-step="1">▲</button>
+                                        <button type="button" class="input-btn input-btn-down" data-target="drillingRate" data-step="1">▼</button>
                                     </div>
                                 </div>
                             </div>
