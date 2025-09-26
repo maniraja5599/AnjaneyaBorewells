@@ -1490,26 +1490,26 @@ class CostCalculator {
         
         // Professional table header with enhanced styling
         doc.setFillColor(34, 197, 94);
-        doc.rect(15, yPos + 5, 180, 10, 'F');
+        doc.rect(15, yPos + 5, 180, 12, 'F');
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(11);
+        doc.setFontSize(10);
         doc.setFont('helvetica', 'bold');
-        doc.text('DESCRIPTION', 20, yPos + 12);
-        doc.text('QUANTITY', 120, yPos + 12);
-        doc.text('RATE', 150, yPos + 12);
-        doc.text('AMOUNT', 170, yPos + 12);
+        doc.text('DESCRIPTION', 20, yPos + 13);
+        doc.text('QUANTITY', 110, yPos + 13);
+        doc.text('RATE', 140, yPos + 13);
+        doc.text('AMOUNT', 170, yPos + 13);
         
         // Enhanced table border
         doc.setDrawColor(34, 197, 94);
         doc.setLineWidth(1);
-        doc.rect(15, yPos + 5, 180, 10);
+        doc.rect(15, yPos + 5, 180, 12);
         
         // Add internal lines for professional look
         doc.setLineWidth(0.3);
         doc.setDrawColor(255, 255, 255);
-        doc.line(115, yPos + 5, 115, yPos + 15); // Quantity column
-        doc.line(145, yPos + 5, 145, yPos + 15); // Rate column
-        doc.line(165, yPos + 5, 165, yPos + 15); // Amount column
+        doc.line(105, yPos + 5, 105, yPos + 17); // Quantity column
+        doc.line(135, yPos + 5, 135, yPos + 17); // Rate column
+        doc.line(165, yPos + 5, 165, yPos + 17); // Amount column
         
         yPos += 20;
         
@@ -1529,16 +1529,16 @@ class CostCalculator {
                 // Professional alternating row colors
                 if (index % 2 === 0) {
                     doc.setFillColor(248, 250, 252);
-                    doc.rect(15, yPos - 3, 180, 8, 'F');
+                    doc.rect(15, yPos - 3, 180, 10, 'F');
                 } else {
                     doc.setFillColor(255, 255, 255);
-                    doc.rect(15, yPos - 3, 180, 8, 'F');
+                    doc.rect(15, yPos - 3, 180, 10, 'F');
                 }
                 
                 // Professional table borders
                 doc.setDrawColor(200, 200, 200);
                 doc.setLineWidth(0.2);
-                doc.rect(15, yPos - 3, 180, 8);
+                doc.rect(15, yPos - 3, 180, 10);
                 
                 // Format the range display with leading zeros for PDF
                 const formattedRange = slab.range.replace(/(\d+)-(\d+)\s*ft/, (match, start, end) => {
@@ -1546,12 +1546,17 @@ class CostCalculator {
                     return `${paddedStart}-${end} ft`;
                 });
                 
-                // Professional table layout
-                doc.text(formattedRange, 20, yPos + 2);
-                doc.text(`${slab.range.split('-')[1] - slab.range.split('-')[0] + 1} ft`, 120, yPos + 2);
-                doc.text(`Rs.${slab.rate}/ft`, 150, yPos + 2);
-                doc.text(`Rs.${slab.cost.toLocaleString('en-IN')}`, 170, yPos + 2);
-                yPos += 8;
+                // Professional table layout with proper quantity calculation
+                const rangeParts = slab.range.split('-');
+                const startDepth = parseInt(rangeParts[0]);
+                const endDepth = parseInt(rangeParts[1].replace(' ft', ''));
+                const quantity = endDepth - startDepth + 1;
+                
+                doc.text(formattedRange, 20, yPos + 3);
+                doc.text(`${quantity} ft`, 110, yPos + 3);
+                doc.text(`Rs.${slab.rate}/ft`, 140, yPos + 3);
+                doc.text(`Rs.${slab.cost.toLocaleString('en-IN')}`, 170, yPos + 3);
+                yPos += 10;
             });
             
             // Professional total drilling cost
@@ -1631,16 +1636,16 @@ class CostCalculator {
             // Professional alternating row colors
             if ((index + (results.slabCalculation.slabDetails.length > 1 ? results.slabCalculation.slabDetails.length + 1 : 1)) % 2 === 0) {
                 doc.setFillColor(248, 250, 252);
-                doc.rect(15, yPos - 3, 180, 8, 'F');
+                doc.rect(15, yPos - 3, 180, 10, 'F');
             } else {
                 doc.setFillColor(255, 255, 255);
-                doc.rect(15, yPos - 3, 180, 8, 'F');
+                doc.rect(15, yPos - 3, 180, 10, 'F');
             }
             
             // Professional table borders
             doc.setDrawColor(200, 200, 200);
             doc.setLineWidth(0.2);
-            doc.rect(15, yPos - 3, 180, 8);
+            doc.rect(15, yPos - 3, 180, 10);
             
             if (item.desc === 'SUBTOTAL') {
                 doc.setFont('helvetica', 'bold');
@@ -1653,11 +1658,11 @@ class CostCalculator {
             }
             
             // Professional table layout
-            doc.text(item.desc, 20, yPos + 2);
-            doc.text(item.qty, 120, yPos + 2);
-            doc.text(item.rate, 150, yPos + 2);
-            doc.text(`Rs.${item.amount.toLocaleString('en-IN')}`, 170, yPos + 2);
-            yPos += 8;
+            doc.text(item.desc, 20, yPos + 3);
+            doc.text(item.qty, 110, yPos + 3);
+            doc.text(item.rate, 140, yPos + 3);
+            doc.text(`Rs.${item.amount.toLocaleString('en-IN')}`, 170, yPos + 3);
+            yPos += 10;
         });
 
         // Professional total cost section
