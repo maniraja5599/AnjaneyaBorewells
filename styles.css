@@ -5718,9 +5718,10 @@ img {
     
     /* Mobile cost breakdown improvements */
     .cost-breakdown {
-        background: var(--bg-white);
+        background: linear-gradient(135deg, var(--bg-white) 0%, var(--bg-light) 100%);
         border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(34, 197, 94, 0.1);
         overflow: hidden;
         margin-top: 2rem;
     }
@@ -5739,6 +5740,8 @@ img {
     
     .cost-breakdown-content {
         padding: 1.5rem;
+        background: var(--bg-white);
+        border-radius: 0 0 12px 12px;
     }
     
     .cost-breakdown-item {
@@ -5765,7 +5768,8 @@ img {
     
     .cost-breakdown-actions {
         padding: 1.5rem;
-        background: var(--bg-light);
+        background: linear-gradient(135deg, var(--bg-light) 0%, rgba(34, 197, 94, 0.02) 100%);
+        border-top: 1px solid rgba(34, 197, 94, 0.1);
         display: flex;
         flex-direction: column;
         gap: 12px;
