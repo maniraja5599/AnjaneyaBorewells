@@ -1719,15 +1719,15 @@ class CostCalculator {
         const inputs = this.getInputs();
         const gstEnabled = this.isGstEnabled();
 
-        // Create enhanced WhatsApp message with emojis and better formatting
+        // Create enhanced WhatsApp message matching the provided URL format
         let message = `*ANJANEYA BOREWELLS*
 Professional Borewell Solutions
 
 *BOREWELL QUOTATION*
 📅 Date: ${new Date().toLocaleDateString('en-IN')}
-🔽 Total Depth: ${inputs.totalDepth} ft
+🔽 Total Depth: *${inputs.totalDepth} ft*
 
-Drilling Cost Breakdown (Slab Rate):`;
+*Drilling Cost Breakdown (Slab Rate):*`;
 
         // Drilling Cost Breakdown (Slab Rate) section
         if (results.slabCalculation.slabDetails.length > 1) {
@@ -1743,18 +1743,18 @@ Drilling Cost Breakdown (Slab Rate):`;
             
             message += `
 
-──────────────────────────────
-✅ Total Drilling Cost: Rs.${results.drillingCost.toLocaleString('en-IN')}
+─────────────────────────
+✅ *Total Drilling Cost:* Rs.${results.drillingCost.toLocaleString('en-IN')}
 
-Additional Charges:`;
+*Additional Charges:*`;
         } else {
             message += `
 • Drilling Cost = Rs.${results.drillingCost.toLocaleString('en-IN')}
 
-──────────────────────────────
-✅ Total Drilling Cost: Rs.${results.drillingCost.toLocaleString('en-IN')}
+─────────────────────────
+✅ *Total Drilling Cost:* Rs.${results.drillingCost.toLocaleString('en-IN')}
 
-Additional Charges:`;
+*Additional Charges:*`;
         }
 
         // Additional items
@@ -1771,30 +1771,30 @@ Additional Charges:`;
         message += `
 • Bore Bata (per bore) = Rs.${results.boreBataCost.toLocaleString('en-IN')}
 
-──────────────────────────────
-📌 Subtotal: Rs.${results.subtotal.toLocaleString('en-IN')}`;
+─────────────────────────
+📌 *Subtotal:* Rs.${results.subtotal.toLocaleString('en-IN')}`;
 
         if (gstEnabled) {
             message += `
-📌 GST (${results.gstPercentage}%): Rs.${results.gstAmount.toLocaleString('en-IN')}`;
+📌 *GST (${results.gstPercentage}%):* Rs.${results.gstAmount.toLocaleString('en-IN')}`;
         }
 
         message += `
-──────────────────────────────
-💰 Total Cost: Rs.${results.totalCost.toLocaleString('en-IN')} (Approximate)
+─────────────────────────
+💰 *Total Cost:* Rs.${results.totalCost.toLocaleString('en-IN')} (Approximate)
 
-TERMS:
+*TERMS:*
 • Valid for 30 days
 • Payment: 50% advance, 50% completion
 • GST as applicable
 • Costs may vary as per site conditions
 
-CONTACT:
+*CONTACT:*
 📞 +91 965 965 7777
 📞 +91 944 33 73573
 📧 anjaneyaborewells@gmail.com
 
-🙏 Thank you for choosing Anjaneya Borewells!`;
+🙏 Thank you for choosing *Anjaneya Borewells!*`;
 
         // Encode message for WhatsApp URL
         const encodedMessage = encodeURIComponent(message);
