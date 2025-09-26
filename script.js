@@ -1451,94 +1451,94 @@ class CostCalculator {
         
         // Section header with background
         doc.setFillColor(248, 250, 252);
-        doc.rect(15, yPos - 5, 180, 12, 'F');
+        doc.rect(15, yPos - 5, 180, 10, 'F');
         doc.setDrawColor(34, 197, 94);
         doc.setLineWidth(0.5);
-        doc.rect(15, yPos - 5, 180, 12);
+        doc.rect(15, yPos - 5, 180, 10);
         
-        doc.setFontSize(12);
+        doc.setFontSize(11);
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(34, 197, 94);
-        doc.text('PROJECT SPECIFICATIONS', 20, yPos + 2);
+        doc.text('PROJECT SPECIFICATIONS', 20, yPos + 1);
         
-        yPos += 15;
+        yPos += 12;
         
-        // Professional project details in two columns
-        doc.setFontSize(10);
+        // Professional project details in two columns with compact spacing
+        doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(0, 0, 0);
         
         // Left column
         doc.text(`• Total Depth: ${inputs.totalDepth} ft`, 20, yPos);
-        doc.text(`• Base Drilling Rate: ₹${inputs.drillingRate}/ft`, 20, yPos + 8);
-        doc.text(`• Drilling Type: ${inputs.drillingType === 'repair' ? 'Rebore (Repair)' : 'New Drilling'}`, 20, yPos + 16);
+        doc.text(`• Base Drilling Rate: Rs.${inputs.drillingRate}/ft`, 20, yPos + 6);
+        doc.text(`• Drilling Type: ${inputs.drillingType === 'repair' ? 'Rebore (Repair)' : 'New Drilling'}`, 20, yPos + 12);
         
         // Right column
-        doc.text(`• 7" PVC: ${inputs.pvc7Length} ft @ ₹${this.defaults.pvc7Rate}/ft`, 110, yPos);
-        doc.text(`• 10" PVC: ${inputs.pvc10Length} ft @ ₹${this.defaults.pvc10Rate}/ft`, 110, yPos + 8);
+        doc.text(`• 7" PVC: ${inputs.pvc7Length} ft @ Rs.${this.defaults.pvc7Rate}/ft`, 110, yPos);
+        doc.text(`• 10" PVC: ${inputs.pvc10Length} ft @ Rs.${this.defaults.pvc10Rate}/ft`, 110, yPos + 6);
         if (inputs.drillingType === 'repair') {
-            doc.text(`• Old Bore Depth: ${inputs.oldBoreDepth} ft`, 110, yPos + 16);
+            doc.text(`• Old Bore Depth: ${inputs.oldBoreDepth} ft`, 110, yPos + 12);
         }
         
-        yPos += 35;
+        yPos += 25;
 
         // Professional cost breakdown header
-        doc.setFontSize(14);
+        doc.setFontSize(13);
         doc.setFont('helvetica', 'bold');
         doc.setTextColor(34, 197, 94);
         doc.text('DETAILED COST BREAKDOWN', 20, yPos);
         
         // Professional table header with enhanced styling
         doc.setFillColor(34, 197, 94);
-        doc.rect(15, yPos + 5, 180, 12, 'F');
+        doc.rect(15, yPos + 3, 180, 10, 'F');
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(10);
+        doc.setFontSize(9);
         doc.setFont('helvetica', 'bold');
-        doc.text('DESCRIPTION', 20, yPos + 13);
-        doc.text('QUANTITY', 110, yPos + 13);
-        doc.text('RATE', 140, yPos + 13);
-        doc.text('AMOUNT', 170, yPos + 13);
+        doc.text('DESCRIPTION', 20, yPos + 10);
+        doc.text('QUANTITY', 110, yPos + 10);
+        doc.text('RATE', 140, yPos + 10);
+        doc.text('AMOUNT', 170, yPos + 10);
         
         // Enhanced table border
         doc.setDrawColor(34, 197, 94);
         doc.setLineWidth(1);
-        doc.rect(15, yPos + 5, 180, 12);
+        doc.rect(15, yPos + 3, 180, 10);
         
         // Add internal lines for professional look
         doc.setLineWidth(0.3);
         doc.setDrawColor(255, 255, 255);
-        doc.line(105, yPos + 5, 105, yPos + 17); // Quantity column
-        doc.line(135, yPos + 5, 135, yPos + 17); // Rate column
-        doc.line(165, yPos + 5, 165, yPos + 17); // Amount column
+        doc.line(105, yPos + 3, 105, yPos + 13); // Quantity column
+        doc.line(135, yPos + 3, 135, yPos + 13); // Rate column
+        doc.line(165, yPos + 3, 165, yPos + 13); // Amount column
         
-        yPos += 20;
+        yPos += 16;
         
         // Professional slab rate breakdown
         if (results.slabCalculation.slabDetails.length > 1) {
             doc.setFont('helvetica', 'bold');
-            doc.setFontSize(10);
+            doc.setFontSize(9);
             doc.setTextColor(34, 197, 94);
             doc.text('DRILLING COST BREAKDOWN (SLAB RATE):', 20, yPos);
-            yPos += 8;
+            yPos += 6;
             
             doc.setFont('helvetica', 'normal');
-            doc.setFontSize(9);
+            doc.setFontSize(8);
             doc.setTextColor(0, 0, 0);
             
             results.slabCalculation.slabDetails.forEach((slab, index) => {
                 // Professional alternating row colors
                 if (index % 2 === 0) {
                     doc.setFillColor(248, 250, 252);
-                    doc.rect(15, yPos - 3, 180, 10, 'F');
+                    doc.rect(15, yPos - 2, 180, 8, 'F');
                 } else {
                     doc.setFillColor(255, 255, 255);
-                    doc.rect(15, yPos - 3, 180, 10, 'F');
+                    doc.rect(15, yPos - 2, 180, 8, 'F');
                 }
                 
                 // Professional table borders
                 doc.setDrawColor(200, 200, 200);
                 doc.setLineWidth(0.2);
-                doc.rect(15, yPos - 3, 180, 10);
+                doc.rect(15, yPos - 2, 180, 8);
                 
                 // Format the range display with leading zeros for PDF
                 const formattedRange = slab.range.replace(/(\d+)-(\d+)\s*ft/, (match, start, end) => {
@@ -1552,11 +1552,11 @@ class CostCalculator {
                 const endDepth = parseInt(rangeParts[1].replace(' ft', ''));
                 const quantity = endDepth - startDepth + 1;
                 
-                doc.text(formattedRange, 20, yPos + 3);
-                doc.text(`${quantity} ft`, 110, yPos + 3);
-                doc.text(`Rs.${slab.rate}/ft`, 140, yPos + 3);
-                doc.text(`Rs.${slab.cost.toLocaleString('en-IN')}`, 170, yPos + 3);
-                yPos += 10;
+                doc.text(formattedRange, 20, yPos + 2);
+                doc.text(`${quantity} ft`, 110, yPos + 2);
+                doc.text(`Rs.${slab.rate}/ft`, 140, yPos + 2);
+                doc.text(`Rs.${slab.cost.toLocaleString('en-IN')}`, 170, yPos + 2);
+                yPos += 8;
             });
             
             // Professional total drilling cost
@@ -1636,33 +1636,33 @@ class CostCalculator {
             // Professional alternating row colors
             if ((index + (results.slabCalculation.slabDetails.length > 1 ? results.slabCalculation.slabDetails.length + 1 : 1)) % 2 === 0) {
                 doc.setFillColor(248, 250, 252);
-                doc.rect(15, yPos - 3, 180, 10, 'F');
+                doc.rect(15, yPos - 2, 180, 8, 'F');
             } else {
                 doc.setFillColor(255, 255, 255);
-                doc.rect(15, yPos - 3, 180, 10, 'F');
+                doc.rect(15, yPos - 2, 180, 8, 'F');
             }
             
             // Professional table borders
             doc.setDrawColor(200, 200, 200);
             doc.setLineWidth(0.2);
-            doc.rect(15, yPos - 3, 180, 10);
+            doc.rect(15, yPos - 2, 180, 8);
             
             if (item.desc === 'SUBTOTAL') {
                 doc.setFont('helvetica', 'bold');
                 doc.setTextColor(34, 197, 94);
                 doc.setFillColor(240, 248, 255);
-                doc.rect(15, yPos - 3, 180, 8, 'F');
+                doc.rect(15, yPos - 2, 180, 8, 'F');
             } else {
                 doc.setFont('helvetica', 'normal');
                 doc.setTextColor(0, 0, 0);
             }
             
             // Professional table layout
-            doc.text(item.desc, 20, yPos + 3);
-            doc.text(item.qty, 110, yPos + 3);
-            doc.text(item.rate, 140, yPos + 3);
-            doc.text(`Rs.${item.amount.toLocaleString('en-IN')}`, 170, yPos + 3);
-            yPos += 10;
+            doc.text(item.desc, 20, yPos + 2);
+            doc.text(item.qty, 110, yPos + 2);
+            doc.text(item.rate, 140, yPos + 2);
+            doc.text(`Rs.${item.amount.toLocaleString('en-IN')}`, 170, yPos + 2);
+            yPos += 8;
         });
 
         // Professional total cost section
