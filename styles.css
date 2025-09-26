@@ -5974,9 +5974,9 @@ img {
     }
     
     .cost-breakdown-header {
-        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-        color: white;
-        padding: 1.5rem;
+        background: linear-gradient(180deg, #00ff22b0, #033b00);
+        color: #ffffff;
+        padding: 0.75rem;
         text-align: center;
     }
     
