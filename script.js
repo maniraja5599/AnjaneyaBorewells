@@ -1413,12 +1413,6 @@ class CostCalculator {
         doc.setFontSize(16); // Reduced size
         doc.setFont('helvetica', 'bold');
         doc.text('QUOTATION', 150, 25);
-        
-        // Approximate note
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'italic');
-        doc.setTextColor(150, 150, 150); // Light gray
-        doc.text('(Approximate)', 150, 35);
 
         // Reset text color
         doc.setTextColor(0, 0, 0);
@@ -1554,6 +1548,15 @@ class CostCalculator {
         doc.setFontSize(12);
         doc.text('TOTAL', 130, yPos);
         doc.text(`Rs.${results.totalCost.toLocaleString('en-IN')}`, 170, yPos);
+        
+        // Approximate note near total
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'italic');
+        doc.setTextColor(150, 150, 150); // Light gray
+        doc.text('(Approximate)', 130, yPos + 8);
+        
+        // Reset text color
+        doc.setTextColor(0, 0, 0);
         
         yPos += 25;
 
