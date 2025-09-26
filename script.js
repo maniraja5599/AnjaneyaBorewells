@@ -1395,35 +1395,36 @@ class CostCalculator {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF();
 
-        // Professional header with gradient effect
+        // Professional header with modern gradient effect
         // Top accent bar
-        doc.setFillColor(16, 85, 48); // Dark green
+        doc.setFillColor(0, 100, 50); // Deep forest green
         doc.rect(0, 0, 210, 4, 'F');
         
-        // Main header background
-        doc.setFillColor(34, 197, 94);
+        // Main header background with gradient effect
+        doc.setFillColor(0, 150, 80); // Rich emerald green
         doc.rect(0, 4, 210, 35, 'F');
         
-        // Company logo area (left side)
+        // Company logo area (left side) with modern typography
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(22);
-        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(24);
+        doc.setFont('times', 'bold');
         doc.text('ANJANEYA BOREWELLS', 20, 20);
         
-        // Tagline
-        doc.setFontSize(9);
-        doc.setFont('helvetica', 'normal');
+        // Tagline with elegant font
+        doc.setFontSize(10);
+        doc.setFont('times', 'italic');
         doc.text('Professional Borewell Solutions | Makers of Green India', 20, 26);
         
-        // Contact information
-        doc.setFontSize(8);
+        // Contact information with clean typography
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
         doc.text('📞 +91 965 965 7777 | +91 944 33 73573', 20, 32);
         doc.text('📧 anjaneyaborewells@gmail.com', 20, 36);
 
-        // Professional quote header (right side)
+        // Professional quote header (right side) with elegant typography
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(12);
-        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(14);
+        doc.setFont('times', 'bold');
         const quoteNum = `QUO-${Date.now().toString().slice(-6)}`;
         doc.text('QUOTATION', 140, 16);
         
@@ -1436,29 +1437,30 @@ class CostCalculator {
         // Reset text color
         doc.setTextColor(0, 0, 0);
 
-        // Professional title with underline
-        doc.setFontSize(18);
-        doc.setFont('helvetica', 'bold');
+        // Professional title with elegant typography
+        doc.setFontSize(20);
+        doc.setFont('times', 'bold');
+        doc.setTextColor(0, 100, 50); // Deep forest green
         doc.text('BOREWELL COST ESTIMATE', 20, 55);
         
-        // Professional underline
-        doc.setDrawColor(34, 197, 94);
-        doc.setLineWidth(2);
-        doc.line(20, 57, 80, 57);
+        // Professional underline with modern color
+        doc.setDrawColor(0, 150, 80); // Rich emerald green
+        doc.setLineWidth(3);
+        doc.line(20, 57, 85, 57);
 
         // Professional project details section
         let yPos = 70;
         
-        // Section header with background
-        doc.setFillColor(248, 250, 252);
+        // Section header with modern background
+        doc.setFillColor(240, 248, 245); // Light mint green
         doc.rect(15, yPos - 5, 180, 10, 'F');
-        doc.setDrawColor(34, 197, 94);
-        doc.setLineWidth(0.5);
+        doc.setDrawColor(0, 150, 80); // Rich emerald green
+        doc.setLineWidth(1);
         doc.rect(15, yPos - 5, 180, 10);
         
-        doc.setFontSize(11);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(34, 197, 94);
+        doc.setFontSize(12);
+        doc.setFont('times', 'bold');
+        doc.setTextColor(0, 100, 50); // Deep forest green
         doc.text('PROJECT SPECIFICATIONS', 20, yPos + 1);
         
         yPos += 12;
@@ -1482,25 +1484,25 @@ class CostCalculator {
         
         yPos += 25;
 
-        // Professional cost breakdown header
-        doc.setFontSize(13);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(34, 197, 94);
+        // Professional cost breakdown header with elegant typography
+        doc.setFontSize(14);
+        doc.setFont('times', 'bold');
+        doc.setTextColor(0, 100, 50); // Deep forest green
         doc.text('DETAILED COST BREAKDOWN', 20, yPos);
         
-        // Professional table header with enhanced styling
-        doc.setFillColor(34, 197, 94);
+        // Professional table header with modern styling
+        doc.setFillColor(0, 150, 80); // Rich emerald green
         doc.rect(15, yPos + 3, 180, 10, 'F');
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(9);
-        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(10);
+        doc.setFont('times', 'bold');
         doc.text('DESCRIPTION', 20, yPos + 10);
         doc.text('QUANTITY', 110, yPos + 10);
         doc.text('RATE', 140, yPos + 10);
         doc.text('AMOUNT', 170, yPos + 10);
         
-        // Enhanced table border
-        doc.setDrawColor(34, 197, 94);
+        // Enhanced table border with modern color
+        doc.setDrawColor(0, 150, 80); // Rich emerald green
         doc.setLineWidth(1);
         doc.rect(15, yPos + 3, 180, 10);
         
@@ -1513,11 +1515,11 @@ class CostCalculator {
         
         yPos += 16;
         
-        // Professional slab rate breakdown
+        // Professional slab rate breakdown with elegant typography
         if (results.slabCalculation.slabDetails.length > 1) {
-            doc.setFont('helvetica', 'bold');
-            doc.setFontSize(9);
-            doc.setTextColor(34, 197, 94);
+            doc.setFont('times', 'bold');
+            doc.setFontSize(10);
+            doc.setTextColor(0, 100, 50); // Deep forest green
             doc.text('DRILLING COST BREAKDOWN (SLAB RATE):', 20, yPos);
             yPos += 6;
             
@@ -1665,30 +1667,31 @@ class CostCalculator {
             yPos += 8;
         });
 
-        // Professional total cost section
-        doc.setFillColor(34, 197, 94);
+        // Professional total cost section with elegant styling
+        doc.setFillColor(0, 100, 50); // Deep forest green
         doc.rect(15, yPos - 3, 180, 12, 'F');
         doc.setTextColor(255, 255, 255);
-        doc.setFontSize(14);
-        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(16);
+        doc.setFont('times', 'bold');
         doc.text('TOTAL PROJECT COST', 20, yPos + 3);
         doc.text(`Rs.${results.totalCost.toLocaleString('en-IN')}`, 170, yPos + 3);
         
-        // Professional border for total
-        doc.setDrawColor(34, 197, 94);
+        // Professional border for total with modern color
+        doc.setDrawColor(0, 100, 50); // Deep forest green
         doc.setLineWidth(2);
         doc.rect(15, yPos - 3, 180, 12);
         
         yPos += 15;
 
-        // Professional footer section
-        doc.setTextColor(0, 0, 0);
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
+        // Professional footer section with elegant typography
+        doc.setTextColor(0, 100, 50); // Deep forest green
+        doc.setFontSize(11);
+        doc.setFont('times', 'bold');
         doc.text('TERMS & CONDITIONS:', 20, yPos + 5);
         
-        doc.setFontSize(8);
+        doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
+        doc.setTextColor(0, 0, 0);
         doc.text('• This quotation is valid for 30 days from the date of issue', 20, yPos + 12);
         doc.text('• Prices are subject to change without prior notice', 20, yPos + 18);
         doc.text('• Payment terms: 50% advance, 50% on completion', 20, yPos + 24);
@@ -1696,19 +1699,19 @@ class CostCalculator {
         
         yPos += 40;
         
-        // Professional company footer
-        doc.setFillColor(248, 250, 252);
+        // Professional company footer with modern styling
+        doc.setFillColor(240, 248, 245); // Light mint green
         doc.rect(15, yPos - 5, 180, 25, 'F');
-        doc.setDrawColor(34, 197, 94);
+        doc.setDrawColor(0, 150, 80); // Rich emerald green
         doc.setLineWidth(1);
         doc.rect(15, yPos - 5, 180, 25);
         
-        doc.setFontSize(10);
-        doc.setFont('helvetica', 'bold');
-        doc.setTextColor(34, 197, 94);
+        doc.setFontSize(12);
+        doc.setFont('times', 'bold');
+        doc.setTextColor(0, 100, 50); // Deep forest green
         doc.text('ANJANEYA BOREWELLS', 20, yPos + 2);
         
-        doc.setFontSize(8);
+        doc.setFontSize(9);
         doc.setFont('helvetica', 'normal');
         doc.setTextColor(0, 0, 0);
         doc.text('📞 +91 965 965 7777 | +91 944 33 73573', 20, yPos + 8);
@@ -1717,16 +1720,19 @@ class CostCalculator {
         
         yPos += 30;
         
-        // Professional signature line
-        doc.setDrawColor(34, 197, 94);
+        // Professional signature line with modern color
+        doc.setDrawColor(0, 150, 80); // Rich emerald green
         doc.setLineWidth(1);
         doc.line(15, yPos, 195, yPos);
+        doc.setFontSize(9);
+        doc.setFont('helvetica', 'normal');
+        doc.setTextColor(0, 100, 50); // Deep forest green
         doc.text('Authorized Signature', 20, yPos + 5);
         doc.text('Date: _______________', 140, yPos + 5);
         
-        // Professional footer tagline
-        doc.setFontSize(7);
-        doc.setFont('helvetica', 'italic');
+        // Professional footer tagline with elegant typography
+        doc.setFontSize(8);
+        doc.setFont('times', 'italic');
         doc.setTextColor(100, 116, 139);
         doc.text(`Generated on: ${new Date().toLocaleDateString('en-IN')} at ${new Date().toLocaleTimeString('en-IN')}`, 20, yPos + 15);
         doc.text('Professional Borewell Solutions | Makers of Green India', 20, yPos + 22);
