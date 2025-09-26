@@ -1719,93 +1719,77 @@ class CostCalculator {
         const inputs = this.getInputs();
         const gstEnabled = this.isGstEnabled();
 
-        // Create clean itemized WhatsApp message
+        // Create clean WhatsApp message like the cost breakdown image
         let message = `*ANJANEYA BOREWELLS*
 Professional Borewell Solutions
-━━━━━━━━━━━━━━━━━━━━━━
 
 *BOREWELL QUOTATION*
 Date: ${new Date().toLocaleDateString('en-IN')}
-
-*PROJECT DETAILS:*
 Total Depth: ${inputs.totalDepth} ft
-Drilling Type: ${inputs.drillingType === 'repair' ? 'Rebore (Repair)' : 'New Drilling'}`;
-        
-        if (inputs.drillingType === 'repair') {
-            message += `
-Old Bore: ${inputs.oldBoreDepth} ft`;
-        }
-        
-        message += `
-Base Rate: Rs.${inputs.drillingRate}/ft`;
 
-        if (inputs.pvc7Length > 0) message += `
-7" PVC: ${inputs.pvc7Length} ft`;
-        if (inputs.pvc10Length > 0) message += `
-10" PVC: ${inputs.pvc10Length} ft`;
+`;
 
-        // Itemized cost breakdown table format
-        message += `
-
-*ITEMIZED COST BREAKDOWN:*
-
-┌────────────────────────────────┐
-│ ITEM | QTY | RATE | AMOUNT     │
-├────────────────────────────────┤`;
-        
-        // Drilling costs
+        // Drilling Cost Breakdown (Slab Rate) section
         if (results.slabCalculation.slabDetails.length > 1) {
+            message += `*Drilling Cost Breakdown (Slab Rate):*
+
+`;
             results.slabCalculation.slabDetails.forEach(slab => {
-                const rangeParts = slab.range.split('-');
-                const startDepth = parseInt(rangeParts[0]);
-                const endDepth = parseInt(rangeParts[1].replace(' ft', ''));
-                const quantity = endDepth - startDepth + 1;
-                message += `
-│ Drilling (${slab.range})
-│ ${quantity} ft | Rs.${slab.rate}/ft | Rs.${slab.cost.toLocaleString('en-IN')}`;
+                const formattedRange = slab.range.replace(/(\d+)-(\d+)\s*ft/, (match, start, end) => {
+                    const paddedStart = start.padStart(3, '0');
+                    return `${paddedStart}-${end} ft`;
+                });
+                message += `${formattedRange}                    ₹${slab.rate}/ft                    Rs.${slab.cost.toLocaleString('en-IN')}
+`;
             });
-        } else {
+            
             message += `
-│ Drilling Cost
-│ 1 | - | Rs.${results.drillingCost.toLocaleString('en-IN')}`;
+────────────────────────────────
+*Total Drilling Cost                        Rs.${results.drillingCost.toLocaleString('en-IN')}*
+
+`;
+        } else {
+            message += `*Total Drilling Cost:                        Rs.${results.drillingCost.toLocaleString('en-IN')}*
+
+`;
         }
-        
+
         // Additional items
         if (inputs.pvc7Length > 0) {
-            message += `
-│ 7" PVC Pipe
-│ ${inputs.pvc7Length} ft | Rs.${this.defaults.pvc7Rate}/ft | Rs.${results.pvc7Cost.toLocaleString('en-IN')}`;
-        }
-        if (inputs.pvc10Length > 0) {
-            message += `
-│ 10" PVC Pipe
-│ ${inputs.pvc10Length} ft | Rs.${this.defaults.pvc10Rate}/ft | Rs.${results.pvc10Cost.toLocaleString('en-IN')}`;
+            message += `7" PVC:                    ${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = Rs.${results.pvc7Cost.toLocaleString('en-IN')}
+
+`;
         }
         
-        message += `
-│ Bore Bata
-│ 1 | Rs.500 | Rs.${results.boreBataCost.toLocaleString('en-IN')}
-├────────────────────────────────┤
-│ SUBTOTAL: Rs.${results.subtotal.toLocaleString('en-IN')}`;
+        if (inputs.pvc10Length > 0) {
+            message += `10" PVC:                    ${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = Rs.${results.pvc10Cost.toLocaleString('en-IN')}
+
+`;
+        }
+        
+        message += `Bore Bata (per bore):                        Rs.${results.boreBataCost.toLocaleString('en-IN')}
+
+────────────────────────────────
+Subtotal:                        Rs.${results.subtotal.toLocaleString('en-IN')}`;
 
         if (gstEnabled) {
             message += `
-│ GST (${results.gstPercentage}%): Rs.${results.gstAmount.toLocaleString('en-IN')}`;
+GST (${results.gstPercentage}%):                        Rs.${results.gstAmount.toLocaleString('en-IN')}`;
         }
 
         message += `
-├────────────────────────────────┤
-│ *TOTAL: Rs.${results.totalCost.toLocaleString('en-IN')}*
-│ *(Approximate)*
-└────────────────────────────────┘
 
-*TERMS & CONDITIONS:*
+────────────────────────────────
+*Total Cost:                        Rs.${results.totalCost.toLocaleString('en-IN')}*
+*(Approximate)*
+
+*TERMS:*
 • Valid for 30 days
-• Payment: 50% advance, 50% completion  
+• Payment: 50% advance, 50% completion
 • GST as applicable
 • Costs may vary per site conditions
 
-*CONTACT US:*
+*CONTACT:*
 📞 +91 965 965 7777
 📞 +91 944 33 73573
 📧 anjaneyaborewells@gmail.com
