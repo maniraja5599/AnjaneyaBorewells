@@ -1719,82 +1719,82 @@ class CostCalculator {
         const inputs = this.getInputs();
         const gstEnabled = this.isGstEnabled();
 
-        // Create clean WhatsApp message like the cost breakdown image
+        // Create enhanced WhatsApp message with emojis and better formatting
         let message = `*ANJANEYA BOREWELLS*
 Professional Borewell Solutions
 
 *BOREWELL QUOTATION*
-Date: ${new Date().toLocaleDateString('en-IN')}
-Total Depth: ${inputs.totalDepth} ft
+📅 Date: ${new Date().toLocaleDateString('en-IN')}
+🔽 Total Depth: ${inputs.totalDepth} ft
 
-`;
+Drilling Cost Breakdown (Slab Rate):`;
 
         // Drilling Cost Breakdown (Slab Rate) section
         if (results.slabCalculation.slabDetails.length > 1) {
-            message += `*Drilling Cost Breakdown (Slab Rate):*
-
-`;
             results.slabCalculation.slabDetails.forEach(slab => {
                 const formattedRange = slab.range.replace(/(\d+)-(\d+)\s*ft/, (match, start, end) => {
                     const paddedStart = start.padStart(3, '0');
-                    return `${paddedStart}-${end} ft`;
+                    const paddedEnd = end.padStart(3, '0');
+                    return `${paddedStart} – ${paddedEnd} ft`;
                 });
-                message += `${formattedRange}                    ₹${slab.rate}/ft                    Rs.${slab.cost.toLocaleString('en-IN')}
-`;
+                message += `
+• ${formattedRange} → ₹${slab.rate}/ft = Rs.${slab.cost.toLocaleString('en-IN')}`;
             });
             
             message += `
-────────────────────────────────
-*Total Drilling Cost                        Rs.${results.drillingCost.toLocaleString('en-IN')}*
 
-`;
+──────────────────────────────
+✅ Total Drilling Cost: Rs.${results.drillingCost.toLocaleString('en-IN')}
+
+Additional Charges:`;
         } else {
-            message += `*Total Drilling Cost:                        Rs.${results.drillingCost.toLocaleString('en-IN')}*
+            message += `
+• Drilling Cost = Rs.${results.drillingCost.toLocaleString('en-IN')}
 
-`;
+──────────────────────────────
+✅ Total Drilling Cost: Rs.${results.drillingCost.toLocaleString('en-IN')}
+
+Additional Charges:`;
         }
 
         // Additional items
         if (inputs.pvc7Length > 0) {
-            message += `7" PVC:                    ${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = Rs.${results.pvc7Cost.toLocaleString('en-IN')}
-
-`;
+            message += `
+• 7" PVC: ${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = Rs.${results.pvc7Cost.toLocaleString('en-IN')}`;
         }
         
         if (inputs.pvc10Length > 0) {
-            message += `10" PVC:                    ${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = Rs.${results.pvc10Cost.toLocaleString('en-IN')}
-
-`;
+            message += `
+• 10" PVC: ${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = Rs.${results.pvc10Cost.toLocaleString('en-IN')}`;
         }
         
-        message += `Bore Bata (per bore):                        Rs.${results.boreBataCost.toLocaleString('en-IN')}
+        message += `
+• Bore Bata (per bore) = Rs.${results.boreBataCost.toLocaleString('en-IN')}
 
-────────────────────────────────
-Subtotal:                        Rs.${results.subtotal.toLocaleString('en-IN')}`;
+──────────────────────────────
+📌 Subtotal: Rs.${results.subtotal.toLocaleString('en-IN')}`;
 
         if (gstEnabled) {
             message += `
-GST (${results.gstPercentage}%):                        Rs.${results.gstAmount.toLocaleString('en-IN')}`;
+📌 GST (${results.gstPercentage}%): Rs.${results.gstAmount.toLocaleString('en-IN')}`;
         }
 
         message += `
+──────────────────────────────
+💰 Total Cost: Rs.${results.totalCost.toLocaleString('en-IN')} (Approximate)
 
-────────────────────────────────
-*Total Cost:                        Rs.${results.totalCost.toLocaleString('en-IN')}*
-*(Approximate)*
-
-*TERMS:*
+TERMS:
 • Valid for 30 days
 • Payment: 50% advance, 50% completion
 • GST as applicable
-• Costs may vary per site conditions
+• Costs may vary as per site conditions
 
-*CONTACT:*
+CONTACT:
 📞 +91 965 965 7777
 📞 +91 944 33 73573
 📧 anjaneyaborewells@gmail.com
 
-Thank you for choosing Anjaneya Borewells!`;
+🙏 Thank you for choosing Anjaneya Borewells!`;
 
         // Encode message for WhatsApp URL
         const encodedMessage = encodeURIComponent(message);
