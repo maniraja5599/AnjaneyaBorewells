@@ -1,0 +1,76 @@
+{
+  "name": "Anjaneya Borewells - Professional Water Well Drilling Services",
+  "short_name": "Anjaneya Borewells",
+  "description": "Professional borewell drilling services with advanced sensor mounting methods. Get instant cost estimates and free quotes.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#22c55e",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%2322c55e' rx='24'/><circle cx='96' cy='96' r='60' fill='white'/><path d='M96 40c-30.9 0-56 25.1-56 56s25.1 56 56 56 56-25.1 56-56-25.1-56-56-56zm0 88c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z' fill='%2322c55e'/><text x='96' y='150' text-anchor='middle' fill='white' font-family='Arial' font-size='16' font-weight='bold'>AB</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' fill='%2322c55e' rx='64'/><circle cx='256' cy='256' r='160' fill='white'/><path d='M256 96c-88.4 0-160 71.6-160 160s71.6 160 160 160 160-71.6 160-160-71.6-160-160-160zm0 256c-53 0-96-43-96-96s43-96 96-96 96 43 96 96-43 96-96 96z' fill='%2322c55e'/><text x='256' y='380' text-anchor='middle' fill='white' font-family='Arial' font-size='48' font-weight='bold'>AB</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1280 720'><rect width='1280' height='720' fill='%23f0fdf4'/><rect x='0' y='0' width='1280' height='80' fill='%2322c55e'/><text x='640' y='50' text-anchor='middle' fill='white' font-family='Arial' font-size='24' font-weight='bold'>Anjaneya Borewells - Desktop View</text><rect x='40' y='120' width='600' height='400' fill='white' stroke='%23e5e7eb' stroke-width='2' rx='8'/><text x='340' y='180' text-anchor='middle' fill='%231f2937' font-family='Arial' font-size='20'>Hero Section</text><text x='340' y='220' text-anchor='middle' fill='%236b7280' font-family='Arial' font-size='16'>Professional Borewell Drilling Services</text><rect x='680' y='120' width='560' height='400' fill='white' stroke='%23e5e7eb' stroke-width='2' rx='8'/><text x='960' y='180' text-anchor='middle' fill='%231f2937' font-family='Arial' font-size='20'>Cost Calculator</text><text x='960' y='220' text-anchor='middle' fill='%236b7280' font-family='Arial' font-size='16'>Interactive Quote Generator</text></svg>",
+      "sizes": "1280x720",
+      "type": "image/svg+xml",
+      "form_factor": "wide"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 390 844'><rect width='390' height='844' fill='%23f0fdf4'/><rect x='0' y='0' width='390' height='60' fill='%2322c55e'/><text x='195' y='40' text-anchor='middle' fill='white' font-family='Arial' font-size='16' font-weight='bold'>Anjaneya Borewells</text><rect x='20' y='80' width='350' height='200' fill='white' stroke='%23e5e7eb' stroke-width='2' rx='8'/><text x='195' y='120' text-anchor='middle' fill='%231f2937' font-family='Arial' font-size='18'>Hero Section</text><text x='195' y='150' text-anchor='middle' fill='%236b7280' font-family='Arial' font-size='14'>Professional Services</text><rect x='20' y='300' width='350' height='250' fill='white' stroke='%23e5e7eb' stroke-width='2' rx='8'/><text x='195' y='340' text-anchor='middle' fill='%231f2937' font-family='Arial' font-size='18'>Calculator</text><text x='195' y='370' text-anchor='middle' fill='%236b7280' font-family='Arial' font-size='14'>Get Instant Quotes</text></svg>",
+      "sizes": "390x844",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Cost Calculator",
+      "short_name": "Calculator",
+      "description": "Get instant borewell cost estimates",
+      "url": "/#calculator",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' fill='%2322c55e' rx='12'/><circle cx='48' cy='48' r='30' fill='white'/><path d='M48 20c-15.5 0-28 12.5-28 28s12.5 28 28 28 28-12.5 28-28-12.5-28-28-28zm0 40c-6.6 0-12-5.4-12-12s5.4-12 12-12 12 5.4 12 12-5.4 12-12 12z' fill='%2322c55e'/><text x='48' y='75' text-anchor='middle' fill='white' font-family='Arial' font-size='12' font-weight='bold'>₹</text></svg>",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Contact Us",
+      "short_name": "Contact",
+      "description": "Get in touch for borewell services",
+      "url": "/#contact",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' fill='%2322c55e' rx='12'/><circle cx='48' cy='48' r='30' fill='white'/><path d='M48 20c-15.5 0-28 12.5-28 28s12.5 28 28 28 28-12.5 28-28-12.5-28-28-28zm0 40c-6.6 0-12-5.4-12-12s5.4-12 12-12 12 5.4 12 12-5.4 12-12 12z' fill='%2322c55e'/><text x='48' y='75' text-anchor='middle' fill='white' font-family='Arial' font-size='12' font-weight='bold'>📞</text></svg>",
+          "sizes": "96x96"
+        }
+      ]
+    },
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
+}
