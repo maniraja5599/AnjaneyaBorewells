@@ -1699,13 +1699,17 @@ section {
 .live-total-display {
     background: linear-gradient(135deg, var(--primary-color), #059669);
     border-radius: 16px;
-    padding: 1.5rem;
+    padding: 2rem;
     box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);
     position: relative;
     overflow: hidden;
     margin-bottom: 1rem;
     text-align: center;
     color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
 }
 
 .live-total-display::before {
@@ -1718,33 +1722,13 @@ section {
     background: linear-gradient(90deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.3));
 }
 
-.total-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 1rem;
-}
-
-.total-icon {
-    font-size: 1.5rem;
-    opacity: 0.9;
-}
-
-.total-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    opacity: 0.9;
-}
-
 .total-amount {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 800;
     color: white;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     animation: pulse 2s infinite;
+    margin: 0;
 }
 
 @keyframes pulse {
@@ -1755,16 +1739,13 @@ section {
 /* Mobile responsive for live total display */
 @media (max-width: 768px) {
     .live-total-display {
-        padding: 1rem;
+        padding: 1.5rem;
         margin-bottom: 0.75rem;
+        min-height: 60px;
     }
     
     .total-amount {
-        font-size: 2rem;
-    }
-    
-    .total-title {
-        font-size: 1rem;
+        font-size: 2.2rem;
     }
 }
 
@@ -1803,6 +1784,8 @@ section {
     flex: 1;
     min-width: 0;
     max-width: none;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Mobile responsive for price controls */
