@@ -541,22 +541,6 @@
                                         <span>Rebore (Repair)</span>
                                     </div>
                                 </div>
-                                <div class="drilling-rate-controls">
-                                    <button type="button" class="settings-icon-btn" id="priceSettingsBtn" title="Price Settings">
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <circle cx="12" cy="12" r="3"></circle>
-                                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-                                        </svg>
-                                        <span class="settings-text">Price</span>
-                                    </button>
-                                    <div class="gst-toggle-compact">
-                                        <label class="gst-toggle-label-compact">
-                                            <span class="toggle-text-compact">GST</span>
-                                            <input type="checkbox" id="gstToggleCompact" name="gstToggleCompact">
-                                            <span class="toggle-slider-compact"></span>
-                                        </label>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                         
@@ -598,12 +582,12 @@
                         <!-- Total Depth and Base Drilling Rate -->
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="totalDepthNew">Total Depth (ft)</label>
+                                <label for="totalDepth">Total Depth (ft)</label>
                                 <div class="input-with-buttons">
-                                    <input type="number" id="totalDepthNew" name="totalDepthNew" value="800" min="1" required>
+                                    <input type="number" id="totalDepth" name="totalDepth" value="800" min="1" required>
                                     <div class="input-buttons">
-                                        <button type="button" class="input-btn input-btn-up" data-target="totalDepthNew" data-step="50">▲</button>
-                                        <button type="button" class="input-btn input-btn-down" data-target="totalDepthNew" data-step="50">▼</button>
+                                        <button type="button" class="input-btn input-btn-up" data-target="totalDepth" data-step="50">▲</button>
+                                        <button type="button" class="input-btn input-btn-down" data-target="totalDepth" data-step="50">▼</button>
                                     </div>
                                 </div>
                             </div>
@@ -642,8 +626,27 @@
                             </div>
                         </div>
 
-
-
+                        <!-- Price Settings and GST Controls -->
+                        <div class="form-group">
+                            <div class="price-controls-section">
+                                <div class="price-controls-row">
+                                    <button type="button" class="settings-icon-btn" id="priceSettingsBtn" title="Price Settings">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                        </svg>
+                                        <span class="settings-text">Price Settings</span>
+                                    </button>
+                                    <div class="gst-toggle-compact">
+                                        <label class="gst-toggle-label-compact">
+                                            <span class="toggle-text-compact">GST</span>
+                                            <input type="checkbox" id="gstToggleCompact" name="gstToggleCompact">
+                                            <span class="toggle-slider-compact"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="form-actions" style="display: none;">
                             <button type="button" class="btn btn-secondary ripple" id="resetBtn">
