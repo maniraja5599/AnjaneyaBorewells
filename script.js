@@ -1413,6 +1413,12 @@ class CostCalculator {
         doc.setFontSize(16); // Reduced size
         doc.setFont('helvetica', 'bold');
         doc.text('QUOTATION', 150, 25);
+        
+        // Approximate note
+        doc.setFontSize(10);
+        doc.setFont('helvetica', 'italic');
+        doc.setTextColor(150, 150, 150); // Light gray
+        doc.text('(Approximate)', 150, 35);
 
         // Reset text color
         doc.setTextColor(0, 0, 0);
