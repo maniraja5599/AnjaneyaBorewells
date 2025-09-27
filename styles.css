@@ -4204,6 +4204,130 @@ input[type="number"]::-webkit-inner-spin-button {
     box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
+/* Inline Slab Rates Section */
+.inline-slab-rates-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.inline-slab-rates-section h5 {
+    margin: 0 0 15px 0;
+    color: #1f2937;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.slab-rates-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.slab-rate-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(34, 197, 94, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.slab-rate-item:hover {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(34, 197, 94, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.1);
+}
+
+.slab-rate-label {
+    min-width: 120px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #374151;
+    flex-shrink: 0;
+}
+
+.slab-rate-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+    color: #374151;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.slab-rate-input:focus {
+    outline: none;
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+    transform: translateY(-1px);
+}
+
+.slab-rate-input:hover {
+    border-color: #d1d5db;
+}
+
+.slab-rate-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.slab-rate-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.slab-rate-btn.edit {
+    background: #3b82f6;
+    color: white;
+}
+
+.slab-rate-btn.edit:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.slab-rate-btn.auto {
+    background: #f3f4f6;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+}
+
+.slab-rate-btn.auto:hover {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+.slab-rate-status {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.slab-rate-status.manual {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.slab-rate-status.auto {
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
 /* Price Settings Panel (Hidden) */
 #hiddenSettingsPanel {
     display: none !important;
@@ -5131,6 +5255,47 @@ img {
         height: 36px;
         font-size: 22px;
     }
+    
+    /* Inline Slab Rates Mobile */
+    .slab-rate-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 10px;
+    }
+    
+    .slab-rate-label {
+        min-width: auto;
+        font-size: 13px;
+        margin-bottom: 4px;
+    }
+    
+    .slab-rate-input {
+        padding: 10px 12px;
+        font-size: 16px;
+        border-radius: 8px;
+        border-width: 2px;
+    }
+    
+    .slab-rate-actions {
+        justify-content: space-between;
+        margin-top: 8px;
+    }
+    
+    .slab-rate-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+        border-radius: 6px;
+        flex: 1;
+    }
+    
+    .slab-rate-status {
+        font-size: 12px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        text-align: center;
+        margin-top: 4px;
+    }
 
     /* Price Settings Panel Mobile (Hidden) */
     #hiddenSettingsPanel {
@@ -5416,6 +5581,37 @@ img {
         width: 40px;
         height: 40px;
         font-size: 24px;
+    }
+    
+    /* Inline Slab Rates Small Mobile */
+    .slab-rate-item {
+        padding: 8px;
+        gap: 6px;
+    }
+    
+    .slab-rate-label {
+        font-size: 14px;
+        margin-bottom: 6px;
+    }
+    
+    .slab-rate-input {
+        padding: 12px 14px;
+        font-size: 18px;
+        border-radius: 10px;
+        border-width: 3px;
+    }
+    
+    .slab-rate-btn {
+        padding: 10px 14px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
+    
+    .slab-rate-status {
+        font-size: 13px;
+        padding: 6px 10px;
+        border-radius: 6px;
+        margin-top: 6px;
     }
 
     /* Price Settings Panel Small Mobile (Hidden) */
