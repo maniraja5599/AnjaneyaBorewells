@@ -689,10 +689,11 @@
                             <div class="inline-settings-actions">
                                 <button type="button" class="btn btn-secondary" id="resetInlineSettings">Reset</button>
                                 <button type="button" class="btn btn-primary" id="saveInlineSettings">Save</button>
+                                <button type="button" class="btn btn-outline" id="toggleSlabRates">Configure Slab Rates</button>
                             </div>
                             
-                            <!-- Slab Rate Configuration -->
-                            <div class="inline-slab-rates-section">
+                            <!-- Slab Rate Configuration (Initially Hidden) -->
+                            <div class="inline-slab-rates-section" id="slabRatesSection" style="display: none;">
                                 <h5>Slab Rate Configuration</h5>
                                 <div class="slab-rates-grid" id="inlineSlabRatesGrid">
                                     <!-- Slab rates will be populated by JavaScript -->

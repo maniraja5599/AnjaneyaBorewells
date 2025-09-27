@@ -4204,6 +4204,25 @@ input[type="number"]::-webkit-inner-spin-button {
     box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
+.inline-settings-actions .btn-outline {
+    background: transparent;
+    color: #22c55e;
+    border: 2px solid #22c55e;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.inline-settings-actions .btn-outline:hover {
+    background: #22c55e;
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
 /* Inline Slab Rates Section */
 .inline-slab-rates-section {
     margin-top: 20px;

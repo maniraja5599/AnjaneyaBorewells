@@ -665,14 +665,16 @@ class AnjaneyaBorewells {
             this.resetInlineSettings();
         });
         
+        // Toggle slab rates button
+        document.getElementById('toggleSlabRates')?.addEventListener('click', () => {
+            this.toggleSlabRatesSection();
+        });
+        
         // Load current settings into inline inputs
         this.loadInlineSettings();
         
         // Add select all functionality to inline inputs
         this.setupInlineSelectAll();
-        
-        // Load and setup inline slab rates
-        this.loadInlineSlabRates();
     }
     
     toggleInlineSettings() {
@@ -684,7 +686,8 @@ class AnjaneyaBorewells {
             if (!isVisible) {
                 // Load current settings when opening
                 this.loadInlineSettings();
-                this.loadInlineSlabRates();
+                // Hide slab rates section initially
+                this.hideSlabRatesSection();
             }
         }
     }
@@ -884,7 +887,7 @@ class AnjaneyaBorewells {
             slabItem.className = 'slab-rate-item';
             slabItem.innerHTML = `
                 <div class="slab-rate-label">${slab.range}</div>
-                <input type="number" class="slab-rate-input" value="${slab.rate}" min="0" step="1" data-index="${index}">
+                <input type="number" class="slab-rate-input" value="${slab.rate}" min="0" step="1" data-index="${index}" readonly>
                 <div class="slab-rate-actions">
                     <button type="button" class="slab-rate-btn edit" data-index="${index}">Edit</button>
                     <button type="button" class="slab-rate-btn auto" data-index="${index}">Auto</button>
@@ -967,6 +970,7 @@ class AnjaneyaBorewells {
         const statusElement = document.querySelector(`.slab-rate-item:nth-child(${index + 1}) .slab-rate-status`);
         const editButton = document.querySelector(`.slab-rate-btn.edit[data-index="${index}"]`);
         const autoButton = document.querySelector(`.slab-rate-btn.auto[data-index="${index}"]`);
+        const input = document.querySelector(`.slab-rate-input[data-index="${index}"]`);
         
         if (statusElement) {
             statusElement.textContent = 'Manual';
@@ -982,6 +986,21 @@ class AnjaneyaBorewells {
             autoButton.style.background = '#f3f4f6';
             autoButton.style.color = '#6b7280';
         }
+        
+        // Make input editable and focus
+        if (input) {
+            input.readOnly = false;
+            input.style.backgroundColor = '#fff3cd';
+            input.style.borderColor = '#ffc107';
+            input.focus();
+            input.select();
+        }
+        
+        // Update calculator with current value
+        if (input && this.calculator.slabRates && this.calculator.slabRates[index]) {
+            this.calculator.slabRates[index].rate = parseFloat(input.value) || 90;
+            this.calculator.calculate();
+        }
     }
     
     setInlineSlabRateAuto(index) {
@@ -996,6 +1015,9 @@ class AnjaneyaBorewells {
         
         if (input) {
             input.value = calculatedRate;
+            input.readOnly = true;
+            input.style.backgroundColor = '';
+            input.style.borderColor = '';
         }
         
         if (statusElement) {
@@ -1023,6 +1045,42 @@ class AnjaneyaBorewells {
     calculateSlabRateFromBase(baseRate, index) {
         const multipliers = [1.0, 1.05, 1.17, 1.39, 1.72, 2.17, 2.72, 3.28];
         return Math.round(baseRate * multipliers[index] || baseRate);
+    }
+    
+    toggleSlabRatesSection() {
+        const slabSection = document.getElementById('slabRatesSection');
+        const toggleBtn = document.getElementById('toggleSlabRates');
+        
+        if (slabSection && toggleBtn) {
+            const isVisible = slabSection.style.display !== 'none';
+            
+            if (isVisible) {
+                // Hide slab rates section
+                slabSection.style.display = 'none';
+                toggleBtn.textContent = 'Configure Slab Rates';
+            } else {
+                // Show slab rates section
+                slabSection.style.display = 'block';
+                toggleBtn.textContent = 'Hide Slab Rates';
+                
+                // Load slab rates if not already loaded
+                if (!document.querySelector('.slab-rate-item')) {
+                    this.loadInlineSlabRates();
+                }
+            }
+        }
+    }
+    
+    hideSlabRatesSection() {
+        const slabSection = document.getElementById('slabRatesSection');
+        const toggleBtn = document.getElementById('toggleSlabRates');
+        
+        if (slabSection) {
+            slabSection.style.display = 'none';
+        }
+        if (toggleBtn) {
+            toggleBtn.textContent = 'Configure Slab Rates';
+        }
     }
 }
 
