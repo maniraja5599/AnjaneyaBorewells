@@ -1719,8 +1719,9 @@ class CostCalculator {
         const inputs = this.getInputs();
         const gstEnabled = this.isGstEnabled();
 
-        // Create enhanced WhatsApp message with better line spacing
+        // Create enhanced WhatsApp message with perfect line-by-line spacing
         let message = `*🔷 ANJANEYA BOREWELLS 🔷*
+
 Professional Borewell Solutions
 
 ══════════════════════════
@@ -1728,7 +1729,9 @@ Professional Borewell Solutions
 *📋 BOREWELL QUOTATION*
 
 📅 *Date:* ${new Date().toLocaleDateString('en-IN')}
+
 🔽 *Total Depth:* ${inputs.totalDepth} ft
+
 💧 *Type:* ${inputs.drillingType === 'new' ? 'New Drilling' : 'Rebore (Repair)'}
 
 ══════════════════════════
@@ -1745,14 +1748,16 @@ Professional Borewell Solutions
                 });
                 message += `
 
-• ${formattedRange} → ₹${slab.rate}/ft 
+• ${formattedRange}
+  → ₹${slab.rate}/ft
   = *Rs.${slab.cost.toLocaleString('en-IN')}*`;
             });
             
             message += `
 
 ──────────────────────────
-✅ *Total Drilling Cost:* 
+
+✅ *Total Drilling Cost:*
    *Rs.${results.drillingCost.toLocaleString('en-IN')}*
 
 ──────────────────────────
@@ -1761,10 +1766,12 @@ Professional Borewell Solutions
         } else {
             message += `
 
-• Drilling Cost = *Rs.${results.drillingCost.toLocaleString('en-IN')}*
+• Drilling Cost
+  = *Rs.${results.drillingCost.toLocaleString('en-IN')}*
 
 ──────────────────────────
-✅ *Total Drilling Cost:* 
+
+✅ *Total Drilling Cost:*
    *Rs.${results.drillingCost.toLocaleString('en-IN')}*
 
 ──────────────────────────
@@ -1776,31 +1783,33 @@ Professional Borewell Solutions
         if (inputs.pvc7Length > 0) {
             message += `
 
-• 7" PVC: ${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft 
+• 7" PVC: ${inputs.pvc7Length} ft
+  × ₹${this.defaults.pvc7Rate}/ft
   = *Rs.${results.pvc7Cost.toLocaleString('en-IN')}*`;
         }
         
         if (inputs.pvc10Length > 0) {
             message += `
 
-• 10" PVC: ${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft 
+• 10" PVC: ${inputs.pvc10Length} ft
+  × ₹${this.defaults.pvc10Rate}/ft
   = *Rs.${results.pvc10Cost.toLocaleString('en-IN')}*`;
         }
         
         message += `
 
-• Bore Bata (per bore) 
+• Bore Bata (per bore)
   = *Rs.${results.boreBataCost.toLocaleString('en-IN')}*
 
 ══════════════════════════
 
-📌 *SUBTOTAL:* 
+📌 *SUBTOTAL:*
    *Rs.${results.subtotal.toLocaleString('en-IN')}*`;
 
         if (gstEnabled) {
             message += `
 
-📌 *GST (${results.gstPercentage}%):* 
+📌 *GST (${results.gstPercentage}%):*
    *Rs.${results.gstAmount.toLocaleString('en-IN')}*`;
         }
 
@@ -1808,8 +1817,8 @@ Professional Borewell Solutions
 
 ══════════════════════════
 
-💰 *FINAL TOTAL COST:* 
-   *Rs.${results.totalCost.toLocaleString('en-IN')}* 
+💰 *FINAL TOTAL COST:*
+   *Rs.${results.totalCost.toLocaleString('en-IN')}*
    _(Approximate)_
 
 ══════════════════════════
@@ -1817,8 +1826,11 @@ Professional Borewell Solutions
 *📋 TERMS & CONDITIONS:*
 
 ✓ Quotation valid for 30 days
-✓ Payment: 50% advance, 50% on completion  
+
+✓ Payment: 50% advance, 50% on completion
+
 ✓ GST charges as applicable
+
 ✓ Final costs may vary based on site conditions
 
 ──────────────────────────
@@ -1826,15 +1838,19 @@ Professional Borewell Solutions
 *📞 CONTACT INFORMATION:*
 
 📱 *Primary:* +91 965 965 7777
+
 📱 *Secondary:* +91 944 33 73573
+
 📧 *Email:* anjaneyaborewells@gmail.com
 
 ──────────────────────────
 
 🙏 *Thank you for choosing*
+
 *ANJANEYA BOREWELLS!*
 
 _Professional Borewell Solutions_
+
 _"Makers of Green India!"_`;
 
         // Encode message for WhatsApp URL
