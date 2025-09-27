@@ -2152,47 +2152,88 @@ class HiddenSettingsManager {
         priceInputs.forEach(inputId => {
             const input = document.getElementById(inputId);
             if (input) {
-                // Select all text on focus
-                input.addEventListener('focus', (e) => {
-                    // Small delay to ensure the input is fully focused
+                // Remove any existing event listeners to prevent duplicates
+                if (this.handleInputFocus) {
+                    input.removeEventListener('focus', this.handleInputFocus);
+                }
+                if (this.handleInputClick) {
+                    input.removeEventListener('click', this.handleInputClick);
+                }
+                if (this.handleInputTouchStart) {
+                    input.removeEventListener('touchstart', this.handleInputTouchStart);
+                }
+                if (this.handleInputTouchEnd) {
+                    input.removeEventListener('touchend', this.handleInputTouchEnd);
+                }
+                
+                // Create new bound methods
+                this.handleInputFocus = this.handleInputFocus.bind(this);
+                this.handleInputClick = this.handleInputClick.bind(this);
+                this.handleInputTouchStart = this.handleInputTouchStart.bind(this);
+                this.handleInputTouchEnd = this.handleInputTouchEnd.bind(this);
+                
+                // Add event listeners
+                input.addEventListener('focus', this.handleInputFocus);
+                input.addEventListener('click', this.handleInputClick);
+                input.addEventListener('touchstart', this.handleInputTouchStart);
+                input.addEventListener('touchend', this.handleInputTouchEnd);
+                
+                // Add a simple fallback method
+                input.addEventListener('mousedown', (e) => {
                     setTimeout(() => {
-                        e.target.select();
-                    }, 10);
-                });
-                
-                // Allow clicking to deselect if needed
-                input.addEventListener('click', (e) => {
-                    // If text is already selected, allow normal cursor placement
-                    if (e.target.selectionStart === e.target.selectionEnd) {
-                        // Text is not selected, so select all
-                        e.target.select();
-                    }
-                });
-                
-                // Prevent select all on touch devices when user wants to position cursor
-                input.addEventListener('touchstart', (e) => {
-                    // Store the initial touch position
-                    e.target._touchStartTime = Date.now();
-                    e.target._touchStartX = e.touches[0].clientX;
-                    e.target._touchStartY = e.touches[0].clientY;
-                });
-                
-                input.addEventListener('touchend', (e) => {
-                    const touchDuration = Date.now() - e.target._touchStartTime;
-                    const touchDistance = Math.sqrt(
-                        Math.pow(e.changedTouches[0].clientX - e.target._touchStartX, 2) +
-                        Math.pow(e.changedTouches[0].clientY - e.target._touchStartY, 2)
-                    );
-                    
-                    // If it's a quick tap (not a long press or drag), select all
-                    if (touchDuration < 300 && touchDistance < 10) {
-                        setTimeout(() => {
+                        if (e.target && e.target.select) {
                             e.target.select();
-                        }, 10);
-                    }
+                        }
+                    }, 10);
                 });
             }
         });
+    }
+    
+    handleInputFocus(e) {
+        // Select all text on focus with a small delay
+        setTimeout(() => {
+            if (e.target && e.target.select) {
+                e.target.select();
+            }
+        }, 50);
+    }
+    
+    handleInputClick(e) {
+        // Select all text on click
+        setTimeout(() => {
+            if (e.target && e.target.select) {
+                e.target.select();
+            }
+        }, 10);
+    }
+    
+    handleInputTouchStart(e) {
+        // Store touch start data
+        if (e.target) {
+            e.target._touchStartTime = Date.now();
+            e.target._touchStartX = e.touches[0].clientX;
+            e.target._touchStartY = e.touches[0].clientY;
+        }
+    }
+    
+    handleInputTouchEnd(e) {
+        if (!e.target) return;
+        
+        const touchDuration = Date.now() - (e.target._touchStartTime || 0);
+        const touchDistance = Math.sqrt(
+            Math.pow((e.changedTouches[0].clientX || 0) - (e.target._touchStartX || 0), 2) +
+            Math.pow((e.changedTouches[0].clientY || 0) - (e.target._touchStartY || 0), 2)
+        );
+        
+        // If it's a quick tap (not a long press or drag), select all
+        if (touchDuration < 300 && touchDistance < 10) {
+            setTimeout(() => {
+                if (e.target && e.target.select) {
+                    e.target.select();
+                }
+            }, 50);
+        }
     }
     
     toggleSettings() {
@@ -2206,7 +2247,7 @@ class HiddenSettingsManager {
             // Re-setup select all inputs when panel opens
             setTimeout(() => {
                 this.setupSelectAllInputs();
-            }, 100);
+            }, 200);
         } else {
             this.settingsPanel.classList.remove('show');
             this.settingsPanel.style.display = 'none';
