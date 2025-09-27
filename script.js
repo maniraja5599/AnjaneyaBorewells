@@ -2038,7 +2038,7 @@ class CostCalculator {
         // Bore Bata
         doc.text('BATA', 20, yPos);
         doc.text('1', 90, yPos);
-        doc.text('Rs.500', 130, yPos);
+        doc.text(`Rs.${results.boreBataCost.toLocaleString('en-IN')}`, 130, yPos);
         doc.text(`Rs.${results.boreBataCost.toLocaleString('en-IN')}`, 170, yPos);
         yPos += 20;
 
