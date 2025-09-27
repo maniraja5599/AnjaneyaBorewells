@@ -716,18 +716,21 @@ class AnjaneyaBorewells {
         // Use saved settings or fallback to calculator defaults
         const pvc7Rate = settings.pvc7Rate || this.calculator.defaults.pvc7Rate || 450;
         const pvc10Rate = settings.pvc10Rate || this.calculator.defaults.pvc10Rate || 750;
+        const baseDrillingRate = settings.baseDrillingRate || this.calculator.defaults.drillingRate || 90;
         const oldBoreRate = settings.oldBoreRate || this.calculator.defaults.oldBoreRate || 40;
         const boreBataRate = settings.boreBataRate || this.calculator.defaults.boreBataRate || 2000;
         const gstPercentage = settings.gstPercentage || this.calculator.defaults.gstPercentage || 18;
         
         const pvc7Input = document.getElementById('inlinePvc7Rate');
         const pvc10Input = document.getElementById('inlinePvc10Rate');
+        const baseDrillingInput = document.getElementById('inlineBaseDrillingRate');
         const oldBoreInput = document.getElementById('inlineOldBoreRate');
         const boreBataInput = document.getElementById('inlineBoreBataRate');
         const gstInput = document.getElementById('inlineGstPercentage');
         
         if (pvc7Input) pvc7Input.value = pvc7Rate;
         if (pvc10Input) pvc10Input.value = pvc10Rate;
+        if (baseDrillingInput) baseDrillingInput.value = baseDrillingRate;
         if (oldBoreInput) oldBoreInput.value = oldBoreRate;
         if (boreBataInput) boreBataInput.value = boreBataRate;
         if (gstInput) gstInput.value = gstPercentage;
@@ -736,6 +739,15 @@ class AnjaneyaBorewells {
         if (settings.slabRates && settings.slabRates.length > 0) {
             this.calculator.slabRates = settings.slabRates;
         }
+        
+        // Sync with main page drilling rate
+        const mainDrillingRateInput = document.getElementById('drillingRate');
+        if (mainDrillingRateInput) {
+            mainDrillingRateInput.value = baseDrillingRate;
+        }
+        
+        // Setup real-time syncing for base drilling rate
+        this.setupBaseDrillingRateSync();
         
         // Show notification if settings were loaded from storage
         if (saved && Object.keys(settings).length > 0) {
@@ -746,6 +758,7 @@ class AnjaneyaBorewells {
     saveInlineSettings() {
         const pvc7Rate = parseFloat(document.getElementById('inlinePvc7Rate').value) || 450;
         const pvc10Rate = parseFloat(document.getElementById('inlinePvc10Rate').value) || 750;
+        const baseDrillingRate = parseFloat(document.getElementById('inlineBaseDrillingRate').value) || 90;
         const oldBoreRate = parseFloat(document.getElementById('inlineOldBoreRate').value) || 40;
         const boreBataRate = parseFloat(document.getElementById('inlineBoreBataRate').value) || 2000;
         const gstPercentage = parseFloat(document.getElementById('inlineGstPercentage').value) || 18;
@@ -765,6 +778,7 @@ class AnjaneyaBorewells {
         // Update calculator defaults
         this.calculator.defaults.pvc7Rate = pvc7Rate;
         this.calculator.defaults.pvc10Rate = pvc10Rate;
+        this.calculator.defaults.drillingRate = baseDrillingRate;
         this.calculator.defaults.oldBoreRate = oldBoreRate;
         this.calculator.defaults.boreBataRate = boreBataRate;
         this.calculator.defaults.gstPercentage = gstPercentage;
@@ -772,14 +786,20 @@ class AnjaneyaBorewells {
         // Update calculator slab rates
         this.calculator.slabRates = slabRates;
         
+        // Sync with main page drilling rate
+        const mainDrillingRateInput = document.getElementById('drillingRate');
+        if (mainDrillingRateInput) {
+            mainDrillingRateInput.value = baseDrillingRate;
+        }
+        
         // Save to localStorage
         localStorage.setItem('anjaneya-calculator-settings', JSON.stringify({
             pvc7Rate,
             pvc10Rate,
+            baseDrillingRate,
             oldBoreRate,
             boreBataRate,
             gstPercentage,
-            baseDrillingRate: this.calculator.defaults.drillingRate,
             slabRates: slabRates
         }));
         
@@ -798,6 +818,7 @@ class AnjaneyaBorewells {
             // Reset to default values
             document.getElementById('inlinePvc7Rate').value = 450;
             document.getElementById('inlinePvc10Rate').value = 750;
+            document.getElementById('inlineBaseDrillingRate').value = 90;
             document.getElementById('inlineOldBoreRate').value = 40;
             document.getElementById('inlineBoreBataRate').value = 2000;
             document.getElementById('inlineGstPercentage').value = 18;
@@ -812,6 +833,7 @@ class AnjaneyaBorewells {
             // Update calculator defaults
             this.calculator.defaults.pvc7Rate = 450;
             this.calculator.defaults.pvc10Rate = 750;
+            this.calculator.defaults.drillingRate = 90;
             this.calculator.defaults.oldBoreRate = 40;
             this.calculator.defaults.boreBataRate = 2000;
             this.calculator.defaults.gstPercentage = 18;
@@ -819,14 +841,20 @@ class AnjaneyaBorewells {
             // Update calculator slab rates
             this.calculator.slabRates = defaultSlabs;
             
+            // Sync with main page drilling rate
+            const mainDrillingRateInput = document.getElementById('drillingRate');
+            if (mainDrillingRateInput) {
+                mainDrillingRateInput.value = 90;
+            }
+            
             // Save to localStorage
             localStorage.setItem('anjaneya-calculator-settings', JSON.stringify({
                 pvc7Rate: 450,
                 pvc10Rate: 750,
+                baseDrillingRate: 90,
                 oldBoreRate: 40,
                 boreBataRate: 2000,
                 gstPercentage: 18,
-                baseDrillingRate: this.calculator.defaults.drillingRate,
                 slabRates: defaultSlabs
             }));
             
@@ -842,6 +870,7 @@ class AnjaneyaBorewells {
         const inlineInputs = [
             'inlinePvc7Rate',
             'inlinePvc10Rate',
+            'inlineBaseDrillingRate',
             'inlineOldBoreRate',
             'inlineBoreBataRate',
             'inlineGstPercentage'
@@ -867,6 +896,58 @@ class AnjaneyaBorewells {
                 });
             }
         });
+    }
+    
+    setupBaseDrillingRateSync() {
+        const baseDrillingInput = document.getElementById('inlineBaseDrillingRate');
+        const mainDrillingInput = document.getElementById('drillingRate');
+        
+        if (baseDrillingInput && mainDrillingInput) {
+            // Sync from price settings to main page
+            baseDrillingInput.addEventListener('input', (e) => {
+                const newRate = parseFloat(e.target.value) || 90;
+                mainDrillingInput.value = newRate;
+                this.calculator.defaults.drillingRate = newRate;
+                
+                // Auto-recalculate slab rates if slab rate section is visible
+                this.autoRecalculateSlabRates(newRate);
+                
+                // Trigger calculator update
+                this.calculator.calculate();
+            });
+            
+            // Sync from main page to price settings
+            mainDrillingInput.addEventListener('input', (e) => {
+                const newRate = parseFloat(e.target.value) || 90;
+                baseDrillingInput.value = newRate;
+                this.calculator.defaults.drillingRate = newRate;
+                
+                // Auto-recalculate slab rates if slab rate section is visible
+                this.autoRecalculateSlabRates(newRate);
+            });
+        }
+    }
+    
+    autoRecalculateSlabRates(baseRate) {
+        const slabRatesSection = document.getElementById('slabRatesSection');
+        const slabInputs = document.querySelectorAll('.slab-rate-input');
+        
+        // Only auto-recalculate if slab rates section is visible and has inputs
+        if (slabRatesSection && slabRatesSection.style.display !== 'none' && slabInputs.length > 0) {
+            const newSlabRates = this.calculator.calculateSlabRatesFromBaseRate(baseRate);
+            
+            slabInputs.forEach((input, index) => {
+                // Only update if input is in "Auto" mode (readonly)
+                if (input.readOnly && newSlabRates[index]) {
+                    input.value = newSlabRates[index].rate;
+                    
+                    // Update calculator slab rates
+                    if (this.calculator.slabRates && this.calculator.slabRates[index]) {
+                        this.calculator.slabRates[index].rate = newSlabRates[index].rate;
+                    }
+                }
+            });
+        }
     }
     
     showInlineSuccessNotification() {
