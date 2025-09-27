@@ -1832,15 +1832,15 @@ section {
         display: block !important;
     }
     
-    /* Drilling Type buttons mobile fixes - Vertical Layout */
+    /* Drilling Type buttons mobile fixes - Horizontal Layout */
     .drilling-type-compact {
-        gap: 12px;
-        flex-wrap: wrap;
+        gap: 10px;
+        flex-wrap: nowrap;
         overflow: visible;
         width: 100%;
         display: flex !important;
-        flex-direction: column;
-        align-items: stretch;
+        flex-direction: row;
+        align-items: center;
         justify-content: flex-start;
         padding: 8px 4px;
         margin: 0;
@@ -1848,41 +1848,42 @@ section {
     
     .drilling-type-label {
         font-size: 0.85rem;
-        width: 100%;
+        min-width: 100px;
         flex-shrink: 0;
         white-space: nowrap;
         font-weight: 600;
         color: var(--text-dark);
         text-align: left;
-        margin-bottom: 4px;
     }
     
     .drilling-type-buttons {
         display: flex !important;
-        gap: 8px;
-        width: 100%;
-        justify-content: stretch;
+        gap: 6px;
+        flex: 1;
+        width: auto;
+        justify-content: flex-start;
         flex-direction: row;
     }
     
     .drilling-button {
         flex: 1;
-        min-height: 40px !important;
-        padding: 10px 12px !important;
-        font-size: 0.8rem !important;
+        min-height: 36px !important;
+        padding: 8px 10px !important;
+        font-size: 0.75rem !important;
         display: flex !important;
         align-items: center;
         justify-content: center;
         white-space: nowrap;
         background: rgba(255, 255, 255, 0.95) !important;
         border: 1.5px solid rgba(34, 197, 94, 0.3) !important;
-        border-radius: 8px;
+        border-radius: 6px;
         color: var(--text-dark) !important;
         font-weight: 500 !important;
         text-align: center;
         visibility: visible !important;
         opacity: 1 !important;
-        width: 100%;
+        min-width: 70px;
+        max-width: 90px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         transition: all 0.2s ease;
     }
@@ -4984,12 +4985,12 @@ img {
         display: block !important;
     }
     
-    /* Fix Drilling Type buttons visibility on small mobile - Vertical Layout */
+    /* Fix Drilling Type buttons visibility on small mobile - Horizontal Layout */
     .drilling-type-compact {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
-        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: nowrap;
         width: 100%;
         overflow: visible;
         display: flex !important;
@@ -5000,29 +5001,29 @@ img {
     
     .drilling-type-label {
         font-size: 0.8rem;
-        width: 100%;
+        min-width: 90px;
         flex-shrink: 0;
         white-space: nowrap;
         font-weight: 600;
         color: var(--text-dark);
         text-align: left;
-        margin-bottom: 2px;
     }
     
     .drilling-type-buttons {
         display: flex !important;
-        gap: 6px;
-        width: 100%;
-        justify-content: stretch;
+        gap: 4px;
+        flex: 1;
+        width: auto;
+        justify-content: flex-start;
         flex-direction: row;
     }
     
     .drilling-button {
         flex: 1;
-        min-height: 36px !important;
-        padding: 8px 10px !important;
-        font-size: 0.75rem !important;
-        border-radius: 6px;
+        min-height: 32px !important;
+        padding: 6px 8px !important;
+        font-size: 0.7rem !important;
+        border-radius: 4px;
         display: flex !important;
         align-items: center;
         justify-content: center;
@@ -5032,7 +5033,8 @@ img {
         border: 1.5px solid rgba(34, 197, 94, 0.3) !important;
         color: var(--text-dark) !important;
         font-weight: 500 !important;
-        width: 100%;
+        min-width: 60px;
+        max-width: 80px;
         visibility: visible !important;
         opacity: 1 !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
