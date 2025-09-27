@@ -1719,27 +1719,27 @@ class CostCalculator {
         const inputs = this.getInputs();
         const gstEnabled = this.isGstEnabled();
 
-        // Create WhatsApp message with emoji-based format
-        let message = `ANJANEYA BOREWELLS
-Professional Borewell Solutions
-
-BOREWELL QUOTATION
+        // Create WhatsApp message with simplified format
+        let message = `Borewell Quote Request
 📅 Date: ${new Date().toLocaleDateString('en-IN')}
-🔽 Total Depth: ${inputs.totalDepth} ft
-    7"   PVC : ${inputs.pvc7Length} ft
-    10"  PVC : ${inputs.pvc10Length} ft
-Drilling Cost Breakdown (Slab Rate):`;
+
+Project Details:
+• Depth: ${inputs.totalDepth} ft
+• Base Rate: ₹${inputs.baseRate}/ft
+• 7" PVC: ${inputs.pvc7Length} ft
+• 10" PVC: ${inputs.pvc10Length} ft
+
+Cost Breakdown:
+Drilling Cost (Slab Rate):`;
 
         // Add drilling cost breakdown with bullet points
         if (results.slabCalculation.slabDetails.length > 1) {
             results.slabCalculation.slabDetails.forEach(slab => {
                 const formattedRange = slab.range.replace(/(\d+)-(\d+)\s*ft/, (match, start, end) => {
-                    const paddedStart = start.padStart(3, '0');
-                    const paddedEnd = end.padStart(3, '0');
-                    return `${paddedStart} – ${paddedEnd} ft`;
+                    return `${start}-${end} ft`;
                 });
                 message += `
-• ${formattedRange} → ₹${slab.rate}/ft = Rs.${slab.cost.toLocaleString('en-IN')}`;
+• ${formattedRange}: ₹${slab.rate}/ft = Rs.${slab.cost.toLocaleString('en-IN')}`;
             });
         } else {
             message += `
@@ -1747,11 +1747,7 @@ Drilling Cost Breakdown (Slab Rate):`;
         }
 
         message += `
-
-────────────────────────────────
-✅ Total Drilling Cost: Rs.${results.drillingCost.toLocaleString('en-IN')}
-
-Additional Charges:`;
+• Total Drilling: Rs.${results.drillingCost.toLocaleString('en-IN')}`;
 
         // Additional items with bullet points
         if (inputs.pvc7Length > 0) {
@@ -1765,29 +1761,25 @@ Additional Charges:`;
         }
         
         message += `
-• Bore Bata (per bore) = Rs.${results.boreBataCost.toLocaleString('en-IN')}
-
-────────────────────────────────
-📌 Subtotal: Rs.${results.subtotal.toLocaleString('en-IN')}`;
+• Bore Bata: Rs.${results.boreBataCost.toLocaleString('en-IN')}
+• Subtotal: Rs.${results.subtotal.toLocaleString('en-IN')}`;
 
         if (gstEnabled) {
             message += `
-────────────────────────────────
-💰 Total Cost: Rs.${results.totalCost.toLocaleString('en-IN')} (Approximate)`;
+
+✅ Total Cost: Rs.${results.totalCost.toLocaleString('en-IN')}`;
         } else {
             message += `
-────────────────────────────────
-💰 Total Cost: Rs.${results.totalCost.toLocaleString('en-IN')} (Approximate)`;
+
+✅ Total Cost: Rs.${results.totalCost.toLocaleString('en-IN')}`;
         }
 
         message += `
 
-TERMS:
-• Valid for 30 days
-• Payment: 50% advance, 50% completion
-• Costs may vary as per site conditions
+Contact: +91 965 965 7777
+🌐 Instagram: https://instagram.com/anjaneyaborewells
 
-Please confirm this quote and schedule a site visit.`;
+📋 Please confirm this quote and schedule a site visit.`;
 
         // Encode message for WhatsApp URL
         const encodedMessage = encodeURIComponent(message);
