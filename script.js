@@ -700,24 +700,54 @@ class AnjaneyaBorewells {
     }
     
     loadInlineSettings() {
-        // Load settings from calculator defaults
-        const defaults = this.calculator.defaults;
+        // Load settings from localStorage first, then fallback to calculator defaults
+        const saved = localStorage.getItem('anjaneya-calculator-settings');
+        let settings = {};
+        
+        if (saved) {
+            try {
+                settings = JSON.parse(saved);
+            } catch (e) {
+                console.warn('Failed to parse saved settings:', e);
+                settings = {};
+            }
+        }
+        
+        // Use saved settings or fallback to calculator defaults
+        const pvc7Rate = settings.pvc7Rate || this.calculator.defaults.pvc7Rate || 450;
+        const pvc10Rate = settings.pvc10Rate || this.calculator.defaults.pvc10Rate || 750;
+        const oldBoreRate = settings.oldBoreRate || this.calculator.defaults.oldBoreRate || 40;
+        const boreBataRate = settings.boreBataRate || this.calculator.defaults.boreBataRate || 2000;
+        const gstPercentage = settings.gstPercentage || this.calculator.defaults.gstPercentage || 18;
         
         const pvc7Input = document.getElementById('inlinePvc7Rate');
         const pvc10Input = document.getElementById('inlinePvc10Rate');
         const oldBoreInput = document.getElementById('inlineOldBoreRate');
+        const boreBataInput = document.getElementById('inlineBoreBataRate');
         const gstInput = document.getElementById('inlineGstPercentage');
         
-        if (pvc7Input) pvc7Input.value = defaults.pvc7Rate || 450;
-        if (pvc10Input) pvc10Input.value = defaults.pvc10Rate || 750;
-        if (oldBoreInput) oldBoreInput.value = defaults.oldBoreRate || 40;
-        if (gstInput) gstInput.value = defaults.gstPercentage || 18;
+        if (pvc7Input) pvc7Input.value = pvc7Rate;
+        if (pvc10Input) pvc10Input.value = pvc10Rate;
+        if (oldBoreInput) oldBoreInput.value = oldBoreRate;
+        if (boreBataInput) boreBataInput.value = boreBataRate;
+        if (gstInput) gstInput.value = gstPercentage;
+        
+        // Also load slab rates if they exist
+        if (settings.slabRates && settings.slabRates.length > 0) {
+            this.calculator.slabRates = settings.slabRates;
+        }
+        
+        // Show notification if settings were loaded from storage
+        if (saved && Object.keys(settings).length > 0) {
+            this.showSettingsLoadedNotification();
+        }
     }
     
     saveInlineSettings() {
         const pvc7Rate = parseFloat(document.getElementById('inlinePvc7Rate').value) || 450;
         const pvc10Rate = parseFloat(document.getElementById('inlinePvc10Rate').value) || 750;
         const oldBoreRate = parseFloat(document.getElementById('inlineOldBoreRate').value) || 40;
+        const boreBataRate = parseFloat(document.getElementById('inlineBoreBataRate').value) || 2000;
         const gstPercentage = parseFloat(document.getElementById('inlineGstPercentage').value) || 18;
         
         // Get current slab rates
@@ -736,6 +766,7 @@ class AnjaneyaBorewells {
         this.calculator.defaults.pvc7Rate = pvc7Rate;
         this.calculator.defaults.pvc10Rate = pvc10Rate;
         this.calculator.defaults.oldBoreRate = oldBoreRate;
+        this.calculator.defaults.boreBataRate = boreBataRate;
         this.calculator.defaults.gstPercentage = gstPercentage;
         
         // Update calculator slab rates
@@ -746,6 +777,7 @@ class AnjaneyaBorewells {
             pvc7Rate,
             pvc10Rate,
             oldBoreRate,
+            boreBataRate,
             gstPercentage,
             baseDrillingRate: this.calculator.defaults.drillingRate,
             slabRates: slabRates
@@ -767,6 +799,7 @@ class AnjaneyaBorewells {
             document.getElementById('inlinePvc7Rate').value = 450;
             document.getElementById('inlinePvc10Rate').value = 750;
             document.getElementById('inlineOldBoreRate').value = 40;
+            document.getElementById('inlineBoreBataRate').value = 2000;
             document.getElementById('inlineGstPercentage').value = 18;
             
             // Reset slab rates to defaults
@@ -780,6 +813,7 @@ class AnjaneyaBorewells {
             this.calculator.defaults.pvc7Rate = 450;
             this.calculator.defaults.pvc10Rate = 750;
             this.calculator.defaults.oldBoreRate = 40;
+            this.calculator.defaults.boreBataRate = 2000;
             this.calculator.defaults.gstPercentage = 18;
             
             // Update calculator slab rates
@@ -790,6 +824,7 @@ class AnjaneyaBorewells {
                 pvc7Rate: 450,
                 pvc10Rate: 750,
                 oldBoreRate: 40,
+                boreBataRate: 2000,
                 gstPercentage: 18,
                 baseDrillingRate: this.calculator.defaults.drillingRate,
                 slabRates: defaultSlabs
@@ -808,6 +843,7 @@ class AnjaneyaBorewells {
             'inlinePvc7Rate',
             'inlinePvc10Rate',
             'inlineOldBoreRate',
+            'inlineBoreBataRate',
             'inlineGstPercentage'
         ];
         
@@ -856,7 +892,7 @@ class AnjaneyaBorewells {
             box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
             animation: slideInRight 0.3s ease;
         `;
-        notification.textContent = 'Settings saved successfully!';
+        notification.textContent = 'Settings saved to browser storage!';
         
         document.body.appendChild(notification);
         
@@ -873,12 +909,54 @@ class AnjaneyaBorewells {
         }, 3000);
     }
     
+    showSettingsLoadedNotification() {
+        // Remove any existing notification
+        const existingNotification = document.querySelector('.settings-loaded-notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
+        
+        const notification = document.createElement('div');
+        notification.className = 'settings-loaded-notification';
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #3b82f6;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            animation: slideInRight 0.3s ease;
+        `;
+        notification.textContent = 'Settings loaded from browser storage!';
+        
+        document.body.appendChild(notification);
+        
+        // Remove after 2 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }
+        }, 2000);
+    }
+    
     loadInlineSlabRates() {
         const grid = document.getElementById('inlineSlabRatesGrid');
         if (!grid) return;
         
         // Get current slab rates from calculator or use defaults
-        const slabRates = this.calculator.slabRates || this.getDefaultSlabRates();
+        const slabRates = this.calculator.slabRates && this.calculator.slabRates.length > 0 ? 
+            this.calculator.slabRates : 
+            this.getDefaultSlabRates();
         
         grid.innerHTML = '';
         
@@ -903,16 +981,8 @@ class AnjaneyaBorewells {
     }
     
     getDefaultSlabRates() {
-        return [
-            { range: '001-300 ft', rate: 90 },
-            { range: '301-400 ft', rate: 95 },
-            { range: '401-500 ft', rate: 105 },
-            { range: '501-600 ft', rate: 125 },
-            { range: '601-700 ft', rate: 155 },
-            { range: '701-800 ft', rate: 195 },
-            { range: '801-900 ft', rate: 245 },
-            { range: '901-1000 ft', rate: 295 }
-        ];
+        // Use the calculator's default slab rate calculation
+        return this.calculator.calculateSlabRatesFromBaseRate(this.calculator.defaults.drillingRate);
     }
     
     setupInlineSlabRateListeners() {
@@ -1130,8 +1200,12 @@ class CostCalculator {
             gstPercentage: 18,
             pvc7Rate: 450,
             pvc10Rate: 750,
-            oldBoreRate: 40
+            oldBoreRate: 40,
+            boreBataRate: 2000
         };
+        
+        // Initialize slab rates array
+        this.slabRates = [];
         
         this.loadSettings();
         
@@ -1202,6 +1276,23 @@ class CostCalculator {
         if (saved) {
             const parsedSaved = JSON.parse(saved);
             this.defaults = { ...this.defaults, ...parsedSaved };
+        }
+        
+        // Also load calculator-specific settings
+        const calculatorSettings = localStorage.getItem('anjaneya-calculator-settings');
+        if (calculatorSettings) {
+            try {
+                const parsedCalculatorSettings = JSON.parse(calculatorSettings);
+                // Update defaults with saved calculator settings
+                this.defaults = { ...this.defaults, ...parsedCalculatorSettings };
+                
+                // Load slab rates if they exist
+                if (parsedCalculatorSettings.slabRates && parsedCalculatorSettings.slabRates.length > 0) {
+                    this.slabRates = parsedCalculatorSettings.slabRates;
+                }
+            } catch (e) {
+                console.warn('Failed to parse calculator settings:', e);
+            }
         }
         
         this.updateFormDefaults();
@@ -1485,8 +1576,8 @@ class CostCalculator {
             drillingCost = slabCalculation.totalCost;
         }
 
-        // Bore Bata cost (fixed ₹2000 per bore)
-        const boreBataCost = 2000;
+        // Bore Bata cost (configurable rate)
+        const boreBataCost = this.defaults.boreBataRate || 2000;
 
         // Subtotal
         const subtotal = materialCost + drillingCost + boreBataCost;
@@ -1522,8 +1613,10 @@ class CostCalculator {
     }
 
     calculateSlabRate(totalDepth, baseRate) {
-        // Always calculate slab rates dynamically from the current base rate
-        const slabRates = this.calculateSlabRatesFromBaseRate(baseRate);
+        // Use configured slab rates if available, otherwise calculate dynamically
+        const slabRates = this.slabRates && this.slabRates.length > 0 ? 
+            this.slabRates : 
+            this.calculateSlabRatesFromBaseRate(baseRate);
         console.log('Calculating slab rates with base rate:', baseRate, 'slabRates:', slabRates);
         const slabDetails = [];
         let totalCost = 0;
@@ -1570,8 +1663,10 @@ class CostCalculator {
     }
 
     calculateRepairSlabRate(oldBoreDepth, totalDepth, baseRate) {
-        // Calculate slab rates for repair work using same rates as new drilling
-        const slabRates = this.calculateSlabRatesFromBaseRate(baseRate);
+        // Use configured slab rates if available, otherwise calculate dynamically
+        const slabRates = this.slabRates && this.slabRates.length > 0 ? 
+            this.slabRates : 
+            this.calculateSlabRatesFromBaseRate(baseRate);
         const slabDetails = [];
         let totalCost = 0;
         let remainingDepth = totalDepth - oldBoreDepth;
