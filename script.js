@@ -1924,35 +1924,24 @@ class CostCalculator {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4'); // Explicitly set A4 size
 
-        // Company header section with card box
-        // Draw card box background
-        doc.setFillColor(240, 248, 255); // Light blue background
-        doc.roundedRect(15, 15, 180, 40, 3, 3, 'F');
-        
-        // Draw card border
-        doc.setDrawColor(76, 175, 80); // Green border
-        doc.setLineWidth(1);
-        doc.roundedRect(15, 15, 180, 40, 3, 3, 'S');
-        
-        // Company name in card
+        // Company header section
         doc.setTextColor(76, 175, 80); // Green color for company name
-        doc.setFontSize(18);
+        doc.setFontSize(20);
         doc.setFont('helvetica', 'bold');
-        doc.text('ANJANEYA BOREWELLS', 25, 30);
+        doc.text('ANJANEYA BOREWELLS', 20, 25);
 
-        // Company details in card
-        doc.setTextColor(0, 0, 0); // Black for details
-        doc.setFontSize(9);
+        doc.setTextColor(0, 0, 0); // Reset to black for other details
+        doc.setFontSize(10);
         doc.setFont('helvetica', 'normal');
-        doc.text('6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001', 25, 37);
-        doc.text('Phone: +91 965 965 7777 | +91 944 33 73573', 25, 44);
-        doc.text('Email: anjaneyaborewells@gmail.com', 25, 51);
+        doc.text('6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001', 20, 35);
+        doc.text('Phone: +91 965 965 7777 | +91 944 33 73573', 20, 42);
+        doc.text('Email: anjaneyaborewells@gmail.com', 20, 49);
 
         // Quotation title in top right corner
         doc.setTextColor(76, 175, 80);
         doc.setFontSize(16); // Reduced size
         doc.setFont('helvetica', 'bold');
-        doc.text('QUOTATION', 150, 30);
+        doc.text('QUOTATION', 150, 25);
 
         // Reset text color
         doc.setTextColor(0, 0, 0);
@@ -2016,9 +2005,7 @@ class CostCalculator {
                 doc.text(`Drilling (${slab.range})`, 20, yPos);
                 doc.text(`${quantity}`, 90, yPos);
                 doc.text(`Rs.${slab.rate}`, 130, yPos);
-                const slabTotalText = `Rs.${slab.cost.toLocaleString('en-IN')}`;
-                const slabTotalWidth = doc.getTextWidth(slabTotalText);
-                doc.text(slabTotalText, 190 - slabTotalWidth, yPos);
+                doc.text(`Rs.${slab.cost.toLocaleString('en-IN')}`, 170, yPos);
                 
                 yPos += 12;
             });
@@ -2027,9 +2014,7 @@ class CostCalculator {
             doc.text('Drilling Cost', 20, yPos);
             doc.text('1', 90, yPos);
             doc.text(`Rs.${results.drillingCost.toLocaleString('en-IN')}`, 130, yPos);
-            const drillingTotalText = `Rs.${results.drillingCost.toLocaleString('en-IN')}`;
-            const drillingTotalWidth = doc.getTextWidth(drillingTotalText);
-            doc.text(drillingTotalText, 190 - drillingTotalWidth, yPos);
+            doc.text(`Rs.${results.drillingCost.toLocaleString('en-IN')}`, 170, yPos);
             yPos += 12;
         }
         
@@ -2038,9 +2023,7 @@ class CostCalculator {
             doc.text('7" PVC', 20, yPos);
             doc.text(`${inputs.pvc7Length}`, 90, yPos);
             doc.text(`Rs.${this.defaults.pvc7Rate}`, 130, yPos);
-            const pvc7TotalText = `Rs.${results.pvc7Cost.toLocaleString('en-IN')}`;
-            const pvc7TotalWidth = doc.getTextWidth(pvc7TotalText);
-            doc.text(pvc7TotalText, 190 - pvc7TotalWidth, yPos);
+            doc.text(`Rs.${results.pvc7Cost.toLocaleString('en-IN')}`, 170, yPos);
             yPos += 12;
         }
 
@@ -2048,9 +2031,7 @@ class CostCalculator {
             doc.text('10" PVC', 20, yPos);
             doc.text(`${inputs.pvc10Length}`, 90, yPos);
             doc.text(`Rs.${this.defaults.pvc10Rate}`, 130, yPos);
-            const pvc10TotalText = `Rs.${results.pvc10Cost.toLocaleString('en-IN')}`;
-            const pvc10TotalWidth = doc.getTextWidth(pvc10TotalText);
-            doc.text(pvc10TotalText, 190 - pvc10TotalWidth, yPos);
+            doc.text(`Rs.${results.pvc10Cost.toLocaleString('en-IN')}`, 170, yPos);
             yPos += 12;
         }
 
@@ -2058,9 +2039,7 @@ class CostCalculator {
         doc.text('BATA', 20, yPos);
         doc.text('1', 90, yPos);
         doc.text(`Rs.${results.boreBataCost.toLocaleString('en-IN')}`, 130, yPos);
-        const boreBataTotalText = `Rs.${results.boreBataCost.toLocaleString('en-IN')}`;
-        const boreBataTotalWidth = doc.getTextWidth(boreBataTotalText);
-        doc.text(boreBataTotalText, 190 - boreBataTotalWidth, yPos);
+        doc.text(`Rs.${results.boreBataCost.toLocaleString('en-IN')}`, 170, yPos);
         yPos += 20;
 
         // Bottom line separator
@@ -2075,19 +2054,15 @@ class CostCalculator {
         doc.setFont('helvetica', 'normal');
         doc.setFontSize(11);
         
-        // Subtotal - right aligned
+        // Subtotal
         doc.text('SUBTOTAL', 130, yPos);
-        const subtotalText = `Rs.${results.subtotal.toLocaleString('en-IN')}`;
-        const subtotalTextWidth = doc.getTextWidth(subtotalText);
-        doc.text(subtotalText, 190 - subtotalTextWidth, yPos);
+        doc.text(`Rs.${results.subtotal.toLocaleString('en-IN')}`, 170, yPos);
         yPos += 10;
         
-        // GST if enabled - right aligned
+        // GST if enabled
         if (this.isGstEnabled()) {
             doc.text(`TAX (${results.gstPercentage}%)`, 130, yPos);
-            const gstText = `Rs.${results.gstAmount.toLocaleString('en-IN')}`;
-            const gstTextWidth = doc.getTextWidth(gstText);
-            doc.text(gstText, 190 - gstTextWidth, yPos);
+            doc.text(`Rs.${results.gstAmount.toLocaleString('en-IN')}`, 170, yPos);
             yPos += 10;
         }
         
@@ -2097,15 +2072,11 @@ class CostCalculator {
         doc.line(130, yPos, 190, yPos);
         yPos += 8;
         
-        // Total (like in image) - right aligned
+        // Total (like in image)
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(12);
         doc.text('TOTAL', 130, yPos);
-        
-        // Right align the total amount
-        const totalText = `Rs.${results.totalCost.toLocaleString('en-IN')}`;
-        const totalTextWidth = doc.getTextWidth(totalText);
-        doc.text(totalText, 190 - totalTextWidth, yPos);
+        doc.text(`Rs.${results.totalCost.toLocaleString('en-IN')}`, 170, yPos);
         
         // Approximate note near total
         doc.setFontSize(9);
