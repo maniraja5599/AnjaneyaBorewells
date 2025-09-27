@@ -149,9 +149,9 @@ class AnjaneyaBorewells {
             }
         });
         
-        // Price settings button
+        // Price settings button - toggle inline settings
         document.getElementById('priceSettingsBtn')?.addEventListener('click', () => {
-            this.settingsManager.toggleSettings();
+            this.toggleInlineSettings();
         });
 
         // Reset button
@@ -646,6 +646,196 @@ class AnjaneyaBorewells {
                     document.body.removeChild(notification);
                 }
             }, 300);
+        }, 3000);
+    }
+    
+    setupInlinePriceSettings() {
+        // Close inline settings button
+        document.getElementById('closeInlineSettings')?.addEventListener('click', () => {
+            this.closeInlineSettings();
+        });
+        
+        // Save inline settings button
+        document.getElementById('saveInlineSettings')?.addEventListener('click', () => {
+            this.saveInlineSettings();
+        });
+        
+        // Reset inline settings button
+        document.getElementById('resetInlineSettings')?.addEventListener('click', () => {
+            this.resetInlineSettings();
+        });
+        
+        // Load current settings into inline inputs
+        this.loadInlineSettings();
+        
+        // Add select all functionality to inline inputs
+        this.setupInlineSelectAll();
+    }
+    
+    toggleInlineSettings() {
+        const inlinePanel = document.getElementById('inlinePriceSettings');
+        if (inlinePanel) {
+            const isVisible = inlinePanel.style.display !== 'none';
+            inlinePanel.style.display = isVisible ? 'none' : 'block';
+            
+            if (!isVisible) {
+                // Load current settings when opening
+                this.loadInlineSettings();
+            }
+        }
+    }
+    
+    closeInlineSettings() {
+        const inlinePanel = document.getElementById('inlinePriceSettings');
+        if (inlinePanel) {
+            inlinePanel.style.display = 'none';
+        }
+    }
+    
+    loadInlineSettings() {
+        // Load settings from calculator defaults
+        const defaults = this.calculator.defaults;
+        
+        const pvc7Input = document.getElementById('inlinePvc7Rate');
+        const pvc10Input = document.getElementById('inlinePvc10Rate');
+        const oldBoreInput = document.getElementById('inlineOldBoreRate');
+        const gstInput = document.getElementById('inlineGstPercentage');
+        
+        if (pvc7Input) pvc7Input.value = defaults.pvc7Rate || 450;
+        if (pvc10Input) pvc10Input.value = defaults.pvc10Rate || 750;
+        if (oldBoreInput) oldBoreInput.value = defaults.oldBoreRate || 40;
+        if (gstInput) gstInput.value = defaults.gstPercentage || 18;
+    }
+    
+    saveInlineSettings() {
+        const pvc7Rate = parseFloat(document.getElementById('inlinePvc7Rate').value) || 450;
+        const pvc10Rate = parseFloat(document.getElementById('inlinePvc10Rate').value) || 750;
+        const oldBoreRate = parseFloat(document.getElementById('inlineOldBoreRate').value) || 40;
+        const gstPercentage = parseFloat(document.getElementById('inlineGstPercentage').value) || 18;
+        
+        // Update calculator defaults
+        this.calculator.defaults.pvc7Rate = pvc7Rate;
+        this.calculator.defaults.pvc10Rate = pvc10Rate;
+        this.calculator.defaults.oldBoreRate = oldBoreRate;
+        this.calculator.defaults.gstPercentage = gstPercentage;
+        
+        // Save to localStorage
+        localStorage.setItem('anjaneya-calculator-settings', JSON.stringify({
+            pvc7Rate,
+            pvc10Rate,
+            oldBoreRate,
+            gstPercentage,
+            baseDrillingRate: this.calculator.defaults.drillingRate
+        }));
+        
+        // Trigger recalculation
+        this.calculator.calculate();
+        
+        // Show success notification
+        this.showInlineSuccessNotification();
+        
+        // Close the panel
+        this.closeInlineSettings();
+    }
+    
+    resetInlineSettings() {
+        if (confirm('Are you sure you want to reset all settings to default values?')) {
+            // Reset to default values
+            document.getElementById('inlinePvc7Rate').value = 450;
+            document.getElementById('inlinePvc10Rate').value = 750;
+            document.getElementById('inlineOldBoreRate').value = 40;
+            document.getElementById('inlineGstPercentage').value = 18;
+            
+            // Update calculator defaults
+            this.calculator.defaults.pvc7Rate = 450;
+            this.calculator.defaults.pvc10Rate = 750;
+            this.calculator.defaults.oldBoreRate = 40;
+            this.calculator.defaults.gstPercentage = 18;
+            
+            // Save to localStorage
+            localStorage.setItem('anjaneya-calculator-settings', JSON.stringify({
+                pvc7Rate: 450,
+                pvc10Rate: 750,
+                oldBoreRate: 40,
+                gstPercentage: 18,
+                baseDrillingRate: this.calculator.defaults.drillingRate
+            }));
+            
+            // Trigger recalculation
+            this.calculator.calculate();
+            
+            // Show success notification
+            this.showInlineSuccessNotification();
+        }
+    }
+    
+    setupInlineSelectAll() {
+        const inlineInputs = [
+            'inlinePvc7Rate',
+            'inlinePvc10Rate',
+            'inlineOldBoreRate',
+            'inlineGstPercentage'
+        ];
+        
+        inlineInputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input) {
+                input.addEventListener('focus', (e) => {
+                    setTimeout(() => {
+                        if (e.target && e.target.select) {
+                            e.target.select();
+                        }
+                    }, 50);
+                });
+                
+                input.addEventListener('click', (e) => {
+                    setTimeout(() => {
+                        if (e.target && e.target.select) {
+                            e.target.select();
+                        }
+                    }, 10);
+                });
+            }
+        });
+    }
+    
+    showInlineSuccessNotification() {
+        // Remove any existing notification
+        const existingNotification = document.querySelector('.inline-success-notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
+        
+        const notification = document.createElement('div');
+        notification.className = 'inline-success-notification';
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #22c55e;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+            animation: slideInRight 0.3s ease;
+        `;
+        notification.textContent = 'Settings saved successfully!';
+        
+        document.body.appendChild(notification);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }
         }, 3000);
     }
 }
@@ -2923,6 +3113,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Update company information on page load
         window.anjaneyaApp.updateCompanyInfo();
+        
+        // Setup inline price settings
+        window.anjaneyaApp.setupInlinePriceSettings();
         
 });
 
