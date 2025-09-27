@@ -2089,6 +2089,9 @@ class HiddenSettingsManager {
             priceSettingsBtn.addEventListener('click', () => this.toggleSettings());
         }
         
+        // Add select all functionality to price setting input fields
+        this.setupSelectAllInputs();
+        
         // Add event listener for main calculator drilling rate changes to update slab rates
         const mainDrillingRateInput = document.getElementById('drillingRate');
         if (mainDrillingRateInput) {
@@ -2137,6 +2140,61 @@ class HiddenSettingsManager {
         }
     }
     
+    setupSelectAllInputs() {
+        // Get all price setting input fields
+        const priceInputs = [
+            'pvc7RateSetting',
+            'pvc10RateSetting', 
+            'oldBoreRateSetting',
+            'gstPercentageSetting'
+        ];
+        
+        priceInputs.forEach(inputId => {
+            const input = document.getElementById(inputId);
+            if (input) {
+                // Select all text on focus
+                input.addEventListener('focus', (e) => {
+                    // Small delay to ensure the input is fully focused
+                    setTimeout(() => {
+                        e.target.select();
+                    }, 10);
+                });
+                
+                // Allow clicking to deselect if needed
+                input.addEventListener('click', (e) => {
+                    // If text is already selected, allow normal cursor placement
+                    if (e.target.selectionStart === e.target.selectionEnd) {
+                        // Text is not selected, so select all
+                        e.target.select();
+                    }
+                });
+                
+                // Prevent select all on touch devices when user wants to position cursor
+                input.addEventListener('touchstart', (e) => {
+                    // Store the initial touch position
+                    e.target._touchStartTime = Date.now();
+                    e.target._touchStartX = e.touches[0].clientX;
+                    e.target._touchStartY = e.touches[0].clientY;
+                });
+                
+                input.addEventListener('touchend', (e) => {
+                    const touchDuration = Date.now() - e.target._touchStartTime;
+                    const touchDistance = Math.sqrt(
+                        Math.pow(e.changedTouches[0].clientX - e.target._touchStartX, 2) +
+                        Math.pow(e.changedTouches[0].clientY - e.target._touchStartY, 2)
+                    );
+                    
+                    // If it's a quick tap (not a long press or drag), select all
+                    if (touchDuration < 300 && touchDistance < 10) {
+                        setTimeout(() => {
+                            e.target.select();
+                        }, 10);
+                    }
+                });
+            }
+        });
+    }
+    
     toggleSettings() {
         const isOpening = !this.settingsPanel.classList.contains('show');
         
@@ -2145,6 +2203,10 @@ class HiddenSettingsManager {
             this.settingsPanel.style.display = 'block';
             // Always calculate slab rates from current main drilling rate
             this.updateSlabRatesFromMainDrillingRate();
+            // Re-setup select all inputs when panel opens
+            setTimeout(() => {
+                this.setupSelectAllInputs();
+            }, 100);
         } else {
             this.settingsPanel.classList.remove('show');
             this.settingsPanel.style.display = 'none';
