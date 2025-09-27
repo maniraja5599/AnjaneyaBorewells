@@ -5014,9 +5014,9 @@ img {
     font-weight: 600;
 }
 
-.input-line span {
-    color: var(--primary-color);
-    font-weight: 600;
+.input-line span  {
+    color: #000000;
+    font-weight: 800;
 }
 
 /* Slab Rate Breakdown Styles */
