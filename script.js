@@ -2302,6 +2302,8 @@ class HiddenSettingsManager {
         // Update calculator with new settings
         if (window.anjaneyaApp && window.anjaneyaApp.calculator) {
             window.anjaneyaApp.calculator.updateSettings(newSettings);
+            // Trigger immediate recalculation to reflect changes
+            window.anjaneyaApp.calculator.calculate();
         }
         
         // Trigger a custom event to notify other components
@@ -2326,7 +2328,17 @@ class HiddenSettingsManager {
             // Update calculator with default settings
             if (window.anjaneyaApp && window.anjaneyaApp.calculator) {
                 window.anjaneyaApp.calculator.updateSettings(this.settings);
+                // Trigger immediate recalculation to reflect changes
+                window.anjaneyaApp.calculator.calculate();
             }
+            
+            // Trigger a custom event to notify other components
+            window.dispatchEvent(new CustomEvent('calculatorSettingsUpdated', {
+                detail: {
+                    settings: this.settings,
+                    timestamp: Date.now()
+                }
+            }));
         }
     }
     
@@ -2448,7 +2460,17 @@ class HiddenSettingsManager {
         // Update calculator with new settings
         if (window.anjaneyaApp && window.anjaneyaApp.calculator) {
             window.anjaneyaApp.calculator.updateSettings(newSettings);
+            // Trigger immediate recalculation to reflect changes
+            window.anjaneyaApp.calculator.calculate();
         }
+        
+        // Trigger a custom event to notify other components
+        window.dispatchEvent(new CustomEvent('calculatorSettingsUpdated', {
+            detail: {
+                settings: newSettings,
+                timestamp: Date.now()
+            }
+        }));
         
         // Show instant update notification
         this.showInstantUpdateNotification();
