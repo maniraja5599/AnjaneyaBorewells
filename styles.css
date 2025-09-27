@@ -2819,41 +2819,17 @@ section {
 .nav-icon {
     width: 18px;
     height: 18px;
-    stroke: var(--primary-color);
-    fill: none;
+    stroke: currentColor;
     transition: var(--transition);
 }
 
 .nav-link:hover .nav-icon {
     transform: scale(1.1);
-    stroke: var(--primary-dark);
+    stroke: var(--primary-color);
 }
 
 .nav-link.active .nav-icon {
-    stroke: var(--primary-dark);
-    fill: var(--primary-color);
-    opacity: 0.8;
-}
-
-/* Section Icons */
-.section-icon {
-    width: 24px;
-    height: 24px;
     stroke: var(--primary-color);
-    fill: none;
-    margin-right: 12px;
-    transition: var(--transition);
-}
-
-.section-header h2 {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.section-header h2:hover .section-icon {
-    transform: scale(1.1);
-    stroke: var(--primary-dark);
 }
 
 .nav-cta {
@@ -5432,17 +5408,6 @@ img {
         padding: 12px 16px;
     }
     
-    /* Mobile Section Icons */
-    .section-icon {
-        width: 20px;
-        height: 20px;
-        margin-right: 8px;
-    }
-    
-    .section-header h2 {
-        gap: 8px;
-        font-size: 1.5rem;
-    }
     
     /* Simplified animation for smaller mobile screens */
     .hero-background::after {
