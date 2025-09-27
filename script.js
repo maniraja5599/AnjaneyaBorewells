@@ -2138,16 +2138,21 @@ class HiddenSettingsManager {
     }
     
     toggleSettings() {
-        const isOpening = this.settingsPanel.style.display === 'none';
-        this.settingsPanel.style.display = isOpening ? 'block' : 'none';
+        const isOpening = !this.settingsPanel.classList.contains('show');
         
         if (isOpening) {
+            this.settingsPanel.classList.add('show');
+            this.settingsPanel.style.display = 'block';
             // Always calculate slab rates from current main drilling rate
             this.updateSlabRatesFromMainDrillingRate();
+        } else {
+            this.settingsPanel.classList.remove('show');
+            this.settingsPanel.style.display = 'none';
         }
     }
     
     closeSettings() {
+        this.settingsPanel.classList.remove('show');
         this.settingsPanel.style.display = 'none';
     }
     

@@ -4055,6 +4055,146 @@ input[type="number"]::-webkit-inner-spin-button {
     box-shadow: var(--shadow-lg);
 }
 
+/* Price Settings Panel */
+#hiddenSettingsPanel {
+    display: none !important;
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    background: white !important;
+    padding: 30px !important;
+    border-radius: 15px !important;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2) !important;
+    z-index: 10000 !important;
+    max-width: 600px !important;
+    width: 90% !important;
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+}
+
+#hiddenSettingsPanel.show {
+    display: block !important;
+}
+
+/* Price Settings Input Fields */
+#hiddenSettingsPanel input[type="number"] {
+    width: 100% !important;
+    padding: 12px 16px !important;
+    border: 2px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+    background: white !important;
+    color: #374151 !important;
+    transition: all 0.3s ease !important;
+    box-sizing: border-box !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    margin: 0 !important;
+}
+
+#hiddenSettingsPanel input[type="number"]:focus {
+    outline: none !important;
+    border-color: #22c55e !important;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1) !important;
+    transform: translateY(-1px) !important;
+}
+
+#hiddenSettingsPanel input[type="number"]:hover {
+    border-color: #d1d5db !important;
+}
+
+/* Price Settings Labels */
+#hiddenSettingsPanel label {
+    display: block !important;
+    margin-bottom: 8px !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    font-size: 14px !important;
+}
+
+/* Price Settings Grid */
+#hiddenSettingsPanel .settings-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important;
+    margin-bottom: 20px !important;
+}
+
+/* Price Settings Section */
+#hiddenSettingsPanel .settings-section {
+    margin-bottom: 20px !important;
+}
+
+#hiddenSettingsPanel .settings-section h4 {
+    margin: 0 0 15px 0 !important;
+    color: #1f2937 !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+}
+
+/* Price Settings Buttons */
+#hiddenSettingsPanel .settings-buttons {
+    display: flex !important;
+    gap: 12px !important;
+    justify-content: flex-end !important;
+    margin-top: 20px !important;
+}
+
+#hiddenSettingsPanel .settings-btn {
+    padding: 10px 20px !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+#hiddenSettingsPanel .settings-btn-primary {
+    background: #22c55e !important;
+    color: white !important;
+}
+
+#hiddenSettingsPanel .settings-btn-primary:hover {
+    background: #16a34a !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3) !important;
+}
+
+#hiddenSettingsPanel .settings-btn-secondary {
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+}
+
+#hiddenSettingsPanel .settings-btn-secondary:hover {
+    background: #e5e7eb !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Close Button */
+#closeSettingsBtn {
+    background: none !important;
+    border: none !important;
+    font-size: 24px !important;
+    cursor: pointer !important;
+    color: #6b7280 !important;
+    padding: 8px !important;
+    border-radius: 50% !important;
+    transition: all 0.3s ease !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+#closeSettingsBtn:hover {
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+    transform: scale(1.1) !important;
+}
+
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -4792,6 +4932,55 @@ img {
         overflow-y: auto;
     }
     
+    /* Price Settings Panel Mobile */
+    #hiddenSettingsPanel {
+        padding: 20px !important;
+        max-width: 95% !important;
+        width: 95% !important;
+        max-height: 85vh !important;
+        border-radius: 12px !important;
+    }
+    
+    #hiddenSettingsPanel .settings-grid {
+        grid-template-columns: 1fr !important;
+        gap: 15px !important;
+    }
+    
+    #hiddenSettingsPanel input[type="number"] {
+        padding: 14px 16px !important;
+        font-size: 16px !important;
+        border-radius: 10px !important;
+        border-width: 2px !important;
+    }
+    
+    #hiddenSettingsPanel label {
+        font-size: 15px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    #hiddenSettingsPanel .settings-section h4 {
+        font-size: 17px !important;
+        margin-bottom: 18px !important;
+    }
+    
+    #hiddenSettingsPanel .settings-buttons {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    #hiddenSettingsPanel .settings-btn {
+        padding: 14px 20px !important;
+        font-size: 16px !important;
+        border-radius: 10px !important;
+        width: 100% !important;
+    }
+    
+    #closeSettingsBtn {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 26px !important;
+    }
+    
     .hero-background {
         opacity: 0.3;
         z-index: 1;
@@ -4991,6 +5180,44 @@ img {
     
     .modal-body {
         padding: 1rem;
+    }
+    
+    /* Price Settings Panel Small Mobile */
+    #hiddenSettingsPanel {
+        padding: 15px !important;
+        max-width: 98% !important;
+        width: 98% !important;
+        max-height: 90vh !important;
+        border-radius: 10px !important;
+    }
+    
+    #hiddenSettingsPanel input[type="number"] {
+        padding: 16px 18px !important;
+        font-size: 18px !important;
+        border-radius: 12px !important;
+        border-width: 3px !important;
+    }
+    
+    #hiddenSettingsPanel label {
+        font-size: 16px !important;
+        margin-bottom: 12px !important;
+    }
+    
+    #hiddenSettingsPanel .settings-section h4 {
+        font-size: 18px !important;
+        margin-bottom: 20px !important;
+    }
+    
+    #hiddenSettingsPanel .settings-btn {
+        padding: 16px 24px !important;
+        font-size: 18px !important;
+        border-radius: 12px !important;
+    }
+    
+    #closeSettingsBtn {
+        width: 48px !important;
+        height: 48px !important;
+        font-size: 28px !important;
     }
     
     .social-link {
