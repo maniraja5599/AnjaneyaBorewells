@@ -2783,6 +2783,9 @@ section {
     font-weight: 500;
     transition: var(--transition);
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .nav-link:hover {
@@ -2811,6 +2814,22 @@ section {
 
 .nav-link.active::after {
     width: 100%;
+}
+
+.nav-icon {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    transition: var(--transition);
+}
+
+.nav-link:hover .nav-icon {
+    transform: scale(1.1);
+    stroke: var(--primary-color);
+}
+
+.nav-link.active .nav-icon {
+    stroke: var(--primary-color);
 }
 
 .nav-cta {
@@ -5376,6 +5395,17 @@ img {
         padding: 0 12px;
         max-width: 100%;
         overflow-x: visible;
+    }
+    
+    /* Mobile Navigation Icons */
+    .nav-icon {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .nav-link {
+        gap: 10px;
+        padding: 12px 16px;
     }
     
     /* Simplified animation for smaller mobile screens */
