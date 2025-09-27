@@ -985,51 +985,6 @@
 
     <script src="script.js"></script>
     
-    <!-- Hidden Settings Panel -->
-    <div id="hiddenSettingsPanel" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 10000; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-            <h3 style="margin: 0; color: #1e40af;">Cost Calculator Settings</h3>
-            <button id="closeSettingsBtn" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #666;">×</button>
-        </div>
-        
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-            <div>
-                <h4 style="margin: 0 0 10px 0; color: #333;">Pipe Rates</h4>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">PVC 7" Rate (₹/ft):</label>
-                    <input type="number" id="pvc7RateSetting" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">PVC 10" Rate (₹/ft):</label>
-                    <input type="number" id="pvc10RateSetting" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
-                </div>
-            </div>
-            
-            <div>
-                <h4 style="margin: 0 0 10px 0; color: #333;">Drilling Rates</h4>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">Old Bore Rate (₹/ft):</label>
-                    <input type="number" id="oldBoreRateSetting" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <label style="display: block; margin-bottom: 5px; font-weight: 500;">GST Percentage (%):</label>
-                    <input type="number" id="gstPercentageSetting" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
-                </div>
-            </div>
-        </div>
-        
-        <div style="margin-bottom: 20px;">
-            <h4 style="margin: 0 0 10px 0; color: #333;">Slab Rate Configuration</h4>
-            <div id="slabRateSettings" style="max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 5px; padding: 10px;">
-                <!-- Slab rates will be populated here -->
-            </div>
-        </div>
-        
-        <div style="display: flex; gap: 10px; justify-content: flex-end;">
-            <button id="resetSettingsBtn" style="padding: 10px 20px; background: #6b7280; color: white; border: none; border-radius: 5px; cursor: pointer;">Reset to Default</button>
-            <button id="saveSettingsBtn" style="padding: 10px 20px; background: #22c55e; color: white; border: none; border-radius: 5px; cursor: pointer;">Save Settings</button>
-        </div>
-    </div>
     
     <!-- Floating Social Media Buttons -->
     <div class="floating-social">
