@@ -1,0 +1,166 @@
+{
+  "lastUpdated": "2026-08-30T16:35:00.000Z",
+  "companyInfo": {
+    "name": "Anjaneya Borewells",
+    "tamilName": "ஆஞ்சநேயா போர்வெல்ஸ்",
+    "phone1": "+91 965 965 7777",
+    "phone2": "+91 944 33 73573",
+    "whatsapp": "919659657777",
+    "email": "anjaneyaborewells@gmail.com",
+    "slogan": "ஆழமான நம்பிக்கை!",
+    "location": "Namakkal & Tamil Nadu",
+    "heroBadge": "#1 Borewell Specialists in Namakkal • 25+ Yrs Trust",
+    "yearsExp": "25+",
+    "viewersCount": 14285,
+    "logo": "logo.jpg"
+  },
+  "rates": {
+    "casing7": 450,
+    "casing10": 750,
+    "flushing": 40,
+    "transport": 2000,
+    "drillingRate": 100,
+    "slabRates": [
+      {
+        "start": 1,
+        "end": 300,
+        "span": 300,
+        "range": "001 - 300 ft",
+        "rate": 100
+      },
+      {
+        "start": 301,
+        "end": 400,
+        "span": 100,
+        "range": "301 - 400 ft",
+        "rate": 110
+      },
+      {
+        "start": 401,
+        "end": 500,
+        "span": 100,
+        "range": "401 - 500 ft",
+        "rate": 130
+      },
+      {
+        "start": 501,
+        "end": 600,
+        "span": 100,
+        "range": "501 - 600 ft",
+        "rate": 160
+      },
+      {
+        "start": 601,
+        "end": 700,
+        "span": 100,
+        "range": "601 - 700 ft",
+        "rate": 200
+      },
+      {
+        "start": 701,
+        "end": 800,
+        "span": 100,
+        "range": "701 - 800 ft",
+        "rate": 250
+      },
+      {
+        "start": 801,
+        "end": 900,
+        "span": 100,
+        "range": "801 - 900 ft",
+        "rate": 310
+      },
+      {
+        "start": 901,
+        "end": 1000,
+        "span": 100,
+        "range": "901 - 1000 ft",
+        "rate": 380
+      },
+      {
+        "start": 1001,
+        "end": 1100,
+        "span": 100,
+        "range": "1001 - 1100 ft",
+        "rate": 480
+      },
+      {
+        "start": 1101,
+        "end": 1200,
+        "span": 100,
+        "range": "1101 - 1200 ft",
+        "rate": 580
+      },
+      {
+        "start": 1201,
+        "end": 1300,
+        "span": 100,
+        "range": "1201 - 1300 ft",
+        "rate": 680
+      },
+      {
+        "start": 1301,
+        "end": 1400,
+        "span": 100,
+        "range": "1301 - 1400 ft",
+        "rate": 780
+      },
+      {
+        "start": 1401,
+        "end": 1500,
+        "span": 100,
+        "range": "1401 - 1500 ft",
+        "rate": 880
+      },
+      {
+        "start": 1501,
+        "end": 1600,
+        "span": 100,
+        "range": "1501 - 1600 ft",
+        "rate": 980
+      },
+      {
+        "start": 1601,
+        "end": 1700,
+        "span": 100,
+        "range": "1601 - 1700 ft",
+        "rate": 1080
+      },
+      {
+        "start": 1701,
+        "end": 1800,
+        "span": 100,
+        "range": "1701 - 1800 ft",
+        "rate": 1180
+      },
+      {
+        "start": 1801,
+        "end": 1900,
+        "span": 100,
+        "range": "1801 - 1900 ft",
+        "rate": 1280
+      },
+      {
+        "start": 1901,
+        "end": 2000,
+        "span": 100,
+        "range": "1901 - 2000 ft",
+        "rate": 1380
+      },
+      {
+        "start": 2001,
+        "end": 2100,
+        "span": 100,
+        "range": "2001 - 2100 ft",
+        "rate": 1480
+      },
+      {
+        "start": 2101,
+        "end": 2200,
+        "span": 100,
+        "range": "2101 - 2200 ft",
+        "rate": 1580
+      }
+    ]
+  }
+}

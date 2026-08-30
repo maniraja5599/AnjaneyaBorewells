@@ -2577,9 +2577,82 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize FAQ Accordion
     initFaqAccordion();
 
+    // Load Centralized Server Config for all global visitors
+    loadServerSiteConfig();
+
     // Initialize Admin Portal
     window.adminPortal = new AdminPortal();
 });
+
+// Load Centralized Server Config (site-config.json) for all global visitors
+async function loadServerSiteConfig() {
+    try {
+        const response = await fetch('site-config.json?v=' + Date.now(), { cache: 'no-store' });
+        if (!response.ok) return;
+        const config = await response.json();
+        if (!config) return;
+
+        const comp = config.companyInfo || {};
+        const rates = config.rates || {};
+
+        if (window.anjaneyaApp) {
+            if (window.anjaneyaApp.calculator) {
+                if (rates.casing7) window.anjaneyaApp.calculator.defaults.pvc7Rate = rates.casing7;
+                if (rates.casing10) window.anjaneyaApp.calculator.defaults.pvc10Rate = rates.casing10;
+                if (rates.transport) window.anjaneyaApp.calculator.defaults.boreBataRate = rates.transport;
+                if (rates.flushing) {
+                    window.anjaneyaApp.calculator.defaults.flushingRate = rates.flushing;
+                    window.anjaneyaApp.calculator.defaults.oldBoreRate = rates.flushing;
+                }
+                if (rates.slabRates && rates.slabRates.length > 0) {
+                    window.anjaneyaApp.calculator.slabRates = rates.slabRates;
+                }
+                window.anjaneyaApp.calculator.refreshSettings();
+            }
+            if (typeof window.anjaneyaApp.loadInlineSettings === 'function') {
+                window.anjaneyaApp.loadInlineSettings();
+            }
+            if (typeof window.anjaneyaApp.renderInlineSlabRates === 'function') {
+                window.anjaneyaApp.renderInlineSlabRates();
+            }
+            if (window.anjaneyaApp.calculator && typeof window.anjaneyaApp.calculator.calculate === 'function') {
+                window.anjaneyaApp.calculator.calculate();
+            }
+        }
+
+        // Apply company branding elements
+        if (comp.heroBadge) {
+            const heroBadgeEl = document.getElementById('heroTrustBadgeText');
+            if (heroBadgeEl) heroBadgeEl.textContent = comp.heroBadge;
+        }
+        if (comp.yearsExp) {
+            const statYearsEl = document.getElementById('statYearsExp');
+            if (statYearsEl) statYearsEl.textContent = comp.yearsExp;
+            const featureYearsEl = document.getElementById('featureTrustYears');
+            if (featureYearsEl) {
+                featureYearsEl.textContent = comp.yearsExp.includes('Yrs') ? comp.yearsExp : `${comp.yearsExp} Yrs Trust`;
+            }
+        }
+        if (comp.slogan) {
+            document.querySelectorAll('.tamil-slogan').forEach(el => el.textContent = comp.slogan);
+        }
+        if (comp.location) {
+            const badge = document.getElementById('fixedRoadBadgeText');
+            if (badge) badge.textContent = comp.location;
+        }
+        if (comp.phone1) {
+            document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                if (link.href.includes('9659657777')) {
+                    link.href = `tel:${comp.phone1.replace(/\s+/g, '')}`;
+                }
+            });
+            const heroPhone = document.querySelector('.hero-btn-secondary span');
+            if (heroPhone) heroPhone.textContent = comp.phone1;
+        }
+    } catch(e) {
+        console.warn('Server site config load check:', e);
+    }
+}
 
 // Initial Logo Preloader Splash Screen Dismissal
 function initPagePreloader() {
@@ -2827,6 +2900,7 @@ class AdminPortal {
         this.loginView = document.getElementById('adminLoginForm');
         this.dashboardView = document.getElementById('adminDashboard');
         this.saveBtn = document.getElementById('adminSaveBtn');
+        this.exportBtn = document.getElementById('adminExportJsonBtn');
         this.resetBtn = document.getElementById('adminResetBtn');
         this.logoutBtn = document.getElementById('adminLogoutBtn');
         this.saveToast = document.getElementById('adminSaveToast');
@@ -2847,6 +2921,9 @@ class AdminPortal {
         }
         if (this.saveBtn) {
             this.saveBtn.addEventListener('click', () => this.saveSettings());
+        }
+        if (this.exportBtn) {
+            this.exportBtn.addEventListener('click', () => this.exportConfigJson());
         }
         if (this.resetBtn) {
             this.resetBtn.addEventListener('click', () => this.resetDefaults());
@@ -3234,6 +3311,35 @@ class AdminPortal {
             }
         } catch(e) {
             console.error('Error applying admin settings:', e);
+        }
+    }
+
+    exportConfigJson() {
+        const saved = localStorage.getItem('anjaneya-settings');
+        let current = {};
+        if (saved) {
+            try { current = JSON.parse(saved); } catch(e) {}
+        }
+        current.lastUpdated = new Date().toISOString();
+
+        const jsonStr = JSON.stringify(current, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'site-config.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        if (this.saveToast) {
+            this.saveToast.textContent = '📥 site-config.json downloaded! Ready for permanent server sync.';
+            this.saveToast.style.display = 'block';
+            setTimeout(() => { 
+                this.saveToast.style.display = 'none'; 
+                this.saveToast.textContent = '✅ Settings successfully saved & applied site-wide!';
+            }, 5000);
         }
     }
 
