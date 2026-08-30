@@ -2654,25 +2654,46 @@ async function loadServerSiteConfig() {
     }
 }
 
-// Initial Logo Preloader Splash Screen Dismissal
+// Initial Logo Preloader Splash Screen Dismissal (Opens after loading completely)
 function initPagePreloader() {
     const preloader = document.getElementById('pagePreloader');
     if (!preloader) return;
+    const bar = preloader.querySelector('.preloader-progress-bar');
 
-    function hidePreloader() {
-        if (!preloader.classList.contains('preloader-hidden')) {
-            preloader.classList.add('preloader-hidden');
-            setTimeout(() => {
-                preloader.remove();
-            }, 600);
+    let progress = 0;
+    const startTime = Date.now();
+    const minDisplayTime = 700; // ensures smooth brand visibility before opening
+
+    const progressTimer = setInterval(() => {
+        if (progress < 85) {
+            progress += Math.floor(Math.random() * 12) + 6;
+            if (progress > 85) progress = 85;
+            if (bar) bar.style.width = progress + '%';
         }
+    }, 70);
+
+    function hideWhenComplete() {
+        clearInterval(progressTimer);
+        if (bar) bar.style.width = '100%';
+
+        const elapsed = Date.now() - startTime;
+        const delay = Math.max(0, minDisplayTime - elapsed) + 150;
+
+        setTimeout(() => {
+            if (!preloader.classList.contains('preloader-hidden')) {
+                preloader.classList.add('preloader-hidden');
+                setTimeout(() => {
+                    try { preloader.remove(); } catch(e) {}
+                }, 600);
+            }
+        }, delay);
     }
 
     if (document.readyState === 'complete') {
-        setTimeout(hidePreloader, 600);
+        hideWhenComplete();
     } else {
-        window.addEventListener('load', () => setTimeout(hidePreloader, 500));
-        setTimeout(hidePreloader, 1500);
+        window.addEventListener('load', hideWhenComplete);
+        setTimeout(hideWhenComplete, 2200); // Fallback guarantee
     }
 }
 
