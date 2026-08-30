@@ -934,11 +934,28 @@
                                 <button type="button" class="btn btn-outline" id="toggleSlabRates">Configure Slab Rates</button>
                             </div>
                             
-                            <!-- Slab Rate Configuration (Initially Hidden) -->
+                            <!-- Slab Rate Configuration -->
                             <div class="inline-slab-rates-section" id="slabRatesSection" style="display: none;">
-                                <h5>Slab Rate Configuration</h5>
-                                <div class="slab-rates-grid" id="inlineSlabRatesGrid">
-                                    <!-- Slab rates will be populated by JavaScript -->
+                                <div class="inline-slab-header-row">
+                                    <span class="inline-slab-section-tag">📊 Depth Slab Rates (0 - 2200 ft)</span>
+                                    <div class="inline-slab-controls-wrap">
+                                        <div class="inline-step-input-group">
+                                            <span class="inline-step-label">Step (₹):</span>
+                                            <input type="number" id="inlineStepAmount" value="5" min="1" step="1" class="inline-step-num-input" title="Enter step amount (e.g. 1, 5, 10, 20)">
+                                            <button type="button" class="inline-tool-btn step-btn" id="inlineDeductStepBtn" title="Deduct step from all slab rates">➖ Deduct</button>
+                                            <button type="button" class="inline-tool-btn step-btn" id="inlineAddStepBtn" title="Add step to all slab rates">➕ Add</button>
+                                        </div>
+                                        <div class="inline-slab-quick-actions">
+                                            <button type="button" class="inline-tool-btn quick-pill" id="inlineMinus5Btn" title="Subtract ₹5 from all slabs">-5</button>
+                                            <button type="button" class="inline-tool-btn quick-pill" id="inlinePlus5Btn" title="Add ₹5 to all slabs">+5</button>
+                                            <button type="button" class="inline-tool-btn" id="inlineResetSlabsBtn" title="Reset to standard bill (+20) rates">🔄 Reset Standard</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="inline-slabs-scroll-wrap">
+                                    <div class="inline-slabs-grid" id="inlineSlabRatesGrid">
+                                        <!-- Slab rates populated by JavaScript -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1193,6 +1210,11 @@
                             <span class="views-text">Page Views:</span>
                             <span class="views-count" id="footerPageViewsCount">14,285</span>
                         </div>
+                        <button type="button" class="footer-version-badge" id="openVersionModalBtn" title="View Website Changelog & Version History">
+                            <span class="version-tag-icon">🏷️</span>
+                            <span class="version-text">v2.5.0</span>
+                            <span class="version-status-pill">Live</span>
+                        </button>
                     </div>
                     <div class="developer-credit">
                         <span class="dev-label">💻 Designed & Developed by</span>
@@ -1362,8 +1384,8 @@
                                 <input type="number" id="adminTransportRate" value="2000">
                             </div>
                             <div class="form-group" style="flex: 1;">
-                                <label for="adminFlushingRate">Flushing Rate (₹)</label>
-                                <input type="number" id="adminFlushingRate" value="3500">
+                                <label for="adminFlushingRate">Flushing / Old Bore Rate (₹/ft)</label>
+                                <input type="number" id="adminFlushingRate" value="40" min="0" step="1">
                             </div>
                         </div>
 
@@ -1403,6 +1425,62 @@
                         <div id="adminSaveToast" class="admin-toast" style="display: none;">
                             ✅ Settings successfully saved & applied site-wide!
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Version History Modal -->
+    <div class="modal" id="versionModal" style="display: none;">
+        <div class="modal-content version-modal-content">
+            <div class="modal-header version-modal-header">
+                <div class="version-modal-title">
+                    <span class="version-modal-icon">🚀</span>
+                    <div>
+                        <h3>Anjaneya Borewells — Release History</h3>
+                        <p class="version-modal-subtitle">Official Web App Version Changelog</p>
+                    </div>
+                </div>
+                <button type="button" class="modal-close" id="versionModalClose">&times;</button>
+            </div>
+            <div class="modal-body version-modal-body">
+                <div class="version-timeline">
+                    <div class="version-item current">
+                        <div class="version-badge-header">
+                            <span class="version-pill">v2.5.0</span>
+                            <span class="version-date">Latest Release (August 2026)</span>
+                            <span class="version-status-dot">Current</span>
+                        </div>
+                        <ul class="version-changes-list">
+                            <li>✨ <strong>Per-Foot Flushing Rate:</strong> Updated flushing / old bore cleaning rate to ₹40/ft with instant live recomputation.</li>
+                            <li>📊 <strong>Interactive Main Page Slab Adjuster:</strong> Full Step (+5, -5, Custom Step) depth slab configurator directly in quotation creator.</li>
+                            <li>⭐ <strong>Namakkal 25+ Yrs Trust Branding:</strong> Updated hero badge, stats & certificates highlighting 25+ years of trusted drilling.</li>
+                            <li>👁️ <strong>Live Visitor & Page Views Counter:</strong> Real-time animated page view tracker in footer.</li>
+                        </ul>
+                    </div>
+
+                    <div class="version-item">
+                        <div class="version-badge-header">
+                            <span class="version-pill prev">v2.4.0</span>
+                            <span class="version-date">August 2026</span>
+                        </div>
+                        <ul class="version-changes-list">
+                            <li>⚙️ <strong>Admin Slab Configurator:</strong> Dynamic 0-2200 ft depth slabs management with flexible step controls.</li>
+                            <li>💎 <strong>Crystal Liquid Glass Hero Buttons:</strong> 3D liquid bevel styling with quick action shortcuts.</li>
+                            <li>💻 <strong>Developer Signature:</strong> Added developer credit badge with direct WhatsApp/Call and Instagram links.</li>
+                        </ul>
+                    </div>
+
+                    <div class="version-item">
+                        <div class="version-badge-header">
+                            <span class="version-pill prev">v2.0.0</span>
+                            <span class="version-date">Initial Launch</span>
+                        </div>
+                        <ul class="version-changes-list">
+                            <li>🚜 <strong>2200+ Ft Drilling Capabilities:</strong> High-power compressor rigs & instant estimate calculation engine.</li>
+                            <li>📱 <strong>Full Mobile Responsive PWA:</strong> Offline support, Google review integration & interactive rig truck.</li>
+                        </ul>
                     </div>
                 </div>
             </div>

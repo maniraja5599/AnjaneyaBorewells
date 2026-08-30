@@ -698,30 +698,39 @@ class AnjaneyaBorewells {
     }
     
     saveInlineSettings() {
-        const pvc7Rate = parseFloat(document.getElementById('inlinePvc7Rate').value) || 450;
-        const pvc10Rate = parseFloat(document.getElementById('inlinePvc10Rate').value) || 750;
-        const baseDrillingRate = parseFloat(document.getElementById('inlineBaseDrillingRate').value) || 90;
-        const oldBoreRate = parseFloat(document.getElementById('inlineOldBoreRate').value) || 40;
-        const boreBataRate = parseFloat(document.getElementById('inlineBoreBataRate').value) || 2000;
-        const gstPercentage = parseFloat(document.getElementById('inlineGstPercentage').value) || 18;
+        const pvc7Rate = parseFloat(document.getElementById('inlinePvc7Rate')?.value) || 450;
+        const pvc10Rate = parseFloat(document.getElementById('inlinePvc10Rate')?.value) || 750;
+        const baseDrillingRate = parseFloat(document.getElementById('inlineBaseDrillingRate')?.value) || 90;
+        const oldBoreRate = parseFloat(document.getElementById('inlineOldBoreRate')?.value) || 40;
+        const boreBataRate = parseFloat(document.getElementById('inlineBoreBataRate')?.value) || 2000;
+        const gstPercentage = parseFloat(document.getElementById('inlineGstPercentage')?.value) || 18;
         
         // Get current slab rates
         const slabRates = [];
-        const slabInputs = document.querySelectorAll('.slab-rate-input');
-        slabInputs.forEach((input, index) => {
-            const rate = parseFloat(input.value) || 90;
-            const defaultSlabs = this.getDefaultSlabRates();
-            slabRates.push({
-                range: defaultSlabs[index].range,
-                rate: rate
+        const slabInputs = document.querySelectorAll('.inline-slab-input-box');
+        if (slabInputs.length > 0) {
+            slabInputs.forEach((input, index) => {
+                const def = CostCalculator.DEPTH_SLABS[index] || {};
+                slabRates.push({
+                    start: def.start,
+                    end: def.end,
+                    span: def.span,
+                    range: def.rangeStr,
+                    rate: parseFloat(input.value) || def.defaultRate || 100
+                });
             });
-        });
+        } else if (this.calculator.slabRates && this.calculator.slabRates.length > 0) {
+            slabRates.push(...this.calculator.slabRates);
+        } else {
+            slabRates.push(...CostCalculator.DEPTH_SLABS.map(d => ({ ...d, rate: d.defaultRate })));
+        }
         
         // Update calculator defaults
         this.calculator.defaults.pvc7Rate = pvc7Rate;
         this.calculator.defaults.pvc10Rate = pvc10Rate;
         this.calculator.defaults.drillingRate = baseDrillingRate;
         this.calculator.defaults.oldBoreRate = oldBoreRate;
+        this.calculator.defaults.flushingRate = oldBoreRate;
         this.calculator.defaults.boreBataRate = boreBataRate;
         this.calculator.defaults.gstPercentage = gstPercentage;
         
@@ -740,6 +749,7 @@ class AnjaneyaBorewells {
             pvc10Rate,
             baseDrillingRate,
             oldBoreRate,
+            flushingRate: oldBoreRate,
             boreBataRate,
             gstPercentage,
             slabRates: slabRates
@@ -758,16 +768,16 @@ class AnjaneyaBorewells {
     resetInlineSettings() {
         if (confirm('Are you sure you want to reset all settings to default values?')) {
             // Reset to default values
-            document.getElementById('inlinePvc7Rate').value = 450;
-            document.getElementById('inlinePvc10Rate').value = 750;
-            document.getElementById('inlineBaseDrillingRate').value = 90;
-            document.getElementById('inlineOldBoreRate').value = 40;
-            document.getElementById('inlineBoreBataRate').value = 2000;
-            document.getElementById('inlineGstPercentage').value = 18;
+            if (document.getElementById('inlinePvc7Rate')) document.getElementById('inlinePvc7Rate').value = 450;
+            if (document.getElementById('inlinePvc10Rate')) document.getElementById('inlinePvc10Rate').value = 750;
+            if (document.getElementById('inlineBaseDrillingRate')) document.getElementById('inlineBaseDrillingRate').value = 90;
+            if (document.getElementById('inlineOldBoreRate')) document.getElementById('inlineOldBoreRate').value = 40;
+            if (document.getElementById('inlineBoreBataRate')) document.getElementById('inlineBoreBataRate').value = 2000;
+            if (document.getElementById('inlineGstPercentage')) document.getElementById('inlineGstPercentage').value = 18;
             
             // Reset slab rates to defaults
-            const defaultSlabs = this.getDefaultSlabRates();
-            const slabInputs = document.querySelectorAll('.slab-rate-input');
+            const defaultSlabs = CostCalculator.DEPTH_SLABS.map(d => ({ ...d, rate: d.defaultRate }));
+            const slabInputs = document.querySelectorAll('.inline-slab-input-box');
             slabInputs.forEach((input, index) => {
                 input.value = defaultSlabs[index].rate;
             });
@@ -777,6 +787,7 @@ class AnjaneyaBorewells {
             this.calculator.defaults.pvc10Rate = 750;
             this.calculator.defaults.drillingRate = 90;
             this.calculator.defaults.oldBoreRate = 40;
+            this.calculator.defaults.flushingRate = 40;
             this.calculator.defaults.boreBataRate = 2000;
             this.calculator.defaults.gstPercentage = 18;
             
@@ -795,6 +806,7 @@ class AnjaneyaBorewells {
                 pvc10Rate: 750,
                 baseDrillingRate: 90,
                 oldBoreRate: 40,
+                flushingRate: 40,
                 boreBataRate: 2000,
                 gstPercentage: 18,
                 slabRates: defaultSlabs
@@ -817,55 +829,23 @@ class AnjaneyaBorewells {
         const mainDrillingInput = document.getElementById('drillingRate');
         
         if (baseDrillingInput && mainDrillingInput) {
-            // Sync from price settings to main page
             baseDrillingInput.addEventListener('input', (e) => {
                 const newRate = parseFloat(e.target.value) || 90;
                 mainDrillingInput.value = newRate;
                 this.calculator.defaults.drillingRate = newRate;
-                
-                // Auto-recalculate slab rates if slab rate section is visible
-                this.autoRecalculateSlabRates(newRate);
-                
-                // Trigger calculator update
                 this.calculator.calculate();
             });
             
-            // Sync from main page to price settings
             mainDrillingInput.addEventListener('input', (e) => {
                 const newRate = parseFloat(e.target.value) || 90;
                 baseDrillingInput.value = newRate;
                 this.calculator.defaults.drillingRate = newRate;
-                
-                // Auto-recalculate slab rates if slab rate section is visible
-                this.autoRecalculateSlabRates(newRate);
-            });
-        }
-    }
-    
-    autoRecalculateSlabRates(baseRate) {
-        const slabRatesSection = document.getElementById('slabRatesSection');
-        const slabInputs = document.querySelectorAll('.slab-rate-input');
-        
-        // Only auto-recalculate if slab rates section is visible and has inputs
-        if (slabRatesSection && slabRatesSection.style.display !== 'none' && slabInputs.length > 0) {
-            const newSlabRates = this.calculator.calculateSlabRatesFromBaseRate(baseRate);
-            
-            slabInputs.forEach((input, index) => {
-                // Only update if input is in "Auto" mode (readonly)
-                if (input.readOnly && newSlabRates[index]) {
-                    input.value = newSlabRates[index].rate;
-                    
-                    // Update calculator slab rates
-                    if (this.calculator.slabRates && this.calculator.slabRates[index]) {
-                        this.calculator.slabRates[index].rate = newSlabRates[index].rate;
-                    }
-                }
+                this.calculator.calculate();
             });
         }
     }
     
     showInlineSuccessNotification() {
-        // Remove any existing notification
         const existingNotification = document.querySelector('.inline-success-notification');
         if (existingNotification) {
             existingNotification.remove();
@@ -887,11 +867,10 @@ class AnjaneyaBorewells {
             box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
             animation: slideInRight 0.3s ease;
         `;
-        notification.textContent = 'Settings saved to browser storage!';
+        notification.textContent = 'Settings saved & applied live!';
         
         document.body.appendChild(notification);
         
-        // Remove after 3 seconds
         setTimeout(() => {
             if (notification.parentNode) {
                 notification.style.animation = 'slideOutRight 0.3s ease';
@@ -904,195 +883,130 @@ class AnjaneyaBorewells {
         }, 3000);
     }
     
-    showSettingsLoadedNotification() {
-        // Remove any existing notification
-        const existingNotification = document.querySelector('.settings-loaded-notification');
-        if (existingNotification) {
-            existingNotification.remove();
-        }
-        
-        const notification = document.createElement('div');
-        notification.className = 'settings-loaded-notification';
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #3b82f6;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 600;
-            z-index: 10000;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-            animation: slideInRight 0.3s ease;
-        `;
-        notification.textContent = 'Settings loaded from browser storage!';
-        
-        document.body.appendChild(notification);
-        
-        // Remove after 2 seconds
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.style.animation = 'slideOutRight 0.3s ease';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
-                    }
-                }, 300);
-            }
-        }, 2000);
-    }
-    
     loadInlineSlabRates() {
         const grid = document.getElementById('inlineSlabRatesGrid');
         if (!grid) return;
         
-        // Get current slab rates from calculator or use defaults
-        const slabRates = this.calculator.slabRates && this.calculator.slabRates.length > 0 ? 
-            this.calculator.slabRates : 
-            this.getDefaultSlabRates();
+        let savedSlabs = this.calculator.slabRates;
+        if (!savedSlabs || savedSlabs.length === 0) {
+            const calcSaved = localStorage.getItem('anjaneya-calculator-settings');
+            if (calcSaved) {
+                try { savedSlabs = JSON.parse(calcSaved).slabRates; } catch(e) {}
+            }
+        }
         
-        grid.innerHTML = '';
-        
-        slabRates.forEach((slab, index) => {
-            const slabItem = document.createElement('div');
-            slabItem.className = 'slab-rate-item';
-            slabItem.innerHTML = `
-                <div class="slab-rate-label">${slab.range}</div>
-                <input type="number" class="slab-rate-input" value="${slab.rate}" min="0" step="1" data-index="${index}" readonly>
-                <div class="slab-rate-actions">
-                    <button type="button" class="slab-rate-btn edit" data-index="${index}">Edit</button>
-                    <button type="button" class="slab-rate-btn auto" data-index="${index}">Auto</button>
+        grid.innerHTML = CostCalculator.DEPTH_SLABS.map((def, idx) => {
+            const savedRate = (savedSlabs && savedSlabs[idx] && savedSlabs[idx].rate !== undefined) 
+                ? savedSlabs[idx].rate 
+                : def.defaultRate;
+            return `
+                <div class="inline-slab-item">
+                    <span class="inline-slab-name">📏 ${def.rangeStr}</span>
+                    <div class="inline-slab-input-wrap">
+                        <span class="inline-slab-currency">₹</span>
+                        <input type="number" class="inline-slab-input-box" data-index="${idx}" value="${savedRate}" min="1" step="1">
+                    </div>
                 </div>
-                <div class="slab-rate-status auto">Auto</div>
             `;
-            
-            grid.appendChild(slabItem);
-        });
+        }).join('');
         
-        // Add event listeners for slab rate inputs
         this.setupInlineSlabRateListeners();
     }
     
-    getDefaultSlabRates() {
-        // Use the calculator's default slab rate calculation
-        return this.calculator.calculateSlabRatesFromBaseRate(this.calculator.defaults.drillingRate);
-    }
-    
     setupInlineSlabRateListeners() {
-        const slabInputs = document.querySelectorAll('.slab-rate-input');
+        const slabInputs = document.querySelectorAll('.inline-slab-input-box');
         slabInputs.forEach(input => {
             input.addEventListener('input', (e) => {
                 const index = parseInt(e.target.dataset.index);
-                this.updateInlineSlabRate(index, parseFloat(e.target.value) || 0);
-            }, { passive: true });
-        });
-        
-        // Add event listeners for edit/auto buttons
-        const editButtons = document.querySelectorAll('.slab-rate-btn.edit');
-        editButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const index = parseInt(e.target.dataset.index);
-                this.setInlineSlabRateManual(index);
+                const rate = parseFloat(e.target.value) || 0;
+                this.updateInlineSlabRate(index, rate);
             });
         });
-        
-        const autoButtons = document.querySelectorAll('.slab-rate-btn.auto');
-        autoButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const index = parseInt(e.target.dataset.index);
-                this.setInlineSlabRateAuto(index);
+
+        const addStepBtn = document.getElementById('inlineAddStepBtn');
+        const deductStepBtn = document.getElementById('inlineDeductStepBtn');
+        const stepAmountInput = document.getElementById('inlineStepAmount');
+        const minus5Btn = document.getElementById('inlineMinus5Btn');
+        const plus5Btn = document.getElementById('inlinePlus5Btn');
+        const resetSlabsBtn = document.getElementById('inlineResetSlabsBtn');
+
+        const applyStepToAll = (delta) => {
+            const updated = [];
+            document.querySelectorAll('.inline-slab-input-box').forEach((input, idx) => {
+                const def = CostCalculator.DEPTH_SLABS[idx] || {};
+                const currentVal = parseFloat(input.value) || def.defaultRate || 100;
+                const nextVal = Math.max(1, currentVal + delta);
+                input.value = nextVal;
+                updated.push({
+                    start: def.start,
+                    end: def.end,
+                    span: def.span,
+                    range: def.rangeStr,
+                    rate: nextVal
+                });
             });
-        });
+            this.calculator.slabRates = updated;
+            this.calculator.calculate();
+        };
+
+        if (addStepBtn && !addStepBtn._bound) {
+            addStepBtn._bound = true;
+            addStepBtn.addEventListener('click', () => {
+                const step = parseFloat(stepAmountInput?.value) || 5;
+                applyStepToAll(step);
+            });
+        }
+
+        if (deductStepBtn && !deductStepBtn._bound) {
+            deductStepBtn._bound = true;
+            deductStepBtn.addEventListener('click', () => {
+                const step = parseFloat(stepAmountInput?.value) || 5;
+                applyStepToAll(-step);
+            });
+        }
+
+        if (minus5Btn && !minus5Btn._bound) {
+            minus5Btn._bound = true;
+            minus5Btn.addEventListener('click', () => applyStepToAll(-5));
+        }
+
+        if (plus5Btn && !plus5Btn._bound) {
+            plus5Btn._bound = true;
+            plus5Btn.addEventListener('click', () => applyStepToAll(5));
+        }
+
+        if (resetSlabsBtn && !resetSlabsBtn._bound) {
+            resetSlabsBtn._bound = true;
+            resetSlabsBtn.addEventListener('click', () => {
+                const resetSlabs = [];
+                document.querySelectorAll('.inline-slab-input-box').forEach((input, idx) => {
+                    const def = CostCalculator.DEPTH_SLABS[idx];
+                    if (def) {
+                        input.value = def.defaultRate;
+                        resetSlabs.push({
+                            start: def.start,
+                            end: def.end,
+                            span: def.span,
+                            range: def.rangeStr,
+                            rate: def.defaultRate
+                        });
+                    }
+                });
+                if (stepAmountInput) stepAmountInput.value = 5;
+                this.calculator.slabRates = resetSlabs;
+                this.calculator.calculate();
+            });
+        }
     }
     
     updateInlineSlabRate(index, rate) {
-        if (this.calculator.slabRates && this.calculator.slabRates[index]) {
+        if (!this.calculator.slabRates || this.calculator.slabRates.length === 0) {
+            this.calculator.slabRates = CostCalculator.DEPTH_SLABS.map(d => ({ ...d, rate: d.defaultRate }));
+        }
+        if (this.calculator.slabRates[index]) {
             this.calculator.slabRates[index].rate = rate;
             this.calculator.calculate();
         }
-    }
-    
-    setInlineSlabRateManual(index) {
-        const statusElement = document.querySelector(`.slab-rate-item:nth-child(${index + 1}) .slab-rate-status`);
-        const editButton = document.querySelector(`.slab-rate-btn.edit[data-index="${index}"]`);
-        const autoButton = document.querySelector(`.slab-rate-btn.auto[data-index="${index}"]`);
-        const input = document.querySelector(`.slab-rate-input[data-index="${index}"]`);
-        
-        if (statusElement) {
-            statusElement.textContent = 'Manual';
-            statusElement.className = 'slab-rate-status manual';
-        }
-        
-        if (editButton) {
-            editButton.style.background = '#22c55e';
-            editButton.textContent = 'Manual';
-        }
-        
-        if (autoButton) {
-            autoButton.style.background = '#f3f4f6';
-            autoButton.style.color = '#6b7280';
-        }
-        
-        // Make input editable and focus
-        if (input) {
-            input.readOnly = false;
-            input.style.backgroundColor = '#fff3cd';
-            input.style.borderColor = '#ffc107';
-            input.focus();
-            input.select();
-        }
-        
-        // Update calculator with current value
-        if (input && this.calculator.slabRates && this.calculator.slabRates[index]) {
-            this.calculator.slabRates[index].rate = parseFloat(input.value) || 90;
-            this.calculator.calculate();
-        }
-    }
-    
-    setInlineSlabRateAuto(index) {
-        // Recalculate slab rates from base drilling rate
-        const baseRate = this.calculator.defaults.drillingRate || 90;
-        const calculatedRate = this.calculateSlabRateFromBase(baseRate, index);
-        
-        const input = document.querySelector(`.slab-rate-input[data-index="${index}"]`);
-        const statusElement = document.querySelector(`.slab-rate-item:nth-child(${index + 1}) .slab-rate-status`);
-        const editButton = document.querySelector(`.slab-rate-btn.edit[data-index="${index}"]`);
-        const autoButton = document.querySelector(`.slab-rate-btn.auto[data-index="${index}"]`);
-        
-        if (input) {
-            input.value = calculatedRate;
-            input.readOnly = true;
-            input.style.backgroundColor = '';
-            input.style.borderColor = '';
-        }
-        
-        if (statusElement) {
-            statusElement.textContent = 'Auto';
-            statusElement.className = 'slab-rate-status auto';
-        }
-        
-        if (editButton) {
-            editButton.style.background = '#3b82f6';
-            editButton.textContent = 'Edit';
-        }
-        
-        if (autoButton) {
-            autoButton.style.background = '#f3f4f6';
-            autoButton.style.color = '#6b7280';
-        }
-        
-        // Update calculator
-        if (this.calculator.slabRates && this.calculator.slabRates[index]) {
-            this.calculator.slabRates[index].rate = calculatedRate;
-            this.calculator.calculate();
-        }
-    }
-    
-    calculateSlabRateFromBase(baseRate, index) {
-        const multipliers = [1.0, 1.05, 1.17, 1.39, 1.72, 2.17, 2.72, 3.28];
-        return Math.round(baseRate * multipliers[index] || baseRate);
     }
     
     toggleSlabRatesSection() {
@@ -1111,10 +1025,8 @@ class AnjaneyaBorewells {
                 slabSection.style.display = 'block';
                 toggleBtn.textContent = 'Hide Slab Rates';
                 
-                // Load slab rates if not already loaded
-                if (!document.querySelector('.slab-rate-item')) {
-                    this.loadInlineSlabRates();
-                }
+                // Load slab rates
+                this.loadInlineSlabRates();
             }
         }
     }
@@ -1298,7 +1210,10 @@ class CostCalculator {
                     if (parsedSaved.rates.casing7) this.defaults.pvc7Rate = parsedSaved.rates.casing7;
                     if (parsedSaved.rates.casing10) this.defaults.pvc10Rate = parsedSaved.rates.casing10;
                     if (parsedSaved.rates.transport) this.defaults.boreBataRate = parsedSaved.rates.transport;
-                    if (parsedSaved.rates.flushing) this.defaults.flushingRate = parsedSaved.rates.flushing;
+                    if (parsedSaved.rates.flushing) {
+                        this.defaults.flushingRate = parsedSaved.rates.flushing;
+                        this.defaults.oldBoreRate = parsedSaved.rates.flushing;
+                    }
                     if (parsedSaved.rates.slabRates && parsedSaved.rates.slabRates.length > 0) {
                         this.slabRates = parsedSaved.rates.slabRates;
                     }
@@ -2656,6 +2571,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Page Views / Visitors Counter
     initPageViewsCounter();
 
+    // Initialize Version History Modal
+    initVersionModal();
+
     // Initialize Admin Portal
     window.adminPortal = new AdminPortal();
 });
@@ -2815,6 +2733,40 @@ function initPageViewsCounter() {
     el.textContent = baseViews.toLocaleString('en-IN');
 }
 
+// Version History Modal Initialization
+function initVersionModal() {
+    const modal = document.getElementById('versionModal');
+    const openBtn = document.getElementById('openVersionModalBtn');
+    const closeBtn = document.getElementById('versionModalClose');
+
+    if (!modal) return;
+
+    const openModal = () => {
+        modal.classList.add('show');
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeModal = () => {
+        modal.classList.remove('show');
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    };
+
+    if (openBtn) openBtn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && (modal.classList.contains('show') || modal.style.display === 'flex')) {
+            closeModal();
+        }
+    });
+}
+
 // Admin Portal Management System
 class AdminPortal {
     constructor() {
@@ -2908,7 +2860,7 @@ class AdminPortal {
                 if (document.getElementById('adminCasing7')) document.getElementById('adminCasing7').value = 450;
                 if (document.getElementById('adminCasing10')) document.getElementById('adminCasing10').value = 750;
                 if (document.getElementById('adminTransportRate')) document.getElementById('adminTransportRate').value = 2000;
-                if (document.getElementById('adminFlushingRate')) document.getElementById('adminFlushingRate').value = 3500;
+                if (document.getElementById('adminFlushingRate')) document.getElementById('adminFlushingRate').value = 40;
                 if (stepAmountInput) stepAmountInput.value = 5;
             });
         }
@@ -3027,7 +2979,7 @@ class AdminPortal {
 
         if (document.getElementById('adminCasing7')) document.getElementById('adminCasing7').value = rates.casing7 || 450;
         if (document.getElementById('adminCasing10')) document.getElementById('adminCasing10').value = rates.casing10 || 750;
-        if (document.getElementById('adminFlushingRate')) document.getElementById('adminFlushingRate').value = rates.flushing || 3500;
+        if (document.getElementById('adminFlushingRate')) document.getElementById('adminFlushingRate').value = rates.flushing || 40;
         if (document.getElementById('adminTransportRate')) document.getElementById('adminTransportRate').value = rates.transport || 2000;
 
         // Render Depth Slabs Grid
@@ -3085,7 +3037,7 @@ class AdminPortal {
 
             const casing7Val = parseFloat(document.getElementById('adminCasing7')?.value) || 450;
             const casing10Val = parseFloat(document.getElementById('adminCasing10')?.value) || 750;
-            const flushingVal = parseFloat(document.getElementById('adminFlushingRate')?.value) || 3500;
+            const flushingVal = parseFloat(document.getElementById('adminFlushingRate')?.value) || 40;
             const transportVal = parseFloat(document.getElementById('adminTransportRate')?.value) || 2000;
 
             const heroBadgeVal = document.getElementById('adminHeroBadgeText')?.value || '#1 Borewell Specialists in Namakkal • 25+ Yrs Trust';
@@ -3123,6 +3075,7 @@ class AdminPortal {
                 pvc10Rate: casing10Val,
                 boreBataRate: transportVal,
                 flushingRate: flushingVal,
+                oldBoreRate: flushingVal,
                 slabRates: updatedSlabs
             };
             localStorage.setItem('anjaneya-calculator-settings', JSON.stringify(calcSettings));
@@ -3217,7 +3170,10 @@ class AdminPortal {
                 if (rates.casing7) window.anjaneyaApp.calculator.defaults.pvc7Rate = rates.casing7;
                 if (rates.casing10) window.anjaneyaApp.calculator.defaults.pvc10Rate = rates.casing10;
                 if (rates.transport) window.anjaneyaApp.calculator.defaults.boreBataRate = rates.transport;
-                if (rates.flushing) window.anjaneyaApp.calculator.defaults.flushingRate = rates.flushing;
+                if (rates.flushing) {
+                    window.anjaneyaApp.calculator.defaults.flushingRate = rates.flushing;
+                    window.anjaneyaApp.calculator.defaults.oldBoreRate = rates.flushing;
+                }
                 if (rates.slabRates && rates.slabRates.length > 0) {
                     window.anjaneyaApp.calculator.slabRates = rates.slabRates;
                 }
