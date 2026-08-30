@@ -1172,24 +1172,25 @@ class Navigation {
 
 class CostCalculator {
     static DEPTH_SLABS = [
-        { start: 1, end: 300, span: 300, inc: 0, defaultRate: 50, rangeStr: '001-300 ft' },
-        { start: 301, end: 400, span: 100, inc: 5, defaultRate: 55, rangeStr: '301-400 ft' },
-        { start: 401, end: 500, span: 100, inc: 15, defaultRate: 65, rangeStr: '401-500 ft' },
-        { start: 501, end: 600, span: 100, inc: 35, defaultRate: 85, rangeStr: '501-600 ft' },
-        { start: 601, end: 700, span: 100, inc: 65, defaultRate: 115, rangeStr: '601-700 ft' },
-        { start: 701, end: 800, span: 100, inc: 105, defaultRate: 155, rangeStr: '701-800 ft' },
-        { start: 801, end: 900, span: 100, inc: 155, defaultRate: 215, rangeStr: '801-900 ft' },
-        { start: 901, end: 1000, span: 100, inc: 215, defaultRate: 315, rangeStr: '901-1000 ft' },
-        { start: 1001, end: 1100, span: 100, inc: 315, defaultRate: 415, rangeStr: '1001-1100 ft' },
-        { start: 1101, end: 1200, span: 100, inc: 415, defaultRate: 515, rangeStr: '1101-1200 ft' },
-        { start: 1201, end: 1300, span: 100, inc: 515, defaultRate: 615, rangeStr: '1201-1300 ft' },
-        { start: 1301, end: 1400, span: 100, inc: 615, defaultRate: 715, rangeStr: '1301-1400 ft' },
-        { start: 1401, end: 1500, span: 100, inc: 715, defaultRate: 815, rangeStr: '1401-1500 ft' },
-        { start: 1501, end: 1600, span: 100, inc: 815, defaultRate: 915, rangeStr: '1501-1600 ft' },
-        { start: 1601, end: 1700, span: 100, inc: 915, defaultRate: 1015, rangeStr: '1601-1700 ft' },
-        { start: 1701, end: 1800, span: 100, inc: 1015, defaultRate: 1115, rangeStr: '1701-1800 ft' },
-        { start: 1801, end: 1900, span: 100, inc: 1115, defaultRate: 1215, rangeStr: '1801-1900 ft' },
-        { start: 1901, end: 2000, span: 100, inc: 1215, defaultRate: 1315, rangeStr: '1901-2000 ft' }
+        { start: 1, end: 300, span: 300, inc: 0, defaultRate: 100, rangeStr: '001-300 ft' },
+        { start: 301, end: 400, span: 100, inc: 10, defaultRate: 110, rangeStr: '301-400 ft' },
+        { start: 401, end: 500, span: 100, inc: 30, defaultRate: 130, rangeStr: '401-500 ft' },
+        { start: 501, end: 600, span: 100, inc: 60, defaultRate: 160, rangeStr: '501-600 ft' },
+        { start: 601, end: 700, span: 100, inc: 100, defaultRate: 200, rangeStr: '601-700 ft' },
+        { start: 701, end: 800, span: 100, inc: 150, defaultRate: 250, rangeStr: '701-800 ft' },
+        { start: 801, end: 900, span: 100, inc: 210, defaultRate: 310, rangeStr: '801-900 ft' },
+        { start: 901, end: 1000, span: 100, inc: 280, defaultRate: 380, rangeStr: '901-1000 ft' },
+        { start: 1001, end: 1100, span: 100, inc: 380, defaultRate: 480, rangeStr: '1001-1100 ft' },
+        { start: 1101, end: 1200, span: 100, inc: 480, defaultRate: 580, rangeStr: '1101-1200 ft' },
+        { start: 1201, end: 1300, span: 100, inc: 580, defaultRate: 680, rangeStr: '1201-1300 ft' },
+        { start: 1301, end: 1400, span: 100, inc: 680, defaultRate: 780, rangeStr: '1301-1400 ft' },
+        { start: 1401, end: 1500, span: 100, inc: 780, defaultRate: 880, rangeStr: '1401-1500 ft' },
+        { start: 1501, end: 1600, span: 100, inc: 880, defaultRate: 980, rangeStr: '1501-1600 ft' },
+        { start: 1601, end: 1700, span: 100, inc: 980, defaultRate: 1080, rangeStr: '1601-1700 ft' },
+        { start: 1701, end: 1800, span: 100, inc: 1080, defaultRate: 1180, rangeStr: '1701-1800 ft' },
+        { start: 1801, end: 1900, span: 100, inc: 1180, defaultRate: 1280, rangeStr: '1801-1900 ft' },
+        { start: 1901, end: 2000, span: 100, inc: 1280, defaultRate: 1380, rangeStr: '1901-2000 ft' },
+        { start: 2001, end: 2200, span: 200, inc: 1480, defaultRate: 1580, rangeStr: '2001-2200 ft' }
     ];
 
     constructor() {
@@ -1197,7 +1198,7 @@ class CostCalculator {
             totalDepth: 800,
             pvc7Length: 30,
             pvc10Length: 15,
-            drillingRate: 90,
+            drillingRate: 100,
             gstPercentage: 18,
             pvc7Rate: 450,
             pvc10Rate: 750,
@@ -2831,6 +2832,30 @@ class AdminPortal {
             this.logoutBtn.addEventListener('click', () => this.logout());
         }
 
+        const add20Btn = document.getElementById('adminAdd20Btn');
+        if (add20Btn) {
+            add20Btn.addEventListener('click', () => {
+                document.querySelectorAll('.admin-slab-input-box').forEach(input => {
+                    const currentVal = parseFloat(input.value) || 0;
+                    input.value = currentVal + 20;
+                });
+            });
+        }
+
+        const resetSlabsBtn = document.getElementById('adminResetSlabsBtn');
+        if (resetSlabsBtn) {
+            resetSlabsBtn.addEventListener('click', () => {
+                document.querySelectorAll('.admin-slab-input-box').forEach((input, idx) => {
+                    const def = CostCalculator.DEPTH_SLABS[idx];
+                    if (def) input.value = def.defaultRate;
+                });
+                if (document.getElementById('adminCasing7')) document.getElementById('adminCasing7').value = 450;
+                if (document.getElementById('adminCasing10')) document.getElementById('adminCasing10').value = 750;
+                if (document.getElementById('adminTransportRate')) document.getElementById('adminTransportRate').value = 2000;
+                if (document.getElementById('adminFlushingRate')) document.getElementById('adminFlushingRate').value = 3500;
+            });
+        }
+
         // Tab Switching
         this.tabs.forEach(tab => {
             tab.addEventListener('click', () => {
@@ -2939,12 +2964,37 @@ class AdminPortal {
         if (document.getElementById('adminSlogan')) document.getElementById('adminSlogan').value = comp.slogan || 'ஆழமான நம்பிக்கை!';
         if (document.getElementById('adminLocationText')) document.getElementById('adminLocationText').value = comp.location || 'Namakkal & Tamil Nadu';
 
-        if (document.getElementById('adminBaseRate475')) document.getElementById('adminBaseRate475').value = rates.baseRate475 || 75;
-        if (document.getElementById('adminBaseRate650')) document.getElementById('adminBaseRate650').value = rates.baseRate650 || 85;
-        if (document.getElementById('adminCasing7')) document.getElementById('adminCasing7').value = rates.casing7 || 380;
-        if (document.getElementById('adminCasing10')) document.getElementById('adminCasing10').value = rates.casing10 || 650;
+        if (document.getElementById('adminCasing7')) document.getElementById('adminCasing7').value = rates.casing7 || 450;
+        if (document.getElementById('adminCasing10')) document.getElementById('adminCasing10').value = rates.casing10 || 750;
         if (document.getElementById('adminFlushingRate')) document.getElementById('adminFlushingRate').value = rates.flushing || 3500;
-        if (document.getElementById('adminTransportRate')) document.getElementById('adminTransportRate').value = rates.transport || 1500;
+        if (document.getElementById('adminTransportRate')) document.getElementById('adminTransportRate').value = rates.transport || 2000;
+
+        // Render Depth Slabs Grid
+        const grid = document.getElementById('adminSlabsGrid');
+        if (grid) {
+            let savedSlabs = rates.slabRates;
+            if (!savedSlabs || savedSlabs.length === 0) {
+                const calcSaved = localStorage.getItem('anjaneya-calculator-settings');
+                if (calcSaved) {
+                    try { savedSlabs = JSON.parse(calcSaved).slabRates; } catch(e) {}
+                }
+            }
+
+            grid.innerHTML = CostCalculator.DEPTH_SLABS.map((def, idx) => {
+                const savedRate = (savedSlabs && savedSlabs[idx] && savedSlabs[idx].rate !== undefined) 
+                    ? savedSlabs[idx].rate 
+                    : def.defaultRate;
+                return `
+                    <div class="admin-slab-item">
+                        <span class="admin-slab-name">📏 ${def.rangeStr}</span>
+                        <div class="admin-slab-input-wrap">
+                            <span class="admin-slab-currency">₹</span>
+                            <input type="number" class="admin-slab-input-box" data-slab-index="${idx}" value="${savedRate}" min="1" step="1">
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
     }
 
     saveSettings() {
@@ -2957,6 +3007,26 @@ class AdminPortal {
                 try { current = JSON.parse(saved); } catch(e) {}
             }
 
+            // Gather all slab rates
+            const slabInputs = document.querySelectorAll('.admin-slab-input-box');
+            const updatedSlabs = [];
+            slabInputs.forEach((input, idx) => {
+                const def = CostCalculator.DEPTH_SLABS[idx] || {};
+                const rate = parseFloat(input.value) || def.defaultRate || 100;
+                updatedSlabs.push({
+                    start: def.start,
+                    end: def.end,
+                    span: def.span,
+                    range: def.rangeStr,
+                    rate: rate
+                });
+            });
+
+            const casing7Val = parseFloat(document.getElementById('adminCasing7')?.value) || 450;
+            const casing10Val = parseFloat(document.getElementById('adminCasing10')?.value) || 750;
+            const flushingVal = parseFloat(document.getElementById('adminFlushingRate')?.value) || 3500;
+            const transportVal = parseFloat(document.getElementById('adminTransportRate')?.value) || 2000;
+
             const updatedSettings = {
                 companyInfo: {
                     phone1: document.getElementById('adminPhone1')?.value || '+91 965 965 7777',
@@ -2968,16 +3038,26 @@ class AdminPortal {
                     logo: logoDataUrl || current.companyInfo?.logo || 'logo.jpg'
                 },
                 rates: {
-                    baseRate475: parseFloat(document.getElementById('adminBaseRate475')?.value) || 75,
-                    baseRate650: parseFloat(document.getElementById('adminBaseRate650')?.value) || 85,
-                    casing7: parseFloat(document.getElementById('adminCasing7')?.value) || 380,
-                    casing10: parseFloat(document.getElementById('adminCasing10')?.value) || 650,
-                    flushing: parseFloat(document.getElementById('adminFlushingRate')?.value) || 3500,
-                    transport: parseFloat(document.getElementById('adminTransportRate')?.value) || 1500
+                    casing7: casing7Val,
+                    casing10: casing10Val,
+                    flushing: flushingVal,
+                    transport: transportVal,
+                    slabRates: updatedSlabs
                 }
             };
 
             localStorage.setItem('anjaneya-settings', JSON.stringify(updatedSettings));
+            
+            // Also store in calculator settings format
+            const calcSettings = {
+                pvc7Rate: casing7Val,
+                pvc10Rate: casing10Val,
+                boreBataRate: transportVal,
+                flushingRate: flushingVal,
+                slabRates: updatedSlabs
+            };
+            localStorage.setItem('anjaneya-calculator-settings', JSON.stringify(calcSettings));
+
             this.applyStoredSettings();
 
             if (this.saveToast) {
@@ -3045,13 +3125,14 @@ class AdminPortal {
 
             // 6. Calculator Refresh
             if (window.anjaneyaApp && window.anjaneyaApp.calculator) {
-                if (window.anjaneyaApp.calculator.settings) {
-                    if (rates.casing7) window.anjaneyaApp.calculator.settings.casingRates.pvc7 = rates.casing7;
-                    if (rates.casing10) window.anjaneyaApp.calculator.settings.casingRates.pvc10 = rates.casing10;
-                    if (rates.flushing) window.anjaneyaApp.calculator.settings.additionalServices.flushing = rates.flushing;
-                    if (rates.transport) window.anjaneyaApp.calculator.settings.transportRate = rates.transport;
+                if (rates.casing7) window.anjaneyaApp.calculator.defaults.pvc7Rate = rates.casing7;
+                if (rates.casing10) window.anjaneyaApp.calculator.defaults.pvc10Rate = rates.casing10;
+                if (rates.transport) window.anjaneyaApp.calculator.defaults.boreBataRate = rates.transport;
+                if (rates.flushing) window.anjaneyaApp.calculator.defaults.flushingRate = rates.flushing;
+                if (rates.slabRates && rates.slabRates.length > 0) {
+                    window.anjaneyaApp.calculator.slabRates = rates.slabRates;
                 }
-                window.anjaneyaApp.calculator.calculate();
+                window.anjaneyaApp.calculator.refreshSettings();
             }
         } catch(e) {
             console.error('Error applying admin settings:', e);

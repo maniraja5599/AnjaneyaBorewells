@@ -1305,34 +1305,41 @@
 
                     <!-- Rate Slabs Tab -->
                     <div class="admin-tab-pane" id="tab-rates" style="display: none;">
-                        <div class="form-row" style="display: flex; gap: 10px;">
-                            <div class="form-group" style="flex: 1;">
-                                <label for="adminBaseRate475">4¾" Base (₹/ft)</label>
-                                <input type="number" id="adminBaseRate475" value="75">
-                            </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label for="adminBaseRate650">6½" Base (₹/ft)</label>
-                                <input type="number" id="adminBaseRate650" value="85">
-                            </div>
+                        <div class="admin-section-header-box">
+                            <span class="admin-section-tag">📦 General & Casing Rates</span>
                         </div>
                         <div class="form-row" style="display: flex; gap: 10px;">
                             <div class="form-group" style="flex: 1;">
                                 <label for="adminCasing7">7" PVC Casing (₹/ft)</label>
-                                <input type="number" id="adminCasing7" value="380">
+                                <input type="number" id="adminCasing7" value="450">
                             </div>
                             <div class="form-group" style="flex: 1;">
                                 <label for="adminCasing10">10" PVC Casing (₹/ft)</label>
-                                <input type="number" id="adminCasing10" value="650">
+                                <input type="number" id="adminCasing10" value="750">
                             </div>
                         </div>
                         <div class="form-row" style="display: flex; gap: 10px;">
                             <div class="form-group" style="flex: 1;">
-                                <label for="adminFlushingRate">Flushing (₹)</label>
-                                <input type="number" id="adminFlushingRate" value="3500">
+                                <label for="adminTransportRate">Bata / Transport (₹)</label>
+                                <input type="number" id="adminTransportRate" value="2000">
                             </div>
                             <div class="form-group" style="flex: 1;">
-                                <label for="adminTransportRate">Transport (₹)</label>
-                                <input type="number" id="adminTransportRate" value="1500">
+                                <label for="adminFlushingRate">Flushing Rate (₹)</label>
+                                <input type="number" id="adminFlushingRate" value="3500">
+                            </div>
+                        </div>
+
+                        <div class="admin-section-header-box admin-slab-header-row">
+                            <span class="admin-section-tag">📊 Depth Slab Rates (0 - 2200 ft)</span>
+                            <div class="admin-slab-tools">
+                                <button type="button" class="admin-tool-btn" id="adminAdd20Btn" title="Add +20 to all slab rates">➕ +20 to All</button>
+                                <button type="button" class="admin-tool-btn" id="adminResetSlabsBtn" title="Reset to standard bill (+20) rates">🔄 Reset Standard</button>
+                            </div>
+                        </div>
+                        
+                        <div class="admin-slabs-scroll-wrap">
+                            <div class="admin-slabs-grid" id="adminSlabsGrid">
+                                <!-- Injected dynamically by script.js -->
                             </div>
                         </div>
                     </div>
