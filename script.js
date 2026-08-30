@@ -3207,19 +3207,30 @@ class AdminPortal {
                 if (viewsEl) viewsEl.textContent = comp.viewersCount.toLocaleString('en-IN');
             }
 
-            // 8. Calculator Refresh
-            if (window.anjaneyaApp && window.anjaneyaApp.calculator) {
-                if (rates.casing7) window.anjaneyaApp.calculator.defaults.pvc7Rate = rates.casing7;
-                if (rates.casing10) window.anjaneyaApp.calculator.defaults.pvc10Rate = rates.casing10;
-                if (rates.transport) window.anjaneyaApp.calculator.defaults.boreBataRate = rates.transport;
-                if (rates.flushing) {
-                    window.anjaneyaApp.calculator.defaults.flushingRate = rates.flushing;
-                    window.anjaneyaApp.calculator.defaults.oldBoreRate = rates.flushing;
+            // 8. Calculator & Real-Time Rates Refresh
+            if (window.anjaneyaApp) {
+                if (window.anjaneyaApp.calculator) {
+                    if (rates.casing7) window.anjaneyaApp.calculator.defaults.pvc7Rate = rates.casing7;
+                    if (rates.casing10) window.anjaneyaApp.calculator.defaults.pvc10Rate = rates.casing10;
+                    if (rates.transport) window.anjaneyaApp.calculator.defaults.boreBataRate = rates.transport;
+                    if (rates.flushing) {
+                        window.anjaneyaApp.calculator.defaults.flushingRate = rates.flushing;
+                        window.anjaneyaApp.calculator.defaults.oldBoreRate = rates.flushing;
+                    }
+                    if (rates.slabRates && rates.slabRates.length > 0) {
+                        window.anjaneyaApp.calculator.slabRates = rates.slabRates;
+                    }
+                    window.anjaneyaApp.calculator.refreshSettings();
                 }
-                if (rates.slabRates && rates.slabRates.length > 0) {
-                    window.anjaneyaApp.calculator.slabRates = rates.slabRates;
+                if (typeof window.anjaneyaApp.loadInlineSettings === 'function') {
+                    window.anjaneyaApp.loadInlineSettings();
                 }
-                window.anjaneyaApp.calculator.refreshSettings();
+                if (typeof window.anjaneyaApp.renderInlineSlabRates === 'function') {
+                    window.anjaneyaApp.renderInlineSlabRates();
+                }
+                if (window.anjaneyaApp.calculator && typeof window.anjaneyaApp.calculator.calculate === 'function') {
+                    window.anjaneyaApp.calculator.calculate();
+                }
             }
         } catch(e) {
             console.error('Error applying admin settings:', e);
