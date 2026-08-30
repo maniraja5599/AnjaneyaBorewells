@@ -2653,6 +2653,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Initial Page Logo Preloader
     initPagePreloader();
 
+    // Initialize Page Views / Visitors Counter
+    initPageViewsCounter();
+
     // Initialize Admin Portal
     window.adminPortal = new AdminPortal();
 });
@@ -2793,6 +2796,23 @@ function initScrollLorry() {
     window.addEventListener('resize', updateTrucks, { passive: true });
     // Initial call
     updateTrucks();
+}
+
+// Live Page Views Counter
+function initPageViewsCounter() {
+    const el = document.getElementById('footerPageViewsCount');
+    if (!el) return;
+
+    let baseViews = 14285;
+    const saved = localStorage.getItem('ab_total_pageviews');
+    if (saved) {
+        baseViews = parseInt(saved, 10) || 14285;
+    }
+    // Increment visit count
+    baseViews += 1;
+    localStorage.setItem('ab_total_pageviews', baseViews.toString());
+
+    el.textContent = baseViews.toLocaleString('en-IN');
 }
 
 // Admin Portal Management System
@@ -2998,6 +3018,10 @@ class AdminPortal {
         if (document.getElementById('adminPhone2')) document.getElementById('adminPhone2').value = comp.phone2 || '+91 944 33 73573';
         if (document.getElementById('adminWhatsapp')) document.getElementById('adminWhatsapp').value = comp.whatsapp || '919659657777';
         if (document.getElementById('adminEmailAddress')) document.getElementById('adminEmailAddress').value = comp.email || 'anjaneyaborewells@gmail.com';
+        if (document.getElementById('adminHeroBadgeText')) document.getElementById('adminHeroBadgeText').value = comp.heroBadge || '#1 Borewell Specialists in Namakkal • 25+ Yrs Trust';
+        if (document.getElementById('adminYearsExp')) document.getElementById('adminYearsExp').value = comp.yearsExp || '25+';
+        const currentViews = localStorage.getItem('ab_total_pageviews') || '14285';
+        if (document.getElementById('adminViewersCount')) document.getElementById('adminViewersCount').value = comp.viewersCount || parseInt(currentViews, 10) || 14285;
         if (document.getElementById('adminSlogan')) document.getElementById('adminSlogan').value = comp.slogan || 'ஆழமான நம்பிக்கை!';
         if (document.getElementById('adminLocationText')) document.getElementById('adminLocationText').value = comp.location || 'Namakkal & Tamil Nadu';
 
@@ -3064,6 +3088,10 @@ class AdminPortal {
             const flushingVal = parseFloat(document.getElementById('adminFlushingRate')?.value) || 3500;
             const transportVal = parseFloat(document.getElementById('adminTransportRate')?.value) || 2000;
 
+            const heroBadgeVal = document.getElementById('adminHeroBadgeText')?.value || '#1 Borewell Specialists in Namakkal • 25+ Yrs Trust';
+            const yearsExpVal = document.getElementById('adminYearsExp')?.value || '25+';
+            const viewersVal = parseInt(document.getElementById('adminViewersCount')?.value, 10) || 14285;
+
             const updatedSettings = {
                 companyInfo: {
                     phone1: document.getElementById('adminPhone1')?.value || '+91 965 965 7777',
@@ -3072,6 +3100,9 @@ class AdminPortal {
                     email: document.getElementById('adminEmailAddress')?.value || 'anjaneyaborewells@gmail.com',
                     slogan: document.getElementById('adminSlogan')?.value || 'ஆழமான நம்பிக்கை!',
                     location: document.getElementById('adminLocationText')?.value || 'Namakkal & Tamil Nadu',
+                    heroBadge: heroBadgeVal,
+                    yearsExp: yearsExpVal,
+                    viewersCount: viewersVal,
                     logo: logoDataUrl || current.companyInfo?.logo || 'logo.jpg'
                 },
                 rates: {
@@ -3084,6 +3115,7 @@ class AdminPortal {
             };
 
             localStorage.setItem('anjaneya-settings', JSON.stringify(updatedSettings));
+            localStorage.setItem('ab_total_pageviews', viewersVal.toString());
             
             // Also store in calculator settings format
             const calcSettings = {
@@ -3160,7 +3192,27 @@ class AdminPortal {
                 if (badge) badge.textContent = comp.location;
             }
 
-            // 6. Calculator Refresh
+            // 6. Hero Top Trust Badge & Years of Experience
+            if (comp.heroBadge) {
+                const heroBadgeEl = document.getElementById('heroTrustBadgeText');
+                if (heroBadgeEl) heroBadgeEl.textContent = comp.heroBadge;
+            }
+            if (comp.yearsExp) {
+                const statYearsEl = document.getElementById('statYearsExp');
+                if (statYearsEl) statYearsEl.textContent = comp.yearsExp;
+                const featureYearsEl = document.getElementById('featureTrustYears');
+                if (featureYearsEl) {
+                    featureYearsEl.textContent = comp.yearsExp.includes('Yrs') ? comp.yearsExp : `${comp.yearsExp} Yrs Trust`;
+                }
+            }
+
+            // 7. Footer Page Views / Visitors Counter
+            if (comp.viewersCount) {
+                const viewsEl = document.getElementById('footerPageViewsCount');
+                if (viewsEl) viewsEl.textContent = comp.viewersCount.toLocaleString('en-IN');
+            }
+
+            // 8. Calculator Refresh
             if (window.anjaneyaApp && window.anjaneyaApp.calculator) {
                 if (rates.casing7) window.anjaneyaApp.calculator.defaults.pvc7Rate = rates.casing7;
                 if (rates.casing10) window.anjaneyaApp.calculator.defaults.pvc10Rate = rates.casing10;
