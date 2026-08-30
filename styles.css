@@ -3475,7 +3475,9 @@ section {
     .fact-card {
         padding: 13px 8px !important;
         border-radius: 14px !important;
-        border: 1.5px solid #16a34a !important;
+        border: 1.5px solid #e2e8f0 !important;
+        border-top: 3.5px solid #16a34a !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04) !important;
     }
 
     .fact-icon {
@@ -3516,10 +3518,11 @@ section {
 
 .fact-card {
     background: #ffffff;
-    border: 1.5px solid #16a34a !important;
+    border: 1.5px solid #e2e8f0 !important;
+    border-top: 3.5px solid #16a34a !important;
     padding: 1.45rem 1.35rem;
     border-radius: 16px;
-    box-shadow: 0 4px 14px rgba(22, 163, 74, 0.08);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
     text-align: center;
     align-items: center;
     display: flex;
@@ -3531,19 +3534,14 @@ section {
 }
 
 .fact-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3.5px;
-    background: linear-gradient(90deg, #15803d, #10b981);
+    display: none;
 }
 
 .fact-card:hover {
     transform: translateY(-4px);
-    border-color: #15803d !important;
-    box-shadow: 0 12px 28px rgba(22, 163, 74, 0.2);
+    border-color: #86efac !important;
+    border-top-color: #16a34a !important;
+    box-shadow: 0 10px 24px rgba(22, 163, 74, 0.12);
 }
 
 /* 3D Icon Badges */
@@ -8356,21 +8354,74 @@ img {
     letter-spacing: -0.01em;
 }
 
-.admin-slab-tools {
+.admin-slab-controls-wrap {
     display: flex;
+    flex-direction: column;
     gap: 6px;
+    align-items: flex-end;
+}
+
+.admin-step-input-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #f1f5f9;
+    padding: 3px 6px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+}
+
+.admin-step-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #475569;
+}
+
+.admin-step-num-input {
+    width: 48px !important;
+    padding: 2px 4px !important;
+    font-size: 0.78rem !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+    border: 1px solid #94a3b8 !important;
+    border-radius: 4px !important;
+    background: #ffffff !important;
+    box-sizing: border-box !important;
+}
+
+.admin-slab-quick-actions {
+    display: flex;
+    gap: 4px;
 }
 
 .admin-tool-btn {
-    background: #f1f5f9;
+    background: #ffffff;
     border: 1px solid #cbd5e1;
     color: #0f172a;
     font-size: 0.72rem;
     font-weight: 700;
-    padding: 4px 8px;
+    padding: 3px 8px;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
+}
+
+.admin-tool-btn.step-btn {
+    background: #15803d;
+    color: #ffffff;
+    border-color: #15803d;
+}
+
+.admin-tool-btn.step-btn:hover {
+    background: #166534;
+    border-color: #166534;
+}
+
+.admin-tool-btn.quick-pill {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #0f172a;
+    font-weight: 800;
 }
 
 .admin-tool-btn:hover {
@@ -8445,6 +8496,94 @@ img {
     outline: none !important;
 }
 
+/* Developer Credit in Footer */
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer-bottom-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    text-align: left;
+}
+
+.developer-credit {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: #94a3b8;
+    flex-wrap: wrap;
+}
+
+.dev-label {
+    color: #cbd5e1;
+    font-weight: 500;
+}
+
+.dev-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 6px;
+    transition: all 0.25s ease;
+}
+
+.dev-link:hover {
+    background: rgba(22, 163, 74, 0.25);
+    border-color: #22c55e;
+    color: #86efac;
+    transform: translateY(-1px);
+}
+
+.dev-insta:hover {
+    background: rgba(225, 48, 108, 0.25);
+    border-color: #e1306c;
+    color: #fda4af;
+}
+
+.dev-icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.dev-divider {
+    color: #64748b;
+}
+
+@media (max-width: 768px) {
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .footer-bottom-info {
+        text-align: center;
+        align-items: center;
+    }
+
+    .developer-credit {
+        justify-content: center;
+        margin-top: 2px;
+    }
+}
+
 @media (max-width: 640px) {
     .admin-modal-content {
         width: 95% !important;
@@ -8478,8 +8617,16 @@ img {
         gap: 8px !important;
     }
 
-    .admin-slab-tools {
+    .admin-slab-controls-wrap {
         width: 100% !important;
+        align-items: stretch !important;
+    }
+
+    .admin-step-input-group {
+        justify-content: space-between !important;
+    }
+
+    .admin-slab-quick-actions {
         justify-content: flex-end !important;
     }
 

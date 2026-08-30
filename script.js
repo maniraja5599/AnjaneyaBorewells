@@ -1294,6 +1294,15 @@ class CostCalculator {
         if (saved) {
             try {
                 const parsedSaved = JSON.parse(saved);
+                if (parsedSaved.rates) {
+                    if (parsedSaved.rates.casing7) this.defaults.pvc7Rate = parsedSaved.rates.casing7;
+                    if (parsedSaved.rates.casing10) this.defaults.pvc10Rate = parsedSaved.rates.casing10;
+                    if (parsedSaved.rates.transport) this.defaults.boreBataRate = parsedSaved.rates.transport;
+                    if (parsedSaved.rates.flushing) this.defaults.flushingRate = parsedSaved.rates.flushing;
+                    if (parsedSaved.rates.slabRates && parsedSaved.rates.slabRates.length > 0) {
+                        this.slabRates = parsedSaved.rates.slabRates;
+                    }
+                }
                 this.defaults = { ...this.defaults, ...parsedSaved };
             } catch (e) {}
         }
@@ -2832,17 +2841,44 @@ class AdminPortal {
             this.logoutBtn.addEventListener('click', () => this.logout());
         }
 
-        const add20Btn = document.getElementById('adminAdd20Btn');
-        if (add20Btn) {
-            add20Btn.addEventListener('click', () => {
-                document.querySelectorAll('.admin-slab-input-box').forEach(input => {
-                    const currentVal = parseFloat(input.value) || 0;
-                    input.value = currentVal + 20;
-                });
+        // Dynamic Step Increment / Decrement & Quick Action Listeners
+        const addStepBtn = document.getElementById('adminAddStepBtn');
+        const deductStepBtn = document.getElementById('adminDeductStepBtn');
+        const stepAmountInput = document.getElementById('adminStepAmount');
+        const minus5Btn = document.getElementById('adminMinus5Btn');
+        const plus5Btn = document.getElementById('adminPlus5Btn');
+        const resetSlabsBtn = document.getElementById('adminResetSlabsBtn');
+
+        const applyStepToAll = (delta) => {
+            document.querySelectorAll('.admin-slab-input-box').forEach(input => {
+                const currentVal = parseFloat(input.value) || 0;
+                const nextVal = Math.max(1, currentVal + delta);
+                input.value = nextVal;
+            });
+        };
+
+        if (addStepBtn) {
+            addStepBtn.addEventListener('click', () => {
+                const step = parseFloat(stepAmountInput?.value) || 5;
+                applyStepToAll(step);
             });
         }
 
-        const resetSlabsBtn = document.getElementById('adminResetSlabsBtn');
+        if (deductStepBtn) {
+            deductStepBtn.addEventListener('click', () => {
+                const step = parseFloat(stepAmountInput?.value) || 5;
+                applyStepToAll(-step);
+            });
+        }
+
+        if (minus5Btn) {
+            minus5Btn.addEventListener('click', () => applyStepToAll(-5));
+        }
+
+        if (plus5Btn) {
+            plus5Btn.addEventListener('click', () => applyStepToAll(5));
+        }
+
         if (resetSlabsBtn) {
             resetSlabsBtn.addEventListener('click', () => {
                 document.querySelectorAll('.admin-slab-input-box').forEach((input, idx) => {
@@ -2853,6 +2889,7 @@ class AdminPortal {
                 if (document.getElementById('adminCasing10')) document.getElementById('adminCasing10').value = 750;
                 if (document.getElementById('adminTransportRate')) document.getElementById('adminTransportRate').value = 2000;
                 if (document.getElementById('adminFlushingRate')) document.getElementById('adminFlushingRate').value = 3500;
+                if (stepAmountInput) stepAmountInput.value = 5;
             });
         }
 
