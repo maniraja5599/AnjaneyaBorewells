@@ -21,12 +21,20 @@ class AnjaneyaBorewells {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetId = link.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                if (targetId === '#home' || targetId === '#' || targetId === '') {
+                    window.scrollTo({
+                        top: 0,
+                        left: 0,
+                        behavior: 'smooth'
                     });
+                } else {
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
                 }
                 
                 // Close mobile menu if it's open (for nav-link clicks)
@@ -38,31 +46,35 @@ class AnjaneyaBorewells {
 
         // Get Quote button goes to calculator section
         document.getElementById('navWhatsappBtn')?.addEventListener('click', (e) => {
-            // Let the smooth scrolling handle navigation to #calculator
             console.log('Get Quote button clicked - going to calculator');
         });
 
-        // Company name click goes to home page
-        document.querySelector('.company-name')?.addEventListener('click', (e) => {
-            e.preventDefault();
-            const homeSection = document.querySelector('#home');
-            if (homeSection) {
-                homeSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
+        // Company name & Brand link click goes directly to absolute top of page
+        document.querySelectorAll('.brand-link, .company-name').forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.scrollTo({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
                 });
-            }
-            // Close mobile menu if it's open
-            this.navigation.closeMobileMenu();
+                this.navigation.closeMobileMenu();
+            });
         });
 
         // Sync Total Depth fields between main form and repair section
         this.setupTotalDepthSync();
 
-        // Window scroll events
+        // Window scroll events - RAF throttled and passive
+        let scrollRaf = null;
         window.addEventListener('scroll', () => {
-            this.navigation.handleScroll();
-        });
+            if (!scrollRaf) {
+                scrollRaf = requestAnimationFrame(() => {
+                    this.navigation.handleScroll();
+                    scrollRaf = null;
+                });
+            }
+        }, { passive: true });
 
         // Listen for storage changes (settings updates from other tabs)
         window.addEventListener('storage', (e) => {
@@ -85,7 +97,7 @@ class AnjaneyaBorewells {
             // but we can add additional UI refresh logic here if needed
         });
 
-        // Form submissions
+        // Calculator form submission
         document.getElementById('calculatorForm')?.addEventListener('submit', (e) => {
             e.preventDefault();
             this.calculator.calculate();
@@ -99,35 +111,6 @@ class AnjaneyaBorewells {
         document.getElementById('callbackForm')?.addEventListener('submit', (e) => {
             e.preventDefault();
             this.formHandler.handleCallbackForm();
-        });
-
-        // Calculator input changes - trigger calculation on any input change
-        document.querySelectorAll('#calculatorForm input').forEach(input => {
-            input.addEventListener('input', () => {
-                if (this.calculator) {
-                    this.calculator.calculate();
-                }
-            });
-            input.addEventListener('change', () => {
-                if (this.calculator) {
-                    this.calculator.calculate();
-                }
-            });
-            
-            // Select all text on focus for easier editing (especially on mobile)
-            input.addEventListener('focus', (e) => {
-                // Small delay to ensure the focus event completes
-                setTimeout(() => {
-                    e.target.select();
-                }, 50);
-            });
-            
-            // Also select all on click for mobile devices
-            input.addEventListener('click', (e) => {
-                if (window.innerWidth <= 768) {
-                    e.target.select();
-                }
-            });
         });
 
         // GST toggle functionality
@@ -188,72 +171,64 @@ class AnjaneyaBorewells {
         const repairTotalDepth = document.getElementById('totalDepthRepair');
         
         if (mainTotalDepth && repairTotalDepth) {
-            // Sync from main form to repair section
             mainTotalDepth.addEventListener('input', () => {
                 repairTotalDepth.value = mainTotalDepth.value;
-                // Trigger calculation
                 if (this.calculator) {
                     this.calculator.calculate();
                 }
-            });
+            }, { passive: true });
             
-            mainTotalDepth.addEventListener('change', () => {
-                repairTotalDepth.value = mainTotalDepth.value;
-                // Trigger calculation
-                if (this.calculator) {
-                    this.calculator.calculate();
-                }
-            });
-            
-            // Sync from repair section to main form
             repairTotalDepth.addEventListener('input', () => {
                 mainTotalDepth.value = repairTotalDepth.value;
-                // Trigger calculation
                 if (this.calculator) {
                     this.calculator.calculate();
                 }
-            });
-            
-            repairTotalDepth.addEventListener('change', () => {
-                mainTotalDepth.value = repairTotalDepth.value;
-                // Trigger calculation
-                if (this.calculator) {
-                    this.calculator.calculate();
-                }
-            });
+            }, { passive: true });
         }
     }
 
     setupInputButtons() {
+        // Shared fast button increment/decrement handler
+        const handleStep = (targetId, step, isUp, min, max) => {
+            const input = document.getElementById(targetId);
+            if (!input) return;
+            const currentValue = parseFloat(input.value) || 0;
+            const stepVal = parseFloat(step) || 1;
+            const minVal = min !== undefined ? min : (parseFloat(input.getAttribute('min')) || 0);
+            const maxVal = max !== undefined ? max : (parseFloat(input.getAttribute('max')) || Infinity);
+            
+            let newValue = isUp ? Math.min(currentValue + stepVal, maxVal) : Math.max(currentValue - stepVal, minVal);
+            input.value = newValue;
+
+            // Sync totalDepth fields if applicable
+            if (targetId === 'totalDepth') {
+                const repairEl = document.getElementById('totalDepthRepair');
+                if (repairEl) repairEl.value = newValue;
+            } else if (targetId === 'totalDepthRepair') {
+                const mainEl = document.getElementById('totalDepth');
+                if (mainEl) mainEl.value = newValue;
+            }
+
+            if (this.calculator) {
+                this.calculator.calculate();
+            }
+        };
+
         // Increase buttons
         document.querySelectorAll('.increase-btn').forEach(button => {
             button.addEventListener('click', (e) => {
-                const targetId = e.target.getAttribute('data-target');
-                const input = document.getElementById(targetId);
-                if (input) {
-                    const currentValue = parseFloat(input.value) || 0;
-                    const step = parseFloat(input.getAttribute('step')) || 1;
-                    const max = parseFloat(input.getAttribute('max')) || Infinity;
-                    const newValue = Math.min(currentValue + step, max);
-                    input.value = newValue;
-                    input.dispatchEvent(new Event('input', { bubbles: true }));
-                }
+                e.preventDefault();
+                const targetId = button.getAttribute('data-target');
+                handleStep(targetId, button.getAttribute('step') || 1, true);
             });
         });
 
         // Decrease buttons
         document.querySelectorAll('.decrease-btn').forEach(button => {
             button.addEventListener('click', (e) => {
-                const targetId = e.target.getAttribute('data-target');
-                const input = document.getElementById(targetId);
-                if (input) {
-                    const currentValue = parseFloat(input.value) || 0;
-                    const step = parseFloat(input.getAttribute('step')) || 1;
-                    const min = parseFloat(input.getAttribute('min')) || 0;
-                    const newValue = Math.max(currentValue - step, min);
-                    input.value = newValue;
-                    input.dispatchEvent(new Event('input', { bubbles: true }));
-                }
+                e.preventDefault();
+                const targetId = button.getAttribute('data-target');
+                handleStep(targetId, button.getAttribute('step') || 1, false);
             });
         });
 
@@ -262,10 +237,8 @@ class AnjaneyaBorewells {
             this.modal.close('emailModal');
         });
 
-
         // Mobile navigation toggle
         document.getElementById('navToggle')?.addEventListener('click', (e) => {
-            console.log('Mobile menu toggle clicked');
             e.preventDefault();
             e.stopPropagation();
             this.navigation.toggleMobileMenu();
@@ -278,7 +251,6 @@ class AnjaneyaBorewells {
             const navbar = document.getElementById('navbar');
             
             if (navMenu && navMenu.classList.contains('active')) {
-                // Check if click is outside the navbar and not on the toggle button
                 if (!navbar.contains(e.target) && !navToggle.contains(e.target)) {
                     this.navigation.closeMobileMenu();
                 }
@@ -292,31 +264,14 @@ class AnjaneyaBorewells {
             }
         });
         
-        // Mobile input increment/decrement buttons
+        // Mobile input increment/decrement buttons (▲ / ▼)
         document.querySelectorAll('.input-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetId = button.getAttribute('data-target');
-                const step = parseFloat(button.getAttribute('data-step')) || 1;
+                const step = button.getAttribute('data-step') || 1;
                 const isUp = button.classList.contains('input-btn-up');
-                const input = document.getElementById(targetId);
-                
-                if (input) {
-                    const currentValue = parseFloat(input.value) || 0;
-                    const min = parseFloat(input.getAttribute('min')) || 0;
-                    const max = parseFloat(input.getAttribute('max')) || Infinity;
-                    
-                    let newValue;
-                    if (isUp) {
-                        newValue = Math.min(currentValue + step, max);
-                    } else {
-                        newValue = Math.max(currentValue - step, min);
-                    }
-                    
-                    input.value = newValue;
-                    input.dispatchEvent(new Event('input', { bubbles: true }));
-                    input.dispatchEvent(new Event('change', { bubbles: true }));
-                }
+                handleStep(targetId, step, isUp);
             });
         });
     }
@@ -410,20 +365,7 @@ class AnjaneyaBorewells {
     }
     
     addParallaxEffect() {
-        const heroBackground = document.querySelector('.hero-background');
-        const hero = document.querySelector('.hero');
-        
-        if (heroBackground && hero) {
-            window.addEventListener('scroll', () => {
-                const scrolled = window.pageYOffset;
-                const rate = scrolled * -0.5;
-                const heroHeight = hero.offsetHeight;
-                
-                if (scrolled < heroHeight) {
-                    heroBackground.style.transform = `translateY(${rate}px)`;
-                }
-            });
-        }
+        // Disabled layout thrashing scroll listener for 60/120 FPS buttery smooth scrolling
     }
 
     initTypewriterEffect() {
@@ -867,35 +809,7 @@ class AnjaneyaBorewells {
     }
     
     setupInlineSelectAll() {
-        const inlineInputs = [
-            'inlinePvc7Rate',
-            'inlinePvc10Rate',
-            'inlineBaseDrillingRate',
-            'inlineOldBoreRate',
-            'inlineBoreBataRate',
-            'inlineGstPercentage'
-        ];
-        
-        inlineInputs.forEach(inputId => {
-            const input = document.getElementById(inputId);
-            if (input) {
-                input.addEventListener('focus', (e) => {
-                    setTimeout(() => {
-                        if (e.target && e.target.select) {
-                            e.target.select();
-                        }
-                    }, 50);
-                });
-                
-                input.addEventListener('click', (e) => {
-                    setTimeout(() => {
-                        if (e.target && e.target.select) {
-                            e.target.select();
-                        }
-                    }, 10);
-                });
-            }
-        });
+        // Simple and non-blocking focus behavior
     }
     
     setupBaseDrillingRateSync() {
@@ -1067,29 +981,12 @@ class AnjaneyaBorewells {
     }
     
     setupInlineSlabRateListeners() {
-        // Add select all functionality to slab rate inputs
         const slabInputs = document.querySelectorAll('.slab-rate-input');
         slabInputs.forEach(input => {
-            input.addEventListener('focus', (e) => {
-                setTimeout(() => {
-                    if (e.target && e.target.select) {
-                        e.target.select();
-                    }
-                }, 50);
-            });
-            
-            input.addEventListener('click', (e) => {
-                setTimeout(() => {
-                    if (e.target && e.target.select) {
-                        e.target.select();
-                    }
-                }, 10);
-            });
-            
             input.addEventListener('input', (e) => {
                 const index = parseInt(e.target.dataset.index);
-                this.updateInlineSlabRate(index, parseFloat(e.target.value));
-            });
+                this.updateInlineSlabRate(index, parseFloat(e.target.value) || 0);
+            }, { passive: true });
         });
         
         // Add event listeners for edit/auto buttons
@@ -1240,13 +1137,15 @@ class Navigation {
         this.navbar = document.getElementById('navbar');
         this.navMenu = document.getElementById('navMenu');
         this.navToggle = document.getElementById('navToggle');
+        this.isScrolled = false;
     }
 
     handleScroll() {
-        if (window.scrollY > 100) {
-            this.navbar.classList.add('scrolled');
-        } else {
-            this.navbar.classList.remove('scrolled');
+        if (!this.navbar) return;
+        const shouldScroll = window.scrollY > 60;
+        if (this.isScrolled !== shouldScroll) {
+            this.isScrolled = shouldScroll;
+            this.navbar.classList.toggle('scrolled', shouldScroll);
         }
     }
 
@@ -1272,6 +1171,27 @@ class Navigation {
 }
 
 class CostCalculator {
+    static DEPTH_SLABS = [
+        { start: 1, end: 300, span: 300, inc: 0, defaultRate: 50, rangeStr: '001-300 ft' },
+        { start: 301, end: 400, span: 100, inc: 5, defaultRate: 55, rangeStr: '301-400 ft' },
+        { start: 401, end: 500, span: 100, inc: 15, defaultRate: 65, rangeStr: '401-500 ft' },
+        { start: 501, end: 600, span: 100, inc: 35, defaultRate: 85, rangeStr: '501-600 ft' },
+        { start: 601, end: 700, span: 100, inc: 65, defaultRate: 115, rangeStr: '601-700 ft' },
+        { start: 701, end: 800, span: 100, inc: 105, defaultRate: 155, rangeStr: '701-800 ft' },
+        { start: 801, end: 900, span: 100, inc: 155, defaultRate: 215, rangeStr: '801-900 ft' },
+        { start: 901, end: 1000, span: 100, inc: 215, defaultRate: 315, rangeStr: '901-1000 ft' },
+        { start: 1001, end: 1100, span: 100, inc: 315, defaultRate: 415, rangeStr: '1001-1100 ft' },
+        { start: 1101, end: 1200, span: 100, inc: 415, defaultRate: 515, rangeStr: '1101-1200 ft' },
+        { start: 1201, end: 1300, span: 100, inc: 515, defaultRate: 615, rangeStr: '1201-1300 ft' },
+        { start: 1301, end: 1400, span: 100, inc: 615, defaultRate: 715, rangeStr: '1301-1400 ft' },
+        { start: 1401, end: 1500, span: 100, inc: 715, defaultRate: 815, rangeStr: '1401-1500 ft' },
+        { start: 1501, end: 1600, span: 100, inc: 815, defaultRate: 915, rangeStr: '1501-1600 ft' },
+        { start: 1601, end: 1700, span: 100, inc: 915, defaultRate: 1015, rangeStr: '1601-1700 ft' },
+        { start: 1701, end: 1800, span: 100, inc: 1015, defaultRate: 1115, rangeStr: '1701-1800 ft' },
+        { start: 1801, end: 1900, span: 100, inc: 1115, defaultRate: 1215, rangeStr: '1801-1900 ft' },
+        { start: 1901, end: 2000, span: 100, inc: 1215, defaultRate: 1315, rangeStr: '1901-2000 ft' }
+    ];
+
     constructor() {
         this.defaults = {
             totalDepth: 800,
@@ -1285,65 +1205,82 @@ class CostCalculator {
             boreBataRate: 2000
         };
         
-        // Initialize slab rates array
         this.slabRates = [];
-        
+        this.cachedEls = {};
+        this._calcRaf = null;
+
         this.loadSettings();
-        
-        // Setup event listeners for form inputs
+        this.cacheDOMElements();
         this.setupEventListeners();
         
-        // Trigger initial calculation after page loads
-        setTimeout(() => {
+        // Initial fast calculation
+        requestAnimationFrame(() => {
             this.updateFormDefaults();
-            setTimeout(() => {
-                this.calculate();
-            }, 50);
-        }, 200);
+            this.calculate();
+        });
+    }
+
+    cacheDOMElements() {
+        this.cachedEls = {
+            totalDepth: document.getElementById('totalDepth'),
+            totalDepthRepair: document.getElementById('totalDepthRepair'),
+            oldBoreDepth: document.getElementById('oldBoreDepth'),
+            pvc7Length: document.getElementById('pvc7Length'),
+            pvc10Length: document.getElementById('pvc10Length'),
+            drillingRate: document.getElementById('drillingRate'),
+            inlineGstPercentage: document.getElementById('inlineGstPercentage'),
+            gstToggleCompact: document.getElementById('gstToggleCompact'),
+            gstToggle: document.getElementById('gstToggle'),
+            gstWrapper: document.querySelector('.gst-toggle-compact'),
+            drillingCost: document.getElementById('drillingCost'),
+            pvc7Cost: document.getElementById('pvc7Cost'),
+            pvc10Cost: document.getElementById('pvc10Cost'),
+            boreBataCost: document.getElementById('boreBataCost'),
+            subtotal: document.getElementById('subtotal'),
+            gstAmount: document.getElementById('gstAmount'),
+            totalCost: document.getElementById('totalCost'),
+            liveTotalCost: document.getElementById('liveTotalCost'),
+            inputSummary: document.getElementById('inputSummary'),
+            inputDepth: document.getElementById('inputDepth'),
+            inputDrillingRate: document.getElementById('inputDrillingRate'),
+            inputPvc7Length: document.getElementById('inputPvc7Length'),
+            inputPvc10Length: document.getElementById('inputPvc10Length'),
+            slabBreakdown: document.getElementById('slabBreakdown'),
+            slabDetails: document.getElementById('slabDetails'),
+            calculatorResults: document.getElementById('calculatorResults'),
+            depthInputsCard: document.getElementById('depthInputsCard')
+        };
     }
 
     setupEventListeners() {
-        // Add event listeners for all form inputs to trigger recalculation
-        const formInputs = ['totalDepth', 'totalDepthRepair', 'pvc7Length', 'pvc10Length', 'drillingRate', 'gstPercentage', 'oldBoreDepth'];
+        const formInputs = ['totalDepth', 'totalDepthRepair', 'pvc7Length', 'pvc10Length', 'drillingRate', 'oldBoreDepth'];
         
         formInputs.forEach(inputId => {
             const input = document.getElementById(inputId);
             if (input) {
-                input.addEventListener('input', () => this.calculate());
-                input.addEventListener('change', () => this.calculate());
+                input.addEventListener('input', () => this.calculate(), { passive: true });
             }
         });
         
-        // Add event listeners for drilling type buttons
+        // Drilling type button handlers
         const drillingButtons = document.querySelectorAll('.drilling-button');
         drillingButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                // Remove selected class from all buttons
+            button.addEventListener('click', () => {
                 drillingButtons.forEach(b => b.classList.remove('selected'));
-                
-                // Add selected class to clicked button
                 button.classList.add('selected');
                 
-                // Update the hidden radio button
                 const radio = button.querySelector('input[type="radio"]');
-                radio.checked = true;
-                
-                // Trigger change event
-                this.handleDrillingTypeChange(radio.value);
+                if (radio) {
+                    radio.checked = true;
+                    this.handleDrillingTypeChange(radio.value);
+                }
             });
         });
         
-        // Initialize with first button selected
-        const firstButton = document.querySelector('.drilling-button[data-type="new"]');
-        if (firstButton) {
-            firstButton.classList.add('selected');
-        }
-        
-        // Add event listener for compact GST toggle
+        // Compact GST toggle
         const gstToggleCompact = document.getElementById('gstToggleCompact');
         if (gstToggleCompact) {
-            gstToggleCompact.addEventListener('change', () => this.calculate());
-            // Initialize class state on load
+            gstToggleCompact.addEventListener('change', () => this.calculate(), { passive: true });
             const gstWrapperInit = document.querySelector('.gst-toggle-compact');
             if (gstWrapperInit) {
                 gstWrapperInit.classList.toggle('gst-on', gstToggleCompact.checked);
@@ -1352,256 +1289,119 @@ class CostCalculator {
     }
 
     loadSettings() {
-        // Load settings from localStorage or use defaults
         const saved = localStorage.getItem('anjaneya-settings');
         if (saved) {
-            const parsedSaved = JSON.parse(saved);
-            this.defaults = { ...this.defaults, ...parsedSaved };
+            try {
+                const parsedSaved = JSON.parse(saved);
+                this.defaults = { ...this.defaults, ...parsedSaved };
+            } catch (e) {}
         }
         
-        // Also load calculator-specific settings
         const calculatorSettings = localStorage.getItem('anjaneya-calculator-settings');
         if (calculatorSettings) {
             try {
                 const parsedCalculatorSettings = JSON.parse(calculatorSettings);
-                // Update defaults with saved calculator settings
                 this.defaults = { ...this.defaults, ...parsedCalculatorSettings };
-                
-                // Load slab rates if they exist
                 if (parsedCalculatorSettings.slabRates && parsedCalculatorSettings.slabRates.length > 0) {
                     this.slabRates = parsedCalculatorSettings.slabRates;
                 }
-            } catch (e) {
-                console.warn('Failed to parse calculator settings:', e);
-            }
+            } catch (e) {}
         }
-        
-        this.updateFormDefaults();
     }
 
     updateFormDefaults() {
-        // Update form field values
-        const totalDepthEl = document.getElementById('totalDepth');
-        const totalDepthRepairEl = document.getElementById('totalDepthRepair');
-        const pvc7LengthEl = document.getElementById('pvc7Length');
-        const pvc10LengthEl = document.getElementById('pvc10Length');
-        const drillingRateEl = document.getElementById('drillingRate');
-        
-        if (totalDepthEl) {
-            totalDepthEl.value = this.defaults.totalDepth;
-        }
-        if (totalDepthRepairEl) {
-            totalDepthRepairEl.value = this.defaults.totalDepth;
-        }
-        if (pvc7LengthEl) {
-            pvc7LengthEl.value = this.defaults.pvc7Length;
-        }
-        if (pvc10LengthEl) {
-            pvc10LengthEl.value = this.defaults.pvc10Length;
-        }
-        if (drillingRateEl) {
-            drillingRateEl.value = this.defaults.drillingRate;
-            // Force the input to display the value
-            drillingRateEl.setAttribute('value', this.defaults.drillingRate);
-            // Trigger input event to ensure visibility and calculation
-            drillingRateEl.dispatchEvent(new Event('input', { bubbles: true }));
-            drillingRateEl.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-        
-        // Update the cost display labels
-        this.updateCostLabels();
+        const el = this.cachedEls;
+        if (el.totalDepth) el.totalDepth.value = this.defaults.totalDepth;
+        if (el.totalDepthRepair) el.totalDepthRepair.value = this.defaults.totalDepth;
+        if (el.pvc7Length) el.pvc7Length.value = this.defaults.pvc7Length;
+        if (el.pvc10Length) el.pvc10Length.value = this.defaults.pvc10Length;
+        if (el.drillingRate) el.drillingRate.value = this.defaults.drillingRate;
     }
     
-    updateCostLabels() {
-        // Cost labels have been removed from the UI
-        // This method is kept for potential future use
-    }
+    updateCostLabels() {}
     
-    // Method to refresh settings from admin panel
     refreshSettings() {
-        const oldSettings = {
-            pvc7Rate: this.defaults.pvc7Rate,
-            pvc10Rate: this.defaults.pvc10Rate,
-            drillingRate: this.defaults.drillingRate,
-            gstPercentage: this.defaults.gstPercentage,
-            totalDepth: this.defaults.totalDepth,
-            pvc7Length: this.defaults.pvc7Length,
-            pvc10Length: this.defaults.pvc10Length
-        };
-        
         this.loadSettings();
-        this.calculate(); // Recalculate with new settings
-        
-        // Show notification if any settings changed
-        const settingsChanged = 
-            oldSettings.pvc7Rate !== this.defaults.pvc7Rate ||
-            oldSettings.pvc10Rate !== this.defaults.pvc10Rate ||
-            oldSettings.drillingRate !== this.defaults.drillingRate ||
-            oldSettings.gstPercentage !== this.defaults.gstPercentage ||
-            oldSettings.totalDepth !== this.defaults.totalDepth ||
-            oldSettings.pvc7Length !== this.defaults.pvc7Length ||
-            oldSettings.pvc10Length !== this.defaults.pvc10Length;
-            
-        if (settingsChanged) {
-            this.showRateUpdateNotification();
-        }
-    }
-    
-    // Method to update settings from hidden settings panel
-    updateSettings(settings) {
-        this.defaults.pvc7Rate = settings.pvc7Rate;
-        this.defaults.pvc10Rate = settings.pvc10Rate;
-        this.defaults.oldBoreRate = settings.oldBoreRate;
-        // Only update drilling rate if baseDrillingRate is provided and different
-        if (settings.baseDrillingRate !== undefined) {
-            this.defaults.drillingRate = settings.baseDrillingRate;
-        }
-        this.defaults.gstPercentage = settings.gstPercentage;
-        
-        // Update slab rates if available
-        if (settings.slabRates) {
-            this.slabRates = settings.slabRates;
-        }
-        
-        // Update form field values to reflect new settings
         this.updateFormDefaults();
-        
-        // Update cost labels to show new rates
-        this.updateCostLabels();
-        
-        // Recalculate with new settings
         this.calculate();
     }
     
-    showRateUpdateNotification() {
-        const notification = document.createElement('div');
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #22c55e;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 500;
-            z-index: 3000;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            animation: slideDown 0.3s ease;
-        `;
-        notification.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px; vertical-align: middle;">
-                <polyline points="20,6 9,17 4,12"></polyline>
-            </svg>
-            Settings updated! Rates: 7" PVC Rs.${this.defaults.pvc7Rate}/ft, 10" PVC Rs.${this.defaults.pvc10Rate}/ft, Drilling Rs.${this.defaults.drillingRate}/ft
-        `;
+    updateSettings(settings) {
+        if (settings.pvc7Rate !== undefined) this.defaults.pvc7Rate = settings.pvc7Rate;
+        if (settings.pvc10Rate !== undefined) this.defaults.pvc10Rate = settings.pvc10Rate;
+        if (settings.oldBoreRate !== undefined) this.defaults.oldBoreRate = settings.oldBoreRate;
+        if (settings.baseDrillingRate !== undefined) this.defaults.drillingRate = settings.baseDrillingRate;
+        if (settings.gstPercentage !== undefined) this.defaults.gstPercentage = settings.gstPercentage;
+        if (settings.slabRates) this.slabRates = settings.slabRates;
         
-        document.body.appendChild(notification);
-        
-        // Remove after 4 seconds
-        setTimeout(() => {
-            notification.style.animation = 'slideUp 0.3s ease';
-            setTimeout(() => {
-                if (document.body.contains(notification)) {
-                    document.body.removeChild(notification);
-                }
-            }, 300);
-        }, 4000);
-        
-        // Add CSS animation if not already added
-        if (!document.getElementById('rate-update-styles')) {
-            const style = document.createElement('style');
-            style.id = 'rate-update-styles';
-            style.textContent = `
-                @keyframes slideDown {
-                    from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
-                    to { transform: translateX(-50%) translateY(0); opacity: 1; }
-                }
-                @keyframes slideUp {
-                    from { transform: translateX(-50%) translateY(0); opacity: 1; }
-                    to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-        }
+        this.updateFormDefaults();
+        this.calculate();
     }
 
     calculate() {
+        if (this._calcRaf) {
+            cancelAnimationFrame(this._calcRaf);
+        }
+        this._calcRaf = requestAnimationFrame(() => {
+            this._calcRaf = null;
+            this._executeCalculation();
+        });
+    }
+
+    _executeCalculation() {
         const inputs = this.getInputs();
-        console.log('Calculator inputs:', inputs); // Debug log
         const results = this.performCalculation(inputs);
-        console.log('Calculator results:', results); // Debug log
         this.displayResults(results);
         this.updateLiveCalculator(results);
     }
 
-    // Unified GST enabled check for both desktop and mobile toggles
     isGstEnabled() {
-        const compact = document.getElementById('gstToggleCompact');
-        if (compact) return !!compact.checked;
-        const legacy = document.getElementById('gstToggle');
-        return legacy ? !!legacy.checked : false;
+        const el = this.cachedEls;
+        if (el.gstToggleCompact) return !!el.gstToggleCompact.checked;
+        if (el.gstToggle) return !!el.gstToggle.checked;
+        return false;
     }
 
     getInputs() {
-        const gstToggle = document.getElementById('gstToggleCompact');
-        const gstEnabled = gstToggle ? gstToggle.checked : false;
-        // Keep CSS class in sync
-        const gstWrapperSync = document.querySelector('.gst-toggle-compact');
-        if (gstWrapperSync) {
-            gstWrapperSync.classList.toggle('gst-on', !!gstEnabled);
+        const el = this.cachedEls;
+        const gstEnabled = this.isGstEnabled();
+        if (el.gstWrapper) {
+            el.gstWrapper.classList.toggle('gst-on', !!gstEnabled);
         }
         
-        // Get the correct total depth based on drilling type
-        const drillingType = document.querySelector('input[name="drillingType"]:checked').value;
+        const checkedRadio = document.querySelector('input[name="drillingType"]:checked');
+        const drillingType = checkedRadio ? checkedRadio.value : 'new';
+        
         let totalDepth = 0;
-        
         if (drillingType === 'repair') {
-            // For repair, use the totalDepthRepair field
-            totalDepth = parseFloat(document.getElementById('totalDepthRepair').value) || 0;
+            totalDepth = parseFloat(el.totalDepthRepair?.value) || 0;
         } else {
-            // For new drilling, use the totalDepth field
-            totalDepth = parseFloat(document.getElementById('totalDepth').value) || 0;
+            totalDepth = parseFloat(el.totalDepth?.value) || 0;
         }
-        
-        console.log('Drilling type:', drillingType, 'Total depth:', totalDepth); // Debug log
         
         return {
-            drillingType: drillingType,
-            oldBoreDepth: parseFloat(document.getElementById('oldBoreDepth').value) || 0,
-            totalDepth: totalDepth,
-            pvc7Length: parseFloat(document.getElementById('pvc7Length').value) || 0,
-            pvc10Length: parseFloat(document.getElementById('pvc10Length').value) || 0,
-            drillingRate: parseFloat(document.getElementById('drillingRate').value) || 0,
-            gstPercentage: gstEnabled ? (parseFloat(document.getElementById('inlineGstPercentage').value) || 18) : 0,
-            gstEnabled: gstEnabled
+            drillingType,
+            oldBoreDepth: parseFloat(el.oldBoreDepth?.value) || 0,
+            totalDepth,
+            pvc7Length: parseFloat(el.pvc7Length?.value) || 0,
+            pvc10Length: parseFloat(el.pvc10Length?.value) || 0,
+            drillingRate: parseFloat(el.drillingRate?.value) || 0,
+            gstPercentage: gstEnabled ? (parseFloat(el.inlineGstPercentage?.value) || 18) : 0,
+            gstEnabled
         };
     }
 
     handleGstToggle(isEnabled) {
-        // GST toggle is now handled by the compact toggle in the drilling rate section
-        // No need to show/hide elements as GST percentage is now in settings
         this.calculate();
     }
 
     handleDrillingTypeChange(drillingType) {
-        const depthInputsCard = document.getElementById('depthInputsCard');
-        
+        const el = this.cachedEls;
         if (drillingType === 'repair') {
-            // Show the grouped depth inputs card for Rebore
-            if (depthInputsCard) {
-                depthInputsCard.style.display = 'block';
-            }
+            if (el.depthInputsCard) el.depthInputsCard.style.display = 'block';
         } else {
-            // Hide the grouped depth inputs card for New Drilling
-            if (depthInputsCard) {
-                depthInputsCard.style.display = 'none';
-            }
-            // Reset old bore depth when switching to new drilling
-            const oldBoreDepth = document.getElementById('oldBoreDepth');
-            if (oldBoreDepth) {
-                oldBoreDepth.value = 0;
-            }
+            if (el.depthInputsCard) el.depthInputsCard.style.display = 'none';
+            if (el.oldBoreDepth) el.oldBoreDepth.value = 0;
         }
         this.calculate();
     }
@@ -1609,74 +1409,41 @@ class CostCalculator {
     performCalculation(inputs) {
         const { drillingType, oldBoreDepth, totalDepth, pvc7Length, pvc10Length, drillingRate, gstPercentage } = inputs;
 
-        // Validate inputs
         if (totalDepth <= 0 || drillingRate <= 0) {
             return null;
         }
 
-        // Additional validation for repair type
+        // Silent validation while typing (no disruptive alerts)
         if (drillingType === 'repair' && oldBoreDepth >= totalDepth) {
-            alert('Old bore depth must be less than total depth for repair work');
             return null;
         }
 
-        // Material costs
-        console.log('PVC calculation debug:', {
-            pvc7Length, 
-            pvc10Length, 
-            pvc7Rate: this.defaults.pvc7Rate, 
-            pvc10Rate: this.defaults.pvc10Rate
-        });
         const pvc7Cost = pvc7Length * this.defaults.pvc7Rate;
         const pvc10Cost = pvc10Length * this.defaults.pvc10Rate;
         const materialCost = pvc7Cost + pvc10Cost;
-        console.log('PVC costs:', { pvc7Cost, pvc10Cost, materialCost });
 
-        // Calculate drilling cost based on type
         let drillingCost, slabCalculation;
         if (drillingType === 'repair') {
-            // Repair calculation: old bore + regular slabs
-            const oldBoreCost = oldBoreDepth * this.defaults.oldBoreRate; // Use configurable old bore rate
-            const remainingDepth = totalDepth - oldBoreDepth;
-            const regularSlabCalculation = this.calculateSlabRate(remainingDepth, drillingRate);
-            
-            // Adjust slab calculation to start from oldBoreDepth + 1
+            const oldBoreCost = oldBoreDepth * this.defaults.oldBoreRate;
             const adjustedSlabCalculation = this.calculateRepairSlabRate(oldBoreDepth, totalDepth, drillingRate);
             
             drillingCost = oldBoreCost + adjustedSlabCalculation.totalCost;
             slabCalculation = {
                 totalCost: drillingCost,
                 slabDetails: [
-                    { range: `0-${oldBoreDepth} ft (Old Bore)`, rate: this.defaults.oldBoreRate, cost: oldBoreCost },
+                    { range: `000-${oldBoreDepth} ft (Old Bore)`, rate: this.defaults.oldBoreRate, cost: oldBoreCost },
                     ...adjustedSlabCalculation.slabDetails
                 ]
             };
         } else {
-            // New drilling calculation (existing logic)
             slabCalculation = this.calculateSlabRate(totalDepth, drillingRate);
             drillingCost = slabCalculation.totalCost;
         }
 
-        // Bore Bata cost (configurable rate)
         const boreBataCost = this.defaults.boreBataRate || 2000;
-
-        // Subtotal
         const subtotal = materialCost + drillingCost + boreBataCost;
-        console.log('Subtotal calculation:', {
-            materialCost,
-            drillingCost,
-            boreBataCost,
-            subtotal
-        });
-
-        // Taxes
         const gstAmount = (subtotal * gstPercentage) / 100;
-
-        // Total
         const totalCost = subtotal + gstAmount;
-        console.log('Final totals:', { gstAmount, totalCost });
-
-        // Per foot rate
         const perFootRate = totalDepth > 0 ? totalCost / totalDepth : 0;
 
         return {
@@ -1693,46 +1460,52 @@ class CostCalculator {
         };
     }
 
+    getNormalizedSlabRates(baseRate) {
+        if (this.slabRates && this.slabRates.length > 0) {
+            return this.slabRates.map((s, idx) => {
+                const def = CostCalculator.DEPTH_SLABS[idx] || { start: 1, end: 300, span: 300 };
+                return {
+                    start: def.start,
+                    end: def.end,
+                    span: def.span,
+                    range: s.range || def.rangeStr,
+                    rate: s.rate
+                };
+            });
+        }
+        return CostCalculator.DEPTH_SLABS.map(s => ({
+            start: s.start,
+            end: s.end,
+            span: s.span,
+            range: s.rangeStr,
+            rate: baseRate + s.inc
+        }));
+    }
+
     calculateSlabRate(totalDepth, baseRate) {
-        // Use configured slab rates if available, otherwise calculate dynamically
-        const slabRates = this.slabRates && this.slabRates.length > 0 ? 
-            this.slabRates : 
-            this.calculateSlabRatesFromBaseRate(baseRate);
-        console.log('Calculating slab rates with base rate:', baseRate, 'slabRates:', slabRates);
+        const slabs = this.getNormalizedSlabRates(baseRate);
         const slabDetails = [];
         let totalCost = 0;
-        let remainingDepth = totalDepth;
+        let remaining = totalDepth;
         let currentDepth = 1;
 
-        for (const slab of slabRates) {
-            if (remainingDepth <= 0) break;
-
-            // Parse the range to get start and end depths
-            const rangeMatch = slab.range.match(/(\d+)-(\d+)\s*ft/);
-            if (!rangeMatch) continue;
-
-            const rangeStart = parseInt(rangeMatch[1]);
-            const rangeEnd = parseInt(rangeMatch[2]);
-            const rangeDepth = rangeEnd - rangeStart + 1;
-
-            // Calculate how much of this slab applies to our total depth
-            const applicableDepth = Math.min(rangeDepth, remainingDepth);
+        for (let i = 0; i < slabs.length; i++) {
+            if (remaining <= 0) break;
+            const slab = slabs[i];
+            const applicable = Math.min(slab.span, remaining);
             
-            if (applicableDepth > 0) {
-                const slabCost = applicableDepth * slab.rate;
-                totalCost += slabCost;
-                
-                const endDepth = currentDepth + applicableDepth - 1;
-                
+            if (applicable > 0) {
+                const cost = applicable * slab.rate;
+                totalCost += cost;
+                const endDepth = currentDepth + applicable - 1;
                 slabDetails.push({
-                    range: `${currentDepth}-${endDepth} ft`,
+                    range: `${String(currentDepth).padStart(3, '0')}-${endDepth} ft`,
                     rate: slab.rate,
-                    depth: applicableDepth,
-                    cost: slabCost
+                    depth: applicable,
+                    cost: cost
                 });
-                
-                currentDepth += applicableDepth;
-                remainingDepth -= applicableDepth;
+                currentDepth += applicable;
+                remaining -= applicable;
             }
         }
 
@@ -1744,45 +1517,30 @@ class CostCalculator {
     }
 
     calculateRepairSlabRate(oldBoreDepth, totalDepth, baseRate) {
-        // Use configured slab rates if available, otherwise calculate dynamically
-        const slabRates = this.slabRates && this.slabRates.length > 0 ? 
-            this.slabRates : 
-            this.calculateSlabRatesFromBaseRate(baseRate);
+        const slabs = this.getNormalizedSlabRates(baseRate);
         const slabDetails = [];
         let totalCost = 0;
-        let remainingDepth = totalDepth - oldBoreDepth;
+        let remaining = totalDepth - oldBoreDepth;
         let currentDepth = oldBoreDepth + 1;
 
-        for (const slab of slabRates) {
-            if (remainingDepth <= 0) break;
+        for (let i = 0; i < slabs.length; i++) {
+            if (remaining <= 0) break;
+            const slab = slabs[i];
+            const adjStart = Math.max(slab.start, currentDepth);
+            const adjEnd = Math.min(slab.end, totalDepth);
 
-            // Parse the range to get start and end depths
-            const rangeMatch = slab.range.match(/(\d+)-(\d+)\s*ft/);
-            if (!rangeMatch) continue;
-
-            const rangeStart = parseInt(rangeMatch[1]);
-            const rangeEnd = parseInt(rangeMatch[2]);
-            
-            // For repair work, we need to adjust the range to start from current depth
-            // but respect the original slab boundaries
-            const adjustedRangeStart = Math.max(rangeStart, currentDepth);
-            const adjustedRangeEnd = Math.min(rangeEnd, totalDepth);
-            
-            // Only process if we have a valid range
-            if (adjustedRangeStart <= adjustedRangeEnd) {
-                const applicableDepth = adjustedRangeEnd - adjustedRangeStart + 1;
-                const cost = applicableDepth * slab.rate;
+            if (adjStart <= adjEnd) {
+                const applicable = adjEnd - adjStart + 1;
+                const cost = applicable * slab.rate;
                 totalCost += cost;
-                
                 slabDetails.push({
-                    range: `${adjustedRangeStart.toString().padStart(3, '0')}-${adjustedRangeEnd} ft`,
+                    range: `${String(adjStart).padStart(3, '0')}-${adjEnd} ft`,
                     rate: slab.rate,
                     cost: cost,
-                    depth: applicableDepth
+                    depth: applicable
                 });
-                
-                remainingDepth -= applicableDepth;
-                currentDepth = adjustedRangeEnd + 1;
+                remaining -= applicable;
+                currentDepth = adjEnd + 1;
             }
         }
 
@@ -1794,179 +1552,116 @@ class CostCalculator {
     }
 
     getDefaultSlabRates() {
-        return [
-            { range: '1-300 ft', rate: 50 },
-            { range: '301-400 ft', rate: 55 },
-            { range: '401-500 ft', rate: 65 },
-            { range: '501-600 ft', rate: 85 },
-            { range: '601-700 ft', rate: 115 },
-            { range: '701-800 ft', rate: 155 },
-            { range: '801-900 ft', rate: 215 },
-            { range: '901-1000 ft', rate: 315 },
-            { range: '1001-1100 ft', rate: 415 },
-            { range: '1101-1200 ft', rate: 515 },
-            { range: '1201-1300 ft', rate: 615 },
-            { range: '1301-1400 ft', rate: 715 },
-            { range: '1401-1500 ft', rate: 815 },
-            { range: '1501-1600 ft', rate: 915 },
-            { range: '1601-1700 ft', rate: 1015 },
-            { range: '1701-1800 ft', rate: 1115 },
-            { range: '1801-1900 ft', rate: 1215 },
-            { range: '1901-2000 ft', rate: 1315 }
-        ];
+        return CostCalculator.DEPTH_SLABS.map(s => ({
+            range: s.rangeStr,
+            rate: s.defaultRate
+        }));
     }
 
     calculateSlabRatesFromBaseRate(baseRate) {
-        // Progressive rate increments based on the original logic
-        const rateIncrements = [0, 5, 15, 35, 65, 105, 155, 215, 315, 415, 515, 615, 715, 815, 915, 1015, 1115, 1215];
-        const depthRanges = [
-            { start: 1, end: 300 },      // First slab: 300 feet
-            { start: 301, end: 400 },    // Second slab: 100 feet
-            { start: 401, end: 500 },    // Third slab: 100 feet
-            { start: 501, end: 600 },    // Fourth slab: 100 feet
-            { start: 601, end: 700 },   // Fifth slab: 100 feet
-            { start: 701, end: 800 },   // Sixth slab: 100 feet
-            { start: 801, end: 900 },   // Seventh slab: 100 feet
-            { start: 901, end: 1000 },  // Eighth slab: 100 feet
-            { start: 1001, end: 1100 }, // Ninth slab: 100 feet
-            { start: 1101, end: 1200 }, // Tenth slab: 100 feet
-            { start: 1201, end: 1300 }, // Eleventh slab: 100 feet
-            { start: 1301, end: 1400 }, // Twelfth slab: 100 feet
-            { start: 1401, end: 1500 }, // Thirteenth slab: 100 feet
-            { start: 1501, end: 1600 }, // Fourteenth slab: 100 feet
-            { start: 1601, end: 1700 }, // Fifteenth slab: 100 feet
-            { start: 1701, end: 1800 }, // Sixteenth slab: 100 feet
-            { start: 1801, end: 1900 }, // Seventeenth slab: 100 feet
-            { start: 1901, end: 2000 }  // Eighteenth slab: 100 feet
-        ];
-
-        return depthRanges.map((range, index) => ({
-            range: `${range.start.toString().padStart(3, '0')}-${range.end} ft`,
-            rate: baseRate + (rateIncrements[index] || 0)
+        return CostCalculator.DEPTH_SLABS.map(s => ({
+            range: s.rangeStr,
+            rate: baseRate + s.inc
         }));
     }
 
     displayResults(results) {
+        const el = this.cachedEls;
         if (!results) {
             this.hideResults();
             return;
         }
 
         const gstEnabled = this.isGstEnabled();
-
-        // Get current inputs
         const inputs = this.getInputs();
 
-        // Display input summary
         this.displayInputSummary();
-
-        // Display slab breakdown first
         this.displaySlabBreakdown(results.slabCalculation);
         
-        // Display drilling cost
-        document.getElementById('drillingCost').textContent = this.formatCurrency(results.drillingCost);
+        if (el.drillingCost) el.drillingCost.textContent = this.formatCurrency(results.drillingCost);
         
-        // Display individual PVC costs with details
-        let pvc7Details, pvc10Details;
-        
-        if (inputs.pvc7Length > 0) {
-            pvc7Details = `${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = ${this.formatCurrency(results.pvc7Cost)}`;
-        } else {
-            pvc7Details = this.formatCurrency(0);
+        if (el.pvc7Cost) {
+            el.pvc7Cost.textContent = inputs.pvc7Length > 0 
+                ? `${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = ${this.formatCurrency(results.pvc7Cost)}`
+                : this.formatCurrency(0);
         }
         
-        if (inputs.pvc10Length > 0) {
-            pvc10Details = `${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = ${this.formatCurrency(results.pvc10Cost)}`;
-        } else {
-            pvc10Details = this.formatCurrency(0);
+        if (el.pvc10Cost) {
+            el.pvc10Cost.textContent = inputs.pvc10Length > 0 
+                ? `${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = ${this.formatCurrency(results.pvc10Cost)}`
+                : this.formatCurrency(0);
         }
             
-        document.getElementById('pvc7Cost').textContent = pvc7Details;
-        document.getElementById('pvc10Cost').textContent = pvc10Details;
+        if (el.boreBataCost) el.boreBataCost.textContent = this.formatCurrency(results.boreBataCost);
+        if (el.subtotal) el.subtotal.textContent = this.formatCurrency(results.subtotal);
         
-        // Display Bore Bata cost (fixed ₹2000)
-        document.getElementById('boreBataCost').textContent = this.formatCurrency(results.boreBataCost);
-        
-        document.getElementById('subtotal').textContent = this.formatCurrency(results.subtotal);
-        
-        // Update GST display based on toggle state
-        const gstAmountElement = document.getElementById('gstAmount');
-        const gstLabelElement = gstAmountElement.parentElement.querySelector('span:first-child');
-        
-        if (gstEnabled) {
-            gstAmountElement.textContent = this.formatCurrency(results.gstAmount);
-            gstLabelElement.textContent = `GST (${results.gstPercentage}%):`;
-            gstAmountElement.parentElement.style.display = 'flex';
-        } else {
-            gstAmountElement.textContent = this.formatCurrency(0);
-            gstLabelElement.textContent = 'GST (0%):';
-            gstAmountElement.parentElement.style.display = 'none';
+        if (el.gstAmount) {
+            const gstLabel = el.gstAmount.parentElement.querySelector('span:first-child');
+            if (gstEnabled) {
+                el.gstAmount.textContent = this.formatCurrency(results.gstAmount);
+                if (gstLabel) gstLabel.textContent = `GST (${results.gstPercentage}%):`;
+                el.gstAmount.parentElement.style.display = 'flex';
+            } else {
+                el.gstAmount.textContent = this.formatCurrency(0);
+                if (gstLabel) gstLabel.textContent = 'GST (0%):';
+                el.gstAmount.parentElement.style.display = 'none';
+            }
         }
         
-        document.getElementById('totalCost').textContent = this.formatCurrency(results.totalCost);
-
-        // Show results section
-        document.getElementById('calculatorResults').style.display = 'block';
+        if (el.totalCost) el.totalCost.textContent = this.formatCurrency(results.totalCost);
+        if (el.calculatorResults) el.calculatorResults.style.display = 'block';
     }
 
     displayInputSummary() {
-        const inputSummary = document.getElementById('inputSummary');
+        const el = this.cachedEls;
+        if (!el.inputSummary) return;
         const inputs = this.getInputs();
-        const gstEnabled = this.isGstEnabled();
 
-        // Show input summary
-        inputSummary.style.display = 'block';
-
-        // Populate input details
-        document.getElementById('inputDepth').textContent = `${inputs.totalDepth} ft`;
-        document.getElementById('inputDrillingRate').textContent = `₹${inputs.drillingRate}/ft`;
-        document.getElementById('inputPvc7Length').textContent = `${inputs.pvc7Length} ft`;
-        document.getElementById('inputPvc10Length').textContent = `${inputs.pvc10Length} ft`;
+        el.inputSummary.style.display = 'block';
+        if (el.inputDepth) el.inputDepth.textContent = `${inputs.totalDepth} ft`;
+        if (el.inputDrillingRate) el.inputDrillingRate.textContent = `₹${inputs.drillingRate}/ft`;
+        if (el.inputPvc7Length) el.inputPvc7Length.textContent = `${inputs.pvc7Length} ft`;
+        if (el.inputPvc10Length) el.inputPvc10Length.textContent = `${inputs.pvc10Length} ft`;
     }
 
     displaySlabBreakdown(slabCalculation) {
-        console.log('Displaying slab breakdown:', slabCalculation);
-        const slabBreakdown = document.getElementById('slabBreakdown');
-        const slabDetails = document.getElementById('slabDetails');
+        const el = this.cachedEls;
+        if (!el.slabBreakdown || !el.slabDetails) return;
         
-        if (slabCalculation.slabDetails.length > 1) {
-            // Show breakdown if multiple slabs
-            slabBreakdown.style.display = 'block';
+        if (slabCalculation.slabDetails && slabCalculation.slabDetails.length > 1) {
+            el.slabBreakdown.style.display = 'block';
             
-            let html = '';
-            slabCalculation.slabDetails.forEach(slab => {
-                // Format the range display with leading zeros
-                const formattedRange = slab.range.replace(/(\d+)-(\d+)\s*ft/, (match, start, end) => {
-                    const paddedStart = start.padStart(3, '0');
-                    return `${paddedStart}-${end} ft`;
-                });
-                
-                html += `
-                    <div class="slab-item">
-                        <span class="slab-range">${formattedRange}</span>
-                        <span class="slab-rate">₹${slab.rate}/ft</span>
-                        <span class="slab-cost">${this.formatCurrency(slab.cost)}</span>
-                    </div>
+            const frag = document.createDocumentFragment();
+            for (let i = 0; i < slabCalculation.slabDetails.length; i++) {
+                const slab = slabCalculation.slabDetails[i];
+                const item = document.createElement('div');
+                item.className = 'slab-item';
+                item.innerHTML = `
+                    <span class="slab-range">${slab.range}</span>
+                    <span class="slab-rate">₹${slab.rate}/ft</span>
+                    <span class="slab-cost">${this.formatCurrency(slab.cost)}</span>
                 `;
-            });
+                frag.appendChild(item);
+            }
             
-            html += `
-                <div class="slab-item">
-                    <span>Total Drilling Cost</span>
-                    <span></span>
-                    <span class="slab-cost">${this.formatCurrency(slabCalculation.totalCost)}</span>
-                </div>
+            const totalItem = document.createElement('div');
+            totalItem.className = 'slab-item';
+            totalItem.innerHTML = `
+                <span>Total Drilling Cost</span>
+                <span></span>
+                <span class="slab-cost">${this.formatCurrency(slabCalculation.totalCost)}</span>
             `;
+            frag.appendChild(totalItem);
             
-            slabDetails.innerHTML = html;
+            el.slabDetails.replaceChildren(frag);
         } else {
-            // Hide breakdown if single slab
-            slabBreakdown.style.display = 'none';
+            el.slabBreakdown.style.display = 'none';
         }
     }
 
     hideResults() {
-        document.getElementById('calculatorResults').style.display = 'none';
+        const el = this.cachedEls;
+        if (el.calculatorResults) el.calculatorResults.style.display = 'none';
     }
 
     reset() {
@@ -1980,9 +1675,7 @@ class CostCalculator {
 
     updateLiveCalculator(results) {
         if (!results) return;
-        
-        // Update total cost using existing cost breakdown data
-        const totalCostEl = document.getElementById('liveTotalCost');
+        const totalCostEl = this.cachedEls.liveTotalCost || document.getElementById('liveTotalCost');
         if (totalCostEl) {
             totalCostEl.textContent = this.formatCurrency(results.totalCost);
         }
@@ -2932,19 +2625,450 @@ document.addEventListener('DOMContentLoaded', () => {
     window.enterpriseFeatures = new EnterpriseFeatures();
     window.formValidation = new EnterpriseFormValidation();
     
-        // Calculate initial values
-        window.anjaneyaApp.calculator.calculate();
-        
-        // Check for updated settings on page load
-        window.anjaneyaApp.calculator.refreshSettings();
-        
-        // Update company information on page load
-        window.anjaneyaApp.updateCompanyInfo();
-        
-        // Setup inline price settings
-        window.anjaneyaApp.setupInlinePriceSettings();
-        
+    // Calculate initial values
+    window.anjaneyaApp.calculator.calculate();
+    
+    // Check for updated settings on page load
+    window.anjaneyaApp.calculator.refreshSettings();
+    
+    // Update company information on page load
+    window.anjaneyaApp.updateCompanyInfo();
+    
+    // Setup inline price settings
+    window.anjaneyaApp.setupInlinePriceSettings();
+    
+    // Interactive Driving Rig Truck on Page Scroll
+    initScrollLorry();
+    
+    // Initialize Initial Page Logo Preloader
+    initPagePreloader();
+
+    // Initialize Admin Portal
+    window.adminPortal = new AdminPortal();
 });
+
+// Initial Logo Preloader Splash Screen Dismissal
+function initPagePreloader() {
+    const preloader = document.getElementById('pagePreloader');
+    if (!preloader) return;
+
+    function hidePreloader() {
+        if (!preloader.classList.contains('preloader-hidden')) {
+            preloader.classList.add('preloader-hidden');
+            setTimeout(() => {
+                preloader.remove();
+            }, 600);
+        }
+    }
+
+    if (document.readyState === 'complete') {
+        setTimeout(hidePreloader, 600);
+    } else {
+        window.addEventListener('load', () => setTimeout(hidePreloader, 500));
+        setTimeout(hidePreloader, 1500);
+    }
+}
+
+// Interactive Driving Rig Truck on Page Scroll & Direct Drag (Fixed Bottom Bar)
+function initScrollLorry() {
+    const fixedTruck = document.getElementById('fixedRigTruck');
+    const fixedBar = document.getElementById('fixedScrollRigBar');
+    if (!fixedTruck || !fixedBar) return;
+
+    let ticking = false;
+    let lastScrollY = window.pageYOffset || 0;
+    let isDragging = false;
+    let startX = 0;
+    let startScrollTop = 0;
+
+    function getMaxTravel() {
+        const fixedRoad = fixedBar.querySelector('.fixed-rig-road') || fixedBar;
+        const roadWidth = fixedRoad.clientWidth;
+        const truckWidth = fixedTruck.clientWidth || 80;
+        const badge = fixedBar.querySelector('.fixed-road-badge');
+        const badgeWidth = badge ? (badge.clientWidth + 20) : 100;
+        return Math.max(1, roadWidth - truckWidth - badgeWidth);
+    }
+
+    function updateTrucks() {
+        if (isDragging) return;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+        const clientHeight = window.innerHeight || document.documentElement.clientHeight;
+        const maxScroll = Math.max(1, scrollHeight - clientHeight);
+        
+        // Progress from 0 to 1 based on page scroll
+        const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
+        
+        // Subtle tilt depending on scroll speed/direction (dampened)
+        const scrollDelta = scrollTop - lastScrollY;
+        const tilt = Math.max(-4, Math.min(4, scrollDelta * 0.08));
+        lastScrollY = scrollTop;
+
+        const maxTravel = getMaxTravel();
+        const fixedX = progress * maxTravel;
+
+        fixedTruck.style.transform = `translate3d(${fixedX}px, 0, 0) rotate(${tilt}deg)`;
+        ticking = false;
+    }
+
+    // Touch and Mouse Drag to scroll page left/right
+    function onDragStart(e) {
+        isDragging = true;
+        fixedTruck.style.cursor = 'grabbing';
+        startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        startScrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+    }
+
+    function onDragMove(e) {
+        if (!isDragging) return;
+        const currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        const deltaX = currentX - startX;
+        const maxTravel = getMaxTravel();
+        
+        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+        const clientHeight = window.innerHeight || document.documentElement.clientHeight;
+        const maxScroll = Math.max(1, scrollHeight - clientHeight);
+
+        const scrollDelta = (deltaX / maxTravel) * maxScroll;
+        const newScrollTop = Math.max(0, Math.min(maxScroll, startScrollTop + scrollDelta));
+
+        window.scrollTo(0, newScrollTop);
+
+        const progress = newScrollTop / maxScroll;
+        const fixedX = progress * maxTravel;
+        const tilt = deltaX > 0 ? 2 : (deltaX < 0 ? -2 : 0);
+        fixedTruck.style.transform = `translate3d(${fixedX}px, 0, 0) rotate(${tilt}deg)`;
+    }
+
+    function onDragEnd() {
+        if (!isDragging) return;
+        isDragging = false;
+        fixedTruck.style.cursor = 'grab';
+        updateTrucks();
+    }
+
+    // Tap/click on road line to jump/scroll to position
+    const road = fixedBar.querySelector('.fixed-rig-road') || fixedBar;
+    road.addEventListener('click', (e) => {
+        if (e.target.closest('#fixedRigTruck') || e.target.closest('.fixed-road-badge')) return;
+        const rect = road.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const maxTravel = getMaxTravel();
+        const progress = Math.min(Math.max(clickX / maxTravel, 0), 1);
+        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+        const clientHeight = window.innerHeight || document.documentElement.clientHeight;
+        const maxScroll = Math.max(1, scrollHeight - clientHeight);
+        window.scrollTo({
+            top: progress * maxScroll,
+            behavior: 'smooth'
+        });
+    });
+
+    fixedTruck.addEventListener('mousedown', onDragStart);
+    window.addEventListener('mousemove', onDragMove);
+    window.addEventListener('mouseup', onDragEnd);
+
+    fixedTruck.addEventListener('touchstart', onDragStart, { passive: true });
+    window.addEventListener('touchmove', onDragMove, { passive: false });
+    window.addEventListener('touchend', onDragEnd, { passive: true });
+
+    window.addEventListener('scroll', () => {
+        if (!ticking && !isDragging) {
+            window.requestAnimationFrame(updateTrucks);
+            ticking = true;
+        }
+    }, { passive: true });
+
+    window.addEventListener('resize', updateTrucks, { passive: true });
+    // Initial call
+    updateTrucks();
+}
+
+// Admin Portal Management System
+class AdminPortal {
+    constructor() {
+        this.authorizedEmails = ['manirajankg@gmail.com', 'manirajankgr@gmail.com'];
+        this.defaultOtp = '7777';
+        this.isAuthenticated = false;
+
+        this.modal = document.getElementById('adminModal');
+        this.openBtn = document.getElementById('openAdminModalBtn');
+        this.closeBtn = document.getElementById('adminModalClose');
+        this.authBtn = document.getElementById('adminAuthBtn');
+        this.emailInput = document.getElementById('adminEmail');
+        this.otpGroup = document.getElementById('adminOtpGroup');
+        this.otpInput = document.getElementById('adminOtp');
+        this.errorMsg = document.getElementById('adminLoginError');
+        this.loginView = document.getElementById('adminLoginForm');
+        this.dashboardView = document.getElementById('adminDashboard');
+        this.saveBtn = document.getElementById('adminSaveBtn');
+        this.resetBtn = document.getElementById('adminResetBtn');
+        this.logoutBtn = document.getElementById('adminLogoutBtn');
+        this.saveToast = document.getElementById('adminSaveToast');
+        this.tabs = document.querySelectorAll('.admin-tab');
+
+        this.init();
+    }
+
+    init() {
+        if (this.openBtn) {
+            this.openBtn.addEventListener('click', () => this.open());
+        }
+        if (this.closeBtn) {
+            this.closeBtn.addEventListener('click', () => this.close());
+        }
+        if (this.authBtn) {
+            this.authBtn.addEventListener('click', () => this.handleAuth());
+        }
+        if (this.saveBtn) {
+            this.saveBtn.addEventListener('click', () => this.saveSettings());
+        }
+        if (this.resetBtn) {
+            this.resetBtn.addEventListener('click', () => this.resetDefaults());
+        }
+        if (this.logoutBtn) {
+            this.logoutBtn.addEventListener('click', () => this.logout());
+        }
+
+        // Tab Switching
+        this.tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetTab = tab.dataset.tab;
+                this.tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                document.querySelectorAll('.admin-tab-pane').forEach(pane => {
+                    pane.style.display = 'none';
+                    pane.classList.remove('active');
+                });
+                const activePane = document.getElementById(`tab-${targetTab}`);
+                if (activePane) {
+                    activePane.style.display = 'block';
+                    activePane.classList.add('active');
+                }
+            });
+        });
+
+        // Close on clicking outside
+        if (this.modal) {
+            this.modal.addEventListener('click', (e) => {
+                if (e.target === this.modal) this.close();
+            });
+        }
+
+        // Apply any stored settings immediately on startup
+        this.applyStoredSettings();
+    }
+
+    open() {
+        if (!this.modal) return;
+        this.modal.classList.add('show');
+        if (this.isAuthenticated) {
+            this.showDashboard();
+        } else {
+            this.showLogin();
+        }
+    }
+
+    close() {
+        if (this.modal) this.modal.classList.remove('show');
+    }
+
+    showLogin() {
+        if (this.loginView) this.loginView.style.display = 'block';
+        if (this.dashboardView) this.dashboardView.style.display = 'none';
+        if (this.errorMsg) this.errorMsg.style.display = 'none';
+    }
+
+    showDashboard() {
+        if (this.loginView) this.loginView.style.display = 'none';
+        if (this.dashboardView) this.dashboardView.style.display = 'block';
+        this.loadFormValues();
+    }
+
+    handleAuth() {
+        const email = (this.emailInput.value || '').trim().toLowerCase();
+        if (!email) {
+            this.showError('Please enter your admin email address.');
+            return;
+        }
+
+        if (!this.authorizedEmails.includes(email)) {
+            this.showError('Access denied: Email address not authorized.');
+            return;
+        }
+
+        if (this.otpGroup.style.display === 'none') {
+            this.otpGroup.style.display = 'block';
+            this.authBtn.textContent = 'Confirm OTP & Open Dashboard';
+            this.otpInput.value = '7777'; // Pre-filled demo OTP for quick 1-click access
+            return;
+        }
+
+        const otp = (this.otpInput.value || '').trim();
+        if (otp === '7777' || otp.length === 4) {
+            this.isAuthenticated = true;
+            this.showDashboard();
+        } else {
+            this.showError('Invalid OTP code. Please enter 7777.');
+        }
+    }
+
+    showError(msg) {
+        if (this.errorMsg) {
+            this.errorMsg.textContent = msg;
+            this.errorMsg.style.display = 'block';
+        }
+    }
+
+    loadFormValues() {
+        const saved = localStorage.getItem('anjaneya-settings');
+        let settings = {};
+        if (saved) {
+            try { settings = JSON.parse(saved); } catch(e) {}
+        }
+
+        const comp = settings.companyInfo || {};
+        const rates = settings.rates || {};
+
+        if (document.getElementById('adminPhone1')) document.getElementById('adminPhone1').value = comp.phone1 || '+91 965 965 7777';
+        if (document.getElementById('adminPhone2')) document.getElementById('adminPhone2').value = comp.phone2 || '+91 944 33 73573';
+        if (document.getElementById('adminWhatsapp')) document.getElementById('adminWhatsapp').value = comp.whatsapp || '919659657777';
+        if (document.getElementById('adminEmailAddress')) document.getElementById('adminEmailAddress').value = comp.email || 'anjaneyaborewells@gmail.com';
+        if (document.getElementById('adminSlogan')) document.getElementById('adminSlogan').value = comp.slogan || 'ஆழமான நம்பிக்கை!';
+        if (document.getElementById('adminLocationText')) document.getElementById('adminLocationText').value = comp.location || 'Namakkal & Tamil Nadu';
+
+        if (document.getElementById('adminBaseRate475')) document.getElementById('adminBaseRate475').value = rates.baseRate475 || 75;
+        if (document.getElementById('adminBaseRate650')) document.getElementById('adminBaseRate650').value = rates.baseRate650 || 85;
+        if (document.getElementById('adminCasing7')) document.getElementById('adminCasing7').value = rates.casing7 || 380;
+        if (document.getElementById('adminCasing10')) document.getElementById('adminCasing10').value = rates.casing10 || 650;
+        if (document.getElementById('adminFlushingRate')) document.getElementById('adminFlushingRate').value = rates.flushing || 3500;
+        if (document.getElementById('adminTransportRate')) document.getElementById('adminTransportRate').value = rates.transport || 1500;
+    }
+
+    saveSettings() {
+        const logoFileInput = document.getElementById('adminLogoFile');
+        
+        const saveAndApply = (logoDataUrl) => {
+            const saved = localStorage.getItem('anjaneya-settings');
+            let current = {};
+            if (saved) {
+                try { current = JSON.parse(saved); } catch(e) {}
+            }
+
+            const updatedSettings = {
+                companyInfo: {
+                    phone1: document.getElementById('adminPhone1')?.value || '+91 965 965 7777',
+                    phone2: document.getElementById('adminPhone2')?.value || '+91 944 33 73573',
+                    whatsapp: document.getElementById('adminWhatsapp')?.value || '919659657777',
+                    email: document.getElementById('adminEmailAddress')?.value || 'anjaneyaborewells@gmail.com',
+                    slogan: document.getElementById('adminSlogan')?.value || 'ஆழமான நம்பிக்கை!',
+                    location: document.getElementById('adminLocationText')?.value || 'Namakkal & Tamil Nadu',
+                    logo: logoDataUrl || current.companyInfo?.logo || 'logo.jpg'
+                },
+                rates: {
+                    baseRate475: parseFloat(document.getElementById('adminBaseRate475')?.value) || 75,
+                    baseRate650: parseFloat(document.getElementById('adminBaseRate650')?.value) || 85,
+                    casing7: parseFloat(document.getElementById('adminCasing7')?.value) || 380,
+                    casing10: parseFloat(document.getElementById('adminCasing10')?.value) || 650,
+                    flushing: parseFloat(document.getElementById('adminFlushingRate')?.value) || 3500,
+                    transport: parseFloat(document.getElementById('adminTransportRate')?.value) || 1500
+                }
+            };
+
+            localStorage.setItem('anjaneya-settings', JSON.stringify(updatedSettings));
+            this.applyStoredSettings();
+
+            if (this.saveToast) {
+                this.saveToast.style.display = 'block';
+                setTimeout(() => { this.saveToast.style.display = 'none'; }, 3000);
+            }
+        };
+
+        if (logoFileInput && logoFileInput.files && logoFileInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = (e) => saveAndApply(e.target.result);
+            reader.readAsDataURL(logoFileInput.files[0]);
+        } else {
+            saveAndApply(null);
+        }
+    }
+
+    applyStoredSettings() {
+        const saved = localStorage.getItem('anjaneya-settings');
+        if (!saved) return;
+
+        try {
+            const settings = JSON.parse(saved);
+            const comp = settings.companyInfo || {};
+            const rates = settings.rates || {};
+
+            // 1. Phone numbers site-wide
+            if (comp.phone1) {
+                document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+                    if (link.href.includes('9659657777')) {
+                        link.href = `tel:${comp.phone1.replace(/\s+/g, '')}`;
+                    }
+                });
+                const heroPhone = document.querySelector('.hero-btn-secondary span');
+                if (heroPhone) heroPhone.textContent = comp.phone1;
+            }
+
+            // 2. WhatsApp
+            if (comp.whatsapp) {
+                const wa = document.getElementById('floatingWhatsApp');
+                if (wa) wa.href = `https://wa.me/${comp.whatsapp}?text=Hi! I'm interested in your borewell drilling services.`;
+            }
+
+            // 3. Slogan
+            if (comp.slogan) {
+                document.querySelectorAll('.tamil-slogan').forEach(el => {
+                    el.textContent = comp.slogan;
+                });
+            }
+
+            // 4. Logo
+            if (comp.logo) {
+                document.querySelectorAll('.brand-logo-img').forEach(img => {
+                    img.src = comp.logo;
+                });
+                const fav = document.querySelector("link[rel*='icon']");
+                if (fav) fav.href = comp.logo;
+            }
+
+            // 5. Serving Location Badge
+            if (comp.location) {
+                const badge = document.getElementById('fixedRoadBadgeText');
+                if (badge) badge.textContent = comp.location;
+            }
+
+            // 6. Calculator Refresh
+            if (window.anjaneyaApp && window.anjaneyaApp.calculator) {
+                if (window.anjaneyaApp.calculator.settings) {
+                    if (rates.casing7) window.anjaneyaApp.calculator.settings.casingRates.pvc7 = rates.casing7;
+                    if (rates.casing10) window.anjaneyaApp.calculator.settings.casingRates.pvc10 = rates.casing10;
+                    if (rates.flushing) window.anjaneyaApp.calculator.settings.additionalServices.flushing = rates.flushing;
+                    if (rates.transport) window.anjaneyaApp.calculator.settings.transportRate = rates.transport;
+                }
+                window.anjaneyaApp.calculator.calculate();
+            }
+        } catch(e) {
+            console.error('Error applying admin settings:', e);
+        }
+    }
+
+    resetDefaults() {
+        localStorage.removeItem('anjaneya-settings');
+        location.reload();
+    }
+
+    logout() {
+        this.isAuthenticated = false;
+        this.showLogin();
+        this.close();
+    }
+}
 
 // Service Worker Registration (for PWA features)
 if ('serviceWorker' in navigator) {
