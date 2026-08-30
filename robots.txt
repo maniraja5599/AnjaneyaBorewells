@@ -1,0 +1,38 @@
+# Robots.txt for Anjaneya Borewells (https://anjaneyaborewells.com)
+# Optimized for Google, Bing, Yahoo, DuckDuckGo & Generative AI Search Engines (ChatGPT, Gemini, Perplexity, Claude, Copilot)
+
+User-agent: *
+Allow: /
+Disallow: /scratch/
+Disallow: /.git/
+
+# AI Search Crawlers & Generative Engine Optimization (GEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Sitemap & LLMs Knowledge Base
+Sitemap: https://anjaneyaborewells.com/sitemap.xml

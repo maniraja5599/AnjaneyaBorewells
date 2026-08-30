@@ -2574,6 +2574,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Version History Modal
     initVersionModal();
 
+    // Initialize FAQ Accordion
+    initFaqAccordion();
+
     // Initialize Admin Portal
     window.adminPortal = new AdminPortal();
 });
@@ -2764,6 +2767,45 @@ function initVersionModal() {
         if (e.key === 'Escape' && (modal.classList.contains('show') || modal.style.display === 'flex')) {
             closeModal();
         }
+    });
+}
+
+// FAQ Accordion Toggle System
+function initFaqAccordion() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    if (!faqItems.length) return;
+
+    faqItems.forEach((item, index) => {
+        const btn = item.querySelector('.faq-question-btn');
+        if (!btn) return;
+
+        // Open first FAQ by default on desktop for instant user engagement
+        if (index === 0 && window.innerWidth > 768) {
+            item.classList.add('active');
+            btn.setAttribute('aria-expanded', 'true');
+        }
+
+        btn.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+
+            // Close other FAQ items for clean accordion effect
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                    const otherBtn = otherItem.querySelector('.faq-question-btn');
+                    if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Toggle current item
+            if (isActive) {
+                item.classList.remove('active');
+                btn.setAttribute('aria-expanded', 'false');
+            } else {
+                item.classList.add('active');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        });
     });
 }
 
