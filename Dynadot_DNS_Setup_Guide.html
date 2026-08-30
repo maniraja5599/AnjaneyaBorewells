@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynadot DNS Setup Guide — anjaneyaborewells.com</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Mukta+Malar:wght@400;600;700&display=swap');
+        
+        @page {
+            size: A4;
+            margin: 12mm;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Mukta Malar', -apple-system, sans-serif;
+            color: #0f172a;
+            background: #ffffff;
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .header-card {
+            background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #059669 100%);
+            color: #ffffff;
+            padding: 20px 24px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px -5px rgba(5, 150, 105, 0.25);
+        }
+
+        .header-card h1 {
+            margin: 0 0 6px 0;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header-card p {
+            margin: 0;
+            font-size: 13px;
+            color: #d1fae5;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-top: 8px;
+            margin-right: 6px;
+        }
+
+        .step-box {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 16px;
+            page-break-inside: avoid;
+        }
+
+        .step-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .step-num {
+            background: #10b981;
+            color: #ffffff;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        ol {
+            margin: 0;
+            padding-left: 22px;
+        }
+
+        li {
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #334155;
+        }
+
+        li strong {
+            color: #0f172a;
+        }
+
+        .record-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            background: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #cbd5e1;
+            font-size: 12.5px;
+        }
+
+        .record-table th {
+            background: #0f172a;
+            color: #ffffff;
+            text-align: left;
+            padding: 8px 12px;
+            font-weight: 700;
+        }
+
+        .record-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1e293b;
+        }
+
+        .record-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .record-table tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .code-val {
+            font-family: 'Courier New', monospace;
+            background: #ecfdf5;
+            color: #047857;
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-weight: 700;
+            border: 1px solid #a7f3d0;
+            display: inline-block;
+        }
+
+        .highlight-card {
+            background: #fefce8;
+            border: 1px solid #fef08a;
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-top: 12px;
+            font-size: 12.5px;
+            color: #854d0e;
+        }
+
+        .highlight-card strong {
+            color: #713f12;
+        }
+
+        .print-btn-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+        }
+
+        .print-btn {
+            background: #059669;
+            color: #ffffff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+            box-shadow: 0 4px 10px rgba(5, 150, 105, 0.2);
+        }
+
+        @media print {
+            .print-btn-bar {
+                display: none;
+            }
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="print-btn-bar">
+        <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    </div>
+
+    <div class="header-card">
+        <h1>🌐 Dynadot DNS Setup & Live Hosting Guide</h1>
+        <p>அஞ்சனேயா போர்வெல்ஸ் (anjaneyaborewells.com) இணையதளத்தை Dynadot-ல் இருந்து GitHub-ல் இணைக்கும் எளிய கையேடு</p>
+        <span class="badge">Target Domain: anjaneyaborewells.com</span>
+        <span class="badge">GitHub Repo: maniraja5599/AnjaneyaBorewells</span>
+    </div>
+
+    <!-- Step 1: Dynadot -->
+    <div class="step-box">
+        <h2 class="step-title">
+            <span class="step-num">1</span>
+            Dynadot இணையதளத்தில் DNS Records அமைக்கும் முறை (Dynadot Settings)
+        </h2>
+        <ol>
+            <li><strong>Dynadot Account-ல் Log in செய்யவும்:</strong> <a href="https://www.dynadot.com/" target="_blank">www.dynadot.com</a>-க்குச் சென்று உங்கள் Username / Password கொண்டு உள்நுழையவும்.</li>
+            <li>இடது பக்க மெனுவில் <strong>"My Domains"</strong> ➡️ <strong>"Manage Domains"</strong> கிளிக் செய்யவும்.</li>
+            <li>உங்கள் Domain பட்டியலில் உள்ள <strong>anjaneyaborewells.com</strong>-ஐ கிளிக் செய்யவும்.</li>
+            <li><strong>"DNS Settings"</strong> பகுதியில் <strong>"Dynadot DNS"</strong> என்பதைத் தேர்ந்தெடுக்கவும்.</li>
+            <li>கீழே உள்ள அட்டவணையில் உள்ள <strong>4 A Records</strong> மற்றும் <strong>1 CNAME Record</strong>-ஐ சேர்க்கவும்:</li>
+        </ol>
+
+        <!-- Table 1: A Records -->
+        <h3 style="font-size: 14px; margin: 12px 0 6px 0; color: #0f172a;">A) Domain Record (Root Domain - @ / Apex):</h3>
+        <table class="record-table">
+            <thead>
+                <tr>
+                    <th>Record Type</th>
+                    <th>Host / Subdomain</th>
+                    <th>IP Address / Target Host (Copy this)</th>
+                    <th>TTL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>A</strong></td>
+                    <td>@ (or Leave Blank)</td>
+                    <td><span class="code-val">185.199.108.153</span></td>
+                    <td>300 / 1/2 Hour / Auto</td>
+                </tr>
+                <tr>
+                    <td><strong>A</strong></td>
+                    <td>@ (or Leave Blank)</td>
+                    <td><span class="code-val">185.199.109.153</span></td>
+                    <td>300 / 1/2 Hour / Auto</td>
+                </tr>
+                <tr>
+                    <td><strong>A</strong></td>
+                    <td>@ (or Leave Blank)</td>
+                    <td><span class="code-val">185.199.110.153</span></td>
+                    <td>300 / 1/2 Hour / Auto</td>
+                </tr>
+                <tr>
+                    <td><strong>A</strong></td>
+                    <td>@ (or Leave Blank)</td>
+                    <td><span class="code-val">185.199.111.153</span></td>
+                    <td>300 / 1/2 Hour / Auto</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Table 2: CNAME Record -->
+        <h3 style="font-size: 14px; margin: 12px 0 6px 0; color: #0f172a;">B) Subdomain Record (www):</h3>
+        <table class="record-table">
+            <thead>
+                <tr>
+                    <th>Record Type</th>
+                    <th>Subdomain</th>
+                    <th>Target Host (Copy this)</th>
+                    <th>TTL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>CNAME</strong></td>
+                    <td><span class="code-val">www</span></td>
+                    <td><span class="code-val">maniraja5599.github.io</span></td>
+                    <td>300 / 1/2 Hour / Auto</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin: 6px 0 0 0; font-size: 12.5px;">6. அனைத்து Records-ஐயும் உள்ளிட்ட பிறகு, பக்கத்தின் கீழே உள்ள <strong>"Save DNS"</strong> பட்டனைக் கிளிக் செய்யவும்.</p>
+    </div>
+
+    <!-- Step 2: GitHub Settings -->
+    <div class="step-box">
+        <h2 class="step-title">
+            <span class="step-num">2</span>
+            GitHub பக்கத்தில் சரிபார்க்க வேண்டியவை (GitHub Pages Settings)
+        </h2>
+        <ol>
+            <li>உங்கள் GitHub Repository பக்கத்திற்குச் செல்லவும்: <a href="https://github.com/maniraja5599/AnjaneyaBorewells" target="_blank">github.com/maniraja5599/AnjaneyaBorewells</a></li>
+            <li>மேலே உள்ள <strong>Settings</strong> ➡️ இடது பக்க மெனுவில் <strong>Pages</strong> என்பதைத் திறக்கவும்.</li>
+            <li><strong>Branch:</strong> <code>main</code> மற்றும் <code>/(root)</code> தேர்வு செய்யப்பட்டு <strong>Save</strong> ஆகியுள்ளதா என உறுதி செய்யவும்.</li>
+            <li><strong>Custom Domain:</strong> <code>anjaneyaborewells.com</code> என இருப்பதை உறுதி செய்யவும் (ஏற்கெனவே CNAME File சேர்க்கப்பட்டுள்ளது).</li>
+            <li><strong>Enforce HTTPS:</strong> DNS இணைந்த பிறகு இந்த Checkbox-ஐ <strong>Tick</strong> செய்யவும் (இலவச Green SSL Padlock கிடைக்கும்).</li>
+        </ol>
+    </div>
+
+    <!-- Verification Card -->
+    <div class="highlight-card">
+        <strong>⏱️ நேரலை எப்போது இயங்கும் (DNS Propagation Time)?</strong><br>
+        Dynadot-ல் <strong>Save DNS</strong> கொடுத்த <strong>15 முதல் 30 நிமிடங்களில்</strong> DNS முழுமையாக update ஆகிவிடும். அதன் பிறகு <strong>https://anjaneyaborewells.com</strong> மற்றும் <strong>https://www.anjaneyaborewells.com</strong> ஆகிய இரண்டு முகவரிகளிலும் உங்கள் இணையதளம் உலகளவில் வேகமாகத் திறக்கும்!
+    </div>
+
+</body>
+</html>
