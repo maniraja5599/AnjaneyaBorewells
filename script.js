@@ -2620,6 +2620,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize FAQ Accordion
     initFaqAccordion();
 
+    // Initialize PWA Mobile & Desktop Install Manager
+    window.pwaManager = new PwaInstallManager();
+
     // Load Centralized Server Config for all global visitors
     loadServerSiteConfig();
 
@@ -2856,21 +2859,21 @@ function initScrollLorry() {
     updateTrucks();
 }
 
-// Live Page Views Counter
+// Live Page Views Counter (Reset and Starts from 1)
 function initPageViewsCounter() {
     const el = document.getElementById('footerPageViewsCount');
     if (!el) return;
 
-    let baseViews = 14285;
+    let currentViews = 0;
     const saved = localStorage.getItem('ab_total_pageviews');
     if (saved) {
-        baseViews = parseInt(saved, 10) || 14285;
+        currentViews = parseInt(saved, 10) || 0;
     }
-    // Increment visit count
-    baseViews += 1;
-    localStorage.setItem('ab_total_pageviews', baseViews.toString());
+    // Increment visit count (Starts from 1 on initial load)
+    currentViews += 1;
+    localStorage.setItem('ab_total_pageviews', currentViews.toString());
 
-    el.textContent = baseViews.toLocaleString('en-IN');
+    el.textContent = currentViews.toLocaleString('en-IN');
 }
 
 // Version History Modal Initialization
@@ -2944,6 +2947,153 @@ function initFaqAccordion() {
             }
         });
     });
+}
+
+// Progressive Web App (PWA) Mobile & Desktop Install Manager
+class PwaInstallManager {
+    constructor() {
+        this.deferredPrompt = null;
+        this.isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+        this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        this.init();
+    }
+
+    init() {
+        // Register Service Worker for offline capability
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => console.log('PWA ServiceWorker registered with scope:', reg.scope))
+                    .catch(err => console.warn('PWA ServiceWorker registration failed:', err));
+            });
+        }
+
+        // Cache elements
+        this.navBtn = document.getElementById('navPwaInstallBtn');
+        this.drawerBtn = document.getElementById('drawerPwaInstallBtn');
+        this.banner = document.getElementById('pwaInstallBanner');
+        this.bannerInstallBtn = document.getElementById('pwaBannerInstallBtn');
+        this.bannerDismissBtn = document.getElementById('pwaBannerDismissBtn');
+        this.iosModal = document.getElementById('iosInstallModal');
+        this.iosCloseBtn = document.getElementById('iosModalClose');
+        this.iosGotItBtn = document.getElementById('iosGotItBtn');
+
+        if (this.isStandalone) {
+            // Already installed as standalone app, no need to prompt
+            return;
+        }
+
+        // Listen for Android/Desktop install prompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            this.deferredPrompt = e;
+            this.showInstallButtons();
+        });
+
+        // Show install button by default on mobile / iOS
+        this.showInstallButtons();
+
+        this.bindEvents();
+        this.checkBannerAutoPrompt();
+    }
+
+    showInstallButtons() {
+        if (this.navBtn) this.navBtn.style.display = 'inline-flex';
+        if (this.drawerBtn) this.drawerBtn.style.display = 'block';
+    }
+
+    bindEvents() {
+        const handleInstallClick = () => this.triggerInstall();
+
+        if (this.navBtn) this.navBtn.addEventListener('click', handleInstallClick);
+        if (this.drawerBtn) this.drawerBtn.addEventListener('click', handleInstallClick);
+        if (this.bannerInstallBtn) this.bannerInstallBtn.addEventListener('click', handleInstallClick);
+
+        if (this.bannerDismissBtn) {
+            this.bannerDismissBtn.addEventListener('click', () => {
+                this.hideBanner();
+                sessionStorage.setItem('ab_pwa_banner_dismissed', 'true');
+            });
+        }
+
+        if (this.iosCloseBtn) this.iosCloseBtn.addEventListener('click', () => this.hideIosModal());
+        if (this.iosGotItBtn) this.iosGotItBtn.addEventListener('click', () => this.hideIosModal());
+        if (this.iosModal) {
+            this.iosModal.addEventListener('click', (e) => {
+                if (e.target === this.iosModal) this.hideIosModal();
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            this.deferredPrompt = null;
+            this.hideBanner();
+            if (this.navBtn) this.navBtn.style.display = 'none';
+            if (this.drawerBtn) this.drawerBtn.style.display = 'none';
+            console.log('Anjaneya Borewells App was installed successfully!');
+        });
+    }
+
+    async triggerInstall() {
+        if (this.isIos) {
+            this.showIosModal();
+            return;
+        }
+
+        if (this.deferredPrompt) {
+            try {
+                this.deferredPrompt.prompt();
+                const choiceResult = await this.deferredPrompt.userChoice;
+                if (choiceResult.outcome === 'accepted') {
+                    this.hideBanner();
+                }
+                this.deferredPrompt = null;
+            } catch (err) {
+                console.warn('Install prompt error:', err);
+                this.showIosModal();
+            }
+        } else {
+            // Fallback for iOS, Safari, Firefox, or unsupported environments
+            this.showIosModal();
+        }
+    }
+
+    checkBannerAutoPrompt() {
+        if (this.isStandalone) return;
+        if (sessionStorage.getItem('ab_pwa_banner_dismissed')) return;
+
+        // Auto show bottom banner on mobile / desktop after 2.5 seconds
+        setTimeout(() => {
+            if (this.banner && !sessionStorage.getItem('ab_pwa_banner_dismissed')) {
+                this.banner.style.display = 'flex';
+                requestAnimationFrame(() => this.banner.classList.add('show'));
+            }
+        }, 2500);
+    }
+
+    hideBanner() {
+        if (this.banner) {
+            this.banner.classList.remove('show');
+            setTimeout(() => {
+                this.banner.style.display = 'none';
+            }, 400);
+        }
+    }
+
+    showIosModal() {
+        if (this.iosModal) {
+            this.iosModal.classList.add('show');
+            this.iosModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    hideIosModal() {
+        if (this.iosModal) {
+            this.iosModal.classList.remove('show');
+            this.iosModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
 }
 
 // Admin Portal Management System

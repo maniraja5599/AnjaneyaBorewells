@@ -1,11 +1,15 @@
-const CACHE_NAME = 'anjaneya-borewells-cache-v1';
+const CACHE_NAME = 'anjaneya-borewells-cache-v2.6.0';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/styles.css',
-  '/script.js',
-  '/manifest.json',
-  '/favicon.svg'
+  './',
+  './index.html',
+  './styles.css?v=2.6.0',
+  './script.js?v=2.6.0',
+  './site-config.json',
+  './manifest.json',
+  './logo.png',
+  './logo.jpg',
+  './favicon.png',
+  './favicon.svg'
 ];
 
 self.addEventListener('install', event => {
