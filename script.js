@@ -828,19 +828,59 @@ class AnjaneyaBorewells {
         const baseDrillingInput = document.getElementById('inlineBaseDrillingRate');
         const mainDrillingInput = document.getElementById('drillingRate');
         
-        if (baseDrillingInput && mainDrillingInput) {
-            baseDrillingInput.addEventListener('input', (e) => {
-                const newRate = parseFloat(e.target.value) || 90;
-                mainDrillingInput.value = newRate;
-                this.calculator.defaults.drillingRate = newRate;
-                this.calculator.calculate();
+        const updateSlabsAndCalculate = (newRate) => {
+            if (!newRate || newRate <= 0) return;
+            this.calculator.defaults.drillingRate = newRate;
+            
+            if (this.calculator.slabRates && this.calculator.slabRates.length > 0) {
+                const currentBase = this.calculator.slabRates[0].rate || 100;
+                const delta = newRate - currentBase;
+                if (delta !== 0) {
+                    this.calculator.slabRates.forEach(slab => {
+                        slab.rate = Math.max(1, slab.rate + delta);
+                    });
+                }
+            } else {
+                this.calculator.slabRates = CostCalculator.DEPTH_SLABS.map(d => ({
+                    start: d.start,
+                    end: d.end,
+                    span: d.span,
+                    range: d.rangeStr,
+                    rate: newRate + d.inc
+                }));
+            }
+            
+            // Also update any rendered inline slab inputs
+            document.querySelectorAll('.inline-slab-input-box').forEach((box, i) => {
+                if (this.calculator.slabRates[i]) {
+                    box.value = this.calculator.slabRates[i].rate;
+                }
             });
             
-            mainDrillingInput.addEventListener('input', (e) => {
-                const newRate = parseFloat(e.target.value) || 90;
-                baseDrillingInput.value = newRate;
-                this.calculator.defaults.drillingRate = newRate;
-                this.calculator.calculate();
+            this.calculator.calculate();
+        };
+
+        if (baseDrillingInput) {
+            ['input', 'change'].forEach(evt => {
+                baseDrillingInput.addEventListener(evt, (e) => {
+                    const newRate = parseFloat(e.target.value) || 0;
+                    if (mainDrillingInput && mainDrillingInput.value !== e.target.value) {
+                        mainDrillingInput.value = e.target.value;
+                    }
+                    updateSlabsAndCalculate(newRate);
+                });
+            });
+        }
+        
+        if (mainDrillingInput) {
+            ['input', 'change'].forEach(evt => {
+                mainDrillingInput.addEventListener(evt, (e) => {
+                    const newRate = parseFloat(e.target.value) || 0;
+                    if (baseDrillingInput && baseDrillingInput.value !== e.target.value) {
+                        baseDrillingInput.value = e.target.value;
+                    }
+                    updateSlabsAndCalculate(newRate);
+                });
             });
         }
     }
@@ -1386,7 +1426,10 @@ class CostCalculator {
     }
 
     getNormalizedSlabRates(baseRate) {
+        const effectiveBase = (baseRate !== undefined && baseRate > 0) ? baseRate : (this.defaults.drillingRate || 100);
         if (this.slabRates && this.slabRates.length > 0) {
+            const currentFirstSlab = this.slabRates[0].rate || 100;
+            const delta = effectiveBase - currentFirstSlab;
             return this.slabRates.map((s, idx) => {
                 const def = CostCalculator.DEPTH_SLABS[idx] || { start: 1, end: 300, span: 300 };
                 return {
@@ -1394,7 +1437,7 @@ class CostCalculator {
                     end: def.end,
                     span: def.span,
                     range: s.range || def.rangeStr,
-                    rate: s.rate
+                    rate: Math.max(1, s.rate + delta)
                 };
             });
         }
@@ -1403,7 +1446,7 @@ class CostCalculator {
             end: s.end,
             span: s.span,
             range: s.rangeStr,
-            rate: baseRate + s.inc
+            rate: effectiveBase + s.inc
         }));
     }
 
