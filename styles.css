@@ -70,15 +70,30 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
+    transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s ease;
     will-change: opacity, transform;
+    animation: preloaderSafetyFade 2.0s forwards cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes preloaderSafetyFade {
+    0%, 75% {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+    }
+    100% {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+        transform: scale(1.02);
+    }
 }
 
 .page-preloader.preloader-hidden {
     opacity: 0 !important;
     pointer-events: none !important;
     transform: scale(1.02) !important;
-    visibility: hidden;
+    visibility: hidden !important;
 }
 
 .preloader-content {

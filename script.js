@@ -2589,6 +2589,9 @@ class EnterpriseFormValidation {
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Initialize Page Preloader first to guarantee smooth instant dismissal
+    try { initPagePreloader(); } catch(e) {}
+
     window.anjaneyaApp = new AnjaneyaBorewells();
     window.enterpriseFeatures = new EnterpriseFeatures();
     window.formValidation = new EnterpriseFormValidation();
@@ -2607,9 +2610,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Interactive Driving Rig Truck on Page Scroll
     initScrollLorry();
-    
-    // Initialize Initial Page Logo Preloader
-    initPagePreloader();
 
     // Initialize Page Views / Visitors Counter
     initPageViewsCounter();
@@ -2705,29 +2705,29 @@ function initPagePreloader() {
 
     let progress = 0;
     const startTime = Date.now();
-    const minDisplayTime = 700; // ensures smooth brand visibility before opening
+    const minDisplayTime = 600; // ensures smooth brand visibility before opening
 
     const progressTimer = setInterval(() => {
         if (progress < 85) {
-            progress += Math.floor(Math.random() * 12) + 6;
+            progress += Math.floor(Math.random() * 12) + 8;
             if (progress > 85) progress = 85;
             if (bar) bar.style.width = progress + '%';
         }
-    }, 70);
+    }, 50);
 
     function hideWhenComplete() {
         clearInterval(progressTimer);
         if (bar) bar.style.width = '100%';
 
         const elapsed = Date.now() - startTime;
-        const delay = Math.max(0, minDisplayTime - elapsed) + 150;
+        const delay = Math.max(0, minDisplayTime - elapsed) + 100;
 
         setTimeout(() => {
             if (!preloader.classList.contains('preloader-hidden')) {
                 preloader.classList.add('preloader-hidden');
                 setTimeout(() => {
                     try { preloader.remove(); } catch(e) {}
-                }, 600);
+                }, 500);
             }
         }, delay);
     }
@@ -2736,7 +2736,7 @@ function initPagePreloader() {
         hideWhenComplete();
     } else {
         window.addEventListener('load', hideWhenComplete);
-        setTimeout(hideWhenComplete, 2200); // Fallback guarantee
+        setTimeout(hideWhenComplete, 1200); // 1.2s Fallback guarantee
     }
 }
 

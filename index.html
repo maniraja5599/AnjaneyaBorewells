@@ -362,6 +362,37 @@
             </div>
         </div>
     </div>
+    <script>
+        (function() {
+            var preloader = document.getElementById('pagePreloader');
+            if (!preloader) return;
+            var bar = preloader.querySelector('.preloader-progress-bar');
+            var startTime = Date.now();
+            var minShowTime = 700;
+
+            function dismissPreloader() {
+                if (bar) bar.style.width = '100%';
+                var elapsed = Date.now() - startTime;
+                var wait = Math.max(0, minShowTime - elapsed);
+                setTimeout(function() {
+                    if (preloader && !preloader.classList.contains('preloader-hidden')) {
+                        preloader.classList.add('preloader-hidden');
+                        setTimeout(function() {
+                            try { preloader.remove(); } catch(e) {}
+                        }, 500);
+                    }
+                }, wait);
+            }
+
+            if (document.readyState === 'complete') {
+                dismissPreloader();
+            } else {
+                window.addEventListener('load', dismissPreloader);
+                // Guaranteed safety fallback: auto-dismiss after 1.5s max
+                setTimeout(dismissPreloader, 1500);
+            }
+        })();
+    </script>
 
     <!-- Universal Ambient Animated Logo Watermark & Sensor Radar Waves for Entire Website -->
     <div class="global-bg-logo-layer" aria-hidden="true">
