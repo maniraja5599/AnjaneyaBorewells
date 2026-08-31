@@ -368,9 +368,19 @@
             if (!preloader) return;
             var bar = preloader.querySelector('.preloader-progress-bar');
             var startTime = Date.now();
-            var minShowTime = 700;
+            var minShowTime = 3000; // 3 seconds smooth brand showcase
+
+            var progress = 0;
+            var tickTimer = setInterval(function() {
+                if (progress < 90) {
+                    progress += Math.floor(Math.random() * 8) + 4;
+                    if (progress > 90) progress = 90;
+                    if (bar) bar.style.width = progress + '%';
+                }
+            }, 120);
 
             function dismissPreloader() {
+                clearInterval(tickTimer);
                 if (bar) bar.style.width = '100%';
                 var elapsed = Date.now() - startTime;
                 var wait = Math.max(0, minShowTime - elapsed);
@@ -388,8 +398,8 @@
                 dismissPreloader();
             } else {
                 window.addEventListener('load', dismissPreloader);
-                // Guaranteed safety fallback: auto-dismiss after 1.5s max
-                setTimeout(dismissPreloader, 1500);
+                // Guaranteed safety fallback: auto-dismiss after 3.5s max
+                setTimeout(dismissPreloader, 3500);
             }
         })();
     </script>
@@ -462,10 +472,6 @@
                 </a>
             </div>
             <div class="nav-cta">
-                <button type="button" class="pwa-install-nav-btn" id="navPwaInstallBtn" title="Install Official Mobile/Desktop App">
-                    <span class="pwa-icon">📲</span>
-                    <span>Install App</span>
-                </button>
                 <a href="#calculator" class="btn btn-primary ripple" id="navWhatsappBtn">
                     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="1.5" style="width: 20px; height: 20px; margin-right: 6px;">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
@@ -1834,18 +1840,27 @@
         </div>
     </div>
 
-    <!-- PWA Smart Mobile Install Banner -->
-    <div class="pwa-install-banner" id="pwaInstallBanner" style="display: none;">
-        <div class="pwa-banner-left">
-            <img src="favicon.png" alt="Anjaneya App" class="pwa-banner-icon">
-            <div class="pwa-banner-text">
-                <strong>Anjaneya Borewells App</strong>
-                <span>Install on Phone for offline calculation & instant booking!</span>
+    <!-- PWA Smart Floating Prompt (Appears after 10s, auto-closes in 5s or by user) -->
+    <div class="pwa-smart-popup" id="pwaInstallBanner" style="display: none;" aria-live="polite">
+        <div class="pwa-popup-header">
+            <div class="pwa-popup-brand">
+                <img src="favicon.png" alt="Anjaneya App" class="pwa-popup-logo">
+                <div class="pwa-popup-title-wrap">
+                    <h5 class="pwa-popup-title">Anjaneya Borewells</h5>
+                    <span class="pwa-popup-badge">Official App</span>
+                </div>
             </div>
+            <button type="button" class="pwa-popup-close-btn" id="pwaBannerDismissBtn" aria-label="Close popup" title="Close">✕</button>
         </div>
-        <div class="pwa-banner-actions">
-            <button type="button" class="btn-pwa-install" id="pwaBannerInstallBtn">📲 Install</button>
-            <button type="button" class="btn-pwa-dismiss" id="pwaBannerDismissBtn" aria-label="Close">✕</button>
+        <p class="pwa-popup-desc">📲 Install on your Home Screen for 1-tap instant cost calculations, offline estimates &amp; direct 24/7 booking!</p>
+        <div class="pwa-popup-actions">
+            <button type="button" class="btn-pwa-popup-install" id="pwaBannerInstallBtn">
+                <span>📲 Install App</span>
+            </button>
+            <button type="button" class="btn-pwa-popup-later" id="pwaBannerLaterBtn">Later</button>
+        </div>
+        <div class="pwa-popup-progress-track">
+            <div class="pwa-popup-progress-fill" id="pwaPopupProgressFill"></div>
         </div>
     </div>
 

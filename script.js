@@ -2700,7 +2700,7 @@ async function loadServerSiteConfig() {
     }
 }
 
-// Initial Logo Preloader Splash Screen Dismissal (Opens after loading completely)
+// Initial Logo Preloader Splash Screen Dismissal (3 seconds smooth showcase)
 function initPagePreloader() {
     const preloader = document.getElementById('pagePreloader');
     if (!preloader) return;
@@ -2708,29 +2708,29 @@ function initPagePreloader() {
 
     let progress = 0;
     const startTime = Date.now();
-    const minDisplayTime = 600; // ensures smooth brand visibility before opening
+    const minDisplayTime = 3000; // 3 seconds smooth brand showcase
 
     const progressTimer = setInterval(() => {
-        if (progress < 85) {
-            progress += Math.floor(Math.random() * 12) + 8;
-            if (progress > 85) progress = 85;
+        if (progress < 90) {
+            progress += Math.floor(Math.random() * 8) + 4;
+            if (progress > 90) progress = 90;
             if (bar) bar.style.width = progress + '%';
         }
-    }, 50);
+    }, 120);
 
     function hideWhenComplete() {
         clearInterval(progressTimer);
         if (bar) bar.style.width = '100%';
 
         const elapsed = Date.now() - startTime;
-        const delay = Math.max(0, minDisplayTime - elapsed) + 100;
+        const delay = Math.max(0, minDisplayTime - elapsed) + 80;
 
         setTimeout(() => {
             if (!preloader.classList.contains('preloader-hidden')) {
                 preloader.classList.add('preloader-hidden');
                 setTimeout(() => {
                     try { preloader.remove(); } catch(e) {}
-                }, 500);
+                }, 600);
             }
         }, delay);
     }
@@ -2739,7 +2739,7 @@ function initPagePreloader() {
         hideWhenComplete();
     } else {
         window.addEventListener('load', hideWhenComplete);
-        setTimeout(hideWhenComplete, 1200); // 1.2s Fallback guarantee
+        setTimeout(hideWhenComplete, 3500); // 3.5s Fallback guarantee
     }
 }
 
@@ -2955,6 +2955,7 @@ class PwaInstallManager {
         this.deferredPrompt = null;
         this.isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
         this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+        this.autoCloseTimer = null;
         this.init();
     }
 
@@ -2969,11 +2970,12 @@ class PwaInstallManager {
         }
 
         // Cache elements
-        this.navBtn = document.getElementById('navPwaInstallBtn');
         this.drawerBtn = document.getElementById('drawerPwaInstallBtn');
         this.banner = document.getElementById('pwaInstallBanner');
         this.bannerInstallBtn = document.getElementById('pwaBannerInstallBtn');
         this.bannerDismissBtn = document.getElementById('pwaBannerDismissBtn');
+        this.bannerLaterBtn = document.getElementById('pwaBannerLaterBtn');
+        this.progressFill = document.getElementById('pwaPopupProgressFill');
         this.iosModal = document.getElementById('iosInstallModal');
         this.iosCloseBtn = document.getElementById('iosModalClose');
         this.iosGotItBtn = document.getElementById('iosGotItBtn');
@@ -2987,32 +2989,38 @@ class PwaInstallManager {
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             this.deferredPrompt = e;
-            this.showInstallButtons();
+            if (this.drawerBtn) this.drawerBtn.style.display = 'block';
         });
 
-        // Show install button by default on mobile / iOS
-        this.showInstallButtons();
+        // Show drawer button by default
+        if (this.drawerBtn) this.drawerBtn.style.display = 'block';
 
         this.bindEvents();
         this.checkBannerAutoPrompt();
     }
 
-    showInstallButtons() {
-        if (this.navBtn) this.navBtn.style.display = 'inline-flex';
-        if (this.drawerBtn) this.drawerBtn.style.display = 'block';
-    }
-
     bindEvents() {
         const handleInstallClick = () => this.triggerInstall();
 
-        if (this.navBtn) this.navBtn.addEventListener('click', handleInstallClick);
         if (this.drawerBtn) this.drawerBtn.addEventListener('click', handleInstallClick);
         if (this.bannerInstallBtn) this.bannerInstallBtn.addEventListener('click', handleInstallClick);
 
-        if (this.bannerDismissBtn) {
-            this.bannerDismissBtn.addEventListener('click', () => {
-                this.hideBanner();
-                sessionStorage.setItem('ab_pwa_banner_dismissed', 'true');
+        const handleDismiss = () => {
+            this.hideBanner();
+            sessionStorage.setItem('ab_pwa_banner_dismissed', 'true');
+        };
+
+        if (this.bannerDismissBtn) this.bannerDismissBtn.addEventListener('click', handleDismiss);
+        if (this.bannerLaterBtn) this.bannerLaterBtn.addEventListener('click', handleDismiss);
+
+        // Pause auto-close on hover / interaction
+        if (this.banner) {
+            this.banner.addEventListener('mouseenter', () => {
+                if (this.autoCloseTimer) clearTimeout(this.autoCloseTimer);
+                if (this.progressFill) this.progressFill.style.transition = 'none';
+            });
+            this.banner.addEventListener('mouseleave', () => {
+                this.autoCloseTimer = setTimeout(() => this.hideBanner(), 3000);
             });
         }
 
@@ -3027,7 +3035,6 @@ class PwaInstallManager {
         window.addEventListener('appinstalled', () => {
             this.deferredPrompt = null;
             this.hideBanner();
-            if (this.navBtn) this.navBtn.style.display = 'none';
             if (this.drawerBtn) this.drawerBtn.style.display = 'none';
             console.log('Anjaneya Borewells App was installed successfully!');
         });
@@ -3061,16 +3068,27 @@ class PwaInstallManager {
         if (this.isStandalone) return;
         if (sessionStorage.getItem('ab_pwa_banner_dismissed')) return;
 
-        // Auto show bottom banner on mobile / desktop after 2.5 seconds
+        // Auto show bottom popup after 10 seconds of comfortable page browsing
         setTimeout(() => {
             if (this.banner && !sessionStorage.getItem('ab_pwa_banner_dismissed')) {
                 this.banner.style.display = 'flex';
-                requestAnimationFrame(() => this.banner.classList.add('show'));
+                requestAnimationFrame(() => {
+                    this.banner.classList.add('show');
+                    if (this.progressFill) {
+                        requestAnimationFrame(() => this.progressFill.classList.add('run'));
+                    }
+                });
+
+                // Auto-close after 5 seconds
+                this.autoCloseTimer = setTimeout(() => {
+                    this.hideBanner();
+                }, 5000);
             }
-        }, 2500);
+        }, 10000); // 10 seconds delay
     }
 
     hideBanner() {
+        if (this.autoCloseTimer) clearTimeout(this.autoCloseTimer);
         if (this.banner) {
             this.banner.classList.remove('show');
             setTimeout(() => {

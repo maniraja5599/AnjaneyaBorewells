@@ -72,11 +72,11 @@ body {
     justify-content: center;
     transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s ease;
     will-change: opacity, transform;
-    animation: preloaderSafetyFade 2.0s forwards cubic-bezier(0.16, 1, 0.3, 1);
+    animation: preloaderSafetyFade 3.5s forwards cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes preloaderSafetyFade {
-    0%, 75% {
+    0%, 86% {
         opacity: 1;
         pointer-events: auto;
         visibility: visible;
@@ -9462,112 +9462,171 @@ img {
     font-size: 1rem;
 }
 
-/* Floating PWA Install Banner */
-.pwa-install-banner {
+/* Smart Floating PWA Prompt (Appears after 10s, auto-closes in 5s, positioned below center) */
+.pwa-smart-popup {
     position: fixed;
-    bottom: 90px;
+    bottom: 78px;
     left: 50%;
-    transform: translateX(-50%) translateY(20px);
+    transform: translateX(-50%) translateY(35px) scale(0.96);
     width: 92%;
-    max-width: 480px;
-    background: #0f172a;
+    max-width: 380px;
+    background: rgba(15, 23, 42, 0.94);
     color: #ffffff;
-    border: 1.5px solid rgba(16, 185, 129, 0.5);
-    border-radius: 16px;
-    padding: 12px 16px;
+    border: 1.5px solid rgba(16, 185, 129, 0.45);
+    border-radius: 18px;
+    padding: 14px 16px 10px 16px;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35), 0 0 20px rgba(16, 185, 129, 0.25);
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 24px rgba(16, 185, 129, 0.2);
     z-index: 99990;
     opacity: 0;
     visibility: hidden;
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(14px);
+    overflow: hidden;
 }
 
-.pwa-install-banner.show {
+.pwa-smart-popup.show {
     opacity: 1;
     visibility: visible;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0) scale(1);
 }
 
-.pwa-banner-left {
+.pwa-popup-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    flex: 1;
-    min-width: 0;
+    justify-content: space-between;
+    gap: 8px;
 }
 
-.pwa-banner-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    flex-shrink: 0;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.pwa-banner-text {
+.pwa-popup-brand {
     display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
+    align-items: center;
+    gap: 10px;
 }
 
-.pwa-banner-text strong {
-    font-size: 0.88rem;
-    color: #f8fafc;
-    font-weight: 700;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.pwa-popup-logo {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.pwa-banner-text span {
-    font-size: 0.72rem;
-    color: #94a3b8;
-    line-height: 1.2;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-.pwa-banner-actions {
+.pwa-popup-title-wrap {
     display: flex;
     align-items: center;
     gap: 8px;
-    flex-shrink: 0;
 }
 
-.btn-pwa-install {
-    background: #10b981;
+.pwa-popup-title {
+    margin: 0;
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: #f8fafc;
+}
+
+.pwa-popup-badge {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.pwa-popup-close-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: #94a3b8;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pwa-popup-close-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    color: #ef4444;
+}
+
+.pwa-popup-desc {
+    margin: 0;
+    font-size: 0.74rem;
+    color: #cbd5e1;
+    line-height: 1.35;
+}
+
+.pwa-popup-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.btn-pwa-popup-install {
+    flex: 1;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: #ffffff;
     border: none;
-    padding: 7px 14px;
-    border-radius: 50px;
+    padding: 8px 14px;
+    border-radius: 10px;
     font-size: 0.82rem;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s ease;
-    white-space: nowrap;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
-.btn-pwa-install:hover {
-    background: #059669;
-    transform: scale(1.05);
+.btn-pwa-popup-install:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    transform: scale(1.02);
 }
 
-.btn-pwa-dismiss {
-    background: transparent;
-    border: none;
-    color: #64748b;
-    font-size: 1.1rem;
+.btn-pwa-popup-later {
+    background: rgba(255, 255, 255, 0.08);
+    color: #94a3b8;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.80rem;
+    font-weight: 600;
     cursor: pointer;
-    padding: 4px;
+    transition: all 0.2s ease;
+}
+
+.btn-pwa-popup-later:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.pwa-popup-progress-track {
+    width: calc(100% + 32px);
+    margin-left: -16px;
+    margin-bottom: -10px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+}
+
+.pwa-popup-progress-fill {
+    width: 100%;
+    height: 100%;
+    background: #10b981;
+    transition: width 5s linear;
+}
+
+.pwa-popup-progress-fill.run {
+    width: 0%;
+}
     line-height: 1;
     transition: color 0.2s ease;
 }
