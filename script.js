@@ -448,7 +448,7 @@ class AnjaneyaBorewells {
             }
             
             // Update email in contact section
-            const contactEmail = document.querySelector('.contact-info a[href^="mailto:anjaneyaborewells@gmail.com"]');
+            const contactEmail = document.querySelector('.contact-info a[href*="mailto:"]');
             if (contactEmail && companyInfo.email) {
                 contactEmail.href = `mailto:${companyInfo.email}`;
                 contactEmail.textContent = companyInfo.email;
@@ -1689,7 +1689,7 @@ class CostCalculator {
         doc.setFont('helvetica', 'normal');
         doc.text('6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal, Tamil Nadu 637001', 20, 35);
         doc.text('Phone: +91 965 965 7777 | +91 944 33 73573', 20, 42);
-        doc.text('Email: anjaneyaborewells@gmail.com', 20, 49);
+        doc.text('Email: manirajankg@gmail.com', 20, 49);
 
         // Quotation title in top right corner
         doc.setTextColor(76, 175, 80);
@@ -2262,7 +2262,7 @@ class AdminPanel {
                 tagline: 'Makers of Green India!',
                 phone1: '+91 965 965 7777',
                 phone2: '+91 944 33 73573',
-                email: 'anjaneyaborewells@gmail.com',
+                email: 'manirajankg@gmail.com',
                 address: '6/906-1, Sri Mahal Thirumana Mandapam, Trichy Road, Namakkal'
             }
         };
@@ -3085,11 +3085,10 @@ class VisitorAnalyticsManager {
     }
 
     async syncLivePageViews(forceRefresh = false) {
-        // Load cached count as immediate instant display (baseline starting from 50)
+        // Load cached count as immediate instant display (persists highest count, never resets)
         let cachedTotal = parseInt(localStorage.getItem('ab_total_pageviews'), 10);
-        if (!cachedTotal || isNaN(cachedTotal) || cachedTotal >= 1000 || cachedTotal < this.baseCounterOffset) {
+        if (!cachedTotal || isNaN(cachedTotal) || cachedTotal < this.baseCounterOffset) {
             cachedTotal = this.baseCounterOffset;
-            localStorage.setItem('ab_total_pageviews', this.baseCounterOffset.toString());
         }
 
         this.updateViewsDisplay(cachedTotal);
@@ -3111,13 +3110,13 @@ class VisitorAnalyticsManager {
                 } catch (e) {}
             }
 
-            // 2. If Firebase Realtime Database is connected
+            // 2. If Firebase Realtime Database is connected: strictly maintain and continue cloud count
             if (firebaseUrl && firebaseUrl.startsWith('http')) {
                 const fbRes = await fetch(firebaseUrl, { cache: 'no-store' });
                 if (fbRes.ok) {
                     let liveDbCount = await fbRes.json();
                     if (typeof liveDbCount !== 'number' || isNaN(liveDbCount) || liveDbCount < this.baseCounterOffset) {
-                        liveDbCount = this.baseCounterOffset;
+                        liveDbCount = Math.max(cachedTotal, this.baseCounterOffset);
                     }
 
                     if (!hasCountedSession || forceRefresh) {
