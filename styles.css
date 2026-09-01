@@ -8349,7 +8349,69 @@ img {
 .admin-header-actions {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
+}
+
+.admin-export-dropdown {
+    position: relative;
+}
+
+.btn-admin-export {
+    background: rgba(16, 185, 129, 0.18);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-admin-export:hover {
+    background: rgba(16, 185, 129, 0.35);
+    color: #ffffff;
+    border-color: #10b981;
+}
+
+.admin-export-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: #0d162d;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    min-width: 250px;
+    z-index: 100;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.export-menu-item {
+    background: transparent;
+    border: none;
+    color: #e2e8f0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.export-menu-item:hover {
+    background: rgba(16, 185, 129, 0.2);
+    color: #ffffff;
 }
 
 .btn-admin-logout {

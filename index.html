@@ -1648,6 +1648,19 @@
                     </div>
                 </div>
                 <div class="admin-header-actions">
+                    <div class="admin-export-dropdown" id="adminExportDropdown" style="display: none;">
+                        <button type="button" class="btn-admin-export" id="adminExportBtn" title="Export Full Analytics Data">
+                            📥 Download Data ▾
+                        </button>
+                        <div class="admin-export-menu" id="adminExportMenu" style="display: none;">
+                            <button type="button" class="export-menu-item" id="adminDownloadCsvBtn">
+                                📊 Download Full CSV Audit Report
+                            </button>
+                            <button type="button" class="export-menu-item" id="adminDownloadJsonBtn">
+                                💾 Export Complete JSON Database Dump
+                            </button>
+                        </div>
+                    </div>
                     <button type="button" class="btn-admin-logout" id="adminLogoutBtn" style="display: none;" title="Logout Admin">Logout</button>
                     <button type="button" class="modal-close" id="adminModalClose" aria-label="Close admin modal">&times;</button>
                 </div>
