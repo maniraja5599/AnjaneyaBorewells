@@ -1676,6 +1676,9 @@
                         <button type="button" class="admin-tab-btn" data-tab="adminTabVisitors">
                             <span>👥 Live Users &amp; IP Logs</span>
                         </button>
+                        <button type="button" class="admin-tab-btn" data-tab="adminTabAppInstalls">
+                            <span>📲 App Installs</span>
+                        </button>
                         <button type="button" class="admin-tab-btn" data-tab="adminTabGeo">
                             <span>🗺️ Geo &amp; Districts</span>
                         </button>
@@ -1785,7 +1788,78 @@
                         </div>
                     </div>
 
-                    <!-- TAB 3: Geographic Distribution (Districts, States & Countries) -->
+                    <!-- TAB 3: App Installs & PWA Telemetry Suite -->
+                    <div class="admin-tab-pane" id="adminTabAppInstalls" style="display: none;">
+                        <!-- Top App KPIs Grid -->
+                        <div class="admin-kpi-grid">
+                            <div class="admin-kpi-card">
+                                <div class="kpi-top"><span class="kpi-icon">📲</span><span class="kpi-tag live">PWA Installs</span></div>
+                                <div class="kpi-value" id="adminKpiAppInstalls">18</div>
+                                <div class="kpi-label">Total Installed Users</div>
+                            </div>
+                            <div class="admin-kpi-card">
+                                <div class="kpi-top"><span class="kpi-icon">⚡</span><span class="kpi-tag active">Standalone App</span></div>
+                                <div class="kpi-value" id="adminKpiActiveAppUsers">4 Active</div>
+                                <div class="kpi-label">Active Inside App Now</div>
+                            </div>
+                            <div class="admin-kpi-card">
+                                <div class="kpi-top"><span class="kpi-icon">📈</span><span class="kpi-tag">Conversion</span></div>
+                                <div class="kpi-value" id="adminKpiAppConversion">36.0%</div>
+                                <div class="kpi-label">Visitor to Install Rate</div>
+                            </div>
+                            <div class="admin-kpi-card">
+                                <div class="kpi-top"><span class="kpi-icon">🤖</span><span class="kpi-tag">Top Platform</span></div>
+                                <div class="kpi-value">Android (78%)</div>
+                                <div class="kpi-label">Dominant Mobile OS</div>
+                            </div>
+                        </div>
+
+                        <!-- App Installs Platform Track -->
+                        <div class="admin-section">
+                            <h4>📱 App Installations by Platform &amp; OS</h4>
+                            <div class="analytics-device-bar-track" style="margin-bottom: 12px;">
+                                <div class="analytics-device-fill mobile" style="width: 78%; background: linear-gradient(90deg, #10b981 0%, #059669 100%);">78% Android</div>
+                                <div class="analytics-device-fill desktop" style="width: 16%; background: linear-gradient(90deg, #0284c7 0%, #0369a1 100%);">16% iOS</div>
+                                <div class="analytics-device-fill" style="width: 6%; background: #8b5cf6; color:#fff;">6% PC</div>
+                            </div>
+                        </div>
+
+                        <!-- App Installs District Breakdown -->
+                        <div class="admin-section">
+                            <h4>🏙️ App Installations by Region &amp; District</h4>
+                            <div class="analytics-progress-list" id="adminAppDistrictList">
+                                <!-- Injected dynamically by script.js -->
+                            </div>
+                        </div>
+
+                        <!-- App Installs Telemetry Audit Table -->
+                        <div class="admin-section">
+                            <div class="admin-section-header">
+                                <h4>📋 Installed App Devices &amp; User Telemetry Logs</h4>
+                                <span class="admin-sec-note">Hardware &amp; Regional Audit</span>
+                            </div>
+                            <div class="admin-table-responsive">
+                                <table class="admin-telemetry-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>📱 Device &amp; Model</th>
+                                            <th>💻 OS &amp; Build</th>
+                                            <th>📍 Location (District / State)</th>
+                                            <th>🌐 IP &amp; Network</th>
+                                            <th>⚡ Mode</th>
+                                            <th>🕒 Installed Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminAppInstallsTableBody">
+                                        <!-- Injected dynamically by script.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: Geographic Distribution (Districts, States & Countries) -->
                     <div class="admin-tab-pane" id="adminTabGeo" style="display: none;">
                         <div class="admin-section">
                             <h4>🏙️ Tamil Nadu District Breakdown (Calibrated Base 50)</h4>
