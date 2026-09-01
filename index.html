@@ -1552,13 +1552,33 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <div class="footer-bottom-left">
-                    <p class="footer-copyright">&copy; 2026 Anjaneya Borewells. All rights reserved.</p>
-                    <div class="footer-page-updated">
-                        <span class="updated-icon">🗓️</span>
-                        <span class="updated-label">Page Updated:</span>
-                        <strong class="updated-date">01-09-2026</strong>
+                <div class="footer-bottom-main">
+                    <div class="footer-bottom-left">
+                        <p class="footer-copyright">&copy; 2026 Anjaneya Borewells. All rights reserved.</p>
                     </div>
+                    <div class="footer-bottom-right">
+                        <button type="button" class="footer-views-badge footer-views-btn" id="openAnalyticsModalBtn" title="Click to view Live Visitor Analytics & Location Insights">
+                            <span class="views-pulse-dot"></span>
+                            <span class="views-icon">👁️</span>
+                            <span class="views-text">Page Views:</span>
+                            <span class="views-count" id="footerPageViewsCount">94</span>
+                            <span class="views-analytics-pill">📊 Live</span>
+                        </button>
+                        <button type="button" class="footer-version-badge" id="openVersionModalBtn" title="View Website Changelog & Version History">
+                            <span class="version-label">Version</span>
+                            <span class="version-text">v2.9.5</span>
+                            <span class="version-status-pill">Live</span>
+                        </button>
+                        <div class="footer-date-badge" title="Website Last Updated Date">
+                            <span class="date-icon">🗓️</span>
+                            <span class="date-text">Updated: <strong>01-09-2026</strong></span>
+                        </div>
+                        <button type="button" class="admin-portal-btn" id="openAdminModalBtn" title="Open Admin Command Center">
+                            ⚙️ Admin Portal
+                        </button>
+                    </div>
+                </div>
+                <div class="footer-bottom-dev-row">
                     <div class="developer-credit">
                         <span class="dev-label">💻 Designed & Developed by</span>
                         <a href="https://www.instagram.com/maniraja__/" target="_blank" rel="noopener noreferrer" class="dev-link dev-insta" title="Instagram: @maniraja__">
@@ -1571,27 +1591,6 @@
                             <span>+91-8300030123</span>
                         </a>
                     </div>
-                </div>
-                <div class="footer-bottom-right">
-                    <button type="button" class="footer-views-badge footer-views-btn" id="openAnalyticsModalBtn" title="Click to view Live Visitor Analytics & Location Insights">
-                        <span class="views-pulse-dot"></span>
-                        <span class="views-icon">👁️</span>
-                        <span class="views-text">Page Views:</span>
-                        <span class="views-count" id="footerPageViewsCount">88</span>
-                        <span class="views-analytics-pill">📊 Live</span>
-                    </button>
-                    <button type="button" class="footer-version-badge" id="openVersionModalBtn" title="View Website Changelog & Version History">
-                        <span class="version-label">Version</span>
-                        <span class="version-text">v2.9.0</span>
-                        <span class="version-status-pill">Live</span>
-                    </button>
-                    <div class="footer-date-badge" title="Website Last Updated Date">
-                        <span class="date-icon">🗓️</span>
-                        <span class="date-text">Updated: <strong>01-09-2026</strong></span>
-                    </div>
-                    <button type="button" class="admin-portal-btn" id="openAdminModalBtn">
-                        ⚙️ Admin Portal
-                    </button>
                 </div>
             </div>
         </div>
@@ -2135,7 +2134,7 @@
                             <span class="metric-icon">🌐</span>
                             <span class="metric-badge live-badge"><span class="pulse-green"></span> Live Cloud Sync</span>
                         </div>
-                        <div class="metric-value" id="analyticsModalTotalViews">88</div>
+                        <div class="metric-value" id="analyticsModalTotalViews">94</div>
                         <div class="metric-label">Cumulative Page Views</div>
                     </div>
                     <div class="analytics-metric-card secondary">

@@ -2944,7 +2944,7 @@ function getVisitorHardwareInfo() {
 
 class VisitorAnalyticsManager {
     constructor() {
-        this.baseCounterOffset = 88; // Hard floor baseline (strictly monotonic non-decreasing)
+        this.baseCounterOffset = 94; // Hard floor baseline (strictly monotonic non-decreasing)
         this.firebaseUrl = 'https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app/pageviews.json';
         this.sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         this.footerCountEl = document.getElementById('footerPageViewsCount');
@@ -3136,7 +3136,7 @@ class VisitorAnalyticsManager {
     }
 
     async syncLivePageViews() {
-        const ABSOLUTE_MIN_VIEWS = 88;
+        const ABSOLUTE_MIN_VIEWS = 94;
         let cachedTotal = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || ABSOLUTE_MIN_VIEWS;
         if (cachedTotal < ABSOLUTE_MIN_VIEWS) cachedTotal = ABSOLUTE_MIN_VIEWS;
 
@@ -4080,9 +4080,9 @@ class AdminCommandCenter {
                 } catch (e) {}
             }
 
-            const totalViews = Math.max(88, 
+            const totalViews = Math.max(94, 
                 (typeof fbData.pageviews === 'number' ? fbData.pageviews : 0), 
-                (parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 88));
+                (parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 94));
 
             // Calculate real active online from Firebase presence
             let activeCount = 1;
@@ -4497,7 +4497,7 @@ class AdminCommandCenter {
     }
 
     downloadFullReport(format = 'csv') {
-        const totalViews = Math.max(88, this.latestTotalViews || 0, parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 88);
+        const totalViews = Math.max(94, this.latestTotalViews || 0, parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 94);
         const fbData = this.latestFbData || {};
         const now = new Date();
         const dateStr = now.toISOString().split('T')[0];

@@ -9094,20 +9094,28 @@ img {
 }
 
 /* Developer Credit & Action Badges in Footer */
+/* Symmetrical 2-Tier Footer Bottom Bar */
 .footer-bottom {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 14px !important;
+    padding-top: 1.5rem !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+    width: 100% !important;
+}
+
+.footer-bottom-main {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
     flex-wrap: wrap !important;
-    gap: 20px !important;
-    padding-top: 1.5rem !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+    gap: 16px !important;
+    width: 100% !important;
 }
 
 .footer-bottom-left {
     display: flex !important;
-    flex-direction: column !important;
-    gap: 8px !important;
+    align-items: center !important;
     text-align: left !important;
 }
 
@@ -9115,43 +9123,81 @@ img {
     margin: 0 !important;
     font-size: 0.85rem !important;
     color: #94a3b8 !important;
+    letter-spacing: 0.01em !important;
 }
 
 .footer-bottom-right {
     display: flex !important;
     align-items: center !important;
-    gap: 10px !important;
+    gap: 8px !important;
     flex-wrap: wrap !important;
     justify-content: flex-end !important;
 }
 
-/* Footer Action Buttons Harmonization */
+.footer-bottom-dev-row {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding-top: 10px !important;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Footer Action Buttons Harmonization (Pill Uniformity) */
 .footer-views-badge,
-.footer-views-btn {
+.footer-views-btn,
+.footer-version-badge,
+.footer-date-badge,
+.admin-portal-btn {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 6px !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    background: rgba(255, 255, 255, 0.08) !important;
-    border: 1px solid rgba(255, 255, 255, 0.18) !important;
-    padding: 0 13px !important;
-    border-radius: 50px !important;
-    font-size: 0.76rem !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    padding: 0 12px !important;
+    border-radius: 999px !important;
+    font-size: 0.75rem !important;
     font-weight: 600 !important;
     color: #cbd5e1 !important;
-    backdrop-filter: blur(6px) !important;
-    transition: all 0.25s ease !important;
+    backdrop-filter: blur(8px) !important;
+    transition: all 0.2s ease !important;
     user-select: none !important;
     box-sizing: border-box !important;
     line-height: 1 !important;
+    cursor: pointer !important;
 }
 
 .footer-views-badge:hover,
 .footer-views-btn:hover {
-    background: rgba(22, 163, 74, 0.2) !important;
-    border-color: rgba(34, 197, 94, 0.5) !important;
+    background: rgba(16, 185, 129, 0.2) !important;
+    border-color: rgba(16, 185, 129, 0.5) !important;
+    color: #ffffff !important;
+}
+
+.footer-version-badge:hover {
+    background: rgba(56, 189, 248, 0.2) !important;
+    border-color: rgba(56, 189, 248, 0.5) !important;
+    color: #ffffff !important;
+}
+
+.footer-date-badge {
+    cursor: default !important;
+    background: rgba(56, 189, 248, 0.08) !important;
+    border-color: rgba(56, 189, 248, 0.25) !important;
+    color: #7dd3fc !important;
+}
+
+.admin-portal-btn {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.admin-portal-btn:hover {
+    background: rgba(139, 92, 246, 0.25) !important;
+    border-color: rgba(139, 92, 246, 0.5) !important;
     color: #ffffff !important;
 }
 
@@ -9164,25 +9210,34 @@ img {
     animation: livePulse 1.8s infinite !important;
 }
 
-@keyframes livePulse {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-    70% { transform: scale(1.15); box-shadow: 0 0 0 5px rgba(34, 197, 94, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-}
-
 .views-count {
     font-weight: 800 !important;
     color: #4ade80 !important;
     letter-spacing: 0.02em !important;
 }
 
+.views-analytics-pill,
+.version-status-pill {
+    background: rgba(34, 197, 94, 0.2) !important;
+    color: #4ade80 !important;
+    font-size: 0.65rem !important;
+    padding: 2px 6px !important;
+    border-radius: 999px !important;
+    font-weight: 700 !important;
+}
+
 .developer-credit {
     display: inline-flex !important;
     align-items: center !important;
+    justify-content: center !important;
     gap: 8px !important;
-    font-size: 0.82rem !important;
+    font-size: 0.80rem !important;
     color: #94a3b8 !important;
     flex-wrap: wrap !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 5px 14px !important;
+    border-radius: 999px !important;
 }
 
 .dev-label {
@@ -9197,8 +9252,8 @@ img {
     color: #ffffff !important;
     text-decoration: none !important;
     font-weight: 700 !important;
-    font-size: 0.8rem !important;
-    padding: 3px 8px !important;
+    font-size: 0.78rem !important;
+    padding: 2px 8px !important;
     background: rgba(255, 255, 255, 0.08) !important;
     border: 1px solid rgba(255, 255, 255, 0.18) !important;
     border-radius: 6px !important;
@@ -9219,10 +9274,10 @@ img {
 }
 
 .dev-icon {
-    width: 14px !important;
-    height: 14px !important;
-    max-width: 14px !important;
-    max-height: 14px !important;
+    width: 13px !important;
+    height: 13px !important;
+    max-width: 13px !important;
+    max-height: 13px !important;
     flex-shrink: 0 !important;
     display: inline-block !important;
     vertical-align: middle !important;
@@ -9346,34 +9401,28 @@ img {
     .footer-bottom {
         flex-direction: column !important;
         text-align: center !important;
-        gap: 10px !important;
-        padding-top: 12px !important;
+        gap: 12px !important;
+        padding-top: 14px !important;
         border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    }
+
+    .footer-bottom-main {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 10px !important;
+        align-items: center !important;
     }
 
     .footer-bottom-left {
         text-align: center !important;
-        align-items: center !important;
-        gap: 5px !important;
+        justify-content: center !important;
         width: 100% !important;
     }
 
     .footer-copyright {
-        font-size: 0.72rem !important;
+        font-size: 0.74rem !important;
         color: #94a3b8 !important;
         margin: 0 !important;
-    }
-
-    .developer-credit {
-        justify-content: center !important;
-        font-size: 0.72rem !important;
-        gap: 4px !important;
-    }
-
-    .dev-link {
-        padding: 2px 7px !important;
-        font-size: 0.70rem !important;
-        border-radius: 5px !important;
     }
 
     .footer-bottom-right {
@@ -9384,14 +9433,36 @@ img {
     }
 
     .footer-views-badge,
-    .footer-version-badge {
-        padding: 4px 10px !important;
-        font-size: 0.70rem !important;
+    .footer-version-badge,
+    .footer-date-badge,
+    .admin-portal-btn {
+        height: 30px !important;
+        min-height: 30px !important;
+        padding: 0 9px !important;
+        font-size: 0.69rem !important;
+        border-radius: 999px !important;
     }
 
-    .admin-portal-btn {
-        padding: 4px 11px !important;
+    .footer-bottom-dev-row {
+        justify-content: center !important;
+        text-align: center !important;
+        padding-top: 8px !important;
+        width: 100% !important;
+    }
+
+    .developer-credit {
+        justify-content: center !important;
         font-size: 0.70rem !important;
+        gap: 5px !important;
+        padding: 4px 10px !important;
+        width: 100% !important;
+        max-width: 340px !important;
+    }
+
+    .dev-link {
+        padding: 2px 6px !important;
+        font-size: 0.68rem !important;
+        border-radius: 5px !important;
     }
 }
 
