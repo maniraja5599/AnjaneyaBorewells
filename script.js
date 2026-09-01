@@ -3049,10 +3049,11 @@ class VisitorAnalyticsManager {
     }
 
     async syncLivePageViews(forceRefresh = false) {
-        // Load cached count as immediate instant display (minimum baseline = 50)
+        // Load cached count as immediate instant display (reset any legacy 1,000+ cache to baseline 50)
         let cachedTotal = parseInt(localStorage.getItem('ab_total_pageviews'), 10);
-        if (!cachedTotal || isNaN(cachedTotal) || cachedTotal < this.baseCounterOffset) {
+        if (!cachedTotal || isNaN(cachedTotal) || cachedTotal >= 1000 || cachedTotal < this.baseCounterOffset) {
             cachedTotal = this.baseCounterOffset;
+            localStorage.setItem('ab_total_pageviews', this.baseCounterOffset.toString());
         }
 
         this.updateViewsDisplay(cachedTotal);
