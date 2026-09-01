@@ -649,6 +649,12 @@ class AnjaneyaBorewells {
         if (saved) {
             try {
                 settings = JSON.parse(saved);
+                // Auto-migrate legacy 450/750 PVC rates and 100 base rate to new standards
+                if (settings.pvc7Rate === 450) settings.pvc7Rate = 400;
+                if (settings.pvc10Rate === 750) settings.pvc10Rate = 700;
+                if (settings.baseDrillingRate === 100) settings.baseDrillingRate = 90;
+                if (settings.drillingRate === 100) settings.drillingRate = 90;
+                localStorage.setItem('anjaneya-calculator-settings', JSON.stringify(settings));
             } catch (e) {
                 console.warn('Failed to parse saved settings:', e);
                 settings = {};
@@ -1247,6 +1253,8 @@ class CostCalculator {
             try {
                 const parsedSaved = JSON.parse(saved);
                 if (parsedSaved.rates) {
+                    if (parsedSaved.rates.casing7 === 450) parsedSaved.rates.casing7 = 400;
+                    if (parsedSaved.rates.casing10 === 750) parsedSaved.rates.casing10 = 700;
                     if (parsedSaved.rates.casing7) this.defaults.pvc7Rate = parsedSaved.rates.casing7;
                     if (parsedSaved.rates.casing10) this.defaults.pvc10Rate = parsedSaved.rates.casing10;
                     if (parsedSaved.rates.transport) this.defaults.boreBataRate = parsedSaved.rates.transport;
@@ -1266,6 +1274,10 @@ class CostCalculator {
         if (calculatorSettings) {
             try {
                 const parsedCalculatorSettings = JSON.parse(calculatorSettings);
+                if (parsedCalculatorSettings.pvc7Rate === 450) parsedCalculatorSettings.pvc7Rate = 400;
+                if (parsedCalculatorSettings.pvc10Rate === 750) parsedCalculatorSettings.pvc10Rate = 700;
+                if (parsedCalculatorSettings.drillingRate === 100) parsedCalculatorSettings.drillingRate = 90;
+                if (parsedCalculatorSettings.baseDrillingRate === 100) parsedCalculatorSettings.baseDrillingRate = 90;
                 this.defaults = { ...this.defaults, ...parsedCalculatorSettings };
                 if (parsedCalculatorSettings.slabRates && parsedCalculatorSettings.slabRates.length > 0) {
                     this.slabRates = parsedCalculatorSettings.slabRates;
@@ -2654,10 +2666,25 @@ async function loadServerSiteConfig() {
                 if (rates.slabRates && rates.slabRates.length > 0) {
                     window.anjaneyaApp.calculator.slabRates = rates.slabRates;
                 }
-                window.anjaneyaApp.calculator.refreshSettings();
+                window.anjaneyaApp.calculator.updateFormDefaults();
             }
             if (typeof window.anjaneyaApp.loadInlineSettings === 'function') {
                 window.anjaneyaApp.loadInlineSettings();
+            }
+            // Explicitly sync input elements with server config rates
+            if (rates.casing7) {
+                const p7 = document.getElementById('inlinePvc7Rate');
+                if (p7) p7.value = rates.casing7;
+            }
+            if (rates.casing10) {
+                const p10 = document.getElementById('inlinePvc10Rate');
+                if (p10) p10.value = rates.casing10;
+            }
+            if (rates.drillingRate) {
+                const bDr = document.getElementById('inlineBaseDrillingRate');
+                const mDr = document.getElementById('drillingRate');
+                if (bDr) bDr.value = rates.drillingRate;
+                if (mDr) mDr.value = rates.drillingRate;
             }
             if (typeof window.anjaneyaApp.renderInlineSlabRates === 'function') {
                 window.anjaneyaApp.renderInlineSlabRates();
