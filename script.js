@@ -2893,6 +2893,7 @@ function initScrollLorry() {
 class VisitorAnalyticsManager {
     constructor() {
         this.baseCounterOffset = 50; // Baseline starts from 50
+        this.firebaseUrl = 'https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app/pageviews.json';
         this.sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         this.footerCountEl = document.getElementById('footerPageViewsCount');
         this.modal = document.getElementById('analyticsModal');
@@ -3062,7 +3063,7 @@ class VisitorAnalyticsManager {
             const hasCountedSession = sessionStorage.getItem('ab_session_viewed_v28');
             
             // 1. Check for Configured Firebase Realtime Database URL
-            let firebaseUrl = window.ANJANEYA_FIREBASE_URL || '';
+            let firebaseUrl = window.ANJANEYA_FIREBASE_URL || this.firebaseUrl || '';
             if (!firebaseUrl) {
                 try {
                     const cfgRes = await fetch('./site-config.json', { cache: 'no-store' });

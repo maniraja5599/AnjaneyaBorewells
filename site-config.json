@@ -165,7 +165,7 @@
   },
   "analytics": {
     "baselineViews": 50,
-    "firebaseUrl": "",
-    "engine": "realtime_cloud_sync"
+    "firebaseUrl": "https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app/pageviews.json",
+    "engine": "firebase_realtime_db"
   }
 }
