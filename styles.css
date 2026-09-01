@@ -8431,6 +8431,27 @@ img {
     color: #ffffff;
 }
 
+.btn-admin-clean-cache {
+    background: rgba(245, 158, 11, 0.18);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-admin-clean-cache:hover {
+    background: rgba(245, 158, 11, 0.35);
+    color: #ffffff;
+    border-color: #f59e0b;
+}
+
 .admin-modal-header .modal-close {
     background: rgba(255, 255, 255, 0.1) !important;
     color: #cbd5e1 !important;
@@ -9776,6 +9797,55 @@ img {
     display: inline-block;
     width: 1em;
     margin-left: -1em;
+}
+
+.version-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    background: #0f172a;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.btn-clear-cache-modal {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-clear-cache-modal:hover {
+    background: rgba(245, 158, 11, 0.3);
+    color: #ffffff;
+    border-color: #f59e0b;
+}
+
+.btn-close-modal-clean {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-close-modal-clean:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
 }
 
 /* Main Page Calculator Inline Slab Rates Section */

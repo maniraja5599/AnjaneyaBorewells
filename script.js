@@ -2623,6 +2623,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Interactive Driving Rig Truck on Page Scroll
     initScrollLorry();
 
+    // Initialize Automated Version & Cache Invalidation Manager (v2.9.6)
+    CacheAndVersionManager.init();
+
     // Initialize Page Views & Live Visitor Analytics Manager
     window.analyticsManager = new VisitorAnalyticsManager();
 
@@ -3580,6 +3583,127 @@ function initPageViewsCounter() {
     }
 }
 
+// =========================================================================
+// Automated Version & Cache Invalidation Manager (v2.9.6)
+// =========================================================================
+class CacheAndVersionManager {
+    static CURRENT_VERSION = 'v2.9.6';
+    static CACHE_KEY = 'anjaneya-borewells-cache-v2.9.6';
+
+    static init() {
+        this.checkAndMigrateStorage();
+        this.registerAndAutoUpdateServiceWorker();
+        this.bindPurgeActions();
+    }
+
+    static checkAndMigrateStorage() {
+        try {
+            const storedVersion = localStorage.getItem('ab_app_version');
+            if (storedVersion !== this.CURRENT_VERSION) {
+                console.log(`[CacheManager] App version upgraded from ${storedVersion || 'legacy'} to ${this.CURRENT_VERSION}. Auto-cleaning obsolete client caches...`);
+                if ('caches' in window) {
+                    caches.keys().then(keys => {
+                        keys.forEach(k => {
+                            if (k !== this.CACHE_KEY) {
+                                console.log('[CacheManager] Auto-deleting obsolete cache bucket:', k);
+                                caches.delete(k);
+                            }
+                        });
+                    });
+                }
+                sessionStorage.clear();
+                localStorage.setItem('ab_app_version', this.CURRENT_VERSION);
+            }
+        } catch (e) {
+            console.warn('[CacheManager] Storage migration note:', e);
+        }
+    }
+
+    static registerAndAutoUpdateServiceWorker() {
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(reg => {
+                        console.log('[CacheManager] PWA ServiceWorker active with scope:', reg.scope);
+                        reg.update();
+                        
+                        reg.addEventListener('updatefound', () => {
+                            const newWorker = reg.installing;
+                            if (newWorker) {
+                                newWorker.addEventListener('statechange', () => {
+                                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                        console.log('[CacheManager] Fresh update ready. Auto-claimed by client.');
+                                    }
+                                });
+                            }
+                        });
+                    })
+                    .catch(err => console.warn('[CacheManager] SW registration note:', err));
+            });
+        }
+    }
+
+    static async purgeAllCachesAndReload(triggerBtn) {
+        if (triggerBtn) {
+            triggerBtn.disabled = true;
+            triggerBtn.innerHTML = '⏳ Purging...';
+        }
+
+        try {
+            if ('caches' in window) {
+                const keys = await caches.keys();
+                await Promise.all(keys.map(k => caches.delete(k)));
+                console.log('[CacheManager] All caches successfully cleared.');
+            }
+            if ('serviceWorker' in navigator) {
+                const regs = await navigator.serviceWorker.getRegistrations();
+                for (let r of regs) {
+                    await r.unregister();
+                }
+            }
+            sessionStorage.clear();
+            localStorage.setItem('ab_app_version', this.CURRENT_VERSION);
+        } catch (err) {
+            console.warn('[CacheManager] Error purging cache:', err);
+        }
+
+        if (triggerBtn) {
+            triggerBtn.innerHTML = '✅ Cache Cleared!';
+        }
+
+        setTimeout(() => {
+            window.location.reload(true);
+        }, 400);
+    }
+
+    static bindPurgeActions() {
+        // Version Modal Clear Cache Button
+        const modalClearBtn = document.getElementById('versionModalClearCacheBtn');
+        if (modalClearBtn) {
+            modalClearBtn.addEventListener('click', () => this.purgeAllCachesAndReload(modalClearBtn));
+        }
+
+        // Admin Command Center Purge Cache Button
+        const adminPurgeBtn = document.getElementById('adminPurgeCacheBtn');
+        if (adminPurgeBtn) {
+            adminPurgeBtn.addEventListener('click', () => this.purgeAllCachesAndReload(adminPurgeBtn));
+        }
+
+        // Version Modal Bottom Close Button
+        const closeBottomBtn = document.getElementById('closeVersionModalBottomBtn');
+        if (closeBottomBtn) {
+            closeBottomBtn.addEventListener('click', () => {
+                const modal = document.getElementById('versionModal');
+                if (modal) {
+                    modal.classList.remove('show');
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+    }
+}
+
 // Version History Modal Initialization
 function initVersionModal() {
     const modal = document.getElementById('versionModal');
@@ -3842,6 +3966,7 @@ class AdminCommandCenter {
         this.loginView = document.getElementById('adminLoginForm');
         this.dashboardView = document.getElementById('adminDashboard');
         this.logoutBtn = document.getElementById('adminLogoutBtn');
+        this.purgeCacheBtn = document.getElementById('adminPurgeCacheBtn');
         this.authBadge = document.getElementById('adminAuthBadge');
         this.exportDropdown = document.getElementById('adminExportDropdown');
         this.exportBtn = document.getElementById('adminExportBtn');
@@ -3980,6 +4105,7 @@ class AdminCommandCenter {
         if (this.dashboardView) this.dashboardView.style.display = 'none';
         if (this.authBadge) this.authBadge.style.display = 'none';
         if (this.logoutBtn) this.logoutBtn.style.display = 'none';
+        if (this.purgeCacheBtn) this.purgeCacheBtn.style.display = 'none';
         if (this.exportDropdown) this.exportDropdown.style.display = 'none';
         if (this.errorMsg) this.errorMsg.style.display = 'none';
     }
@@ -3989,6 +4115,7 @@ class AdminCommandCenter {
         if (this.dashboardView) this.dashboardView.style.display = 'block';
         if (this.authBadge) this.authBadge.style.display = 'inline-flex';
         if (this.logoutBtn) this.logoutBtn.style.display = 'block';
+        if (this.purgeCacheBtn) this.purgeCacheBtn.style.display = 'inline-flex';
         if (this.exportDropdown) this.exportDropdown.style.display = 'block';
         this.startLiveAutoRefresh();
     }
@@ -4650,17 +4777,4 @@ class AdminCommandCenter {
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     }
-}
-
-// Service Worker Registration (for PWA features)
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-                console.log('SW registered: ', registration);
-            })
-            .catch(registrationError => {
-                console.log('SW registration failed: ', registrationError);
-            });
-    });
 }

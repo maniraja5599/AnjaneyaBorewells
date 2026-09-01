@@ -36,6 +36,9 @@
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#15803d">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="business.business">
@@ -339,7 +342,7 @@
 }
     </script>
     
-    <link rel="stylesheet" href="styles.css?v=2.9.0">
+    <link rel="stylesheet" href="styles.css?v=2.9.6">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1566,7 +1569,7 @@
                         </button>
                         <button type="button" class="footer-version-badge" id="openVersionModalBtn" title="View Website Changelog & Version History">
                             <span class="version-label">Version</span>
-                            <span class="version-text">v2.9.5</span>
+                            <span class="version-text">v2.9.6</span>
                             <span class="version-status-pill">Live</span>
                         </button>
                         <div class="footer-date-badge" title="Website Last Updated Date">
@@ -1666,6 +1669,7 @@
                             </button>
                         </div>
                     </div>
+                    <button type="button" class="btn-admin-clean-cache" id="adminPurgeCacheBtn" style="display: none;" title="Purge System & Browser Cache">🧹 Purge Cache</button>
                     <button type="button" class="btn-admin-logout" id="adminLogoutBtn" style="display: none;" title="Logout Admin">Logout</button>
                     <button type="button" class="modal-close" id="adminModalClose" aria-label="Close admin modal">&times;</button>
                 </div>
@@ -2025,9 +2029,21 @@
                 <div class="version-timeline">
                     <div class="version-item current">
                         <div class="version-badge-header">
-                            <span class="version-pill">v2.9.0</span>
+                            <span class="version-pill">v2.9.6</span>
                             <span class="version-date">Latest Release (September 2026)</span>
                             <span class="version-status-dot">Current</span>
+                        </div>
+                        <ul class="version-changes-list">
+                            <li>🧹 <strong>Auto-Purge Cache Management:</strong> Automated background cache invalidation on new deployments with Network-First ServiceWorker strategy.</li>
+                            <li>📐 <strong>Symmetrical 2-Tier Footer:</strong> Elegant desktop &amp; mobile balanced layout with non-intrusive action controls.</li>
+                            <li>🛡️ <strong>Live Telemetry Anomaly Guard:</strong> Continuous cloud synchronization with strict monotonic count verification.</li>
+                        </ul>
+                    </div>
+
+                    <div class="version-item">
+                        <div class="version-badge-header">
+                            <span class="version-pill prev">v2.9.0</span>
+                            <span class="version-date">September 2026</span>
                         </div>
                         <ul class="version-changes-list">
                             <li>🔥 <strong>Google Firebase Cloud Telemetry:</strong> 100% persistent Realtime Database synchronization for page views, global active presence, and real-time visitor hardware &amp; engagement metrics.</li>
@@ -2106,6 +2122,12 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+            <div class="modal-footer version-modal-footer">
+                <button type="button" class="btn-clear-cache-modal" id="versionModalClearCacheBtn" title="Purge cached assets and refresh latest version">
+                    🧹 Clear Cache &amp; Refresh
+                </button>
+                <button type="button" class="btn-close-modal-clean" id="closeVersionModalBottomBtn">Close</button>
             </div>
         </div>
     </div>
@@ -2364,6 +2386,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=2.9.0"></script>
+    <script src="script.js?v=2.9.6"></script>
 </body>
 </html>
