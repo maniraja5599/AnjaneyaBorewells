@@ -1,4 +1,4 @@
-const CACHE_NAME = 'anjaneya-borewells-cache-v2.9.0';
+const CACHE_NAME = 'anjaneya-borewells-cache-v2.9.5';
 const ASSETS = [
   './',
   './index.html',
@@ -8,7 +8,14 @@ const ASSETS = [
   './manifest.json',
   './logo.png',
   './logo.jpg',
+  './favicon.ico',
   './favicon.png',
+  './favicon-16x16.png',
+  './favicon-32x32.png',
+  './favicon-48x48.png',
+  './apple-touch-icon.png',
+  './android-chrome-192x192.png',
+  './android-chrome-512x512.png',
   './favicon.svg'
 ];
 
