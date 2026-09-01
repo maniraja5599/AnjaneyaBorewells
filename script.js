@@ -2944,7 +2944,7 @@ function getVisitorHardwareInfo() {
 
 class VisitorAnalyticsManager {
     constructor() {
-        this.baseCounterOffset = 50; // Baseline starts from 50
+        this.baseCounterOffset = 88; // Hard floor baseline (strictly monotonic non-decreasing)
         this.firebaseUrl = 'https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app/pageviews.json';
         this.sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         this.footerCountEl = document.getElementById('footerPageViewsCount');
@@ -3136,19 +3136,20 @@ class VisitorAnalyticsManager {
     }
 
     async syncLivePageViews() {
-        let cachedTotal = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || this.baseCounterOffset;
-        if (cachedTotal < this.baseCounterOffset) cachedTotal = this.baseCounterOffset;
+        const ABSOLUTE_MIN_VIEWS = 88;
+        let cachedTotal = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || ABSOLUTE_MIN_VIEWS;
+        if (cachedTotal < ABSOLUTE_MIN_VIEWS) cachedTotal = ABSOLUTE_MIN_VIEWS;
 
         try {
             const res = await fetch(this.firebaseUrl, { cache: 'no-store' });
             if (res.ok) {
                 const cloudVal = await res.json();
-                let cloudCount = (typeof cloudVal === 'number') ? cloudVal : 0;
-                let activeCurrentTotal = Math.max(this.baseCounterOffset, cachedTotal, cloudCount);
+                let cloudCount = (typeof cloudVal === 'number' && cloudVal >= ABSOLUTE_MIN_VIEWS) ? cloudVal : ABSOLUTE_MIN_VIEWS;
+                let activeCurrentTotal = Math.max(ABSOLUTE_MIN_VIEWS, cachedTotal, cloudCount);
 
-                if (!sessionStorage.getItem('ab_session_viewed_v28')) {
+                if (!sessionStorage.getItem('ab_session_viewed_v29')) {
                     activeCurrentTotal += 1;
-                    sessionStorage.setItem('ab_session_viewed_v28', 'true');
+                    sessionStorage.setItem('ab_session_viewed_v29', 'true');
                     
                     fetch(this.firebaseUrl, {
                         method: 'PUT',
@@ -3160,19 +3161,19 @@ class VisitorAnalyticsManager {
                 localStorage.setItem('ab_total_pageviews', activeCurrentTotal.toString());
                 this.updateViewsDisplay(activeCurrentTotal);
             } else {
-                if (!sessionStorage.getItem('ab_session_viewed_v28')) {
+                if (!sessionStorage.getItem('ab_session_viewed_v29')) {
                     cachedTotal += 1;
                     localStorage.setItem('ab_total_pageviews', cachedTotal.toString());
-                    sessionStorage.setItem('ab_session_viewed_v28', 'true');
+                    sessionStorage.setItem('ab_session_viewed_v29', 'true');
                 }
                 this.updateViewsDisplay(cachedTotal);
             }
         } catch (err) {
             console.warn('Real-time page views sync note:', err);
-            if (!sessionStorage.getItem('ab_session_viewed_v28')) {
+            if (!sessionStorage.getItem('ab_session_viewed_v29')) {
                 cachedTotal += 1;
                 localStorage.setItem('ab_total_pageviews', cachedTotal.toString());
-                sessionStorage.setItem('ab_session_viewed_v28', 'true');
+                sessionStorage.setItem('ab_session_viewed_v29', 'true');
             }
             this.updateViewsDisplay(cachedTotal);
         }
@@ -4079,9 +4080,9 @@ class AdminCommandCenter {
                 } catch (e) {}
             }
 
-            const totalViews = (typeof fbData.pageviews === 'number' && fbData.pageviews >= 50) 
-                ? fbData.pageviews 
-                : (parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 50);
+            const totalViews = Math.max(88, 
+                (typeof fbData.pageviews === 'number' ? fbData.pageviews : 0), 
+                (parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 88));
 
             // Calculate real active online from Firebase presence
             let activeCount = 1;
@@ -4496,7 +4497,7 @@ class AdminCommandCenter {
     }
 
     downloadFullReport(format = 'csv') {
-        const totalViews = this.latestTotalViews || parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 73;
+        const totalViews = Math.max(88, this.latestTotalViews || 0, parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 88);
         const fbData = this.latestFbData || {};
         const now = new Date();
         const dateStr = now.toISOString().split('T')[0];
