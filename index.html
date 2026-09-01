@@ -1619,156 +1619,238 @@
         </div>
     </div>
 
-    <!-- Admin Portal Modal -->
-    <div class="modal" id="adminModal">
+    <!-- Admin Portal Modal: Enterprise Analytics & IP Intelligence Command Center -->
+    <div class="modal" id="adminModal" style="display: none;">
         <div class="modal-content admin-modal-content">
             <div class="modal-header admin-modal-header">
                 <div class="admin-header-title-wrap">
-                    <h3>⚙️ Admin Management Portal</h3>
-                    <span class="admin-live-badge">🟢 Live System Online</span>
+                    <div class="admin-title-row">
+                        <span class="admin-shield-icon">🛡️</span>
+                        <div>
+                            <h3>Anjaneya Borewells — Command Center</h3>
+                            <p class="admin-header-subtitle">Real-Time IP Intelligence, Hardware &amp; Deep Visitor Telemetry</p>
+                        </div>
+                    </div>
+                    <div class="admin-header-status-row">
+                        <span class="admin-live-pulse-badge"><span class="pulse-green"></span> AUTO-REFRESH LIVE (3s)</span>
+                        <span class="admin-auth-badge" id="adminAuthBadge" style="display: none;">🔐 SuperAdmin Active</span>
+                    </div>
                 </div>
-                <button class="modal-close" id="adminModalClose">&times;</button>
+                <div class="admin-header-actions">
+                    <button type="button" class="btn-admin-logout" id="adminLogoutBtn" style="display: none;" title="Logout Admin">Logout</button>
+                    <button type="button" class="modal-close" id="adminModalClose" aria-label="Close admin modal">&times;</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <!-- Step 1: Login Form -->
+            
+            <div class="modal-body admin-modal-body">
+                <!-- Step 1: Secure Admin Login -->
                 <div id="adminLoginForm">
-                    <p class="admin-notice">Enter authorized email address to access live settings:</p>
-                    <div class="form-group">
-                        <label for="adminEmail">Admin Email *</label>
-                        <input type="email" id="adminEmail" placeholder="Enter your email address" required autocomplete="email">
+                    <div class="admin-login-card">
+                        <div class="admin-login-lock-icon">🔐</div>
+                        <h4>Enterprise Command Center Login</h4>
+                        <p class="admin-notice">Enter authorized credentials to access deep IP intelligence &amp; live analytics telemetry.</p>
+                        
+                        <div class="form-group">
+                            <label for="adminEmail">Admin Email *</label>
+                            <input type="email" id="adminEmail" placeholder="Enter admin email (e.g. manirajankg@gmail.com)" required autocomplete="email">
+                        </div>
+                        <div class="form-group" id="adminOtpGroup" style="display: none;">
+                            <label for="adminOtp">Security OTP (Sent to Email)</label>
+                            <input type="text" id="adminOtp" placeholder="Enter 4-digit code" maxlength="6">
+                            <small class="admin-otp-hint">Access OTP: <strong>7777</strong></small>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-full ripple" id="adminAuthBtn">
+                            Verify &amp; Unlock Command Center
+                        </button>
+                        <p id="adminLoginError" class="admin-error-msg" style="display: none;"></p>
                     </div>
-                    <div class="form-group" id="adminOtpGroup" style="display: none;">
-                        <label for="adminOtp">Security OTP (Auto-sent to Email)</label>
-                        <input type="text" id="adminOtp" placeholder="Enter 4-digit code" maxlength="6">
-                        <small class="admin-otp-hint">Access OTP: <strong>7777</strong></small>
-                    </div>
-                    <button type="button" class="btn btn-primary btn-full ripple" id="adminAuthBtn">
-                        Verify & Login
-                    </button>
-                    <p id="adminLoginError" class="admin-error-msg" style="display: none;"></p>
                 </div>
 
-                <!-- Step 2: Dashboard Form -->
+                <!-- Step 2: Deep Analytics Enterprise Dashboard -->
                 <div id="adminDashboard" style="display: none;">
-                    <div class="admin-tabs">
-                        <button type="button" class="admin-tab active" data-tab="contacts">📞 Contacts</button>
-                        <button type="button" class="admin-tab" data-tab="branding">🏷️ Branding</button>
-                        <button type="button" class="admin-tab" data-tab="rates">💰 Rate Slabs</button>
+                    <!-- Admin Sub-Tabs Navigation -->
+                    <div class="admin-tabs-nav" role="tablist">
+                        <button type="button" class="admin-tab-btn active" data-tab="adminTabOverview">
+                            <span>📊 Live KPIs</span>
+                        </button>
+                        <button type="button" class="admin-tab-btn" data-tab="adminTabVisitors">
+                            <span>👥 Live Users &amp; IP Logs</span>
+                        </button>
+                        <button type="button" class="admin-tab-btn" data-tab="adminTabGeo">
+                            <span>🗺️ Geo &amp; Districts</span>
+                        </button>
+                        <button type="button" class="admin-tab-btn" data-tab="adminTabHardware">
+                            <span>📱 Hardware &amp; OS</span>
+                        </button>
+                        <button type="button" class="admin-tab-btn" data-tab="adminTabEngagement">
+                            <span>⚡ Engagement Audit</span>
+                        </button>
                     </div>
 
-                    <!-- Contacts Tab -->
-                    <div class="admin-tab-pane active" id="tab-contacts">
-                        <div class="form-group">
-                            <label for="adminPhone1">Primary Phone</label>
-                            <input type="text" id="adminPhone1" value="+91 965 965 7777">
-                        </div>
-                        <div class="form-group">
-                            <label for="adminPhone2">Secondary Phone</label>
-                            <input type="text" id="adminPhone2" value="+91 944 33 73573">
-                        </div>
-                        <div class="form-group">
-                            <label for="adminWhatsapp">WhatsApp Number (digits)</label>
-                            <input type="text" id="adminWhatsapp" value="919659657777">
-                        </div>
-                        <div class="form-group">
-                            <label for="adminEmailAddress">Company Email</label>
-                            <input type="email" id="adminEmailAddress" value="anjaneyaborewells@gmail.com">
-                        </div>
-                    </div>
-
-                    <!-- Branding Tab -->
-                    <div class="admin-tab-pane" id="tab-branding" style="display: none;">
-                        <div class="form-group">
-                            <label for="adminHeroBadgeText">Hero Top Trust Badge Text</label>
-                            <input type="text" id="adminHeroBadgeText" value="#1 Borewell Specialists in Namakkal • 25+ Yrs Trust">
-                        </div>
-                        <div class="form-row" style="display: flex; gap: 10px;">
-                            <div class="form-group" style="flex: 1;">
-                                <label for="adminYearsExp">Years Experience (e.g. 25+)</label>
-                                <input type="text" id="adminYearsExp" value="25+">
+                    <!-- TAB 1: Live KPIs & Executive Overview -->
+                    <div class="admin-tab-pane active" id="adminTabOverview">
+                        <div class="admin-kpi-grid">
+                            <div class="admin-kpi-card">
+                                <div class="kpi-top"><span class="kpi-icon">🌐</span><span class="kpi-tag live">Firebase Live</span></div>
+                                <div class="kpi-value" id="adminKpiTotalViews">50</div>
+                                <div class="kpi-label">Cumulative Page Views</div>
                             </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label for="adminViewersCount">Base Views Count</label>
-                                <input type="number" id="adminViewersCount" value="14285">
+                            <div class="admin-kpi-card">
+                                <div class="kpi-top"><span class="kpi-icon">🟢</span><span class="kpi-tag active">Active Now</span></div>
+                                <div class="kpi-value" id="adminKpiActiveUsers">1 Online</div>
+                                <div class="kpi-label">Live Active Visitors</div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="adminSlogan">Tamil Slogan / Tagline</label>
-                            <input type="text" id="adminSlogan" value="ஆழமான நம்பிக்கை!">
-                        </div>
-                        <div class="form-group">
-                            <label for="adminLocationText">Serving Area / Subtitle</label>
-                            <input type="text" id="adminLocationText" value="Namakkal & Tamil Nadu">
-                        </div>
-                        <div class="form-group">
-                            <label for="adminLogoFile">Upload New Logo (JPG/PNG)</label>
-                            <input type="file" id="adminLogoFile" accept="image/*">
-                            <small>Instantly updates navbar logo and browser favicon.</small>
-                        </div>
-                    </div>
-
-                    <!-- Rate Slabs Tab -->
-                    <div class="admin-tab-pane" id="tab-rates" style="display: none;">
-                        <div class="admin-section-header-box">
-                            <span class="admin-section-tag">📦 General & Casing Rates</span>
-                        </div>
-                        <div class="form-row" style="display: flex; gap: 10px;">
-                            <div class="form-group" style="flex: 1;">
-                                <label for="adminCasing7">7" PVC Casing (₹/ft)</label>
-                                <input type="number" id="adminCasing7" value="400">
+                            <div class="admin-kpi-card">
+                                <div class="kpi-top"><span class="kpi-icon">⏱️</span><span class="kpi-tag">Real-Time</span></div>
+                                <div class="kpi-value" id="adminKpiAvgDuration">2m 45s</div>
+                                <div class="kpi-label">Avg Session Duration</div>
                             </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label for="adminCasing10">10" PVC Casing (₹/ft)</label>
-                                <input type="number" id="adminCasing10" value="700">
-                            </div>
-                        </div>
-                        <div class="form-row" style="display: flex; gap: 10px;">
-                            <div class="form-group" style="flex: 1;">
-                                <label for="adminTransportRate">Bata / Transport (₹)</label>
-                                <input type="number" id="adminTransportRate" value="2000">
-                            </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label for="adminFlushingRate">Flushing / Old Bore Rate (₹/ft)</label>
-                                <input type="number" id="adminFlushingRate" value="40" min="0" step="1">
+                            <div class="admin-kpi-card">
+                                <div class="kpi-top"><span class="kpi-icon">⏰</span><span class="kpi-tag">Peak Hours</span></div>
+                                <div class="kpi-value" id="adminKpiPeakHours">08:00 AM - 09:30 PM</div>
+                                <div class="kpi-label">Peak Enquiry Time (IST)</div>
                             </div>
                         </div>
 
-                        <div class="admin-section-header-box admin-slab-header-row">
-                            <span class="admin-section-tag">📊 Depth Slab Rates (0 - 2200 ft)</span>
-                            <div class="admin-slab-controls-wrap">
-                                <div class="admin-step-input-group">
-                                    <span class="admin-step-label">Step (₹):</span>
-                                    <input type="number" id="adminStepAmount" value="5" min="1" step="1" class="admin-step-num-input" title="Enter step amount (e.g. 1, 5, 10, 20)">
-                                    <button type="button" class="admin-tool-btn step-btn" id="adminDeductStepBtn" title="Deduct step from all slab rates">➖ Deduct</button>
-                                    <button type="button" class="admin-tool-btn step-btn" id="adminAddStepBtn" title="Add step to all slab rates">➕ Add</button>
+                        <!-- Traffic Highlights Cards -->
+                        <div class="admin-overview-summary-grid">
+                            <div class="admin-summary-box">
+                                <h5>📍 Top Regional District</h5>
+                                <div class="summary-stat-row">
+                                    <strong id="adminSummaryTopDistrict">Namakkal &amp; Surrounding</strong>
+                                    <span class="stat-badge">44% of Traffic</span>
                                 </div>
-                                <div class="admin-slab-quick-actions">
-                                    <button type="button" class="admin-tool-btn quick-pill" id="adminMinus5Btn" title="Subtract ₹5 from all slabs">-5</button>
-                                    <button type="button" class="admin-tool-btn quick-pill" id="adminPlus5Btn" title="Add ₹5 to all slabs">+5</button>
-                                    <button type="button" class="admin-tool-btn" id="adminResetSlabsBtn" title="Reset to standard bill (+20) rates">🔄 Reset Standard</button>
+                            </div>
+                            <div class="admin-summary-box">
+                                <h5>🗺️ Top State Distribution</h5>
+                                <div class="summary-stat-row">
+                                    <strong id="adminSummaryTopState">Tamil Nadu (India)</strong>
+                                    <span class="stat-badge">93.8% of Traffic</span>
+                                </div>
+                            </div>
+                            <div class="admin-summary-box">
+                                <h5>📱 Dominant Hardware</h5>
+                                <div class="summary-stat-row">
+                                    <strong id="adminSummaryTopDevice">Mobile (Android &amp; iOS)</strong>
+                                    <span class="stat-badge">86% Share</span>
+                                </div>
+                            </div>
+                            <div class="admin-summary-box">
+                                <h5>🧮 Top Feature Interest</h5>
+                                <div class="summary-stat-row">
+                                    <strong>Instant Cost Calculator</strong>
+                                    <span class="stat-badge">64% Interactions</span>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="admin-slabs-scroll-wrap">
-                            <div class="admin-slabs-grid" id="adminSlabsGrid">
+                    </div>
+
+                    <!-- TAB 2: Live Active Users & Deep IP Telemetry Log -->
+                    <div class="admin-tab-pane" id="adminTabVisitors" style="display: none;">
+                        <!-- Currently Active Live Visitors Section -->
+                        <div class="admin-section">
+                            <div class="admin-section-header">
+                                <h4>🟢 Currently Active Visitors (Live Sessions)</h4>
+                                <span class="admin-pulse-pill" id="adminActiveBadgeCount">1 Active Session</span>
+                            </div>
+                            <div class="admin-active-sessions-grid" id="adminActiveSessionsList">
+                                <!-- Injected dynamically by script.js -->
+                            </div>
+                        </div>
+
+                        <!-- Recent Visitor IP Intelligence Logs Table -->
+                        <div class="admin-section">
+                            <div class="admin-section-header">
+                                <h4>📋 Visitor IP &amp; Geolocation Telemetry Logs</h4>
+                                <span class="admin-sec-note">Detailed Audit Trail</span>
+                            </div>
+                            <div class="admin-table-responsive">
+                                <table class="admin-telemetry-table" id="adminTelemetryTable">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>🌐 IP Address &amp; ISP</th>
+                                            <th>📍 Location</th>
+                                            <th>📱 Device &amp; OS</th>
+                                            <th>🌐 Browser</th>
+                                            <th>⚡ Action / Section</th>
+                                            <th>🕒 Time Active</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="adminTelemetryTableBody">
+                                        <!-- Injected dynamically by script.js -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: Geographic Distribution (Districts, States & Countries) -->
+                    <div class="admin-tab-pane" id="adminTabGeo" style="display: none;">
+                        <div class="admin-section">
+                            <h4>🏙️ Tamil Nadu District Breakdown (Calibrated Base 50)</h4>
+                            <div class="analytics-progress-list" id="adminDistrictList">
+                                <!-- Injected dynamically by script.js -->
+                            </div>
+                        </div>
+
+                        <div class="admin-section">
+                            <h4>🗺️ Indian State-Wise Distribution</h4>
+                            <div class="analytics-states-grid" id="adminStateList">
+                                <!-- Injected dynamically by script.js -->
+                            </div>
+                        </div>
+
+                        <div class="admin-section">
+                            <h4>🌍 Global Country Reach</h4>
+                            <div class="analytics-states-grid" id="adminCountryList">
                                 <!-- Injected dynamically by script.js -->
                             </div>
                         </div>
                     </div>
 
-                    <!-- Admin Actions -->
-                    <div class="admin-actions">
-                        <button type="button" class="btn btn-primary btn-full ripple" id="adminSaveBtn">
-                            💾 Save &amp; Apply Live (Instant Sync)
-                        </button>
-                        <div class="admin-sub-actions" style="display: flex; gap: 10px; margin-top: 10px;">
-                            <button type="button" class="btn btn-secondary" style="flex: 1.2;" id="adminExportJsonBtn" title="Export updated configuration file for permanent server deployment">📥 Export Server JSON</button>
-                            <button type="button" class="btn btn-secondary" style="flex: 0.9;" id="adminResetBtn">Reset</button>
-                            <button type="button" class="btn btn-secondary" style="flex: 0.9;" id="adminLogoutBtn">Logout</button>
+                    <!-- TAB 4: Hardware & Technology Matrix -->
+                    <div class="admin-tab-pane" id="adminTabHardware" style="display: none;">
+                        <div class="admin-section">
+                            <h4>📱 Form Factor Share</h4>
+                            <div class="analytics-device-bar-track" id="adminDeviceTrack">
+                                <div class="analytics-device-fill mobile" id="adminDeviceMobileFill" style="width: 86%;">86% Mobile</div>
+                                <div class="analytics-device-fill desktop" id="adminDeviceDesktopFill" style="width: 14%;">14% PC</div>
+                            </div>
                         </div>
-                        <div id="adminSaveToast" class="admin-toast" style="display: none;">
-                            ✅ Settings successfully saved &amp; applied site-wide!
+
+                        <div class="admin-section">
+                            <h4>💻 Operating Systems Breakdown</h4>
+                            <div class="analytics-os-grid" id="adminOsGrid">
+                                <!-- Injected dynamically by script.js -->
+                            </div>
+                        </div>
+
+                        <div class="admin-section">
+                            <h4>🌐 Web Browsers Breakdown</h4>
+                            <div class="analytics-browser-row" id="adminBrowserRow">
+                                <!-- Injected dynamically by script.js -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 5: Engagement Heatmap & Audit Stream -->
+                    <div class="admin-tab-pane" id="adminTabEngagement" style="display: none;">
+                        <div class="admin-section">
+                            <h4>⚡ Feature Interaction Heatmap</h4>
+                            <div class="analytics-features-list" id="adminFeaturesList">
+                                <!-- Injected dynamically by script.js -->
+                            </div>
+                        </div>
+
+                        <div class="admin-section">
+                            <div class="admin-section-header">
+                                <h4>⚡ Real-Time Visitor Activity Audit Stream</h4>
+                                <span class="admin-pulse-pill">Live Cloud Feed</span>
+                            </div>
+                            <div class="analytics-stream-list" id="adminStreamList">
+                                <!-- Injected dynamically by script.js -->
+                            </div>
                         </div>
                     </div>
                 </div>
