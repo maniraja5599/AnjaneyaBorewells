@@ -162,5 +162,10 @@
         "rate": 1570
       }
     ]
+  },
+  "analytics": {
+    "baselineViews": 50,
+    "firebaseUrl": "",
+    "engine": "realtime_cloud_sync"
   }
 }

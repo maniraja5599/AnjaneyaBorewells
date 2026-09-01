@@ -3049,7 +3049,7 @@ class VisitorAnalyticsManager {
     }
 
     async syncLivePageViews(forceRefresh = false) {
-        // Load cached count as immediate instant display (reset any legacy 1,000+ cache to baseline 50)
+        // Load cached count as immediate instant display (baseline starting from 50)
         let cachedTotal = parseInt(localStorage.getItem('ab_total_pageviews'), 10);
         if (!cachedTotal || isNaN(cachedTotal) || cachedTotal >= 1000 || cachedTotal < this.baseCounterOffset) {
             cachedTotal = this.baseCounterOffset;
@@ -3060,30 +3060,55 @@ class VisitorAnalyticsManager {
 
         try {
             const hasCountedSession = sessionStorage.getItem('ab_session_viewed_v28');
-            // If new session, increment cloud hit (+1); if already in active session, just fetch latest total
-            const apiEndpoint = (!hasCountedSession && !forceRefresh)
-                ? 'https://api.counterapi.dev/v1/anjaneyaborewells-site-v28/pageviews/up'
-                : 'https://api.counterapi.dev/v1/anjaneyaborewells-site-v28/pageviews';
+            
+            // 1. Check for Configured Firebase Realtime Database URL
+            let firebaseUrl = window.ANJANEYA_FIREBASE_URL || '';
+            if (!firebaseUrl) {
+                try {
+                    const cfgRes = await fetch('./site-config.json', { cache: 'no-store' });
+                    if (cfgRes.ok) {
+                        const cfg = await cfgRes.json();
+                        if (cfg && cfg.analytics && cfg.analytics.firebaseUrl) {
+                            firebaseUrl = cfg.analytics.firebaseUrl;
+                        }
+                    }
+                } catch (e) {}
+            }
 
-            const response = await fetch(apiEndpoint, { cache: 'no-store' });
-            if (response.ok) {
-                const data = await response.json();
-                const rawCount = data.count || data.value || 0;
-                const grandTotal = this.baseCounterOffset + rawCount;
+            // 2. If Firebase Realtime Database is connected
+            if (firebaseUrl && firebaseUrl.startsWith('http')) {
+                const fbRes = await fetch(firebaseUrl, { cache: 'no-store' });
+                if (fbRes.ok) {
+                    let liveDbCount = await fbRes.json();
+                    if (typeof liveDbCount !== 'number' || isNaN(liveDbCount) || liveDbCount < this.baseCounterOffset) {
+                        liveDbCount = this.baseCounterOffset;
+                    }
 
-                localStorage.setItem('ab_total_pageviews', grandTotal.toString());
-                sessionStorage.setItem('ab_session_viewed_v28', 'true');
-                this.updateViewsDisplay(grandTotal);
-            } else {
-                if (!hasCountedSession) {
-                    cachedTotal += 1;
-                    localStorage.setItem('ab_total_pageviews', cachedTotal.toString());
-                    sessionStorage.setItem('ab_session_viewed_v28', 'true');
-                    this.updateViewsDisplay(cachedTotal);
+                    if (!hasCountedSession || forceRefresh) {
+                        liveDbCount += 1;
+                        await fetch(firebaseUrl, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(liveDbCount)
+                        });
+                        sessionStorage.setItem('ab_session_viewed_v28', 'true');
+                    }
+
+                    localStorage.setItem('ab_total_pageviews', liveDbCount.toString());
+                    this.updateViewsDisplay(liveDbCount);
+                    return;
                 }
             }
+
+            // 3. Fallback: Resilient Self-Healing Storage Sync
+            if (!hasCountedSession) {
+                cachedTotal += 1;
+                localStorage.setItem('ab_total_pageviews', cachedTotal.toString());
+                sessionStorage.setItem('ab_session_viewed_v28', 'true');
+                this.updateViewsDisplay(cachedTotal);
+            }
         } catch (err) {
-            console.warn('Real-time page views fetch note:', err);
+            console.warn('Real-time page views sync note:', err);
             if (!sessionStorage.getItem('ab_session_viewed_v28')) {
                 cachedTotal += 1;
                 localStorage.setItem('ab_total_pageviews', cachedTotal.toString());
