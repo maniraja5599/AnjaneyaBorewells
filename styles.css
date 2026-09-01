@@ -9732,3 +9732,405 @@ img {
         padding: 10px 12px;
     }
 }
+
+/* ==========================================================================
+   Live Visitor Analytics Modal & Clickable Footer Badge Styles (v2.7.0)
+   ========================================================================== */
+.footer-views-btn {
+    cursor: pointer !important;
+    border: 1px solid rgba(16, 185, 129, 0.4) !important;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.footer-views-btn:hover {
+    transform: translateY(-2px) scale(1.03);
+    border-color: #10b981 !important;
+    background: rgba(16, 185, 129, 0.15) !important;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.views-analytics-pill {
+    background: rgba(16, 185, 129, 0.25);
+    color: #10b981;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 12px;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    margin-left: 2px;
+}
+
+/* Analytics Modal Structure */
+.analytics-modal-content {
+    max-width: 520px !important;
+    border-radius: 20px !important;
+    border: 1.5px solid rgba(16, 185, 129, 0.35) !important;
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(16, 185, 129, 0.15) !important;
+    overflow: hidden;
+    background: #0f172a !important;
+    color: #f8fafc !important;
+}
+
+.analytics-modal-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding: 16px 20px !important;
+}
+
+.analytics-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.analytics-header-icon-wrap {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.analytics-modal-title {
+    margin: 0;
+    font-size: 1.12rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.analytics-modal-subtitle {
+    margin: 2px 0 0 0;
+    font-size: 0.74rem;
+    color: #94a3b8;
+}
+
+.analytics-modal-body {
+    padding: 20px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Key Metrics Grid */
+.analytics-metrics-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 12px;
+}
+
+.analytics-metric-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: transform 0.2s ease;
+}
+
+.analytics-metric-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.analytics-metric-card.primary {
+    border-color: rgba(16, 185, 129, 0.4);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(5, 150, 105, 0.05) 100%);
+}
+
+.metric-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.metric-badge {
+    font-size: 0.66rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.metric-badge.live-badge {
+    background: rgba(16, 185, 129, 0.25);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.metric-badge.active-now-badge {
+    background: rgba(56, 189, 248, 0.2);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+.analytics-metric-card .metric-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #ffffff;
+    font-family: monospace, sans-serif;
+    letter-spacing: -0.5px;
+}
+
+.analytics-metric-card .metric-label {
+    font-size: 0.72rem;
+    color: #94a3b8;
+}
+
+/* User Location Card */
+.analytics-user-loc-card {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-loc-icon {
+    font-size: 1.3rem;
+}
+
+.user-loc-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-loc-title {
+    font-size: 0.68rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.user-loc-text {
+    font-size: 0.86rem;
+    color: #34d399;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-loc-status-pill {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+/* Analytics Sections */
+.analytics-section {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 14px;
+}
+
+.analytics-section-title-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.analytics-sec-title {
+    margin: 0 0 10px 0;
+    font-size: 0.84rem;
+    font-weight: 700;
+    color: #f1f5f9;
+}
+
+.analytics-sec-tag {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    font-size: 0.64rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 10px;
+}
+
+/* Geo Progress Bars */
+.analytics-progress-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.geo-bar-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.geo-bar-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.76rem;
+    color: #cbd5e1;
+}
+
+.geo-bar-header .geo-city-name {
+    font-weight: 600;
+}
+
+.geo-bar-header .geo-count-badge {
+    font-family: monospace, sans-serif;
+    color: #34d399;
+    font-weight: 700;
+}
+
+.geo-track {
+    width: 100%;
+    height: 7px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.geo-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+    border-radius: 10px;
+    transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* States Grid */
+.analytics-states-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.analytics-state-pill {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 8px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.analytics-state-pill .state-name {
+    font-size: 0.74rem;
+    color: #e2e8f0;
+}
+
+.analytics-state-pill .state-pct {
+    font-size: 0.76rem;
+    color: #10b981;
+    font-family: monospace, sans-serif;
+}
+
+/* Device Bar */
+.analytics-device-bar-track {
+    width: 100%;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    font-size: 0.70rem;
+    font-weight: 700;
+    line-height: 24px;
+    text-align: center;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.analytics-device-fill.mobile {
+    background: linear-gradient(90deg, #0284c7 0%, #0369a1 100%);
+}
+
+.analytics-device-fill.desktop {
+    background: linear-gradient(90deg, #8b5cf6 0%, #6d28d9 100%);
+}
+
+.analytics-device-legend {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.72rem;
+    color: #94a3b8;
+}
+
+.legend-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+.legend-dot.mobile {
+    background: #0284c7;
+}
+
+.legend-dot.desktop {
+    background: #8b5cf6;
+}
+
+/* Footer Buttons */
+.analytics-modal-footer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.btn-analytics-refresh {
+    flex: 1;
+    background: rgba(16, 185, 129, 0.18);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    padding: 9px 16px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-analytics-refresh:hover {
+    background: rgba(16, 185, 129, 0.3);
+    border-color: #10b981;
+    transform: translateY(-1px);
+}
+
+.btn-analytics-close {
+    background: rgba(255, 255, 255, 0.08);
+    color: #cbd5e1;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 9px 20px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-analytics-close:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}

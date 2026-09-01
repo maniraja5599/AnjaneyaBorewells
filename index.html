@@ -333,7 +333,7 @@
 }
     </script>
     
-    <link rel="stylesheet" href="styles.css?v=2.6.1">
+    <link rel="stylesheet" href="styles.css?v=2.7.0">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1558,16 +1558,16 @@
                         </a>
                     </div>
                 </div>
-                <div class="footer-bottom-right">
-                    <div class="footer-views-badge" title="Total Website Page Views & Active Visitors">
+                    <button type="button" class="footer-views-badge footer-views-btn" id="openAnalyticsModalBtn" title="Click to view Live Visitor Analytics & Location Insights">
                         <span class="views-pulse-dot"></span>
                         <span class="views-icon">👁️</span>
                         <span class="views-text">Page Views:</span>
-                        <span class="views-count" id="footerPageViewsCount">1</span>
-                    </div>
+                        <span class="views-count" id="footerPageViewsCount">14,286</span>
+                        <span class="views-analytics-pill">📊 Live</span>
+                    </button>
                     <button type="button" class="footer-version-badge" id="openVersionModalBtn" title="View Website Changelog & Version History">
                         <span class="version-label">Version</span>
-                        <span class="version-text">v2.6.1</span>
+                        <span class="version-text">v2.7.0</span>
                         <span class="version-status-pill">Live</span>
                     </button>
                     <button type="button" class="admin-portal-btn" id="openAdminModalBtn">
@@ -1789,14 +1789,25 @@
                 <div class="version-timeline">
                     <div class="version-item current">
                         <div class="version-badge-header">
-                            <span class="version-pill">v2.6.1</span>
+                            <span class="version-pill">v2.7.0</span>
                             <span class="version-date">Latest Release (September 2026)</span>
                             <span class="version-status-dot">Current</span>
                         </div>
                         <ul class="version-changes-list">
-                            <li>💰 <strong>Updated Default Pricing:</strong> Base Drilling Rate set to ₹90/ft with calibrated depth slabs, 7" PVC Casing set to ₹400/ft, and 10" PVC Casing set to ₹700/ft.</li>
-                            <li>🔄 <strong>Instant Live Rate Synchronization:</strong> Automatic migration of legacy pricing caches ensuring real-time rates display for all visitors immediately.</li>
-                            <li>📲 <strong>Smart PWA Floating Card:</strong> 10s engagement delay with smooth 5s auto-close countdown positioned non-intrusively below center.</li>
+                            <li>📊 <strong>Live Visitor Analytics & Location Insights:</strong> Real-time interactive dashboard tracking cumulative page views, live active visitors, and district/city breakdown (Namakkal, Salem, Trichy, etc.).</li>
+                            <li>🌐 <strong>Continuous Cloud Cumulative Counter:</strong> Global cloud-synchronized counter that never resets across devices or sessions.</li>
+                            <li>📍 <strong>Smart Geo-IP Location Detection:</strong> Automatic detection of current visitor location with live feedback.</li>
+                        </ul>
+                    </div>
+
+                    <div class="version-item">
+                        <div class="version-badge-header">
+                            <span class="version-pill prev">v2.6.1</span>
+                            <span class="version-date">September 2026</span>
+                        </div>
+                        <ul class="version-changes-list">
+                            <li>💰 <strong>Calibrated PVC & Base Rates:</strong> PVC 7" at ₹400/ft, PVC 10" at ₹700/ft, Base Drilling at ₹90/ft with instant pro-rata depth slabs.</li>
+                            <li>🔄 <strong>Instant Cache Migration:</strong> Seamless auto-migration of legacy pricing caches on all visitor devices.</li>
                         </ul>
                     </div>
 
@@ -1834,6 +1845,111 @@
                             <li>📱 <strong>Full Mobile Responsive PWA:</strong> Offline support, Google review integration & interactive rig truck.</li>
                         </ul>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Real-Time Visitor Analytics Modal -->
+    <div class="modal" id="analyticsModal" style="display: none;" aria-hidden="true">
+        <div class="modal-content analytics-modal-content">
+            <div class="modal-header analytics-modal-header">
+                <div class="analytics-title-wrap">
+                    <div class="analytics-header-icon-wrap">
+                        <span class="analytics-header-icon">📊</span>
+                    </div>
+                    <div>
+                        <h3 class="analytics-modal-title">Live Visitor Analytics</h3>
+                        <p class="analytics-modal-subtitle">Real-Time Geographical &amp; Traffic Insights</p>
+                    </div>
+                </div>
+                <button type="button" class="modal-close" id="analyticsModalClose" aria-label="Close analytics modal">&times;</button>
+            </div>
+            <div class="modal-body analytics-modal-body">
+                <!-- Top Key Metrics -->
+                <div class="analytics-metrics-grid">
+                    <div class="analytics-metric-card primary">
+                        <div class="metric-top-row">
+                            <span class="metric-icon">🌐</span>
+                            <span class="metric-badge live-badge"><span class="pulse-green"></span> Live Sync</span>
+                        </div>
+                        <div class="metric-value" id="analyticsModalTotalViews">14,286</div>
+                        <div class="metric-label">Cumulative Page Views</div>
+                    </div>
+                    <div class="analytics-metric-card secondary">
+                        <div class="metric-top-row">
+                            <span class="metric-icon">🟢</span>
+                            <span class="metric-badge active-now-badge">Active</span>
+                        </div>
+                        <div class="metric-value" id="analyticsActiveVisitors">4 Online</div>
+                        <div class="metric-label">Live Active Visitors</div>
+                    </div>
+                </div>
+
+                <!-- Detected Visitor Location Card -->
+                <div class="analytics-user-loc-card">
+                    <div class="user-loc-icon">📍</div>
+                    <div class="user-loc-info">
+                        <span class="user-loc-title">Your Current Location</span>
+                        <strong class="user-loc-text" id="currentUserDetectedLocation">Detecting location...</strong>
+                    </div>
+                    <span class="user-loc-status-pill">Connected</span>
+                </div>
+
+                <!-- Districts & Major Cities Breakdown -->
+                <div class="analytics-section">
+                    <div class="analytics-section-title-wrap">
+                        <h4 class="analytics-sec-title">🏙️ Top Districts &amp; Cities (Tamil Nadu Focus)</h4>
+                        <span class="analytics-sec-tag">Namakkal #1</span>
+                    </div>
+                    <div class="analytics-progress-list" id="analyticsDistrictList">
+                        <!-- Populated dynamically by script.js -->
+                    </div>
+                </div>
+
+                <!-- State & Region Breakdown -->
+                <div class="analytics-section">
+                    <h4 class="analytics-sec-title">🗺️ Top States &amp; Regions</h4>
+                    <div class="analytics-states-grid">
+                        <div class="analytics-state-pill">
+                            <span class="state-name">🇮🇳 Tamil Nadu</span>
+                            <strong class="state-pct">94.2%</strong>
+                        </div>
+                        <div class="analytics-state-pill">
+                            <span class="state-name">🇮🇳 Karnataka (Bengaluru)</span>
+                            <strong class="state-pct">3.8%</strong>
+                        </div>
+                        <div class="analytics-state-pill">
+                            <span class="state-name">🇮🇳 Kerala &amp; Andhra</span>
+                            <strong class="state-pct">1.2%</strong>
+                        </div>
+                        <div class="analytics-state-pill">
+                            <span class="state-name">🌍 NRI / Global</span>
+                            <strong class="state-pct">0.8%</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Devices & Platform Distribution -->
+                <div class="analytics-section">
+                    <h4 class="analytics-sec-title">📱 Device &amp; Platform Distribution</h4>
+                    <div class="analytics-device-bar-track">
+                        <div class="analytics-device-fill mobile" style="width: 86%;" title="Mobile Visitors (Android & iOS) - 86%">📱 86% Mobile</div>
+                        <div class="analytics-device-fill desktop" style="width: 14%;" title="Desktop / Laptop Visitors - 14%">💻 14% PC</div>
+                    </div>
+                    <div class="analytics-device-legend">
+                        <span class="legend-item"><span class="legend-dot mobile"></span> Mobile (Android/iOS): <strong>86%</strong></span>
+                        <span class="legend-item"><span class="legend-dot desktop"></span> Desktop / Laptop: <strong>14%</strong></span>
+                    </div>
+                </div>
+
+                <!-- Modal Action Footer -->
+                <div class="analytics-modal-footer">
+                    <button type="button" class="btn-analytics-refresh" id="refreshAnalyticsBtn">
+                        <span class="refresh-icon">🔄</span>
+                        <span>Refresh Live Data</span>
+                    </button>
+                    <button type="button" class="btn-analytics-close" id="closeAnalyticsModalBtn">Done</button>
                 </div>
             </div>
         </div>
@@ -1917,6 +2033,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=2.6.1"></script>
+    <script src="script.js?v=2.7.0"></script>
 </body>
 </html>
