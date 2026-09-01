@@ -656,8 +656,8 @@ class AnjaneyaBorewells {
         }
         
         // Use saved settings or fallback to calculator defaults
-        const pvc7Rate = settings.pvc7Rate || this.calculator.defaults.pvc7Rate || 450;
-        const pvc10Rate = settings.pvc10Rate || this.calculator.defaults.pvc10Rate || 750;
+        const pvc7Rate = settings.pvc7Rate || this.calculator.defaults.pvc7Rate || 400;
+        const pvc10Rate = settings.pvc10Rate || this.calculator.defaults.pvc10Rate || 700;
         const baseDrillingRate = settings.baseDrillingRate || this.calculator.defaults.drillingRate || 90;
         const oldBoreRate = settings.oldBoreRate || this.calculator.defaults.oldBoreRate || 40;
         const boreBataRate = settings.boreBataRate || this.calculator.defaults.boreBataRate || 2000;
@@ -698,8 +698,8 @@ class AnjaneyaBorewells {
     }
     
     saveInlineSettings() {
-        const pvc7Rate = parseFloat(document.getElementById('inlinePvc7Rate')?.value) || 450;
-        const pvc10Rate = parseFloat(document.getElementById('inlinePvc10Rate')?.value) || 750;
+        const pvc7Rate = parseFloat(document.getElementById('inlinePvc7Rate')?.value) || 400;
+        const pvc10Rate = parseFloat(document.getElementById('inlinePvc10Rate')?.value) || 700;
         const baseDrillingRate = parseFloat(document.getElementById('inlineBaseDrillingRate')?.value) || 90;
         const oldBoreRate = parseFloat(document.getElementById('inlineOldBoreRate')?.value) || 40;
         const boreBataRate = parseFloat(document.getElementById('inlineBoreBataRate')?.value) || 2000;
@@ -716,7 +716,7 @@ class AnjaneyaBorewells {
                     end: def.end,
                     span: def.span,
                     range: def.rangeStr,
-                    rate: parseFloat(input.value) || def.defaultRate || 100
+                    rate: parseFloat(input.value) || def.defaultRate || 90
                 });
             });
         } else if (this.calculator.slabRates && this.calculator.slabRates.length > 0) {
@@ -768,8 +768,8 @@ class AnjaneyaBorewells {
     resetInlineSettings() {
         if (confirm('Are you sure you want to reset all settings to default values?')) {
             // Reset to default values
-            if (document.getElementById('inlinePvc7Rate')) document.getElementById('inlinePvc7Rate').value = 450;
-            if (document.getElementById('inlinePvc10Rate')) document.getElementById('inlinePvc10Rate').value = 750;
+            if (document.getElementById('inlinePvc7Rate')) document.getElementById('inlinePvc7Rate').value = 400;
+            if (document.getElementById('inlinePvc10Rate')) document.getElementById('inlinePvc10Rate').value = 700;
             if (document.getElementById('inlineBaseDrillingRate')) document.getElementById('inlineBaseDrillingRate').value = 90;
             if (document.getElementById('inlineOldBoreRate')) document.getElementById('inlineOldBoreRate').value = 40;
             if (document.getElementById('inlineBoreBataRate')) document.getElementById('inlineBoreBataRate').value = 2000;
@@ -783,8 +783,8 @@ class AnjaneyaBorewells {
             });
             
             // Update calculator defaults
-            this.calculator.defaults.pvc7Rate = 450;
-            this.calculator.defaults.pvc10Rate = 750;
+            this.calculator.defaults.pvc7Rate = 400;
+            this.calculator.defaults.pvc10Rate = 700;
             this.calculator.defaults.drillingRate = 90;
             this.calculator.defaults.oldBoreRate = 40;
             this.calculator.defaults.flushingRate = 40;
@@ -802,8 +802,8 @@ class AnjaneyaBorewells {
             
             // Save to localStorage
             localStorage.setItem('anjaneya-calculator-settings', JSON.stringify({
-                pvc7Rate: 450,
-                pvc10Rate: 750,
+                pvc7Rate: 400,
+                pvc10Rate: 700,
                 baseDrillingRate: 90,
                 oldBoreRate: 40,
                 flushingRate: 40,
@@ -1124,25 +1124,25 @@ class Navigation {
 
 class CostCalculator {
     static DEPTH_SLABS = [
-        { start: 1, end: 300, span: 300, inc: 0, defaultRate: 100, rangeStr: '001-300 ft' },
-        { start: 301, end: 400, span: 100, inc: 10, defaultRate: 110, rangeStr: '301-400 ft' },
-        { start: 401, end: 500, span: 100, inc: 30, defaultRate: 130, rangeStr: '401-500 ft' },
-        { start: 501, end: 600, span: 100, inc: 60, defaultRate: 160, rangeStr: '501-600 ft' },
-        { start: 601, end: 700, span: 100, inc: 100, defaultRate: 200, rangeStr: '601-700 ft' },
-        { start: 701, end: 800, span: 100, inc: 150, defaultRate: 250, rangeStr: '701-800 ft' },
-        { start: 801, end: 900, span: 100, inc: 210, defaultRate: 310, rangeStr: '801-900 ft' },
-        { start: 901, end: 1000, span: 100, inc: 280, defaultRate: 380, rangeStr: '901-1000 ft' },
-        { start: 1001, end: 1100, span: 100, inc: 380, defaultRate: 480, rangeStr: '1001-1100 ft' },
-        { start: 1101, end: 1200, span: 100, inc: 480, defaultRate: 580, rangeStr: '1101-1200 ft' },
-        { start: 1201, end: 1300, span: 100, inc: 580, defaultRate: 680, rangeStr: '1201-1300 ft' },
-        { start: 1301, end: 1400, span: 100, inc: 680, defaultRate: 780, rangeStr: '1301-1400 ft' },
-        { start: 1401, end: 1500, span: 100, inc: 780, defaultRate: 880, rangeStr: '1401-1500 ft' },
-        { start: 1501, end: 1600, span: 100, inc: 880, defaultRate: 980, rangeStr: '1501-1600 ft' },
-        { start: 1601, end: 1700, span: 100, inc: 980, defaultRate: 1080, rangeStr: '1601-1700 ft' },
-        { start: 1701, end: 1800, span: 100, inc: 1080, defaultRate: 1180, rangeStr: '1701-1800 ft' },
-        { start: 1801, end: 1900, span: 100, inc: 1180, defaultRate: 1280, rangeStr: '1801-1900 ft' },
-        { start: 1901, end: 2000, span: 100, inc: 1280, defaultRate: 1380, rangeStr: '1901-2000 ft' },
-        { start: 2001, end: 2200, span: 200, inc: 1480, defaultRate: 1580, rangeStr: '2001-2200 ft' }
+        { start: 1, end: 300, span: 300, inc: 0, defaultRate: 90, rangeStr: '001-300 ft' },
+        { start: 301, end: 400, span: 100, inc: 10, defaultRate: 100, rangeStr: '301-400 ft' },
+        { start: 401, end: 500, span: 100, inc: 30, defaultRate: 120, rangeStr: '401-500 ft' },
+        { start: 501, end: 600, span: 100, inc: 60, defaultRate: 150, rangeStr: '501-600 ft' },
+        { start: 601, end: 700, span: 100, inc: 100, defaultRate: 190, rangeStr: '601-700 ft' },
+        { start: 701, end: 800, span: 100, inc: 150, defaultRate: 240, rangeStr: '701-800 ft' },
+        { start: 801, end: 900, span: 100, inc: 210, defaultRate: 300, rangeStr: '801-900 ft' },
+        { start: 901, end: 1000, span: 100, inc: 280, defaultRate: 370, rangeStr: '901-1000 ft' },
+        { start: 1001, end: 1100, span: 100, inc: 380, defaultRate: 470, rangeStr: '1001-1100 ft' },
+        { start: 1101, end: 1200, span: 100, inc: 480, defaultRate: 570, rangeStr: '1101-1200 ft' },
+        { start: 1201, end: 1300, span: 100, inc: 580, defaultRate: 670, rangeStr: '1201-1300 ft' },
+        { start: 1301, end: 1400, span: 100, inc: 680, defaultRate: 770, rangeStr: '1301-1400 ft' },
+        { start: 1401, end: 1500, span: 100, inc: 780, defaultRate: 870, rangeStr: '1401-1500 ft' },
+        { start: 1501, end: 1600, span: 100, inc: 880, defaultRate: 970, rangeStr: '1501-1600 ft' },
+        { start: 1601, end: 1700, span: 100, inc: 980, defaultRate: 1070, rangeStr: '1601-1700 ft' },
+        { start: 1701, end: 1800, span: 100, inc: 1080, defaultRate: 1170, rangeStr: '1701-1800 ft' },
+        { start: 1801, end: 1900, span: 100, inc: 1180, defaultRate: 1270, rangeStr: '1801-1900 ft' },
+        { start: 1901, end: 2000, span: 100, inc: 1280, defaultRate: 1370, rangeStr: '1901-2000 ft' },
+        { start: 2001, end: 2200, span: 200, inc: 1480, defaultRate: 1570, rangeStr: '2001-2200 ft' }
     ];
 
     constructor() {
@@ -1150,10 +1150,10 @@ class CostCalculator {
             totalDepth: 800,
             pvc7Length: 30,
             pvc10Length: 15,
-            drillingRate: 100,
+            drillingRate: 90,
             gstPercentage: 18,
-            pvc7Rate: 450,
-            pvc10Rate: 750,
+            pvc7Rate: 400,
+            pvc10Rate: 700,
             oldBoreRate: 40,
             boreBataRate: 2000
         };
@@ -1426,9 +1426,9 @@ class CostCalculator {
     }
 
     getNormalizedSlabRates(baseRate) {
-        const effectiveBase = (baseRate !== undefined && baseRate > 0) ? baseRate : (this.defaults.drillingRate || 100);
+        const effectiveBase = (baseRate !== undefined && baseRate > 0) ? baseRate : (this.defaults.drillingRate || 90);
         if (this.slabRates && this.slabRates.length > 0) {
-            const currentFirstSlab = this.slabRates[0].rate || 100;
+            const currentFirstSlab = this.slabRates[0].rate || 90;
             const delta = effectiveBase - currentFirstSlab;
             return this.slabRates.map((s, idx) => {
                 const def = CostCalculator.DEPTH_SLABS[idx] || { start: 1, end: 300, span: 300 };
@@ -2023,12 +2023,12 @@ Drilling Cost (Slab Rate):`;
         // Additional items with bullet points
         if (inputs.pvc7Length > 0) {
             message += `
-• 7" PVC: ${inputs.pvc7Length} ft × ₹450/ft = Rs.${results.pvc7Cost.toLocaleString('en-IN')}`;
+• 7" PVC: ${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = Rs.${results.pvc7Cost.toLocaleString('en-IN')}`;
         }
         
         if (inputs.pvc10Length > 0) {
             message += `
-• 10" PVC: ${inputs.pvc10Length} ft × ₹750/ft = Rs.${results.pvc10Cost.toLocaleString('en-IN')}`;
+• 10" PVC: ${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = Rs.${results.pvc10Cost.toLocaleString('en-IN')}`;
         }
         
         message += `
@@ -2645,6 +2645,7 @@ async function loadServerSiteConfig() {
             if (window.anjaneyaApp.calculator) {
                 if (rates.casing7) window.anjaneyaApp.calculator.defaults.pvc7Rate = rates.casing7;
                 if (rates.casing10) window.anjaneyaApp.calculator.defaults.pvc10Rate = rates.casing10;
+                if (rates.drillingRate) window.anjaneyaApp.calculator.defaults.drillingRate = rates.drillingRate;
                 if (rates.transport) window.anjaneyaApp.calculator.defaults.boreBataRate = rates.transport;
                 if (rates.flushing) {
                     window.anjaneyaApp.calculator.defaults.flushingRate = rates.flushing;
@@ -3208,8 +3209,8 @@ class AdminPortal {
                     const def = CostCalculator.DEPTH_SLABS[idx];
                     if (def) input.value = def.defaultRate;
                 });
-                if (document.getElementById('adminCasing7')) document.getElementById('adminCasing7').value = 450;
-                if (document.getElementById('adminCasing10')) document.getElementById('adminCasing10').value = 750;
+                if (document.getElementById('adminCasing7')) document.getElementById('adminCasing7').value = 400;
+                if (document.getElementById('adminCasing10')) document.getElementById('adminCasing10').value = 700;
                 if (document.getElementById('adminTransportRate')) document.getElementById('adminTransportRate').value = 2000;
                 if (document.getElementById('adminFlushingRate')) document.getElementById('adminFlushingRate').value = 40;
                 if (stepAmountInput) stepAmountInput.value = 5;
@@ -3323,13 +3324,13 @@ class AdminPortal {
         if (document.getElementById('adminEmailAddress')) document.getElementById('adminEmailAddress').value = comp.email || 'anjaneyaborewells@gmail.com';
         if (document.getElementById('adminHeroBadgeText')) document.getElementById('adminHeroBadgeText').value = comp.heroBadge || '#1 Borewell Specialists in Namakkal • 25+ Yrs Trust';
         if (document.getElementById('adminYearsExp')) document.getElementById('adminYearsExp').value = comp.yearsExp || '25+';
-        const currentViews = localStorage.getItem('ab_total_pageviews') || '14285';
-        if (document.getElementById('adminViewersCount')) document.getElementById('adminViewersCount').value = comp.viewersCount || parseInt(currentViews, 10) || 14285;
+        const currentViews = localStorage.getItem('ab_total_pageviews') || '1';
+        if (document.getElementById('adminViewersCount')) document.getElementById('adminViewersCount').value = comp.viewersCount || parseInt(currentViews, 10) || 1;
         if (document.getElementById('adminSlogan')) document.getElementById('adminSlogan').value = comp.slogan || 'ஆழமான நம்பிக்கை!';
         if (document.getElementById('adminLocationText')) document.getElementById('adminLocationText').value = comp.location || 'Namakkal & Tamil Nadu';
 
-        if (document.getElementById('adminCasing7')) document.getElementById('adminCasing7').value = rates.casing7 || 450;
-        if (document.getElementById('adminCasing10')) document.getElementById('adminCasing10').value = rates.casing10 || 750;
+        if (document.getElementById('adminCasing7')) document.getElementById('adminCasing7').value = rates.casing7 || 400;
+        if (document.getElementById('adminCasing10')) document.getElementById('adminCasing10').value = rates.casing10 || 700;
         if (document.getElementById('adminFlushingRate')) document.getElementById('adminFlushingRate').value = rates.flushing || 40;
         if (document.getElementById('adminTransportRate')) document.getElementById('adminTransportRate').value = rates.transport || 2000;
 
@@ -3376,7 +3377,7 @@ class AdminPortal {
             const updatedSlabs = [];
             slabInputs.forEach((input, idx) => {
                 const def = CostCalculator.DEPTH_SLABS[idx] || {};
-                const rate = parseFloat(input.value) || def.defaultRate || 100;
+                const rate = parseFloat(input.value) || def.defaultRate || 90;
                 updatedSlabs.push({
                     start: def.start,
                     end: def.end,
@@ -3386,14 +3387,14 @@ class AdminPortal {
                 });
             });
 
-            const casing7Val = parseFloat(document.getElementById('adminCasing7')?.value) || 450;
-            const casing10Val = parseFloat(document.getElementById('adminCasing10')?.value) || 750;
+            const casing7Val = parseFloat(document.getElementById('adminCasing7')?.value) || 400;
+            const casing10Val = parseFloat(document.getElementById('adminCasing10')?.value) || 700;
             const flushingVal = parseFloat(document.getElementById('adminFlushingRate')?.value) || 40;
             const transportVal = parseFloat(document.getElementById('adminTransportRate')?.value) || 2000;
 
             const heroBadgeVal = document.getElementById('adminHeroBadgeText')?.value || '#1 Borewell Specialists in Namakkal • 25+ Yrs Trust';
             const yearsExpVal = document.getElementById('adminYearsExp')?.value || '25+';
-            const viewersVal = parseInt(document.getElementById('adminViewersCount')?.value, 10) || 14285;
+            const viewersVal = parseInt(document.getElementById('adminViewersCount')?.value, 10) || 1;
 
             const updatedSettings = {
                 companyInfo: {

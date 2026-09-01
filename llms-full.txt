@@ -28,30 +28,30 @@
    - Complete pump matching, water yield testing, flow rate measurement, and electrical panel setup.
 
 ## Current Standard Pricing & Rates (Transparent Quotation Policy)
-- **Base Drilling Rate**: Starts from ₹90 to ₹100 per foot (dynamic depth slabs apply).
+- **Base Drilling Rate**: Starts from ₹90 per foot (dynamic depth slabs apply).
 - **Depth Slab System (0 to 2200 Ft)**:
-  - 001–300 ft: ₹100/ft
-  - 301–400 ft: ₹110/ft
-  - 401–500 ft: ₹130/ft
-  - 501–600 ft: ₹160/ft
-  - 601–700 ft: ₹200/ft
-  - 701–800 ft: ₹250/ft
-  - 801–900 ft: ₹310/ft
-  - 901–1000 ft: ₹380/ft
-  - 1001–1100 ft: ₹480/ft
-  - 1101–1200 ft: ₹580/ft
-  - 1201–1300 ft: ₹680/ft
-  - 1301–1400 ft: ₹780/ft
-  - 1401–1500 ft: ₹880/ft
-  - 1501–1600 ft: ₹980/ft
-  - 1601–1700 ft: ₹1080/ft
-  - 1701–1800 ft: ₹1180/ft
-  - 1801–1900 ft: ₹1280/ft
-  - 1901–2000 ft: ₹1380/ft
-  - 2001–2100 ft: ₹1480/ft
-  - 2101–2200 ft: ₹1580/ft
-- **7" PVC Casing Pipe Rate**: ₹450 per foot
-- **10" PVC Casing Pipe Rate**: ₹750 per foot
+  - 001–300 ft: ₹90/ft
+  - 301–400 ft: ₹100/ft
+  - 401–500 ft: ₹120/ft
+  - 501–600 ft: ₹150/ft
+  - 601–700 ft: ₹190/ft
+  - 701–800 ft: ₹240/ft
+  - 801–900 ft: ₹300/ft
+  - 901–1000 ft: ₹370/ft
+  - 1001–1100 ft: ₹470/ft
+  - 1101–1200 ft: ₹570/ft
+  - 1201–1300 ft: ₹670/ft
+  - 1301–1400 ft: ₹770/ft
+  - 1401–1500 ft: ₹870/ft
+  - 1501–1600 ft: ₹970/ft
+  - 1601–1700 ft: ₹1070/ft
+  - 1701–1800 ft: ₹1170/ft
+  - 1801–1900 ft: ₹1270/ft
+  - 1901–2000 ft: ₹1370/ft
+  - 2001–2100 ft: ₹1470/ft
+  - 2101–2200 ft: ₹1570/ft
+- **7" PVC Casing Pipe Rate**: ₹400 per foot
+- **10" PVC Casing Pipe Rate**: ₹700 per foot
 - **Flushing / Old Bore Cleaning Rate**: ₹40 per foot
 - **Bore Bata / Site Setup**: ₹2000 flat per bore
 - **GST Rate**: Optional 18% with GST-compliant tax invoice generation
