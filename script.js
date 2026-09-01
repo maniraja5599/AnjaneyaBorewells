@@ -3140,6 +3140,23 @@ class VisitorAnalyticsManager {
                         this.userLocEl.textContent = locString;
                     }
                     localStorage.setItem('ab_user_detected_loc', locString);
+
+                    // Record visitor location into Firebase Realtime DB
+                    if (!sessionStorage.getItem('ab_geo_logged') && this.firebaseUrl) {
+                        sessionStorage.setItem('ab_geo_logged', 'true');
+                        const baseUrl = this.firebaseUrl.replace('/pageviews.json', '');
+                        const safeCity = city.replace(/[.#$/\[\]]/g, '_');
+                        fetch(`${baseUrl}/locations/${encodeURIComponent(safeCity)}.json`)
+                            .then(r => r.json())
+                            .then(curr => {
+                                const newCount = (typeof curr === 'number') ? curr + 1 : 1;
+                                fetch(`${baseUrl}/locations/${encodeURIComponent(safeCity)}.json`, {
+                                    method: 'PUT',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(newCount)
+                                }).catch(() => {});
+                            }).catch(() => {});
+                    }
                     return;
                 }
             }
