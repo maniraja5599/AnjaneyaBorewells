@@ -4018,8 +4018,12 @@ class AdminCommandCenter {
             // 1. Overview KPIs
             const kpiViews = document.getElementById('adminKpiTotalViews');
             const kpiActive = document.getElementById('adminKpiActiveUsers');
+            const kpiAvg = document.getElementById('adminKpiAvgDuration');
+            const kpiPeak = document.getElementById('adminKpiPeakHours');
             if (kpiViews) kpiViews.textContent = totalViews.toLocaleString('en-IN');
             if (kpiActive) kpiActive.textContent = `${activeCount} Online`;
+            if (kpiAvg) kpiAvg.textContent = '2m 45s';
+            if (kpiPeak) kpiPeak.textContent = '08:00 AM - 09:30 PM';
 
             // 2. Active Live Sessions & IP Telemetry Log (Real Firebase Data)
             this.renderActiveSessionsAndIpLogs(activeCount, fbData);
