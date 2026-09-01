@@ -10358,7 +10358,9 @@ img {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-top: 4px;
+    margin-top: 12px;
+    padding-bottom: 24px;
+    margin-bottom: 8px;
 }
 
 .btn-analytics-refresh {

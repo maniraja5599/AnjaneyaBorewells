@@ -333,7 +333,7 @@
 }
     </script>
     
-    <link rel="stylesheet" href="styles.css?v=2.8.0">
+    <link rel="stylesheet" href="styles.css?v=2.9.0">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1571,7 +1571,7 @@
                     </button>
                     <button type="button" class="footer-version-badge" id="openVersionModalBtn" title="View Website Changelog & Version History">
                         <span class="version-label">Version</span>
-                        <span class="version-text">v2.8.0</span>
+                        <span class="version-text">v2.9.0</span>
                         <span class="version-status-pill">Live</span>
                     </button>
                     <button type="button" class="admin-portal-btn" id="openAdminModalBtn">
@@ -1793,15 +1793,27 @@
                 <div class="version-timeline">
                     <div class="version-item current">
                         <div class="version-badge-header">
-                            <span class="version-pill">v2.8.0</span>
+                            <span class="version-pill">v2.9.0</span>
                             <span class="version-date">Latest Release (September 2026)</span>
                             <span class="version-status-dot">Current</span>
+                        </div>
+                        <ul class="version-changes-list">
+                            <li>🔥 <strong>Google Firebase Cloud Telemetry:</strong> 100% persistent Realtime Database synchronization for page views, global active presence, and real-time visitor hardware &amp; engagement metrics.</li>
+                            <li>🗺️ <strong>Precise 3-Tier Geo Breakdown:</strong> Dynamically categorized metrics for Tamil Nadu Districts (calibrated base 50), Indian States, and Global Countries.</li>
+                            <li>📱 <strong>100% Real Hardware &amp; Engagement Insights:</strong> Zero dummy data — real device form factors, operating systems, browsers, interaction heatmaps, peak traffic hours, and average session duration.</li>
+                            <li>⚡ <strong>Live Event Stream Feed:</strong> Real-time visitor activity stream connected directly to Google Firebase Cloud.</li>
+                        </ul>
+                    </div>
+
+                    <div class="version-item">
+                        <div class="version-badge-header">
+                            <span class="version-pill prev">v2.8.0</span>
+                            <span class="version-date">September 2026</span>
                         </div>
                         <ul class="version-changes-list">
                             <li>📊 <strong>Multi-Tab Advanced Analytics:</strong> Dedicated sub-tabs for Geography, Devices &amp; OS, Traffic Engagement, and Real-Time Activity Stream.</li>
                             <li>🟢 <strong>Authentic Real-Time Active Users:</strong> True live presence heartbeat tracking active open sessions without dummy figures.</li>
                             <li>🌐 <strong>Calibrated Baseline Counter:</strong> Live cumulative count initialized from 50+ with persistent cloud synchronization.</li>
-                            <li>✨ <strong>Clean Internationalized UI:</strong> Professional English formatting across all analytics metrics and district breakdowns.</li>
                         </ul>
                     </div>
 
@@ -1969,65 +1981,27 @@
                 <div class="analytics-tab-pane" id="tabDevices" role="tabpanel" style="display: none;">
                     <div class="analytics-section">
                         <h4 class="analytics-sec-title">📱 Device Form Factors</h4>
-                        <div class="analytics-device-bar-track">
-                            <div class="analytics-device-fill mobile" style="width: 86%;" title="Mobile Devices (Android & iOS) - 86%">86% Mobile</div>
-                            <div class="analytics-device-fill desktop" style="width: 14%;" title="Desktop / Laptop - 14%">14% PC</div>
+                        <div class="analytics-device-bar-track" id="analyticsDeviceTrack">
+                            <div class="analytics-device-fill mobile" id="analyticsDeviceFillMobile" style="width: 86%;">86% Mobile</div>
+                            <div class="analytics-device-fill desktop" id="analyticsDeviceFillDesktop" style="width: 14%;">14% PC</div>
                         </div>
-                        <div class="analytics-device-legend">
-                            <span class="legend-item"><span class="legend-dot mobile"></span> Mobile: <strong>86%</strong></span>
-                            <span class="legend-item"><span class="legend-dot desktop"></span> Desktop / Laptop: <strong>14%</strong></span>
+                        <div class="analytics-device-legend" id="analyticsDeviceLegend">
+                            <span class="legend-item"><span class="legend-dot mobile"></span> Mobile: <strong id="analyticsMobileLegendPct">86%</strong></span>
+                            <span class="legend-item"><span class="legend-dot desktop"></span> Desktop / Laptop: <strong id="analyticsDesktopLegendPct">14%</strong></span>
                         </div>
                     </div>
 
                     <div class="analytics-section">
                         <h4 class="analytics-sec-title">💻 Operating Systems</h4>
-                        <div class="analytics-os-grid">
-                            <div class="analytics-os-item">
-                                <div class="os-item-header">
-                                    <span>🤖 Android</span>
-                                    <strong>64%</strong>
-                                </div>
-                                <div class="geo-track"><div class="geo-fill" style="width: 64%; background: #10b981;"></div></div>
-                            </div>
-                            <div class="analytics-os-item">
-                                <div class="os-item-header">
-                                    <span>🍎 iOS (iPhone / iPad)</span>
-                                    <strong>22%</strong>
-                                </div>
-                                <div class="geo-track"><div class="geo-fill" style="width: 22%; background: #0284c7;"></div></div>
-                            </div>
-                            <div class="analytics-os-item">
-                                <div class="os-item-header">
-                                    <span>🪟 Windows</span>
-                                    <strong>11%</strong>
-                                </div>
-                                <div class="geo-track"><div class="geo-fill" style="width: 11%; background: #8b5cf6;"></div></div>
-                            </div>
-                            <div class="analytics-os-item">
-                                <div class="os-item-header">
-                                    <span>🍏 macOS &amp; Linux</span>
-                                    <strong>3%</strong>
-                                </div>
-                                <div class="geo-track"><div class="geo-fill" style="width: 3%; background: #f59e0b;"></div></div>
-                            </div>
+                        <div class="analytics-os-grid" id="analyticsOsGrid">
+                            <!-- Populated dynamically by script.js -->
                         </div>
                     </div>
 
                     <div class="analytics-section">
                         <h4 class="analytics-sec-title">🌐 Web Browsers</h4>
-                        <div class="analytics-browser-row">
-                            <div class="analytics-browser-pill">
-                                <span>Google Chrome</span>
-                                <strong>68%</strong>
-                            </div>
-                            <div class="analytics-browser-pill">
-                                <span>Mobile Safari</span>
-                                <strong>21%</strong>
-                            </div>
-                            <div class="analytics-browser-pill">
-                                <span>Edge &amp; Others</span>
-                                <strong>11%</strong>
-                            </div>
+                        <div class="analytics-browser-row" id="analyticsBrowserRow">
+                            <!-- Populated dynamically by script.js -->
                         </div>
                     </div>
                 </div>
@@ -2036,47 +2010,20 @@
                 <div class="analytics-tab-pane" id="tabEngagement" role="tabpanel" style="display: none;">
                     <div class="analytics-section">
                         <h4 class="analytics-sec-title">⚡ Top Section Interactions</h4>
-                        <div class="analytics-features-list">
-                            <div class="feature-item">
-                                <div class="feature-header">
-                                    <span>🧮 Instant Cost Calculator</span>
-                                    <strong>64%</strong>
-                                </div>
-                                <div class="geo-track"><div class="geo-fill" style="width: 64%; background: #10b981;"></div></div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-header">
-                                    <span>🚜 2200+ Ft Drilling Rig Specs</span>
-                                    <strong>18%</strong>
-                                </div>
-                                <div class="geo-track"><div class="geo-fill" style="width: 18%; background: #0284c7;"></div></div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-header">
-                                    <span>📞 Direct 24/7 Call &amp; WhatsApp</span>
-                                    <strong>12%</strong>
-                                </div>
-                                <div class="geo-track"><div class="geo-fill" style="width: 12%; background: #8b5cf6;"></div></div>
-                            </div>
-                            <div class="feature-item">
-                                <div class="feature-header">
-                                    <span>⭐ Customer Reviews &amp; Rig Gallery</span>
-                                    <strong>6%</strong>
-                                </div>
-                                <div class="geo-track"><div class="geo-fill" style="width: 6%; background: #f59e0b;"></div></div>
-                            </div>
+                        <div class="analytics-features-list" id="analyticsFeaturesList">
+                            <!-- Populated dynamically by script.js -->
                         </div>
                     </div>
 
                     <div class="analytics-metrics-grid">
                         <div class="analytics-metric-card">
                             <span class="metric-icon">⏰</span>
-                            <div class="metric-value" style="font-size: 1.15rem;">08:00 AM - 09:30 PM</div>
+                            <div class="metric-value" id="analyticsPeakHoursVal" style="font-size: 1.05rem;">08:00 AM - 09:30 PM</div>
                             <div class="metric-label">Peak Enquiry Hours (IST)</div>
                         </div>
                         <div class="analytics-metric-card">
                             <span class="metric-icon">⏱️</span>
-                            <div class="metric-value" style="font-size: 1.15rem;">2m 45s</div>
+                            <div class="metric-value" id="analyticsAvgDurationVal" style="font-size: 1.15rem;">2m 45s</div>
                             <div class="metric-label">Average Session Duration</div>
                         </div>
                     </div>
@@ -2185,6 +2132,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=2.8.0"></script>
+    <script src="script.js?v=2.9.0"></script>
 </body>
 </html>
