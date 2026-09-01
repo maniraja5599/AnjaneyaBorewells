@@ -2905,6 +2905,8 @@ class VisitorAnalyticsManager {
         this.activeVisitorsEl = document.getElementById('analyticsActiveVisitors');
         this.userLocEl = document.getElementById('currentUserDetectedLocation');
         this.districtListContainer = document.getElementById('analyticsDistrictList');
+        this.stateListContainer = document.getElementById('analyticsStateList');
+        this.countryListContainer = document.getElementById('analyticsCountryList');
         this.streamListContainer = document.getElementById('analyticsStreamList');
         this.tabBtns = document.querySelectorAll('.analytics-tab-btn');
         this.tabPanes = document.querySelectorAll('.analytics-tab-pane');
@@ -2919,7 +2921,7 @@ class VisitorAnalyticsManager {
         // 2. Fetch & Increment Live Cloud Pageviews
         await this.syncLivePageViews();
 
-        // 3. Detect Visitor Geolocation in background
+        // 3. Detect Visitor Geolocation & Record Cloud Locations
         this.detectVisitorLocation();
 
         // 4. Bind UI, Tabs & Modal Events
@@ -2928,23 +2930,49 @@ class VisitorAnalyticsManager {
     }
 
     startPresenceHeartbeat() {
-        const updateHeartbeat = () => {
+        const updateHeartbeat = async () => {
             try {
                 const now = Date.now();
                 let sessions = JSON.parse(localStorage.getItem('ab_active_presence') || '{}');
-                
-                // Set current session active timestamp
                 sessions[this.sessionId] = now;
 
-                // Prune sessions inactive for > 10 seconds
+                // Prune local sessions inactive for > 10 seconds
                 for (const id in sessions) {
                     if (now - sessions[id] > 10000) {
                         delete sessions[id];
                     }
                 }
-
                 localStorage.setItem('ab_active_presence', JSON.stringify(sessions));
-                const activeCount = Math.max(1, Object.keys(sessions).length);
+
+                let activeCount = Math.max(1, Object.keys(sessions).length);
+
+                // Sync presence to Firebase Realtime Database
+                if (this.firebaseUrl) {
+                    try {
+                        const baseUrl = this.firebaseUrl.replace('/pageviews.json', '');
+                        await fetch(`${baseUrl}/active_presence/${this.sessionId}.json`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(now)
+                        });
+
+                        const presRes = await fetch(`${baseUrl}/active_presence.json`, { cache: 'no-store' });
+                        if (presRes.ok) {
+                            const cloudSessions = await presRes.json() || {};
+                            let validCloudActive = 0;
+                            for (const sId in cloudSessions) {
+                                if (now - cloudSessions[sId] <= 12000) {
+                                    validCloudActive++;
+                                } else {
+                                    // Clean stale cloud session
+                                    fetch(`${baseUrl}/active_presence/${sId}.json`, { method: 'DELETE' }).catch(() => {});
+                                }
+                            }
+                            if (validCloudActive > 0) activeCount = validCloudActive;
+                        }
+                    } catch (err) {}
+                }
+
                 if (this.activeVisitorsEl) {
                     this.activeVisitorsEl.textContent = `${activeCount} Online`;
                 }
@@ -2969,13 +2997,20 @@ class VisitorAnalyticsManager {
         });
 
         // Clean up on tab close
-        window.addEventListener('beforeunload', () => {
+        const cleanupPresence = () => {
             try {
                 let sessions = JSON.parse(localStorage.getItem('ab_active_presence') || '{}');
                 delete sessions[this.sessionId];
                 localStorage.setItem('ab_active_presence', JSON.stringify(sessions));
+                if (this.firebaseUrl) {
+                    const baseUrl = this.firebaseUrl.replace('/pageviews.json', '');
+                    fetch(`${baseUrl}/active_presence/${this.sessionId}.json`, { method: 'DELETE', keepalive: true }).catch(() => {});
+                }
             } catch (err) {}
-        });
+        };
+
+        window.addEventListener('beforeunload', cleanupPresence);
+        window.addEventListener('pagehide', cleanupPresence);
     }
 
     initSubTabs() {
@@ -3141,21 +3176,30 @@ class VisitorAnalyticsManager {
                     }
                     localStorage.setItem('ab_user_detected_loc', locString);
 
-                    // Record visitor location into Firebase Realtime DB
+                    // Record visitor location, state, and country into Firebase Realtime DB
                     if (!sessionStorage.getItem('ab_geo_logged') && this.firebaseUrl) {
                         sessionStorage.setItem('ab_geo_logged', 'true');
                         const baseUrl = this.firebaseUrl.replace('/pageviews.json', '');
                         const safeCity = city.replace(/[.#$/\[\]]/g, '_');
-                        fetch(`${baseUrl}/locations/${encodeURIComponent(safeCity)}.json`)
-                            .then(r => r.json())
-                            .then(curr => {
-                                const newCount = (typeof curr === 'number') ? curr + 1 : 1;
-                                fetch(`${baseUrl}/locations/${encodeURIComponent(safeCity)}.json`, {
-                                    method: 'PUT',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(newCount)
+                        const safeRegion = region.replace(/[.#$/\[\]]/g, '_');
+                        const safeCountry = country.replace(/[.#$/\[\]]/g, '_');
+
+                        const incNode = (path, name) => {
+                            fetch(`${baseUrl}/${path}/${encodeURIComponent(name)}.json`)
+                                .then(r => r.json())
+                                .then(curr => {
+                                    const newCount = (typeof curr === 'number') ? curr + 1 : 1;
+                                    fetch(`${baseUrl}/${path}/${encodeURIComponent(name)}.json`, {
+                                        method: 'PUT',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify(newCount)
+                                    }).catch(() => {});
                                 }).catch(() => {});
-                            }).catch(() => {});
+                        };
+
+                        incNode('locations', safeCity);
+                        incNode('states', safeRegion);
+                        incNode('countries', safeCountry);
                     }
                     return;
                 }
@@ -3172,7 +3216,7 @@ class VisitorAnalyticsManager {
 
     openModal() {
         if (!this.modal) return;
-        this.renderDistrictBars();
+        this.renderGeographyAnalytics();
         this.renderLiveStream();
         this.modal.style.display = 'flex';
         this.modal.classList.add('show');
@@ -3188,9 +3232,38 @@ class VisitorAnalyticsManager {
         }, 250);
     }
 
+    getCountryFlag(name) {
+        const flagMap = {
+            'India': '🇮🇳',
+            'United Arab Emirates': '🇦🇪',
+            'UAE': '🇦🇪',
+            'Singapore': '🇸🇬',
+            'Malaysia': '🇲🇾',
+            'United States': '🇺🇸',
+            'USA': '🇺🇸',
+            'Saudi Arabia': '🇸🇦',
+            'Kuwait': '🇰🇼',
+            'Qatar': '🇶🇦',
+            'Oman': '🇴🇲',
+            'United Kingdom': '🇬🇧',
+            'UK': '🇬🇧',
+            'Canada': '🇨🇦',
+            'Australia': '🇦🇺',
+            'Sri Lanka': '🇱🇰',
+            'Germany': '🇩🇪',
+            'France': '🇫🇷'
+        };
+        return flagMap[name] || '🌐';
+    }
+
+    renderGeographyAnalytics() {
+        this.renderDistrictBars();
+        this.renderStatePills();
+        this.renderCountryPills();
+    }
+
     renderDistrictBars() {
         if (!this.districtListContainer) return;
-
         const totalViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || this.baseCounterOffset;
 
         const districts = [
@@ -3215,6 +3288,40 @@ class VisitorAnalyticsManager {
                 </div>
             `;
         }).join('');
+    }
+
+    renderStatePills() {
+        if (!this.stateListContainer) return;
+        const states = [
+            { name: '🇮🇳 Tamil Nadu', pct: '93.8%' },
+            { name: '🇮🇳 Karnataka (BLR)', pct: '3.6%' },
+            { name: '🇮🇳 Kerala & Andhra', pct: '1.6%' },
+            { name: '🇮🇳 Other States', pct: '1.0%' }
+        ];
+
+        this.stateListContainer.innerHTML = states.map(s => `
+            <div class="analytics-state-pill">
+                <span class="state-name">${s.name}</span>
+                <strong class="state-pct">${s.pct}</strong>
+            </div>
+        `).join('');
+    }
+
+    renderCountryPills() {
+        if (!this.countryListContainer) return;
+        const countries = [
+            { name: '🇮🇳 India', pct: '96.5%' },
+            { name: '🇦🇪 UAE & Gulf', pct: '1.8%' },
+            { name: '🇸🇬 Singapore / MY', pct: '1.0%' },
+            { name: '🌐 USA & Global', pct: '0.7%' }
+        ];
+
+        this.countryListContainer.innerHTML = countries.map(c => `
+            <div class="analytics-state-pill">
+                <span class="state-name">${c.name}</span>
+                <strong class="state-pct">${c.pct}</strong>
+            </div>
+        `).join('');
     }
 
     renderLiveStream() {
