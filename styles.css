@@ -10087,6 +10087,205 @@ img {
     background: #8b5cf6;
 }
 
+/* Sub-Tabs Navigation for Analytics (v2.8.0) */
+.analytics-tabs-nav {
+    display: flex !important;
+    gap: 6px !important;
+    background: rgba(255, 255, 255, 0.04) !important;
+    padding: 6px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    min-height: 48px !important;
+}
+
+.analytics-tab-btn {
+    flex: 1 1 0px !important;
+    min-width: 0 !important;
+    min-height: 36px !important;
+    height: 36px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #cbd5e1 !important;
+    padding: 0 6px !important;
+    border-radius: 8px !important;
+    font-size: 0.74rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    box-sizing: border-box !important;
+}
+
+.analytics-tab-btn span {
+    color: inherit !important;
+    font-size: inherit !important;
+    font-weight: inherit !important;
+    display: inline-block !important;
+}
+
+.analytics-tab-btn:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+}
+
+.analytics-tab-btn.active {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border-color: #34d399 !important;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.45) !important;
+}
+
+.analytics-tab-pane {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    animation: analyticsPaneFade 0.25s ease-out;
+}
+
+@keyframes analyticsPaneFade {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* OS & Features Grid */
+.analytics-os-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.analytics-os-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.os-item-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.74rem;
+    color: #cbd5e1;
+}
+
+.os-item-header strong {
+    color: #34d399;
+    font-family: monospace, sans-serif;
+}
+
+.analytics-browser-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.analytics-browser-pill {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: 0.72rem;
+    color: #94a3b8;
+}
+
+.analytics-browser-pill strong {
+    color: #38bdf8;
+    font-size: 0.82rem;
+    font-family: monospace, sans-serif;
+}
+
+.analytics-features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.feature-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.feature-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.76rem;
+    color: #cbd5e1;
+}
+
+.feature-header strong {
+    color: #34d399;
+    font-family: monospace, sans-serif;
+}
+
+/* Live Stream Feed */
+.analytics-stream-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.stream-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.74rem;
+    color: #e2e8f0;
+    gap: 8px;
+}
+
+.stream-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.stream-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.stream-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    flex-shrink: 0;
+}
+
+.stream-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.stream-time {
+    color: #94a3b8;
+    font-size: 0.68rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
 /* Footer Buttons */
 .analytics-modal-footer {
     display: flex;
