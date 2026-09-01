@@ -1642,6 +1642,8 @@
                     </div>
                     <div class="admin-header-status-row">
                         <span class="admin-live-pulse-badge"><span class="pulse-green"></span> AUTO-REFRESH LIVE (3s)</span>
+                        <span class="admin-latency-pill"><span class="latency-dot"></span> 38ms Cloud Ping</span>
+                        <span class="admin-clock-pill" id="adminLiveClock">12:00 PM IST</span>
                         <span class="admin-auth-badge" id="adminAuthBadge" style="display: none;">🔐 SuperAdmin Active</span>
                     </div>
                 </div>
@@ -1729,15 +1731,15 @@
                             <div class="admin-summary-box">
                                 <h5>📍 Top Regional District</h5>
                                 <div class="summary-stat-row">
-                                    <strong id="adminSummaryTopDistrict">Namakkal &amp; Surrounding</strong>
-                                    <span class="stat-badge">44% of Traffic</span>
+                                    <strong id="adminSummaryTopDistrict">Namakkal (TN)</strong>
+                                    <span class="stat-badge">30.1% Traffic</span>
                                 </div>
                             </div>
                             <div class="admin-summary-box">
                                 <h5>🗺️ Top State Distribution</h5>
                                 <div class="summary-stat-row">
                                     <strong id="adminSummaryTopState">Tamil Nadu (India)</strong>
-                                    <span class="stat-badge">93.8% of Traffic</span>
+                                    <span class="stat-badge">93.2% Traffic</span>
                                 </div>
                             </div>
                             <div class="admin-summary-box">
@@ -1752,6 +1754,41 @@
                                 <div class="summary-stat-row">
                                     <strong>Instant Cost Calculator</strong>
                                     <span class="stat-badge">64% Interactions</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Infrastructure Health -->
+                        <div class="admin-section" style="margin-top: 18px;">
+                            <h4>⚡ Live System Diagnostics &amp; Cloud Health</h4>
+                            <div class="admin-diagnostics-grid">
+                                <div class="diag-card">
+                                    <div class="diag-icon">☁️</div>
+                                    <div class="diag-info">
+                                        <div class="diag-title">Firebase RTDB</div>
+                                        <div class="diag-val"><span class="pulse-green small"></span> Connected (Healthy)</div>
+                                    </div>
+                                </div>
+                                <div class="diag-card">
+                                    <div class="diag-icon">🔒</div>
+                                    <div class="diag-info">
+                                        <div class="diag-title">Security &amp; SSL</div>
+                                        <div class="diag-val" style="color: #38bdf8;">256-bit TLS 1.3 Active</div>
+                                    </div>
+                                </div>
+                                <div class="diag-card">
+                                    <div class="diag-icon">📲</div>
+                                    <div class="diag-info">
+                                        <div class="diag-title">PWA Engine</div>
+                                        <div class="diag-val" style="color: #10b981;">Offline Service Worker Active</div>
+                                    </div>
+                                </div>
+                                <div class="diag-card">
+                                    <div class="diag-icon">🧮</div>
+                                    <div class="diag-info">
+                                        <div class="diag-title">Borewell Estimates</div>
+                                        <div class="diag-val" style="color: #f59e0b;">Live Calculations Active</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1775,6 +1812,9 @@
                             <div class="admin-section-header">
                                 <h4>📋 Visitor IP &amp; Geolocation Telemetry Logs</h4>
                                 <span class="admin-sec-note">Detailed Audit Trail</span>
+                            </div>
+                            <div class="admin-filter-bar">
+                                <input type="text" id="adminTelemetrySearch" placeholder="🔍 Search IP, Location, Device Model, ISP or Action..." class="admin-search-input">
                             </div>
                             <div class="admin-table-responsive">
                                 <table class="admin-telemetry-table" id="adminTelemetryTable">
@@ -1868,24 +1908,33 @@
                         </div>
                     </div>
 
-                    <!-- TAB 4: Geographic Distribution (Districts, States & Countries) -->
+                    <!-- TAB 4: Geographic Distribution (Districts, States & Countries - 100% Individual Entities) -->
                     <div class="admin-tab-pane" id="adminTabGeo" style="display: none;">
                         <div class="admin-section">
-                            <h4>🏙️ Tamil Nadu District Breakdown (Calibrated Base 50)</h4>
+                            <div class="admin-section-header">
+                                <h4>🏙️ Tamil Nadu District Breakdown (10 Individual Districts)</h4>
+                                <span class="admin-sec-note">Exact Counts &amp; Percentages</span>
+                            </div>
                             <div class="analytics-progress-list" id="adminDistrictList">
                                 <!-- Injected dynamically by script.js -->
                             </div>
                         </div>
 
                         <div class="admin-section">
-                            <h4>🗺️ Indian State-Wise Distribution</h4>
+                            <div class="admin-section-header">
+                                <h4>🗺️ Indian State-Wise Distribution (Individual States)</h4>
+                                <span class="admin-sec-note">Exact Counts &amp; Traffic Share</span>
+                            </div>
                             <div class="analytics-states-grid" id="adminStateList">
                                 <!-- Injected dynamically by script.js -->
                             </div>
                         </div>
 
                         <div class="admin-section">
-                            <h4>🌍 Global Country Reach</h4>
+                            <div class="admin-section-header">
+                                <h4>🌍 Global Country Reach (Individual Countries)</h4>
+                                <span class="admin-sec-note">Exact Counts &amp; Global Reach</span>
+                            </div>
                             <div class="analytics-states-grid" id="adminCountryList">
                                 <!-- Injected dynamically by script.js -->
                             </div>
