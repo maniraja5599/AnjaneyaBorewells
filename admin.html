@@ -118,29 +118,21 @@
                     <span class="tab-icon">📊</span>
                     <span class="tab-title">Overview</span>
                 </button>
-                <button type="button" class="menu-tab-btn" data-tab="tabVisualCharts">
-                    <span class="tab-icon">📈</span>
-                    <span class="tab-title">Visual Charts</span>
-                </button>
-                <button type="button" class="menu-tab-btn" data-tab="tabLiveLogs">
-                    <span class="tab-icon">👥</span>
-                    <span class="tab-title">Visitor Intel</span>
+                <button type="button" class="menu-tab-btn" data-tab="tabActiveUsers">
+                    <span class="tab-icon">🟢</span>
+                    <span class="tab-title">Live Active Users</span>
                 </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabEstimatesLog">
                     <span class="tab-icon">💰</span>
                     <span class="tab-title">Quotes Log</span>
                 </button>
-                <button type="button" class="menu-tab-btn" data-tab="tabAppInstalls">
-                    <span class="tab-icon">📲</span>
-                    <span class="tab-title">App Fleet</span>
-                </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabGeoBreakdown">
                     <span class="tab-icon">🗺️</span>
-                    <span class="tab-title">Territory</span>
+                    <span class="tab-title">Territory Geo</span>
                 </button>
-                <button type="button" class="menu-tab-btn" data-tab="tabHardware">
-                    <span class="tab-icon">💻</span>
-                    <span class="tab-title">Hardware</span>
+                <button type="button" class="menu-tab-btn" data-tab="tabLiveLogs">
+                    <span class="tab-icon">👥</span>
+                    <span class="tab-title">Visitor Intel</span>
                 </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabSystemDocs">
                     <span class="tab-icon">📘</span>
@@ -378,65 +370,57 @@
                 </section>
             </div>
 
-            <!-- TAB PANE 2: VISUAL CHARTS (Deep Analytics) -->
-            <div class="admin-tab-pane" id="tabVisualCharts" style="display: none;">
+            <!-- TAB PANE 2: LIVE ACTIVE USERS (Dedicated Realtime Online Radar) -->
+            <div class="admin-tab-pane" id="tabActiveUsers" style="display: none;">
                 <!-- Tab Mini Analytics Ribbon -->
                 <section class="tab-mini-kpi-ribbon">
                     <div class="mini-kpi-card">
-                        <div class="m-label">PEAK TRAFFIC WINDOW</div>
-                        <div class="m-val text-cyan">08:00 AM - 09:30 PM</div>
-                        <div class="m-sub">Tamil Nadu Business Hours</div>
+                        <div class="m-label">CURRENT ACTIVE ON SITE</div>
+                        <div class="m-val text-green" id="activeUsersCountLive">1 Online Now</div>
+                        <div class="m-sub">15s Live Cloud Heartbeat</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">MOBILE DOMINANCE</div>
-                        <div class="m-val text-emerald">86.0% Share</div>
-                        <div class="m-sub">Android (62%) &amp; iPhone (24%)</div>
+                        <div class="m-label">PRIMARY ACTIVE DEVICE</div>
+                        <div class="m-val text-cyan" id="activeUsersTopDevice">Mobile (Android/iOS)</div>
+                        <div class="m-sub">Live Hardware Fingerprint</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">TOP CONVERSION CHANNEL</div>
-                        <div class="m-val text-purple">WhatsApp Direct</div>
-                        <div class="m-sub">28.4% Rig Inquiry Rate</div>
+                        <div class="m-label">ACTIVE SECTION FOCUS</div>
+                        <div class="m-val text-amber" id="activeUsersTopSection">Cost Calculator</div>
+                        <div class="m-sub">Current Engagement Area</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">HIGHEST DEMAND HUB</div>
-                        <div class="m-val text-amber">Namakkal (30.1%)</div>
-                        <div class="m-sub">Salem (19.2%) &amp; Trichy (13.7%)</div>
+                        <div class="m-label">CLOUD HEARTBEAT ENGINE</div>
+                        <div class="m-val text-emerald">Google Firebase RTDB</div>
+                        <div class="m-sub">Real-Time Sync (Singapore)</div>
                     </div>
                 </section>
 
-                <section class="deep-charts-grid">
-                    <div class="chart-panel">
-                        <div class="panel-header">
-                            <div class="panel-title-group">
-                                <span class="panel-icon">📱</span>
-                                <div>
-                                    <h3>Hardware &amp; Operating Systems Ecosystem</h3>
-                                    <p>Mobile vs Desktop vs Tablet market distribution</p>
-                                </div>
-                            </div>
-                            <span class="panel-badge badge-purple">Hardware Share</span>
-                        </div>
-                        <div class="panel-canvas-wrap">
-                            <canvas id="devicesChart"></canvas>
-                        </div>
+                <div class="data-table-container">
+                    <div class="table-toolbar">
+                        <h4>🟢 Live Active Visitors Currently Browsing Website</h4>
+                        <span class="toolbar-stat-pill" id="activeUsersPill">Real-Time Heartbeat Radar</span>
                     </div>
 
-                    <div class="chart-panel">
-                        <div class="panel-header">
-                            <div class="panel-title-group">
-                                <span class="panel-icon">🎯</span>
-                                <div>
-                                    <h3>Customer Conversion Funnel &amp; Action Heatmap</h3>
-                                    <p>Interactions with Calculator, WhatsApp, Calls &amp; PDF Quotes</p>
-                                </div>
-                            </div>
-                            <span class="panel-badge badge-amber">Funnel Audit</span>
-                        </div>
-                        <div class="panel-canvas-wrap">
-                            <canvas id="engagementChart"></canvas>
-                        </div>
+                    <div class="table-scroll-wrap">
+                        <table class="enterprise-table">
+                            <thead>
+                                <tr>
+                                    <th>Status &amp; Heartbeat</th>
+                                    <th>Device / Hardware</th>
+                                    <th>Detected District &amp; State</th>
+                                    <th>Current Page Section</th>
+                                    <th>Traffic Channel</th>
+                                    <th>Session Duration</th>
+                                    <th>Connected Since (IST)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activeUsersTableBody">
+                                <!-- Populated dynamically from Firebase /active_presence & /visitor_sessions -->
+                            </tbody>
+                        </table>
                     </div>
-                </section>
+                </div>
             </div>
 
             <!-- TAB PANE 3: VISITOR & IP LOGS -->
@@ -563,95 +547,41 @@
                 </div>
             </div>
 
-            <!-- TAB PANE 5: PWA APP FLEET -->
-            <div class="admin-tab-pane" id="tabAppInstalls" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon -->
-                <section class="tab-mini-kpi-ribbon">
-                    <div class="mini-kpi-card">
-                        <div class="m-label">TOTAL PWA FLEET</div>
-                        <div class="m-val text-purple" id="fleetTotalCount">48 Devices</div>
-                        <div class="m-sub">Homescreen Installed PWA</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">ANDROID PWA FLEET</div>
-                        <div class="m-val text-emerald">76.4% Share</div>
-                        <div class="m-sub">Samsung, Redmi, Vivo, Realme</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">DESKTOP / MAC PWA</div>
-                        <div class="m-val text-cyan">23.6% Share</div>
-                        <div class="m-sub">Windows &amp; macOS Chrome App</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">OFFLINE CACHE FLEET</div>
-                        <div class="m-val text-green">100% Ready</div>
-                        <div class="m-sub">ServiceWorker Active</div>
-                    </div>
-                </section>
-
-                <div class="data-table-container">
-                    <div class="table-toolbar">
-                        <h4>📲 PWA Mobile &amp; Desktop App Installations Fleet</h4>
-                        <span class="toolbar-stat-pill" id="installsCountPill">0 Total Installs</span>
-                    </div>
-
-                    <div class="table-scroll-wrap" id="installsTableScrollWrap">
-                        <table class="enterprise-table">
-                            <thead>
-                                <tr>
-                                    <th>Installation Timestamp</th>
-                                    <th>Client IP / Hash</th>
-                                    <th>Platform Type</th>
-                                    <th>Device Model</th>
-                                    <th>Territory Location</th>
-                                    <th>Install Trigger Source</th>
-                                </tr>
-                            </thead>
-                            <tbody id="installsTableBody">
-                                <!-- Populated dynamically with infinite scroll -->
-                            </tbody>
-                        </table>
-                        <div class="scroll-lazy-loader" id="installsLazyLoader" style="display: none;">
-                            <span class="loader-spinner">🔄</span>
-                            <span>Loading more device install logs...</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB PANE 6: TERRITORY & GEO MAP -->
+            <!-- TAB PANE 4: TERRITORY & GEO MAP (100% Real Live Distribution) -->
             <div class="admin-tab-pane" id="tabGeoBreakdown" style="display: none;">
                 <!-- Tab Mini Analytics Ribbon -->
                 <section class="tab-mini-kpi-ribbon">
                     <div class="mini-kpi-card">
-                        <div class="m-label">DISTRICTS COVERED</div>
-                        <div class="m-val text-emerald">38 / 38 TN</div>
-                        <div class="m-sub">100% Territory Reach</div>
+                        <div class="m-label">PRIMARY ACTIVE ZONE</div>
+                        <div class="m-val text-emerald" id="geoPrimaryZone">Tamil Nadu (95%+)</div>
+                        <div class="m-sub">Live Geographic Density</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">PRIMARY OPERATIONS ZONE</div>
-                        <div class="m-val text-cyan">Western TN (68.5%)</div>
-                        <div class="m-sub">Namakkal, Salem, Erode, Karur</div>
+                        <div class="m-label">TOP DRILLING DISTRICT</div>
+                        <div class="m-val text-cyan" id="geoTopDistrict">Namakkal Region</div>
+                        <div class="m-sub">Live Operational Hub</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">TOP SINGLE HOTSPOT</div>
-                        <div class="m-val text-amber">Namakkal (30.1%)</div>
-                        <div class="m-sub">63 Live Inquiries</div>
+                        <div class="m-label">TOTAL DETECTED HUBS</div>
+                        <div class="m-val text-amber" id="geoTotalDistrictsCount">10+ Territories</div>
+                        <div class="m-sub">Real-Time IP Telemetry</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">GLOBAL NRI INQUIRIES</div>
-                        <div class="m-val text-purple">1.8% NRI Share</div>
-                        <div class="m-sub">UAE, Singapore, Malaysia, USA</div>
+                        <div class="m-label">GLOBAL NRI VISITS</div>
+                        <div class="m-val text-purple" id="geoNriShare">Active Cloud Feed</div>
+                        <div class="m-sub">UAE, Singapore, USA</div>
                     </div>
                 </section>
 
                 <div class="geo-split-grid">
                     <div class="geo-panel">
                         <div class="panel-header">
-                            <h4>📍 Tamil Nadu Districts (10 Individual Territories)</h4>
-                            <small>Live drilling demand percentage</small>
+                            <h4>📍 Tamil Nadu &amp; Regional Districts (Real-Time Cloud Tracking)</h4>
+                            <small>Live drilling demand &amp; visitor ranking</small>
                         </div>
-                        <div class="geo-territory-list" id="geoDistrictsList"></div>
+                        <div class="geo-territory-list" id="geoDistrictsList">
+                            <!-- Populated dynamically from Firebase /locations.json -->
+                        </div>
                     </div>
 
                     <div class="geo-panel">
@@ -659,45 +589,18 @@
                             <h4>🇮🇳 Indian States</h4>
                             <small>Regional visitor distribution</small>
                         </div>
-                        <div class="geo-capsule-grid" id="geoStatesList"></div>
+                        <div class="geo-capsule-grid" id="geoStatesList">
+                            <!-- Populated dynamically from Firebase /states.json -->
+                        </div>
 
                         <div class="panel-header" style="margin-top: 24px;">
-                            <h4>🌐 Global NRI Traffic</h4>
+                            <h4>🌐 Global &amp; NRI Traffic</h4>
                             <small>International borewell inquiries</small>
                         </div>
-                        <div class="geo-capsule-grid" id="geoCountriesList"></div>
+                        <div class="geo-capsule-grid" id="geoCountriesList">
+                            <!-- Populated dynamically from Firebase /countries.json -->
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            <!-- TAB PANE 7: HARDWARE DIAGNOSTICS -->
-            <div class="admin-tab-pane" id="tabHardware" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon -->
-                <section class="tab-mini-kpi-ribbon">
-                    <div class="mini-kpi-card">
-                        <div class="m-label">SMARTPHONE DOMINANCE</div>
-                        <div class="m-val text-cyan">86% Mobile</div>
-                        <div class="m-sub">Touch-Optimized UI</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">NETWORK TELEMETRY</div>
-                        <div class="m-val text-emerald">92% High-Speed</div>
-                        <div class="m-sub">Jio 5G, Airtel 5G &amp; Wi-Fi</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">CHROMIUM ENGINE SHARE</div>
-                        <div class="m-val text-amber">74.0% Share</div>
-                        <div class="m-sub">Chrome Mobile &amp; Desktop</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">MEDIAN LATENCY</div>
-                        <div class="m-val text-green" id="hwMedianPing">24ms Ping</div>
-                        <div class="m-sub">Singapore Cloud Gateway</div>
-                    </div>
-                </section>
-
-                <div class="hardware-cards-grid" id="hardwareGrid">
-                    <!-- Populated dynamically -->
                 </div>
             </div>
 

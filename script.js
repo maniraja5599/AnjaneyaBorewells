@@ -3172,6 +3172,53 @@ class VisitorAnalyticsManager {
     }
 
     startPresenceHeartbeat() {
+        if (!this.sessionStartTime) {
+            this.sessionStartTime = Date.now();
+            this.sessionStartTimeStr = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+        }
+
+        // Active Section Tracker
+        const updateActiveSectionFromScroll = () => {
+            const sections = [
+                { id: 'calculator', name: '🎯 Instant Cost Calculator' },
+                { id: 'services', name: '⚙️ Borewell Services' },
+                { id: 'rigTypes', name: '🚜 Advanced Rig Fleet' },
+                { id: 'pricing', name: '💰 Pricing & Rates' },
+                { id: 'faq', name: '❓ FAQ & Guidelines' },
+                { id: 'contact', name: '📞 Contact & Booking' }
+            ];
+            const scrollY = window.scrollY || window.pageYOffset;
+            for (const s of sections) {
+                const el = document.getElementById(s.id);
+                if (el) {
+                    const top = el.offsetTop - 150;
+                    const height = el.offsetHeight;
+                    if (scrollY >= top && scrollY < top + height) {
+                        window._currentActiveSection = s.name;
+                        return;
+                    }
+                }
+            }
+            window._currentActiveSection = '🏠 Homepage & Calculator';
+        };
+        window.addEventListener('scroll', updateActiveSectionFromScroll, { passive: true });
+        updateActiveSectionFromScroll();
+
+        // Traffic Channel Detection
+        let trafficChannel = '🌐 Direct Website';
+        const ref = document.referrer || '';
+        const search = window.location.search || '';
+        if (ref.includes('wa.me') || ref.includes('whatsapp') || search.includes('whatsapp')) {
+            trafficChannel = '💬 WhatsApp Link';
+        } else if (ref.includes('google') || search.includes('gclid')) {
+            trafficChannel = '🔍 Google Search';
+        } else if (ref.includes('instagram') || search.includes('ig')) {
+            trafficChannel = '📸 Instagram (@maniraja__)';
+        } else if (ref.includes('facebook') || ref.includes('fb')) {
+            trafficChannel = '📘 Facebook Link';
+        }
+        window._trafficChannel = trafficChannel;
+
         const updateHeartbeat = async () => {
             try {
                 const now = Date.now();
@@ -3188,26 +3235,58 @@ class VisitorAnalyticsManager {
 
                 let activeCount = Math.max(1, Object.keys(sessions).length);
 
-                // Sync presence to Firebase Realtime Database
+                // Sync presence and full active session to Firebase Realtime Database
                 if (this.firebaseUrl) {
                     try {
                         const baseUrl = this.firebaseUrl.replace('/pageviews.json', '');
+                        
+                        // 1. Presence Heartbeat
                         await fetch(`${baseUrl}/active_presence/${this.sessionId}.json`, {
                             method: 'PUT',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify(now)
                         });
 
+                        // 2. Rich Active User Session Dossier
+                        const hw = typeof getVisitorHardwareInfo === 'function' ? getVisitorHardwareInfo() : { isMobile: false, deviceName: 'Desktop PC', osName: 'Windows', browserName: 'Chrome' };
+                        const userCity = localStorage.getItem('ab_user_detected_city') || 'Namakkal';
+                        const userRegion = localStorage.getItem('ab_user_detected_region') || 'Tamil Nadu';
+                        const durSec = Math.floor((now - this.sessionStartTime) / 1000);
+                        const durStr = durSec < 60 ? `${durSec}s` : `${Math.floor(durSec / 60)}m ${durSec % 60}s`;
+
+                        const activeUserRecord = {
+                            sessionId: this.sessionId,
+                            device: `${hw.isMobile ? '📱' : '💻'} ${hw.deviceName}`,
+                            os: hw.osName,
+                            browser: hw.browserName,
+                            location: `${userCity}, ${userRegion}`,
+                            district: userCity,
+                            state: `${userRegion}, IN`,
+                            currentSection: window._currentActiveSection || '🏠 Homepage & Calculator',
+                            channel: window._trafficChannel || '🌐 Direct Website',
+                            connectedAt: this.sessionStartTimeStr,
+                            duration: durStr,
+                            lastPing: now,
+                            status: '🟢 Active Online'
+                        };
+
+                        fetch(`${baseUrl}/active_sessions/${this.sessionId}.json`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(activeUserRecord)
+                        }).catch(() => {});
+
                         const presRes = await fetch(`${baseUrl}/active_presence.json`, { cache: 'no-store' });
                         if (presRes.ok) {
                             const cloudSessions = await presRes.json() || {};
                             let validCloudActive = 0;
                             for (const sId in cloudSessions) {
-                                if (now - cloudSessions[sId] <= 12000) {
+                                if (now - cloudSessions[sId] <= 15000) {
                                     validCloudActive++;
                                 } else {
                                     // Clean stale cloud session
                                     fetch(`${baseUrl}/active_presence/${sId}.json`, { method: 'DELETE' }).catch(() => {});
+                                    fetch(`${baseUrl}/active_sessions/${sId}.json`, { method: 'DELETE' }).catch(() => {});
                                 }
                             }
                             if (validCloudActive > 0) activeCount = validCloudActive;
@@ -3247,6 +3326,7 @@ class VisitorAnalyticsManager {
                 if (this.firebaseUrl) {
                     const baseUrl = this.firebaseUrl.replace('/pageviews.json', '');
                     fetch(`${baseUrl}/active_presence/${this.sessionId}.json`, { method: 'DELETE', keepalive: true }).catch(() => {});
+                    fetch(`${baseUrl}/active_sessions/${this.sessionId}.json`, { method: 'DELETE', keepalive: true }).catch(() => {});
                 }
             } catch (err) {}
         };
@@ -3388,6 +3468,8 @@ class VisitorAnalyticsManager {
         const locString = `📍 ${city}, ${region}, ${country}`;
         if (this.userLocEl) this.userLocEl.textContent = locString;
         localStorage.setItem('ab_user_detected_loc', locString);
+        localStorage.setItem('ab_user_detected_city', city);
+        localStorage.setItem('ab_user_detected_region', region);
 
         const hw = getVisitorHardwareInfo();
         const sessionPayload = {

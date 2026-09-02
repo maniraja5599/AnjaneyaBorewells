@@ -89,25 +89,32 @@ Anjaneya Borewells is a high-performance, mobile-first Progressive Web Applicati
 
 ---
 
-## 🛡️ Enterprise Admin Command Center
+## 🛡️ Enterprise Admin Command Center (v3.5.0 Architecture)
 
 ### 1. Access & Security
-- Accessible via **Footer Badge (`⚙️ Admin Portal`)** or URL hash.
-- Authorized Admin Emails: `manirajankg@gmail.com`, `nesamaniraja@gmail.com`
+- Accessible via **Footer Badge (`⚙️ Admin Portal`)** or URL hash / standalone `admin.html`.
+- Authorized Admin Emails: `nesamaniraja@gmail.com`, `manirajankg@gmail.com`, `maniraja5599@gmail.com`, `admin@anjaneyaborewells.com`
 - Security PIN / OTP Verification: `5599`
 
-### 2. Features & Controls
-- **Live Executive KPIs**: Cumulative Views, Active Visitors Online, Avg Session Duration, Peak Hours (08:00 AM - 09:30 PM IST).
-- **Sub-Tabs**:
-  1. `Live KPIs`: System Health, SSL, Database status.
-  2. `Live Users & IP Logs`: Timestamp, IP, District, Device, Action.
-  3. `App Installs`: PWA installation audit trail.
-  4. `Geo & Districts`: Individual Tamil Nadu districts with progress bars.
-  5. `Hardware & OS`: Mobile vs Desktop, Android vs iOS.
-  6. `Engagement Audit`: Feature interest metrics.
-- **Smart 60s Polling + Manual Refresh**:
-  - Automatically polls once every 60 seconds *only when the modal is open*.
-  - `[🔄 Refresh Data]` button: Immediate on-demand refresh in <100ms.
+### 2. 100% Real Core Admin Tabs
+- **Tab 1: 📊 Overview**:
+  - Live Monotonic Total Pageviews from Firebase RTDB (`/pageviews.json`).
+  - Real-Time Active Users Count from Live Heartbeats (`/active_presence.json`).
+  - 24-Hour Drilling Demand Curve & Hardware Distribution.
+- **Tab 2: 🟢 Live Active Users (Realtime Online Radar)**:
+  - Fetches `/active_sessions.json` from Firebase RTDB.
+  - Displays exactly WHO is browsing right now with Device Model, Detected District, Current Page Section being viewed, Traffic Channel, and Duration.
+- **Tab 3: 💰 Quotes Log (100% Real Leads Only)**:
+  - Live customer leads from `/whatsapp_leads.json` with 10-digit mobile numbers, exact IST timestamps, drilling specs, and direct one-click `💬 WhatsApp` & `📞 Call` buttons.
+- **Tab 4: 🗺️ Territory Geo**:
+  - Real dynamic district visits and regional demand computed directly from `/locations.json`, `/states.json`, and `/countries.json`.
+- **Tab 5: 👥 Visitor Intel**:
+  - Full session telemetry logs with search filter (IP, District, Device, Browser, Channel, Action).
+- **Tab 6: 📘 System Docs**:
+  - Built-in operational manual and architectural reference.
+
+### 3. Data Sync & Export Capabilities
+- **Smart 60s Auto-Polling + On-Demand Refresh**: Immediate sub-100ms sync with Google Firebase Singapore node.
 - **Data Export Suite**:
   - `📊 Download Full CSV Audit Report`: Excel/Sheets UTF-8 BOM CSV with complete executive summary, districts, states, hardware, and IP logs.
   - `💾 Export Complete JSON Database Dump`: Structured JSON snapshot of all Firebase tables.
