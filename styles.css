@@ -5246,24 +5246,18 @@ img {
         border-bottom: none;
     }
     
-    .nav-toggle {
-        display: flex;
-        order: 3;
-        padding: 4px;
-        margin-left: 6px;
-    }
-    
     .nav-cta {
-        order: 2;
-        display: flex;
-        align-items: center;
+        order: 2 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
         margin-left: auto !important;
         flex: 0 0 auto !important;
-        gap: 6px;
-        z-index: 5;
+        gap: 6px !important;
+        z-index: 50 !important;
     }
     
-    /* Mobile Compact Rate button shifted right */
+    /* Mobile Compact Rate button */
     #navWhatsappBtn {
         padding: 4px 8px !important;
         font-size: 0.72rem !important;
@@ -5275,6 +5269,8 @@ img {
         box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1) !important;
         white-space: nowrap !important;
         flex-shrink: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
     }
 
     #navWhatsappBtn svg {
@@ -5283,54 +5279,82 @@ img {
         margin-right: 2px !important;
         flex-shrink: 0 !important;
     }
+
+    /* Mobile 3-Lines Hamburger Menu Icon */
+    .nav-toggle {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        width: 28px !important;
+        height: 20px !important;
+        min-width: 28px !important;
+        min-height: 20px !important;
+        background: transparent !important;
+        border: none !important;
+        cursor: pointer !important;
+        padding: 0 !important;
+        margin: 0 0 0 4px !important;
+        flex-shrink: 0 !important;
+        z-index: 100 !important;
+    }
+
+    .nav-toggle span {
+        width: 100% !important;
+        height: 2.5px !important;
+        background-color: #15803d !important;
+        border-radius: 2px !important;
+        display: block !important;
+        margin: 0 !important;
+        transition: all 0.3s ease !important;
+    }
     
     .nav-brand {
-        order: 1;
-        flex: 1 1 auto;
-        min-width: 0;
-        max-width: calc(100% - 110px);
-        overflow: hidden;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding-right: 2px;
+        order: 1 !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        max-width: calc(100% - 120px) !important;
+        overflow: hidden !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        padding-right: 2px !important;
     }
 
     .brand-link {
-        gap: 6px;
-        align-items: center;
-        min-width: 0;
-        max-width: 100%;
+        gap: 6px !important;
+        align-items: center !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
     }
 
     .brand-logo-img {
-        width: 38px;
-        height: 38px;
-        flex-shrink: 0;
+        width: 38px !important;
+        height: 38px !important;
+        flex-shrink: 0 !important;
     }
 
     .brand-title-wrap {
-        min-width: 0;
-        overflow: hidden;
+        min-width: 0 !important;
+        overflow: hidden !important;
     }
 
     .company-name {
         font-size: clamp(0.70rem, 3.4vw, 0.88rem) !important;
-        line-height: 1.15;
-        white-space: nowrap;
-        text-align: left;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        letter-spacing: -0.02em;
+        line-height: 1.15 !important;
+        white-space: nowrap !important;
+        text-align: left !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        letter-spacing: -0.02em !important;
     }
 
     .tamil-slogan {
         font-size: clamp(0.55rem, 2.4vw, 0.62rem) !important;
-        margin: 1px 0 0 0;
-        white-space: nowrap;
-        text-align: left;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        margin: 1px 0 0 0 !important;
+        white-space: nowrap !important;
+        text-align: left !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
 
     .global-bg-logo-layer {

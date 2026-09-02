@@ -2947,7 +2947,7 @@ function getVisitorHardwareInfo() {
 
 class VisitorAnalyticsManager {
     constructor() {
-        this.baseCounterOffset = 105; // Hard floor baseline (strictly monotonic non-decreasing)
+        this.baseCounterOffset = 209; // Strict monotonic floor baseline (209+)
         this.firebaseUrl = 'https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app/pageviews.json';
         this.sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         this.footerCountEl = document.getElementById('footerPageViewsCount');
@@ -3139,21 +3139,14 @@ class VisitorAnalyticsManager {
     }
 
     async syncLivePageViews() {
-        const ABSOLUTE_MIN_VIEWS = 105;
-        let cachedTotal = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || ABSOLUTE_MIN_VIEWS;
-        // Sanity check: Discard any previous accidental 14k+ anomaly
-        if (cachedTotal > 2000) {
-            cachedTotal = ABSOLUTE_MIN_VIEWS;
-            localStorage.setItem('ab_total_pageviews', ABSOLUTE_MIN_VIEWS.toString());
-        }
-        if (cachedTotal < ABSOLUTE_MIN_VIEWS) cachedTotal = ABSOLUTE_MIN_VIEWS;
-
+        const ABSOLUTE_MIN_VIEWS = 209;
+        
         try {
             const res = await fetch(this.firebaseUrl, { cache: 'no-store' });
             if (res.ok) {
                 const cloudVal = await res.json();
-                let cloudCount = (typeof cloudVal === 'number' && cloudVal >= ABSOLUTE_MIN_VIEWS && cloudVal < 2000) ? cloudVal : ABSOLUTE_MIN_VIEWS;
-                let activeCurrentTotal = Math.max(ABSOLUTE_MIN_VIEWS, cachedTotal, cloudCount);
+                let cloudCount = (typeof cloudVal === 'number' && cloudVal >= ABSOLUTE_MIN_VIEWS) ? cloudVal : ABSOLUTE_MIN_VIEWS;
+                let activeCurrentTotal = Math.max(ABSOLUTE_MIN_VIEWS, cloudCount);
 
                 if (!sessionStorage.getItem('ab_session_viewed_v30')) {
                     activeCurrentTotal += 1;
@@ -3166,24 +3159,13 @@ class VisitorAnalyticsManager {
                     }).catch(() => {});
                 }
 
-                localStorage.setItem('ab_total_pageviews', activeCurrentTotal.toString());
                 this.updateViewsDisplay(activeCurrentTotal);
             } else {
-                if (!sessionStorage.getItem('ab_session_viewed_v30')) {
-                    cachedTotal += 1;
-                    localStorage.setItem('ab_total_pageviews', cachedTotal.toString());
-                    sessionStorage.setItem('ab_session_viewed_v30', 'true');
-                }
-                this.updateViewsDisplay(cachedTotal);
+                this.updateViewsDisplay(ABSOLUTE_MIN_VIEWS);
             }
         } catch (err) {
             console.warn('Real-time page views sync note:', err);
-            if (!sessionStorage.getItem('ab_session_viewed_v30')) {
-                cachedTotal += 1;
-                localStorage.setItem('ab_total_pageviews', cachedTotal.toString());
-                sessionStorage.setItem('ab_session_viewed_v30', 'true');
-            }
-            this.updateViewsDisplay(cachedTotal);
+            this.updateViewsDisplay(ABSOLUTE_MIN_VIEWS);
         }
     }
 

@@ -192,6 +192,10 @@ class StandaloneAdminCommandCenter {
                         pane.classList.remove('active');
                     }
                 });
+
+                if (target === 'tabSystemDocs') {
+                    this.renderDocs();
+                }
             });
         });
 
@@ -327,8 +331,8 @@ class StandaloneAdminCommandCenter {
             this.latestFbData = fbData;
             
             // Strictly monotonic non-decreasing live pageviews
-            const rawViews = typeof fbData.pageviews === 'number' ? fbData.pageviews : 110;
-            this.latestTotalViews = Math.max(110, rawViews);
+            const rawViews = typeof fbData.pageviews === 'number' ? fbData.pageviews : 209;
+            this.latestTotalViews = Math.max(209, rawViews);
 
             // Active users online
             let activeCount = 1;
@@ -708,6 +712,35 @@ class StandaloneAdminCommandCenter {
 
         if (this.purgeBtn) this.purgeBtn.innerHTML = '✅ Cache Cleared!';
         setTimeout(() => window.location.reload(true), 400);
+    }
+
+    async renderDocs() {
+        const box = document.getElementById('docsViewBox');
+        if (!box) return;
+        if (box.dataset.loaded === 'true') return;
+
+        try {
+            box.innerHTML = '<div style="text-align:center; padding: 20px; color:#38bdf8;">⏳ Loading System Architecture Manual...</div>';
+            const res = await fetch('PROJECT_DOCUMENTATION.md?_t=' + Date.now(), { cache: 'no-store' });
+            if (!res.ok) throw new Error('File not found');
+            const mdText = await res.text();
+            
+            // Format markdown text with clean HTML formatting
+            let html = mdText
+                .replace(/^# (.*$)/gim, '<h2 style="font-size:1.35rem; color:#10b981; margin:16px 0 8px 0; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px;">$1</h2>')
+                .replace(/^## (.*$)/gim, '<h3 style="font-size:1.1rem; color:#38bdf8; margin:14px 0 6px 0;">$1</h3>')
+                .replace(/^### (.*$)/gim, '<h4 style="font-size:0.95rem; color:#f8fafc; margin:10px 0 4px 0;">$1</h4>')
+                .replace(/\*\*(.*?)\*\*/gim, '<strong style="color:#ffffff;">$1</strong>')
+                .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+                .replace(/```([\s\S]*?)```/gim, '<pre style="background:#070d1e; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); font-family:monospace; font-size:0.78rem; overflow-x:auto; margin:10px 0; color:#cbd5e1;"><code>$1</code></pre>')
+                .replace(/^\- (.*$)/gim, '<li style="margin-left:18px; margin-bottom:4px;">$1</li>')
+                .replace(/\n\n/gim, '<br><br>');
+
+            box.innerHTML = html;
+            box.dataset.loaded = 'true';
+        } catch (err) {
+            box.innerHTML = '<div style="color:#f87171;">Unable to load documentation automatically. Please use the Download button above.</div>';
+        }
     }
 
     exportAuditReport(format = 'csv') {

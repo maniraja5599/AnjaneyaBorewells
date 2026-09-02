@@ -97,13 +97,13 @@
             <form class="auth-form" id="adminAuthForm" onsubmit="return false;">
                 <div class="form-group">
                     <label for="adminAuthEmail">SuperAdmin Email Address</label>
-                    <input type="email" id="adminAuthEmail" class="auth-input" placeholder="manirajankg@gmail.com" required autocomplete="email">
+                    <input type="email" id="adminAuthEmail" class="auth-input" placeholder="Enter authorized administrator email..." required autocomplete="email">
                 </div>
 
                 <div class="form-group" id="adminOtpGroup" style="display: none;">
                     <label for="adminAuthOtp">Security PIN / OTP Code</label>
-                    <input type="password" id="adminAuthOtp" class="auth-input" placeholder="Enter 4-digit code (7777)" maxlength="4" autocomplete="one-time-code">
-                    <small class="auth-hint">Default Security PIN: <strong>7777</strong></small>
+                    <input type="password" id="adminAuthOtp" class="auth-input" placeholder="••••" maxlength="4" autocomplete="one-time-code">
+                    <small class="auth-hint">Enter your 4-digit security PIN</small>
                 </div>
 
                 <div class="auth-error" id="adminAuthError" style="display: none;"></div>
@@ -255,6 +255,9 @@
                     <button type="button" class="tab-btn" data-tab="tabActivityStream">
                         ⚡ Real-Time Live Feed
                     </button>
+                    <button type="button" class="tab-btn" data-tab="tabSystemDocs">
+                        📘 System Docs &amp; Guide
+                    </button>
                 </div>
 
                 <!-- Tab 1: Live Logs -->
@@ -340,6 +343,19 @@
                 <div class="tab-pane" id="tabActivityStream" style="display: none;">
                     <div class="stream-container" id="liveActivityStream">
                         <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Tab 6: System Documentation & Operations Manual -->
+                <div class="tab-pane" id="tabSystemDocs" style="display: none;">
+                    <div class="pane-toolbar">
+                        <h4>📘 Master System Documentation &amp; Architecture Manual</h4>
+                        <a href="PROJECT_DOCUMENTATION.md" target="_blank" download class="btn-top-action btn-refresh" style="text-decoration:none;">
+                            ⬇️ Download Markdown Manual (.md)
+                        </a>
+                    </div>
+                    <div class="docs-view-box" id="docsViewBox" style="background: rgba(0,0,0,0.3); border: 1px solid var(--border-color); border-radius: 12px; padding: 22px; max-height: 520px; overflow-y: auto; font-size: 0.85rem; line-height: 1.7; color: #e2e8f0;">
+                        <!-- Rendered by admin.js -->
                     </div>
                 </div>
             </section>
