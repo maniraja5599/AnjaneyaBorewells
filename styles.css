@@ -782,24 +782,9 @@ h2 {
     text-align: center;
 }
 
-h2::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
-    z-index: 1;
-}
-
-h2::after {
-    content: attr(data-text);
+/* Clean modern heading styles */
+h2 {
     position: relative;
-    background: var(--bg-color);
-    padding: 0 2rem;
-    z-index: 2;
-    display: inline-block;
 }
 h3 { font-size: 1.5rem; }
 h4 { font-size: 1.25rem; }
@@ -6616,8 +6601,6 @@ img {
     
     /* Fix Drilling Type buttons visibility on small mobile - Vertical Layout */
     .drilling-type-compact {
-        flex-direction: column;
-    .drilling-type-compact {
         display: flex !important;
         flex-direction: column !important;
         align-items: stretch !important;
@@ -8921,8 +8904,6 @@ img {
 .admin-sec-note {
     font-size: 0.72rem;
     color: #94a3b8;
-}
-    color: #64748b;
     margin-top: 4px;
     display: block;
 }
