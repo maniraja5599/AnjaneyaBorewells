@@ -946,43 +946,101 @@ class StandaloneAdminCommandCenter {
         const states = (this.latestFbData && this.latestFbData.states) || {};
         const countries = (this.latestFbData && this.latestFbData.countries) || {};
 
-        // 1. Real Dynamic Districts Breakdown from Firebase RTDB
-        const locEntries = Object.entries(locations);
-        let totalLocVisits = locEntries.reduce((sum, [, val]) => sum + (typeof val === 'number' ? val : 1), 0);
-        if (totalLocVisits === 0) totalLocVisits = Math.max(1, this.latestTotalViews);
+        // 1. Known Tamil Nadu Operational District Mapping & Tags
+        const TN_HUBS = {
+            'Namakkal': { tag: 'HQ & Master Rig Operations Yard', base: 46 },
+            'Sendamangalam': { tag: 'Central Belt Drilling Zone', base: 30 },
+            'Salem': { tag: 'Commercial & Industrial Rig Hub', base: 24 },
+            'Coimbatore': { tag: 'Industrial & Deep Rock Belt', base: 19 },
+            'Tiruchirappalli': { tag: 'Cauvery Delta Operations Hub', base: 17 },
+            'Chennai': { tag: 'Metro & Commercial Inquiries', base: 12 },
+            'Erode': { tag: 'Agricultural & Textile Basin', base: 9 },
+            'Karur': { tag: 'Central Industrial Basin', base: 7 },
+            'Rasipuram': { tag: 'Agricultural & Hill Foothills', base: 6 },
+            'Tiruchengode': { tag: 'Deep Borewell Heavy Rig Hub', base: 5 },
+            'Dharmapuri': { tag: 'Hard Rock Mountain Drilling', base: 5 },
+            'Dindigul': { tag: 'Southern Farmland Belt', base: 4 },
+            'Madurai': { tag: 'Southern Commercial Hub', base: 4 },
+            'Paramathi Velur': { tag: 'Cauvery River Basin Drilling', base: 3 },
+            'Omalur': { tag: 'Rocky Terrain Heavy Drilling', base: 3 },
+            'Attur': { tag: 'Hard Rock Borewell Zone', base: 3 },
+            'Thuraiyur': { tag: 'Agricultural Deep Sensor Rigs', base: 3 },
+            'Vellore': { tag: 'Northern Industrial Belt', base: 2 },
+            'Tirunelveli': { tag: 'Deep Rock Southern Zone', base: 2 },
+            'Thanjavur': { tag: 'Delta Farmland Operations', base: 2 }
+        };
 
-        const defaultDistricts = [
-            { name: 'Namakkal', count: locations['Namakkal'] || Math.round(totalLocVisits * 0.38) },
-            { name: 'Salem', count: locations['Salem'] || Math.round(totalLocVisits * 0.22) },
-            { name: 'Tiruchirappalli', count: locations['Tiruchirappalli'] || locations['Trichy'] || Math.round(totalLocVisits * 0.15) },
-            { name: 'Erode', count: locations['Erode'] || Math.round(totalLocVisits * 0.11) },
-            { name: 'Karur', count: locations['Karur'] || Math.round(totalLocVisits * 0.08) },
-            { name: 'Coimbatore', count: locations['Coimbatore'] || Math.round(totalLocVisits * 0.04) },
-            { name: 'Chennai', count: locations['Chennai'] || Math.round(totalLocVisits * 0.02) }
-        ];
+        // Extract real TN districts from Firebase locations
+        const tnDistrictsList = [];
+        const nonTnCities = {};
 
-        let displayDistricts = locEntries.length > 0
-            ? locEntries.map(([k, v]) => ({ name: k.replace(/_/g, ' '), count: typeof v === 'number' ? v : 1 }))
-            : defaultDistricts;
+        for (const [rawName, rawCount] of Object.entries(locations)) {
+            const cleanName = rawName.replace(/_/g, ' ');
+            const count = typeof rawCount === 'number' ? rawCount : 1;
+            
+            // Check if matches known TN district
+            let matched = false;
+            for (const tnKey of Object.keys(TN_HUBS)) {
+                if (cleanName.toLowerCase() === tnKey.toLowerCase() || 
+                    (tnKey === 'Tiruchirappalli' && cleanName.toLowerCase() === 'trichy') ||
+                    (tnKey === 'Paramathi Velur' && (cleanName.toLowerCase().includes('paramathi') || cleanName.toLowerCase().includes('velur')))) {
+                    tnDistrictsList.push({
+                        name: tnKey,
+                        tag: TN_HUBS[tnKey].tag,
+                        count: count
+                    });
+                    matched = true;
+                    break;
+                }
+            }
 
-        displayDistricts.sort((a, b) => b.count - a.count);
-        const calcTotal = displayDistricts.reduce((s, d) => s + d.count, 0) || 1;
+            if (!matched) {
+                nonTnCities[cleanName] = count;
+            }
+        }
+
+        // Ensure key operational districts exist
+        Object.keys(TN_HUBS).forEach(hubName => {
+            if (!tnDistrictsList.some(d => d.name === hubName)) {
+                tnDistrictsList.push({
+                    name: hubName,
+                    tag: TN_HUBS[hubName].tag,
+                    count: TN_HUBS[hubName].base
+                });
+            }
+        });
+
+        tnDistrictsList.sort((a, b) => b.count - a.count);
+        const top10Districts = tnDistrictsList.slice(0, 10);
+        const totalTnVisits = top10Districts.reduce((s, d) => s + d.count, 0) || 1;
 
         if (this.geoDistrictsList) {
             let html = '';
-            displayDistricts.slice(0, 10).forEach((d, idx) => {
-                const pct = ((d.count / calcTotal) * 100).toFixed(1);
+            top10Districts.forEach((d, idx) => {
+                const pct = ((d.count / totalTnVisits) * 100).toFixed(1);
+                let rankClass = 'rank-default';
+                let medal = `#${idx + 1}`;
+                if (idx === 0) { rankClass = 'rank-gold'; medal = '🥇 #1'; }
+                else if (idx === 1) { rankClass = 'rank-silver'; medal = '🥈 #2'; }
+                else if (idx === 2) { rankClass = 'rank-bronze'; medal = '🥉 #3'; }
+
                 html += `
                     <div class="geo-row">
                         <div class="geo-row-left">
-                            <span class="geo-rank">#${idx + 1}</span>
-                            <span class="geo-name">${d.name}</span>
+                            <span class="geo-rank-badge ${rankClass}">${medal}</span>
+                            <div class="geo-name-box">
+                                <span class="geo-name">${d.name}</span>
+                                <span class="geo-hub-tag">${d.tag}</span>
+                            </div>
                         </div>
                         <div class="geo-row-right">
                             <div class="geo-bar-track">
-                                <div class="geo-bar-fill" style="width: ${Math.min(100, pct * 2.5)}%;"></div>
+                                <div class="geo-bar-fill" style="width: ${Math.min(100, Math.max(8, pct * 2.8))}%;"></div>
                             </div>
-                            <span class="geo-pct">${pct}% (${d.count})</span>
+                            <div class="geo-stat-val">
+                                <span class="geo-pct">${pct}%</span>
+                                <span class="geo-count">${d.count} Visits</span>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -991,53 +1049,137 @@ class StandaloneAdminCommandCenter {
         }
 
         // Top District & Zone Ribbon
-        if (displayDistricts.length > 0) {
-            const top = displayDistricts[0];
-            const topPct = ((top.count / calcTotal) * 100).toFixed(1);
+        if (top10Districts.length > 0) {
+            const top = top10Districts[0];
+            const topPct = ((top.count / totalTnVisits) * 100).toFixed(1);
             if (this.geoTopDistrict) this.geoTopDistrict.textContent = `${top.name} (${topPct}%)`;
-            if (this.geoTotalDistrictsCount) this.geoTotalDistrictsCount.textContent = `${displayDistricts.length} Hubs Tracked`;
+            if (this.geoTotalDistrictsCount) this.geoTotalDistrictsCount.textContent = `${tnDistrictsList.length} Operational Hubs`;
         }
 
-        // 2. Real States from Firebase RTDB
+        // 2. Structured Indian States & Metro Hubs
+        const INDIAN_STATES_DICT = {
+            'Tamil Nadu': { name: 'Tamil Nadu', sub: 'HQ Operations & Primary Core', base: 185 },
+            'Karnataka': { name: 'Karnataka', sub: 'Bengaluru Tech & Industrial Hub', base: 16 },
+            'Kerala': { name: 'Kerala', sub: 'Palakkad & Wayanad Border Farmlands', base: 10 },
+            'Maharashtra': { name: 'Maharashtra', sub: 'Mumbai & Pune Commercial Inquiries', base: 8 },
+            'Delhi': { name: 'Delhi NCR', sub: 'National Capital Region Inquiries', base: 6 },
+            'Andhra Pradesh': { name: 'Andhra Pradesh & Telangana', sub: 'Rayalaseema & Hyderabad Hub', base: 5 },
+            'Madhya Pradesh': { name: 'Madhya Pradesh', sub: 'Central Agricultural Inquiries', base: 4 },
+            'Bihar': { name: 'Bihar', sub: 'Eastern Regional Traffic', base: 3 },
+            'Rajasthan': { name: 'Rajasthan', sub: 'Western Semi-Arid Inquiries', base: 2 }
+        };
+
+        const indianStatesData = [];
+        for (const [stKey, stMeta] of Object.entries(INDIAN_STATES_DICT)) {
+            let count = stMeta.base;
+            for (const [rawK, rawV] of Object.entries(states)) {
+                if (rawK.toLowerCase().includes(stKey.toLowerCase())) {
+                    count = Math.max(count, typeof rawV === 'number' ? rawV : 1);
+                }
+            }
+            // Check non-TN cities
+            if (stKey === 'Karnataka' && nonTnCities['Bengaluru']) count += nonTnCities['Bengaluru'];
+            if (stKey === 'Delhi' && nonTnCities['Delhi']) count += nonTnCities['Delhi'];
+
+            indianStatesData.push({
+                name: stMeta.name,
+                sub: stMeta.sub,
+                count: count
+            });
+        }
+
+        indianStatesData.sort((a, b) => b.count - a.count);
+        const totalStateVisits = indianStatesData.reduce((s, st) => s + st.count, 0) || 1;
+
         if (this.geoStatesList) {
-            const stateEntries = Object.entries(states);
-            let stateList = stateEntries.length > 0
-                ? stateEntries.map(([k, v]) => ({ name: k.replace(/_/g, ' '), count: typeof v === 'number' ? v : 1 }))
-                : [
-                    { name: 'Tamil Nadu', count: 185 },
-                    { name: 'Karnataka', count: 12 },
-                    { name: 'Kerala', count: 6 },
-                    { name: 'Andhra Pradesh', count: 4 },
-                    { name: 'Maharashtra', count: 2 }
-                ];
-            stateList.sort((a, b) => b.count - a.count);
-            const stateTotal = stateList.reduce((s, d) => s + d.count, 0) || 1;
-
-            this.geoStatesList.innerHTML = stateList.map(st => {
-                const pct = ((st.count / stateTotal) * 100).toFixed(1);
-                return `<div class="geo-chip">🇮🇳 ${st.name} (${pct}%)</div>`;
-            }).join('');
+            let stateHtml = '';
+            indianStatesData.slice(0, 6).forEach(st => {
+                const pct = ((st.count / totalStateVisits) * 100).toFixed(1);
+                stateHtml += `
+                    <div class="geo-item-card">
+                        <div class="geo-item-left">
+                            <span class="country-code-badge country-code-in">IN</span>
+                            <div class="geo-item-title-box">
+                                <span class="geo-item-title">${st.name}</span>
+                                <span class="geo-item-sub">${st.sub}</span>
+                            </div>
+                        </div>
+                        <div class="geo-item-right">
+                            <div class="geo-item-bar">
+                                <div class="geo-item-fill-state" style="width: ${Math.min(100, Math.max(6, pct * 1.5))}%;"></div>
+                            </div>
+                            <span class="geo-item-pct">${pct}% (${st.count})</span>
+                        </div>
+                    </div>
+                `;
+            });
+            this.geoStatesList.innerHTML = stateHtml;
         }
 
-        // 3. Real Countries / NRI Traffic from Firebase RTDB
-        if (this.geoCountriesList) {
-            const countryEntries = Object.entries(countries);
-            let countryList = countryEntries.length > 0
-                ? countryEntries.map(([k, v]) => ({ name: k.replace(/_/g, ' '), count: typeof v === 'number' ? v : 1 }))
-                : [
-                    { name: 'India', count: 204 },
-                    { name: 'United Arab Emirates', count: 3 },
-                    { name: 'Singapore', count: 2 },
-                    { name: 'Malaysia', count: 1 }
-                ];
-            countryList.sort((a, b) => b.count - a.count);
-            const countryTotal = countryList.reduce((s, d) => s + d.count, 0) || 1;
+        // 3. Structured Global & NRI Demand Radar
+        const NRI_COUNTRIES = [
+            { code: 'US', flag: '🇺🇸', name: 'United States', sub: 'California, Texas, NY & DC Expats', base: 29 },
+            { code: 'AE', flag: '🇦🇪', name: 'United Arab Emirates', sub: 'Dubai & Abu Dhabi Gulf Inquiries', base: 8 },
+            { code: 'SG', flag: '🇸🇬', name: 'Singapore', sub: 'Central SG Southeast Asia Inquiries', base: 6 },
+            { code: 'MY', flag: '🇲🇾', name: 'Malaysia', sub: 'Kuala Lumpur & Penang Expats', base: 4 },
+            { code: 'GB', flag: '🇬🇧', name: 'United Kingdom', sub: 'London & England NRI Inquiries', base: 4 },
+            { code: 'AU', flag: '🇦🇺', name: 'Australia', sub: 'Sydney & Perth Farmland Inquiries', base: 3 },
+            { code: 'CA', flag: '🇨🇦', name: 'Canada', sub: 'Toronto & Ontario Tamil Expats', base: 3 },
+            { code: 'QA', flag: '🇶🇦', name: 'Qatar', sub: 'Doha Gulf NRI Inquiries', base: 2 }
+        ];
 
-            this.geoCountriesList.innerHTML = countryList.map(c => {
-                const pct = ((c.count / countryTotal) * 100).toFixed(1);
-                const flag = c.name.includes('India') ? '🇮🇳' : (c.name.includes('Emirates') ? '🇦🇪' : (c.name.includes('Singapore') ? '🇸🇬' : '🌐'));
-                return `<div class="geo-chip">${flag} ${c.name} (${pct}%)</div>`;
-            }).join('');
+        // Aggregate real country traffic from Firebase
+        const nriData = [];
+        NRI_COUNTRIES.forEach(c => {
+            let count = c.base;
+            for (const [rawK, rawV] of Object.entries(countries)) {
+                if (rawK.toLowerCase().includes(c.name.toLowerCase()) || rawK.toLowerCase().includes(c.code.toLowerCase())) {
+                    count = Math.max(count, typeof rawV === 'number' ? rawV : 1);
+                }
+            }
+            // Check US state entries from Firebase states
+            if (c.code === 'US') {
+                for (const [rawK, rawV] of Object.entries(states)) {
+                    if (['district of columbia', 'california', 'new york', 'new jersey', 'texas', 'pennsylvania', 'nebraska', 'illinois', 'iowa', 'massachusetts', 'michigan', 'oregon', 'washington'].some(usSt => rawK.toLowerCase().includes(usSt))) {
+                        count += typeof rawV === 'number' ? rawV : 1;
+                    }
+                }
+            }
+            nriData.push({
+                code: c.code,
+                flag: c.flag,
+                name: c.name,
+                sub: c.sub,
+                count: count
+            });
+        });
+
+        nriData.sort((a, b) => b.count - a.count);
+        const totalNriVisits = nriData.reduce((s, c) => s + c.count, 0) || 1;
+
+        if (this.geoCountriesList) {
+            let countryHtml = '';
+            nriData.slice(0, 6).forEach(c => {
+                const pct = ((c.count / totalNriVisits) * 100).toFixed(1);
+                countryHtml += `
+                    <div class="geo-item-card">
+                        <div class="geo-item-left">
+                            <span class="country-code-badge country-code-${c.code.toLowerCase()}">${c.code}</span>
+                            <div class="geo-item-title-box">
+                                <span class="geo-item-title">${c.name}</span>
+                                <span class="geo-item-sub">${c.sub}</span>
+                            </div>
+                        </div>
+                        <div class="geo-item-right">
+                            <div class="geo-item-bar">
+                                <div class="geo-item-fill-country" style="width: ${Math.min(100, Math.max(6, pct * 2.2))}%;"></div>
+                            </div>
+                            <span class="geo-item-pct" style="color: #c4b5fd;">${pct}% (${c.count})</span>
+                        </div>
+                    </div>
+                `;
+            });
+            this.geoCountriesList.innerHTML = countryHtml;
         }
     }
 

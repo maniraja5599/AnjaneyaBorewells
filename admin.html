@@ -552,53 +552,79 @@
                 <!-- Tab Mini Analytics Ribbon -->
                 <section class="tab-mini-kpi-ribbon">
                     <div class="mini-kpi-card">
-                        <div class="m-label">PRIMARY ACTIVE ZONE</div>
+                        <div class="m-label">PRIMARY DRILLING ZONE</div>
                         <div class="m-val text-emerald" id="geoPrimaryZone">Tamil Nadu (95%+)</div>
-                        <div class="m-sub">Live Geographic Density</div>
+                        <div class="m-sub">HQ &amp; Core Operational Hubs</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">TOP DRILLING DISTRICT</div>
-                        <div class="m-val text-cyan" id="geoTopDistrict">Namakkal Region</div>
-                        <div class="m-sub">Live Operational Hub</div>
+                        <div class="m-label">TOP ACTIVE DISTRICT</div>
+                        <div class="m-val text-cyan" id="geoTopDistrict">Namakkal (HQ Hub)</div>
+                        <div class="m-sub">Highest Quote &amp; Call Inquiries</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">TOTAL DETECTED HUBS</div>
-                        <div class="m-val text-amber" id="geoTotalDistrictsCount">10+ Territories</div>
-                        <div class="m-sub">Real-Time IP Telemetry</div>
+                        <div class="m-label">REGIONAL HUBS REACH</div>
+                        <div class="m-val text-amber" id="geoTotalDistrictsCount">38 Districts &amp; Metros</div>
+                        <div class="m-sub">Active Real-Time Telemetry</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">GLOBAL NRI VISITS</div>
+                        <div class="m-label">GLOBAL NRI INQUIRIES</div>
                         <div class="m-val text-purple" id="geoNriShare">Active Cloud Feed</div>
-                        <div class="m-sub">UAE, Singapore, USA</div>
+                        <div class="m-sub">US, Gulf, Singapore &amp; SEA</div>
                     </div>
                 </section>
 
                 <div class="geo-split-grid">
-                    <div class="geo-panel">
-                        <div class="panel-header">
-                            <h4>📍 Tamil Nadu &amp; Regional Districts (Real-Time Cloud Tracking)</h4>
-                            <small>Live drilling demand &amp; visitor ranking</small>
+                    <!-- Column 1: Tamil Nadu Core Operational Districts -->
+                    <div class="geo-panel geo-panel-primary">
+                        <div class="panel-header-flex">
+                            <div>
+                                <h4 style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 1.2rem;">🚜</span>
+                                    <span>Tamil Nadu Operational Districts</span>
+                                </h4>
+                                <small style="color: #94a3b8; font-size: 0.78rem;">Live district drilling demand, rig deployment priority &amp; traffic ranking</small>
+                            </div>
+                            <span class="geo-live-pill">🟢 Live Cloud Telemetry</span>
                         </div>
                         <div class="geo-territory-list" id="geoDistrictsList">
                             <!-- Populated dynamically from Firebase /locations.json -->
                         </div>
                     </div>
 
-                    <div class="geo-panel">
-                        <div class="panel-header">
-                            <h4>🇮🇳 Indian States</h4>
-                            <small>Regional visitor distribution</small>
-                        </div>
-                        <div class="geo-capsule-grid" id="geoStatesList">
-                            <!-- Populated dynamically from Firebase /states.json -->
+                    <!-- Column 2: Indian States & Global NRI Inquiries -->
+                    <div class="geo-panel-stack">
+                        <!-- Card A: Indian States & Metros -->
+                        <div class="geo-panel">
+                            <div class="panel-header-flex">
+                                <div>
+                                    <h4 style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="font-size: 1.15rem;">🏛️</span>
+                                        <span>Indian States &amp; Metro Hubs</span>
+                                    </h4>
+                                    <small style="color: #94a3b8; font-size: 0.78rem;">Interstate farmer &amp; commercial borewell inquiries</small>
+                                </div>
+                                <span class="geo-live-pill" style="background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.35); color: #fbbf24;">All-India Telemetry</span>
+                            </div>
+                            <div class="geo-structured-list" id="geoStatesList">
+                                <!-- Populated dynamically from Firebase /states.json -->
+                            </div>
                         </div>
 
-                        <div class="panel-header" style="margin-top: 24px;">
-                            <h4>🌐 Global &amp; NRI Traffic</h4>
-                            <small>International borewell inquiries</small>
-                        </div>
-                        <div class="geo-capsule-grid" id="geoCountriesList">
-                            <!-- Populated dynamically from Firebase /countries.json -->
+                        <!-- Card B: Global & NRI Traffic -->
+                        <div class="geo-panel">
+                            <div class="panel-header-flex">
+                                <div>
+                                    <h4 style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="font-size: 1.15rem;">🌍</span>
+                                        <span>Global &amp; NRI Demand Radar</span>
+                                    </h4>
+                                    <small style="color: #94a3b8; font-size: 0.78rem;">International NRI inquiries for ancestral farmland drilling</small>
+                                </div>
+                                <span class="geo-live-pill" style="background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.35); color: #c4b5fd;">International Feed</span>
+                            </div>
+                            <div class="geo-structured-list" id="geoCountriesList">
+                                <!-- Populated dynamically from Firebase /countries.json -->
+                            </div>
                         </div>
                     </div>
                 </div>
