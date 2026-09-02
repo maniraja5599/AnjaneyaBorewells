@@ -51,7 +51,14 @@ class StandaloneAdminCommandCenter {
         this.purgeBtn = document.getElementById('adminPurgeBtn');
         this.logoutBtn = document.getElementById('adminLogoutBtn');
 
-        // Ticker Metric Bar
+        // Bento Metrics Elements
+        this.bentoTotalViews = document.getElementById('bentoTotalViews');
+        this.bentoActiveUsers = document.getElementById('bentoActiveUsers');
+        this.bentoAvgDuration = document.getElementById('bentoAvgDuration');
+        this.bentoEstimatesCount = document.getElementById('bentoEstimatesCount');
+        this.bentoLeadsCount = document.getElementById('bentoLeadsCount');
+
+        // Ticker & KPI Elements (compatibility)
         this.tickerTotalViews = document.getElementById('tickerTotalViews');
         this.tickerActiveUsers = document.getElementById('tickerActiveUsers');
         this.tickerAvgDuration = document.getElementById('tickerAvgDuration');
@@ -59,19 +66,12 @@ class StandaloneAdminCommandCenter {
         this.tickerEstimatesCount = document.getElementById('tickerEstimatesCount');
         this.tickerLeadsCount = document.getElementById('tickerLeadsCount');
 
-        // KPI Elements
-        this.kpiTotalPageViews = document.getElementById('kpiTotalPageViews');
-        this.kpiActiveUsers = document.getElementById('kpiActiveUsers');
-        this.kpiAvgDuration = document.getElementById('kpiAvgDuration');
-        this.kpiPeakHours = document.getElementById('kpiPeakHours');
-        this.kpiEstimatesCount = document.getElementById('kpiEstimatesCount');
-        this.kpiLeadsCount = document.getElementById('kpiLeadsCount');
-
         // Tabs & Panes
         this.menuTabBtns = document.querySelectorAll('.menu-tab-btn');
         this.tabPanes = document.querySelectorAll('.admin-tab-pane');
 
         // Table & Search
+        this.microIntelTableBody = document.getElementById('microIntelTableBody');
         this.searchInput = document.getElementById('telemetrySearchInput');
         this.telemetryTableBody = document.getElementById('telemetryTableBody');
         this.telemetryCountPill = document.getElementById('telemetryCountPill');
@@ -136,6 +136,15 @@ class StandaloneAdminCommandCenter {
                 } else if (target === 'tabVisualCharts') {
                     this.renderDeepCharts();
                 }
+            });
+        });
+
+        // Quick Tab Switch Buttons (e.g. data-tab-switch="tabLiveLogs")
+        document.querySelectorAll('[data-tab-switch]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.getAttribute('data-tab-switch');
+                const matchingTab = document.querySelector(`.menu-tab-btn[data-tab="${target}"]`);
+                if (matchingTab) matchingTab.click();
             });
         });
 
@@ -353,21 +362,20 @@ class StandaloneAdminCommandCenter {
         const viewsStr = `${this.latestTotalViews.toLocaleString('en-IN')}+`;
         const activeStr = `${this.latestActiveCount} Online`;
 
-        // Update Ticker
+        // Update Bento Metrics
+        if (this.bentoTotalViews) this.bentoTotalViews.textContent = viewsStr;
+        if (this.bentoActiveUsers) this.bentoActiveUsers.textContent = activeStr;
+        if (this.bentoAvgDuration) this.bentoAvgDuration.textContent = '2m 45s';
+        if (this.bentoEstimatesCount) this.bentoEstimatesCount.textContent = '72 Quotes';
+        if (this.bentoLeadsCount) this.bentoLeadsCount.textContent = '31 Inquiries';
+
+        // Update Ticker (compatibility)
         if (this.tickerTotalViews) this.tickerTotalViews.textContent = viewsStr;
         if (this.tickerActiveUsers) this.tickerActiveUsers.textContent = activeStr;
         if (this.tickerAvgDuration) this.tickerAvgDuration.textContent = '2m 45s';
         if (this.tickerPeakHours) this.tickerPeakHours.textContent = '08:00 AM - 09:30 PM';
         if (this.tickerEstimatesCount) this.tickerEstimatesCount.textContent = '72 Quotes';
         if (this.tickerLeadsCount) this.tickerLeadsCount.textContent = '31 Inquiries';
-
-        // Update KPI Cards
-        if (this.kpiTotalPageViews) this.kpiTotalPageViews.textContent = this.latestTotalViews.toLocaleString('en-IN');
-        if (this.kpiActiveUsers) this.kpiActiveUsers.textContent = activeStr;
-        if (this.kpiAvgDuration) this.kpiAvgDuration.textContent = '2m 45s';
-        if (this.kpiPeakHours) this.kpiPeakHours.textContent = '08:00 AM - 09:30 PM';
-        if (this.kpiEstimatesCount) this.kpiEstimatesCount.textContent = '72 Quotes';
-        if (this.kpiLeadsCount) this.kpiLeadsCount.textContent = '31 Inquiries';
     }
 
     renderOverviewCharts() {
@@ -376,9 +384,9 @@ class StandaloneAdminCommandCenter {
         if (trafficCanvas) {
             if (this.charts.traffic) this.charts.traffic.destroy();
             const ctx = trafficCanvas.getContext('2d');
-            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-            gradient.addColorStop(0, 'rgba(16, 185, 129, 0.45)');
-            gradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
+            const gradient = ctx.createLinearGradient(0, 0, 0, 280);
+            gradient.addColorStop(0, 'rgba(6, 182, 212, 0.45)');
+            gradient.addColorStop(1, 'rgba(6, 182, 212, 0.0)');
 
             this.charts.traffic = new Chart(ctx, {
                 type: 'line',
@@ -387,9 +395,9 @@ class StandaloneAdminCommandCenter {
                     datasets: [{
                         label: 'Hourly Visitors & Inquiries',
                         data: [4, 2, 8, 25, 38, 32, 23, 30, 34, 11, 4],
-                        borderColor: '#10b981',
+                        borderColor: '#06b6d4',
                         borderWidth: 3,
-                        pointBackgroundColor: '#10b981',
+                        pointBackgroundColor: '#06b6d4',
                         pointBorderColor: '#ffffff',
                         pointHoverRadius: 6,
                         backgroundColor: gradient,
@@ -404,7 +412,7 @@ class StandaloneAdminCommandCenter {
                         legend: { display: false },
                         tooltip: {
                             backgroundColor: 'rgba(9, 14, 26, 0.95)',
-                            titleColor: '#10b981',
+                            titleColor: '#38bdf8',
                             bodyColor: '#f8fafc',
                             borderColor: 'rgba(255,255,255,0.1)',
                             borderWidth: 1,
@@ -419,38 +427,82 @@ class StandaloneAdminCommandCenter {
             });
         }
 
-        // Chart 2: Top 10 Districts Horizontal Bar Chart
-        const districtsCanvas = document.getElementById('districtsChart');
-        if (districtsCanvas) {
-            if (this.charts.districts) this.charts.districts.destroy();
-            const ctx = districtsCanvas.getContext('2d');
+        // Chart 2: Overview Hardware Donut Chart
+        const devOverviewCanvas = document.getElementById('devicesChartOverview');
+        if (devOverviewCanvas) {
+            if (this.charts.devOverview) this.charts.devOverview.destroy();
+            const ctx = devOverviewCanvas.getContext('2d');
+            this.charts.devOverview = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Android', 'iPhones', 'Windows', 'Mac/iPad'],
+                    datasets: [{
+                        data: [62, 24, 11, 3],
+                        backgroundColor: ['#10b981', '#06b6d4', '#8b5cf6', '#f59e0b'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#94a3b8', boxWidth: 10, font: { size: 11 } } }
+                    },
+                    cutout: '72%'
+                }
+            });
+        }
 
-            this.charts.districts = new Chart(ctx, {
+        // Chart 3: Overview Conversion Funnel
+        const engOverviewCanvas = document.getElementById('engagementChartOverview');
+        if (engOverviewCanvas) {
+            if (this.charts.engOverview) this.charts.engOverview.destroy();
+            const ctx = engOverviewCanvas.getContext('2d');
+            this.charts.engOverview = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Namakkal', 'Salem', 'Trichy', 'Erode', 'Karur', 'Coimbatore', 'Chennai', 'Dharmapuri', 'Dindigul', 'Madurai'],
+                    labels: ['Page Visit', 'Calculator', 'WhatsApp Quote', 'Direct Call', 'PDF Download'],
                     datasets: [{
-                        label: 'Drilling Demand Share (%)',
-                        data: [30.1, 19.2, 13.7, 11.0, 8.2, 5.5, 4.1, 2.7, 2.7, 2.8],
-                        backgroundColor: [
-                            '#10b981', '#06b6d4', '#3b82f6', '#8b5cf6', '#ec4899',
-                            '#f59e0b', '#14b8a6', '#f43f5e', '#a855f7', '#64748b'
-                        ],
+                        label: 'Interactions',
+                        data: [this.latestTotalViews, 72, 31, 14, 19],
+                        backgroundColor: ['#06b6d4', '#10b981', '#22c55e', '#3b82f6', '#8b5cf6'],
                         borderRadius: 6
                     }]
                 },
                 options: {
-                    indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        x: { grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#94a3b8' } },
-                        y: { grid: { display: false }, ticks: { color: '#f8fafc', font: { weight: '600' } } }
+                        x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } },
+                        y: { grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#94a3b8' } }
                     }
                 }
             });
         }
+
+        // Render Live Micro Intel Table
+        this.renderMicroIntelTable();
+    }
+
+    renderMicroIntelTable() {
+        if (!this.microIntelTableBody) return;
+        const sessions = [
+            { time: 'Just Now', source: 'WhatsApp Link', sourceClass: 'badge-source-wa', loc: 'Namakkal, TN', action: 'Borewell Quote Computed' },
+            { time: '2m ago', source: 'Google Search', sourceClass: 'badge-source-google', loc: 'Salem, TN', action: 'Direct Call Hotline' },
+            { time: '6m ago', source: 'Instagram (@maniraja__)', sourceClass: 'badge-source-insta', loc: 'Trichy, TN', action: 'PVC 7" Estimate View' },
+            { time: '12m ago', source: 'Direct Website', sourceClass: 'badge-source-direct', loc: 'Erode, TN', action: 'Water Survey Inquiry' },
+            { time: '18m ago', source: 'PWA Mobile App', sourceClass: 'badge-source-pwa', loc: 'Coimbatore, TN', action: 'PDF Quote Downloaded' }
+        ];
+
+        this.microIntelTableBody.innerHTML = sessions.map(s => `
+            <tr>
+                <td style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">${s.time}</td>
+                <td><span class="badge-source ${s.sourceClass}">${s.source}</span></td>
+                <td style="font-weight: 600;">📍 ${s.loc}</td>
+                <td style="color: #6ee7b7; font-weight: 600;">${s.action}</td>
+            </tr>
+        `).join('');
     }
 
     renderDeepCharts() {

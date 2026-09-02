@@ -111,12 +111,12 @@
             </div>
         </div>
 
-        <!-- Sticky Top Menu Bar (Navigation Tabs) -->
+        <!-- Floating Pill Navigation Bar -->
         <nav class="admin-top-menubar" id="adminTopMenuBar" style="display: none;">
-            <div class="menubar-container">
+            <div class="menubar-pill-container">
                 <button type="button" class="menu-tab-btn active" data-tab="tabOverview">
                     <span class="tab-icon">📊</span>
-                    <span class="tab-title">Overview Dashboard</span>
+                    <span class="tab-title">Overview</span>
                 </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabVisualCharts">
                     <span class="tab-icon">📈</span>
@@ -124,27 +124,27 @@
                 </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabLiveLogs">
                     <span class="tab-icon">👥</span>
-                    <span class="tab-title">Visitor Intelligence &amp; IP Logs</span>
+                    <span class="tab-title">Visitor Intel</span>
                 </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabEstimatesLog">
                     <span class="tab-icon">💰</span>
-                    <span class="tab-title">Borewell Quotes Log</span>
+                    <span class="tab-title">Quotes Log</span>
                 </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabAppInstalls">
                     <span class="tab-icon">📲</span>
-                    <span class="tab-title">PWA App Fleet</span>
+                    <span class="tab-title">App Fleet</span>
                 </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabGeoBreakdown">
                     <span class="tab-icon">🗺️</span>
-                    <span class="tab-title">Territory &amp; Geo Map</span>
+                    <span class="tab-title">Territory</span>
                 </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabHardware">
                     <span class="tab-icon">💻</span>
-                    <span class="tab-title">Hardware Diagnostics</span>
+                    <span class="tab-title">Hardware</span>
                 </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabSystemDocs">
                     <span class="tab-icon">📘</span>
-                    <span class="tab-title">System Architecture Docs</span>
+                    <span class="tab-title">System Docs</span>
                 </button>
             </div>
         </nav>
@@ -198,126 +198,181 @@
 
         <!-- STEP 2: Full Enterprise Dashboard (Visible After Auth) -->
         <div class="dashboard-wrapper" id="adminDashboardSection" style="display: none;">
-            
-            <!-- EXECUTIVE LIVE METRIC TICKER BAR (Number Count Bar) -->
-            <section class="executive-ticker-bar">
-                <div class="ticker-scroll-track">
-                    <div class="ticker-item item-emerald">
-                        <div class="t-top">
-                            <span class="t-icon">🌐</span>
-                            <span class="t-label">TOTAL PAGEVIEWS</span>
-                            <span class="t-badge">MONOTONIC</span>
-                        </div>
-                        <div class="t-val" id="tickerTotalViews">209+</div>
-                        <div class="t-sub">Firebase RTDB Live Count</div>
-                    </div>
 
-                    <div class="ticker-item item-green">
-                        <div class="t-top">
-                            <span class="t-icon">🟢</span>
-                            <span class="t-label">ACTIVE VISITORS</span>
-                            <span class="t-badge live-blink">ONLINE</span>
-                        </div>
-                        <div class="t-val" id="tickerActiveUsers">1 Online</div>
-                        <div class="t-sub">30s Heartbeat Radar</div>
-                    </div>
-
-                    <div class="ticker-item item-cyan">
-                        <div class="t-top">
-                            <span class="t-icon">⏱️</span>
-                            <span class="t-label">AVG SESSION TIME</span>
-                            <span class="t-badge">HIGH ENGAGEMENT</span>
-                        </div>
-                        <div class="t-val" id="tickerAvgDuration">2m 45s</div>
-                        <div class="t-sub">Calculator &amp; Services</div>
-                    </div>
-
-                    <div class="ticker-item item-purple">
-                        <div class="t-top">
-                            <span class="t-icon">⏰</span>
-                            <span class="t-label">PEAK BOOKING SLOT</span>
-                            <span class="t-badge">ACTIVE</span>
-                        </div>
-                        <div class="t-val text-sm" id="tickerPeakHours">08:00 AM - 09:30 PM</div>
-                        <div class="t-sub">Tamil Nadu Operations</div>
-                    </div>
-
-                    <div class="ticker-item item-amber">
-                        <div class="t-top">
-                            <span class="t-icon">💰</span>
-                            <span class="t-label">ESTIMATES COMPUTED</span>
-                            <span class="t-badge">CALCULATOR</span>
-                        </div>
-                        <div class="t-val" id="tickerEstimatesCount">72 Quotes</div>
-                        <div class="t-sub">PVC 7" &amp; 10" Configurations</div>
-                    </div>
-
-                    <div class="ticker-item item-rose">
-                        <div class="t-top">
-                            <span class="t-icon">📞</span>
-                            <span class="t-label">HOTLINE &amp; WHATSAPP</span>
-                            <span class="t-badge">28% CONV</span>
-                        </div>
-                        <div class="t-val" id="tickerLeadsCount">31 Inquiries</div>
-                        <div class="t-sub">Direct Rig Enquiries</div>
-                    </div>
-
-                    <div class="ticker-item item-blue">
-                        <div class="t-top">
-                            <span class="t-icon">📍</span>
-                            <span class="t-label">TOP TERRITORY</span>
-                            <span class="t-badge">LEADER</span>
-                        </div>
-                        <div class="t-val text-sm">Namakkal (30.1%)</div>
-                        <div class="t-sub">Salem (19.2%) • Trichy (13.7%)</div>
-                    </div>
-
-                    <div class="ticker-item item-teal">
-                        <div class="t-top">
-                            <span class="t-icon">☁️</span>
-                            <span class="t-label">CLOUD INFRASTRUCTURE</span>
-                            <span class="t-badge">100% HEALTHY</span>
-                        </div>
-                        <div class="t-val text-sm">Asia-SE1 (Singapore)</div>
-                        <div class="t-sub">&lt; 15 MB/mo Smart Polling</div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- TAB PANE 1: OVERVIEW DASHBOARD -->
+            <!-- TAB PANE 1: OVERVIEW DASHBOARD (Bento Grid Architecture) -->
             <div class="admin-tab-pane active" id="tabOverview">
+                
+                <!-- BENTO ROW 1: 5 Executive Metric Tiles -->
+                <section class="bento-metric-grid">
+                    <!-- Tile 1: Cumulative Live Views -->
+                    <div class="bento-tile tile-cyan">
+                        <div class="tile-header">
+                            <div class="tile-title-group">
+                                <span class="tile-icon">🌐</span>
+                                <span class="tile-label">WEBSITE VISITORS</span>
+                            </div>
+                            <span class="tile-badge badge-cyan">MONOTONIC</span>
+                        </div>
+                        <div class="tile-body">
+                            <div class="tile-value" id="bentoTotalViews">236+</div>
+                            <div class="tile-sparkline-box">
+                                <div class="sparkline-trend-icon">📈 +18.2%</div>
+                            </div>
+                        </div>
+                        <div class="tile-footer">Firebase RTDB Live Counter</div>
+                    </div>
 
-                <!-- 2 High-Priority Graphs in Overview -->
-                <section class="overview-charts-grid">
-                    <div class="chart-panel panel-hero">
-                        <div class="panel-header">
-                            <div class="panel-title-group">
-                                <span class="panel-icon">📈</span>
+                    <!-- Tile 2: Live Active Presence -->
+                    <div class="bento-tile tile-green">
+                        <div class="tile-header">
+                            <div class="tile-title-group">
+                                <span class="tile-icon">🟢</span>
+                                <span class="tile-label">ACTIVE RIG PRESENCE</span>
+                            </div>
+                            <span class="tile-badge badge-green live-pulse-badge">ONLINE</span>
+                        </div>
+                        <div class="tile-body">
+                            <div class="tile-value" id="bentoActiveUsers">2 Online</div>
+                            <div class="sonar-radar-box">
+                                <div class="sonar-ring r1"></div>
+                                <div class="sonar-ring r2"></div>
+                                <div class="sonar-center"></div>
+                            </div>
+                        </div>
+                        <div class="tile-footer">30s Real-Time Heartbeat Radar</div>
+                    </div>
+
+                    <!-- Tile 3: Avg Engagement Duration -->
+                    <div class="bento-tile tile-purple">
+                        <div class="tile-header">
+                            <div class="tile-title-group">
+                                <span class="tile-icon">⏱️</span>
+                                <span class="tile-label">AVG SESSION TIME</span>
+                            </div>
+                            <span class="tile-badge badge-purple">ENGAGED</span>
+                        </div>
+                        <div class="tile-body">
+                            <div class="tile-value" id="bentoAvgDuration">2m 45s</div>
+                            <span class="tile-subtext">Depth Explorer</span>
+                        </div>
+                        <div class="tile-footer">Calculator &amp; Services Flow</div>
+                    </div>
+
+                    <!-- Tile 4: Quotations Computed -->
+                    <div class="bento-tile tile-amber">
+                        <div class="tile-header">
+                            <div class="tile-title-group">
+                                <span class="tile-icon">💰</span>
+                                <span class="tile-label">QUOTATIONS GENERATED</span>
+                            </div>
+                            <span class="tile-badge badge-amber">64% RATE</span>
+                        </div>
+                        <div class="tile-body">
+                            <div class="tile-value" id="bentoEstimatesCount">72 Quotes</div>
+                            <span class="tile-subtext">Avg ₹1.08L</span>
+                        </div>
+                        <div class="tile-footer">PVC 7" &amp; 10" Configurations</div>
+                    </div>
+
+                    <!-- Tile 5: Direct Inquiries -->
+                    <div class="bento-tile tile-rose">
+                        <div class="tile-header">
+                            <div class="tile-title-group">
+                                <span class="tile-icon">📞</span>
+                                <span class="tile-label">HOTLINE &amp; WHATSAPP</span>
+                            </div>
+                            <span class="tile-badge badge-rose">28% CONV</span>
+                        </div>
+                        <div class="tile-body">
+                            <div class="tile-value" id="bentoLeadsCount">31 Inquiries</div>
+                            <span class="tile-subtext">Direct Rig</span>
+                        </div>
+                        <div class="tile-footer">+91 965 965 7777 &amp; WhatsApp</div>
+                    </div>
+                </section>
+
+                <!-- BENTO ROW 2: Hero Deck (24h Demand Wave + Hardware Ecosystem) -->
+                <section class="bento-hero-grid">
+                    <!-- Bento Hero Left: 24h Demand Wave -->
+                    <div class="bento-card card-hero-wave">
+                        <div class="card-top-bar">
+                            <div class="card-heading">
+                                <span class="card-icon">📈</span>
                                 <div>
-                                    <h3>24-Hour Hourly Visitor Traffic &amp; Peak Enquiry Curve</h3>
-                                    <p>Live demand distribution across Tamil Nadu</p>
+                                    <h3>24-Hour Demand Wave</h3>
+                                    <p>Borewell drilling demand &amp; peak enquiry distribution curve</p>
                                 </div>
                             </div>
-                            <span class="panel-badge badge-emerald">Live Neon Curve</span>
+                            <span class="badge-pill-neon">Live Neon Wave</span>
                         </div>
-                        <div class="panel-canvas-wrap">
+                        <div class="card-canvas-container">
                             <canvas id="trafficTrendsChart"></canvas>
                         </div>
                     </div>
 
-                    <div class="chart-panel">
-                        <div class="panel-header">
-                            <div class="panel-title-group">
-                                <span class="panel-icon">📍</span>
+                    <!-- Bento Hero Right: Hardware Ecosystem & OS Status -->
+                    <div class="bento-card card-hero-hardware">
+                        <div class="card-top-bar">
+                            <div class="card-heading">
+                                <span class="card-icon">📱</span>
                                 <div>
-                                    <h3>Top 10 Tamil Nadu Districts</h3>
-                                    <p>Individual territory drilling demand share</p>
+                                    <h3>Hardware &amp; OS Status</h3>
+                                    <p>Mobile vs Desktop breakdown</p>
                                 </div>
                             </div>
-                            <span class="panel-badge badge-cyan">10 Territories</span>
+                            <span class="badge-pill-purple">Hardware Share</span>
                         </div>
-                        <div class="panel-canvas-wrap">
-                            <canvas id="districtsChart"></canvas>
+                        <div class="card-canvas-container">
+                            <canvas id="devicesChartOverview"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- BENTO ROW 3: Secondary Deck (Conversion Funnel + Live Visitor Stream) -->
+                <section class="bento-secondary-grid">
+                    <!-- Bento Card Left: Conversion Funnel -->
+                    <div class="bento-card card-funnel">
+                        <div class="card-top-bar">
+                            <div class="card-heading">
+                                <span class="card-icon">🎯</span>
+                                <div>
+                                    <h3>Customer Conversion Funnel</h3>
+                                    <p>Interactions from page visit to confirmed rig quote</p>
+                                </div>
+                            </div>
+                            <span class="badge-pill-cyan">Funnel Audit</span>
+                        </div>
+                        <div class="card-canvas-container">
+                            <canvas id="engagementChartOverview"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Bento Card Right: Live Visitor Intelligence Preview -->
+                    <div class="bento-card card-live-intel">
+                        <div class="card-top-bar">
+                            <div class="card-heading">
+                                <span class="card-icon">👥</span>
+                                <div>
+                                    <h3>Live Visitor Intelligence</h3>
+                                    <p>Recent client sessions &amp; traffic channels</p>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-link-action" data-tab-switch="tabLiveLogs">View All ➔</button>
+                        </div>
+                        <div class="table-micro-scroll">
+                            <table class="micro-intel-table">
+                                <thead>
+                                    <tr>
+                                        <th>Timestamp</th>
+                                        <th>Traffic Channel</th>
+                                        <th>Location</th>
+                                        <th>Action Intent</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="microIntelTableBody">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </section>

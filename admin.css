@@ -353,35 +353,45 @@ body.admin-body {
 }
 
 /* ==========================================================================
-   STICKY TOP MENU BAR (Navigation Tabs)
+   FLOATING PILL NAVIGATION BAR (Stripe & Apple Style)
    ========================================================================== */
 .admin-top-menubar {
-    background: rgba(11, 18, 32, 0.95);
-    border-top: 1px solid rgba(255, 255, 255, 0.04);
-    border-bottom: 1px solid var(--border-color);
-    overflow-x: auto;
+    width: 100%;
+    padding: 10px 24px;
+    display: flex;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    position: sticky;
+    top: 72px;
+    z-index: 900;
 }
 
-.menubar-container {
-    max-width: 1600px;
-    margin: 0 auto;
-    padding: 4px 24px;
+.menubar-pill-container {
+    background: rgba(13, 20, 36, 0.88);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 9999px;
+    padding: 5px 8px;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .menu-tab-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
+    gap: 6px;
+    padding: 7px 14px;
     background: transparent;
-    border: none;
-    border-bottom: 2px solid transparent;
+    border: 1px solid transparent;
+    border-radius: 9999px;
     color: var(--text-secondary);
     font-family: inherit;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
@@ -390,131 +400,323 @@ body.admin-body {
 
 .menu-tab-btn:hover {
     color: #ffffff;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .menu-tab-btn.active {
-    color: #10b981;
-    border-bottom-color: #10b981;
-    background: rgba(16, 185, 129, 0.08);
+    color: #38bdf8;
+    background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(16, 185, 129, 0.15));
+    border-color: rgba(56, 189, 248, 0.35);
     font-weight: 700;
+    box-shadow: 0 0 14px rgba(6, 182, 212, 0.25);
 }
 
 /* ==========================================================================
-   EXECUTIVE LIVE METRIC TICKER BAR (Compact & Smart Chips)
+   BENTO GRID ARCHITECTURE (Stripe & Apple Ultra-Luxury)
    ========================================================================== */
-.executive-ticker-bar {
-    max-width: 1600px;
-    margin: 14px auto 0 auto;
-    padding: 0 24px;
+.bento-metric-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
     width: 100%;
 }
 
-.ticker-scroll-track {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
-    gap: 8px;
-}
-
-.ticker-item {
-    background: var(--bg-card);
-    backdrop-filter: blur(14px);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 10px 12px;
+.bento-tile {
+    background: rgba(13, 20, 36, 0.75);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 16px 18px;
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    justify-content: space-between;
+    min-height: 124px;
+    transition: all 0.25s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    position: relative;
+    overflow: hidden;
 }
 
-.ticker-item:hover {
-    transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.16);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+.bento-tile:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.t-top {
+.tile-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 4px;
+    gap: 6px;
 }
 
-.t-icon {
-    font-size: 0.82rem;
+.tile-title-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
-.t-label {
-    font-size: 0.58rem;
+.tile-icon {
+    font-size: 0.95rem;
+}
+
+.tile-label {
+    font-size: 0.60rem;
     font-weight: 800;
     letter-spacing: 0.05em;
     color: var(--text-muted);
 }
 
-.t-badge {
-    font-size: 0.50rem;
+.tile-badge {
+    font-size: 0.52rem;
     font-weight: 800;
-    padding: 1px 4px;
-    border-radius: 3px;
-    background: rgba(255, 255, 255, 0.08);
-    color: var(--text-secondary);
+    padding: 2px 6px;
+    border-radius: 9999px;
 }
 
-.t-val {
-    font-size: 1.15rem;
+.tile-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 6px 0;
+}
+
+.tile-value {
+    font-size: 1.55rem;
     font-weight: 900;
     font-family: var(--font-mono);
     color: #ffffff;
-    line-height: 1.15;
-    margin-top: 1px;
-    letter-spacing: -0.02em;
+    line-height: 1;
+    letter-spacing: -0.03em;
 }
 
-.t-val.text-sm {
-    font-size: 0.82rem;
+.tile-subtext {
+    font-size: 0.70rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 3px 6px;
+    border-radius: 4px;
 }
 
-.t-sub {
-    font-size: 0.58rem;
+.sparkline-trend-icon {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #34d399;
+    background: rgba(16, 185, 129, 0.15);
+    padding: 3px 8px;
+    border-radius: 9999px;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.sonar-radar-box {
+    position: relative;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sonar-center {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #22c55e;
+}
+
+.sonar-ring {
+    position: absolute;
+    border: 1.5px solid rgba(34, 197, 94, 0.7);
+    border-radius: 50%;
+    animation: sonarPulse 2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+}
+
+.sonar-ring.r2 {
+    animation-delay: -1s;
+}
+
+@keyframes sonarPulse {
+    0% { width: 8px; height: 8px; opacity: 1; }
+    100% { width: 32px; height: 32px; opacity: 0; }
+}
+
+.tile-footer {
+    font-size: 0.62rem;
     color: var(--text-muted);
     font-weight: 500;
 }
 
-/* Ticker Item Color Glows */
-.item-emerald { border-left: 3px solid #10b981; }
-.item-emerald .t-val { color: #34d399; }
+/* Tile Glow Highlights */
+.tile-cyan { border-left: 3px solid #06b6d4; }
+.tile-cyan .tile-value { color: #38bdf8; }
 
-.item-green { border-left: 3px solid #22c55e; }
-.item-green .t-val { color: #4ade80; }
+.tile-green { border-left: 3px solid #22c55e; }
+.tile-green .tile-value { color: #4ade80; }
 
-.item-cyan { border-left: 3px solid #06b6d4; }
-.item-cyan .t-val { color: #38bdf8; }
+.tile-purple { border-left: 3px solid #8b5cf6; }
+.tile-purple .tile-value { color: #c4b5fd; }
 
-.item-purple { border-left: 3px solid #8b5cf6; }
-.item-purple .t-val { color: #a78bfa; }
+.tile-amber { border-left: 3px solid #f59e0b; }
+.tile-amber .tile-value { color: #fbbf24; }
 
-.item-amber { border-left: 3px solid #f59e0b; }
-.item-amber .t-val { color: #fbbf24; }
+.tile-rose { border-left: 3px solid #f43f5e; }
+.tile-rose .tile-value { color: #fb7185; }
 
-.item-rose { border-left: 3px solid #f43f5e; }
-.item-rose .t-val { color: #fb7185; }
+/* BENTO HERO & SECONDARY DECKS */
+.bento-hero-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    width: 100%;
+}
 
-.item-blue { border-left: 3px solid #3b82f6; }
-.item-blue .t-val { color: #60a5fa; }
+.bento-secondary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+}
 
-.item-teal { border-left: 3px solid #14b8a6; }
-.item-teal .t-val { color: #2dd4bf; }
+.bento-card {
+    background: rgba(13, 20, 36, 0.75);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: all 0.25s ease;
+}
+
+.bento-card:hover {
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55);
+}
+
+.card-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.card-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-heading .card-icon {
+    font-size: 1.25rem;
+}
+
+.card-heading h3 {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+}
+
+.card-heading p {
+    font-size: 0.68rem;
+    color: var(--text-muted);
+}
+
+.badge-pill-neon {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 9999px;
+    background: rgba(6, 182, 212, 0.15);
+    color: #67e8f9;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.badge-pill-purple {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 9999px;
+    background: rgba(139, 92, 246, 0.15);
+    color: #c4b5fd;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.badge-pill-cyan {
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 9999px;
+    background: rgba(6, 182, 212, 0.15);
+    color: #67e8f9;
+    border: 1px solid rgba(6, 182, 212, 0.3);
+}
+
+.btn-link-action {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #38bdf8;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-link-action:hover {
+    background: rgba(56, 189, 248, 0.15);
+    border-color: #38bdf8;
+}
+
+.card-canvas-container {
+    position: relative;
+    width: 100%;
+    min-height: 240px;
+    max-height: 290px;
+}
+
+/* Micro Intel Table */
+.table-micro-scroll {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.micro-intel-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+}
+
+.micro-intel-table th {
+    text-align: left;
+    padding: 8px 10px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    text-transform: uppercase;
+}
+
+.micro-intel-table td {
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+}
 
 /* Traffic Channel Badges */
 .badge-source {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    padding: 3px 8px;
-    border-radius: 4px;
-    font-size: 0.70rem;
+    padding: 2px 7px;
+    border-radius: 9999px;
+    font-size: 0.68rem;
     font-weight: 700;
 }
 .badge-source-wa { background: rgba(37, 211, 102, 0.15); color: #4ade80; border: 1px solid rgba(37, 211, 102, 0.3); }
@@ -1206,12 +1408,14 @@ body.admin-body {
 }
 
 /* ==========================================================================
-   MOBILE & RESPONSIVE BREAKPOINTS
+   MOBILE & RESPONSIVE BREAKPOINTS (Bento Grid)
    ========================================================================== */
-@media (max-width: 1024px) {
-    .overview-charts-grid,
-    .deep-charts-grid,
-    .geo-split-grid {
+@media (max-width: 1200px) {
+    .bento-metric-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .bento-hero-grid,
+    .bento-secondary-grid {
         grid-template-columns: 1fr;
     }
 }
@@ -1245,33 +1449,44 @@ body.admin-body {
         font-size: 0.72rem;
     }
 
-    .menubar-container {
-        padding: 4px 10px;
+    .admin-top-menubar {
+        padding: 6px 10px;
+        top: 60px;
+    }
+
+    .menubar-pill-container {
+        padding: 3px 6px;
+        gap: 2px;
     }
 
     .menu-tab-btn {
-        padding: 8px 12px;
-        font-size: 0.75rem;
-    }
-
-    .executive-ticker-bar {
-        padding: 0 14px;
-        margin-top: 12px;
-    }
-
-    .ticker-scroll-track {
-        grid-template-columns: repeat(2, 1fr);
+        padding: 6px 10px;
+        font-size: 0.72rem;
     }
 
     .admin-workspace {
-        padding: 14px;
+        padding: 12px;
     }
 
-    .kpi-feature-grid {
+    .bento-metric-grid {
         grid-template-columns: 1fr;
+        gap: 10px;
     }
 
-    .card-primary-val {
-        font-size: 1.6rem;
+    .bento-hero-grid,
+    .bento-secondary-grid,
+    .overview-charts-grid,
+    .deep-charts-grid,
+    .geo-split-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .bento-card {
+        padding: 16px;
+    }
+
+    .card-canvas-container {
+        min-height: 200px;
     }
 }
