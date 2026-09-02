@@ -2137,13 +2137,41 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
             const encoded = encodeURIComponent(this.currentWhatsAppQuoteText || '');
             const targetUrl = `https://wa.me/91${rawPhone}?text=${encoded}`;
 
+            const inputs = this.getInputs ? this.getInputs() : {};
+            const res = this.currentQuoteResults || {};
+            const now = new Date();
+            const formattedTime = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+            let casingStr = '';
+            if (inputs.pvc7Length > 0 && inputs.pvc10Length > 0) {
+                casingStr = `${inputs.pvc7Length} ft (7") + ${inputs.pvc10Length} ft (10")`;
+            } else if (inputs.pvc7Length > 0) {
+                casingStr = `${inputs.pvc7Length} ft (7" PVC)`;
+            } else if (inputs.pvc10Length > 0) {
+                casingStr = `${inputs.pvc10Length} ft (10" PVC)`;
+            } else {
+                casingStr = 'Standard Casing';
+            }
+
             // Track lead in LocalStorage & Telemetry
             try {
                 const quoteLeads = JSON.parse(localStorage.getItem('anjaneya_whatsapp_leads') || '[]');
                 quoteLeads.unshift({
-                    phone: `+91 ${rawPhone}`,
-                    total: this.currentQuoteResults ? this.currentQuoteResults.totalCost : 0,
-                    time: new Date().toISOString()
+                    id: 'lead_' + Date.now(),
+                    phone: `+91 ${rawPhone.substring(0, 5)} ${rawPhone.substring(5)}`,
+                    rawPhone: rawPhone,
+                    depth: `${inputs.totalDepth || 800} ft`,
+                    type: inputs.drillingType === 'repair' ? 'Rebore / Deepening' : 'New Borewell',
+                    casing: casingStr,
+                    flush: 'Included (2000 PSI)',
+                    survey: 'Groundwater Sensor Scan',
+                    cost: `₹${(res.totalCost || 0).toLocaleString('en-IN')}`,
+                    totalCostNum: res.totalCost || 0,
+                    loc: 'Namakkal / Tamil Nadu',
+                    action: '🟢 Direct WhatsApp Sent',
+                    timestamp: now.toISOString(),
+                    time: formattedTime,
+                    isRealLead: true
                 });
                 localStorage.setItem('anjaneya_whatsapp_leads', JSON.stringify(quoteLeads.slice(0, 50)));
             } catch(e) {}
@@ -2164,6 +2192,45 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
         officeBtn?.addEventListener('click', () => {
             const encoded = encodeURIComponent(this.currentWhatsAppQuoteText || '');
             const targetUrl = `https://wa.me/919659657777?text=${encoded}`;
+            
+            const inputs = this.getInputs ? this.getInputs() : {};
+            const res = this.currentQuoteResults || {};
+            const now = new Date();
+            const formattedTime = now.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+            let casingStr = '';
+            if (inputs.pvc7Length > 0 && inputs.pvc10Length > 0) {
+                casingStr = `${inputs.pvc7Length} ft (7") + ${inputs.pvc10Length} ft (10")`;
+            } else if (inputs.pvc7Length > 0) {
+                casingStr = `${inputs.pvc7Length} ft (7" PVC)`;
+            } else if (inputs.pvc10Length > 0) {
+                casingStr = `${inputs.pvc10Length} ft (10" PVC)`;
+            } else {
+                casingStr = 'Standard Casing';
+            }
+
+            try {
+                const quoteLeads = JSON.parse(localStorage.getItem('anjaneya_whatsapp_leads') || '[]');
+                quoteLeads.unshift({
+                    id: 'lead_office_' + Date.now(),
+                    phone: '+91 96596 57777 (Hotline Desk)',
+                    rawPhone: '9659657777',
+                    depth: `${inputs.totalDepth || 800} ft`,
+                    type: inputs.drillingType === 'repair' ? 'Rebore / Deepening' : 'New Borewell',
+                    casing: casingStr,
+                    flush: 'Included (2000 PSI)',
+                    survey: 'Groundwater Sensor Scan',
+                    cost: `₹${(res.totalCost || 0).toLocaleString('en-IN')}`,
+                    totalCostNum: res.totalCost || 0,
+                    loc: 'Namakkal & Tamil Nadu',
+                    action: '🏢 Sent to Office Hotline',
+                    timestamp: now.toISOString(),
+                    time: formattedTime,
+                    isRealLead: true
+                });
+                localStorage.setItem('anjaneya_whatsapp_leads', JSON.stringify(quoteLeads.slice(0, 50)));
+            } catch(e) {}
+
             closeModal();
             window.open(targetUrl, '_blank');
         });

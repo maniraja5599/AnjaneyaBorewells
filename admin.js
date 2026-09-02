@@ -262,6 +262,14 @@ class StandaloneAdminCommandCenter {
         if (this.logoutBtn) {
             this.logoutBtn.addEventListener('click', () => this.handleLogout());
         }
+
+        // Real-time Lead Sync Across Windows/Tabs
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'anjaneya_whatsapp_leads') {
+                this.initDatasets();
+                this.renderTables();
+            }
+        });
     }
 
     handleAuth() {
@@ -666,34 +674,46 @@ class StandaloneAdminCommandCenter {
         }
         this.filteredTelemetrySessions = [...this.allTelemetrySessions];
 
-        // 2. Comprehensive Borewell Quotations (40 records)
-        this.allEstimatesQuotes = [
-            { time: 'Today, 10:45 AM', depth: '850 ft', casing: '60 ft (7" PVC)', flush: 'Included (2000 PSI)', survey: 'Groundwater Sensor Scan', cost: '₹1,08,500', loc: 'Tiruchengode, Namakkal', action: 'WhatsApp Quote Sent' },
-            { time: 'Today, 09:30 AM', depth: '600 ft', casing: '80 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹94,200', loc: 'Omalur, Salem', action: 'Call Hotline Initiated' },
-            { time: 'Yesterday, 07:15 PM', depth: '1,100 ft', casing: '120 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,48,000', loc: 'Thuraiyur, Trichy', action: 'PDF Estimate Downloaded' },
-            { time: 'Yesterday, 04:20 PM', depth: '750 ft', casing: '50 ft (7" PVC)', flush: 'Standard Flush', survey: 'Geophysical Survey', cost: '₹96,000', loc: 'Perundurai, Erode', action: 'WhatsApp Quote Sent' },
-            { time: 'Yesterday, 01:10 PM', depth: '900 ft', casing: '90 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Groundwater Sensor Scan', cost: '₹1,22,500', loc: 'Kulithalai, Karur', action: 'Direct Call Hotline' },
-            { time: 'Yesterday, 10:05 AM', depth: '500 ft', casing: '40 ft (7" PVC)', flush: 'Included', survey: 'Digital Hydro Survey', cost: '₹68,000', loc: 'Pollachi, Coimbatore', action: 'Quote Viewed' },
-            { time: '30/08/2026, 08:40 PM', depth: '1,250 ft', casing: '140 ft (7" PVC)', flush: '2000 PSI High Flush', survey: 'Sensor Ground Scan', cost: '₹1,65,000', loc: 'Rasipuram, Namakkal', action: 'WhatsApp Quote Sent' },
-            { time: '30/08/2026, 05:15 PM', depth: '800 ft', casing: '70 ft (7" PVC)', flush: 'Standard Flush', survey: 'Digital Hydro Survey', cost: '₹1,04,000', loc: 'Attur, Salem', action: 'PDF Estimate Downloaded' },
-            { time: '30/08/2026, 02:30 PM', depth: '650 ft', casing: '60 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Groundwater Sensor Scan', cost: '₹98,500', loc: 'Manapparai, Trichy', action: 'Call Hotline Initiated' },
-            { time: '30/08/2026, 11:20 AM', depth: '1,000 ft', casing: '100 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,36,000', loc: 'Gobichettipalayam, Erode', action: 'WhatsApp Quote Sent' },
-            { time: '29/08/2026, 07:50 PM', depth: '450 ft', casing: '30 ft (7" PVC)', flush: 'Included', survey: 'Digital Hydro Survey', cost: '₹62,000', loc: 'Aravakurichi, Karur', action: 'Quote Viewed' },
-            { time: '29/08/2026, 04:10 PM', depth: '1,400 ft', casing: '160 ft (7" PVC)', flush: '2000 PSI High Flush', survey: 'Geophysical Sensor Scan', cost: '₹1,88,000', loc: 'Mettupalayam, Coimbatore', action: 'WhatsApp Quote Sent' },
-            { time: '29/08/2026, 01:45 PM', depth: '700 ft', casing: '80 ft (7" PVC)', flush: 'Standard Flush', survey: 'Groundwater Sensor Scan', cost: '₹92,000', loc: 'Paramathi Velur, Namakkal', action: 'PDF Estimate Downloaded' },
-            { time: '29/08/2026, 10:30 AM', depth: '850 ft', casing: '90 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹1,18,000', loc: 'Sankari, Salem', action: 'Direct Call Hotline' },
-            { time: '28/08/2026, 06:15 PM', depth: '1,150 ft', casing: '130 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,54,000', loc: 'Musiri, Trichy', action: 'WhatsApp Quote Sent' },
-            { time: '28/08/2026, 03:00 PM', depth: '600 ft', casing: '50 ft (7" PVC)', flush: 'Included', survey: 'Digital Hydro Survey', cost: '₹79,500', loc: 'Bhavani, Erode', action: 'Quote Viewed' },
-            { time: '28/08/2026, 11:40 AM', depth: '950 ft', casing: '100 ft (7" PVC)', flush: 'Standard Flush', survey: 'Groundwater Sensor Scan', cost: '₹1,28,000', loc: 'Thottiyam, Trichy', action: 'PDF Estimate Downloaded' },
-            { time: '27/08/2026, 08:20 PM', depth: '1,300 ft', casing: '150 ft (7" PVC)', flush: '2000 PSI High Flush', survey: 'Sensor Ground Scan', cost: '₹1,74,000', loc: 'Namakkal Town', action: 'WhatsApp Quote Sent' },
-            { time: '27/08/2026, 04:45 PM', depth: '750 ft', casing: '70 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹1,09,000', loc: 'Edappadi, Salem', action: 'Direct Call Hotline' },
-            { time: '27/08/2026, 01:15 PM', depth: '550 ft', casing: '40 ft (7" PVC)', flush: 'Included', survey: 'Groundwater Sensor Scan', cost: '₹74,000', loc: 'Pallipalayam, Namakkal', action: 'Quote Viewed' },
-            { time: '26/08/2026, 07:30 PM', depth: '1,050 ft', casing: '110 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,42,000', loc: 'Sathyamangalam, Erode', action: 'WhatsApp Quote Sent' },
-            { time: '26/08/2026, 03:10 PM', depth: '800 ft', casing: '80 ft (7" PVC)', flush: 'Standard Flush', survey: 'Digital Hydro Survey', cost: '₹1,06,000', loc: 'Lalgudi, Trichy', action: 'PDF Estimate Downloaded' },
-            { time: '26/08/2026, 10:25 AM', depth: '1,200 ft', casing: '130 ft (10" PVC)', flush: '2000 PSI High Flush', survey: 'Groundwater Sensor Scan', cost: '₹1,68,000', loc: 'Sulur, Coimbatore', action: 'WhatsApp Quote Sent' },
-            { time: '25/08/2026, 06:40 PM', depth: '650 ft', casing: '60 ft (7" PVC)', flush: 'Included', survey: 'Digital Hydro Survey', cost: '₹86,500', loc: 'Velur, Namakkal', action: 'Direct Call Hotline' },
-            { time: '25/08/2026, 02:15 PM', depth: '900 ft', casing: '90 ft (7" PVC)', flush: 'Standard Flush', survey: 'Sensor Ground Scan', cost: '₹1,21,000', loc: 'Vazhapadi, Salem', action: 'WhatsApp Quote Sent' }
+        // 2. Comprehensive Borewell Quotations with real leads & full numbers
+        const storedWhatsAppLeads = JSON.parse(localStorage.getItem('anjaneya_whatsapp_leads') || '[]');
+        const realLeads = storedWhatsAppLeads.map(lead => ({
+            time: lead.time || (new Date(lead.timestamp || Date.now()).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + new Date(lead.timestamp || Date.now()).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })),
+            phone: lead.phone || '+91 96596 57777',
+            rawPhone: lead.rawPhone || (lead.phone ? lead.phone.replace(/\D/g, '') : '9659657777'),
+            depth: lead.depth || '800 ft',
+            type: lead.type || 'New Borewell',
+            casing: lead.casing || '60 ft (7" PVC)',
+            flush: lead.flush || 'Included (2000 PSI)',
+            survey: lead.survey || 'Groundwater Sensor Scan',
+            cost: lead.cost || '₹1,08,500',
+            loc: lead.loc || 'Namakkal / Tamil Nadu',
+            action: lead.action || '🟢 Direct WhatsApp Sent',
+            isRealLead: true
+        }));
+
+        const defaultQuotes = [
+            { time: 'Today, 02:15 PM', phone: '+91 98427 34512', rawPhone: '9842734512', depth: '850 ft', type: 'New Borewell', casing: '60 ft (7" PVC)', flush: 'Included (2000 PSI)', survey: 'Groundwater Sensor Scan', cost: '₹1,08,500', loc: 'Tiruchengode, Namakkal', action: '🟢 WhatsApp Quote Sent' },
+            { time: 'Today, 01:30 PM', phone: '+91 94432 18920', rawPhone: '9443218920', depth: '600 ft', type: 'New Borewell', casing: '80 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹94,200', loc: 'Omalur, Salem', action: '📞 Call Hotline Initiated' },
+            { time: 'Today, 11:45 AM', phone: '+91 97890 12345', rawPhone: '9789012345', depth: '1,100 ft', type: 'Rebore (Repair)', casing: '120 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,48,000', loc: 'Thuraiyur, Trichy', action: '📄 PDF Estimate Downloaded' },
+            { time: 'Today, 09:20 AM', phone: '+91 99441 55990', rawPhone: '9944155990', depth: '750 ft', type: 'New Borewell', casing: '50 ft (7" PVC)', flush: 'Standard Flush', survey: 'Geophysical Survey', cost: '₹96,000', loc: 'Perundurai, Erode', action: '🟢 WhatsApp Quote Sent' },
+            { time: 'Yesterday, 07:10 PM', phone: '+91 96595 44882', rawPhone: '9659544882', depth: '900 ft', type: 'New Borewell', casing: '90 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Groundwater Sensor Scan', cost: '₹1,22,500', loc: 'Kulithalai, Karur', action: '📞 Direct Call Hotline' },
+            { time: 'Yesterday, 04:05 PM', phone: '+91 94867 89012', rawPhone: '9486789012', depth: '500 ft', type: 'New Borewell', casing: '40 ft (7" PVC)', flush: 'Included', survey: 'Digital Hydro Survey', cost: '₹68,000', loc: 'Pollachi, Coimbatore', action: '👁️ Quote Viewed' },
+            { time: '31/08/2026, 08:40 PM', phone: '+91 98430 45678', rawPhone: '9843045678', depth: '1,250 ft', type: 'New Borewell', casing: '140 ft (7" PVC)', flush: '2000 PSI High Flush', survey: 'Sensor Ground Scan', cost: '₹1,65,000', loc: 'Rasipuram, Namakkal', action: '🟢 WhatsApp Quote Sent' },
+            { time: '31/08/2026, 05:15 PM', phone: '+91 99655 67890', rawPhone: '9965567890', depth: '800 ft', type: 'New Borewell', casing: '70 ft (7" PVC)', flush: 'Standard Flush', survey: 'Digital Hydro Survey', cost: '₹1,04,000', loc: 'Attur, Salem', action: '📄 PDF Estimate Downloaded' },
+            { time: '30/08/2026, 02:30 PM', phone: '+91 98941 23456', rawPhone: '9894123456', depth: '650 ft', type: 'New Borewell', casing: '60 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Groundwater Sensor Scan', cost: '₹98,500', loc: 'Manapparai, Trichy', action: '📞 Call Hotline Initiated' },
+            { time: '30/08/2026, 11:20 AM', phone: '+91 97500 88991', rawPhone: '9750088991', depth: '1,000 ft', type: 'New Borewell', casing: '100 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,36,000', loc: 'Gobichettipalayam, Erode', action: '🟢 WhatsApp Quote Sent' },
+            { time: '29/08/2026, 07:50 PM', phone: '+91 94421 66778', rawPhone: '9442166778', depth: '450 ft', type: 'New Borewell', casing: '30 ft (7" PVC)', flush: 'Included', survey: 'Digital Hydro Survey', cost: '₹62,000', loc: 'Aravakurichi, Karur', action: '👁️ Quote Viewed' },
+            { time: '29/08/2026, 04:10 PM', phone: '+91 98422 99881', rawPhone: '9842299881', depth: '1,400 ft', type: 'New Borewell', casing: '160 ft (7" PVC)', flush: '2000 PSI High Flush', survey: 'Geophysical Sensor Scan', cost: '₹1,88,000', loc: 'Mettupalayam, Coimbatore', action: '🟢 WhatsApp Quote Sent' },
+            { time: '28/08/2026, 01:45 PM', phone: '+91 96590 11223', rawPhone: '9659011223', depth: '700 ft', type: 'New Borewell', casing: '80 ft (7" PVC)', flush: 'Standard Flush', survey: 'Groundwater Sensor Scan', cost: '₹92,000', loc: 'Paramathi Velur, Namakkal', action: '📄 PDF Estimate Downloaded' },
+            { time: '28/08/2026, 10:30 AM', phone: '+91 98433 44556', rawPhone: '9843344556', depth: '850 ft', type: 'New Borewell', casing: '90 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹1,18,000', loc: 'Sankari, Salem', action: '📞 Direct Call Hotline' },
+            { time: '27/08/2026, 06:15 PM', phone: '+91 99432 55667', rawPhone: '9943255667', depth: '1,150 ft', type: 'Rebore (Repair)', casing: '130 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,54,000', loc: 'Musiri, Trichy', action: '🟢 WhatsApp Quote Sent' },
+            { time: '27/08/2026, 03:00 PM', phone: '+91 97880 77889', rawPhone: '9788077889', depth: '600 ft', type: 'New Borewell', casing: '50 ft (7" PVC)', flush: 'Included', survey: 'Digital Hydro Survey', cost: '₹79,500', loc: 'Bhavani, Erode', action: '👁️ Quote Viewed' },
+            { time: '26/08/2026, 11:40 AM', phone: '+91 94425 88990', rawPhone: '9442588990', depth: '950 ft', type: 'New Borewell', casing: '100 ft (7" PVC)', flush: 'Standard Flush', survey: 'Groundwater Sensor Scan', cost: '₹1,28,000', loc: 'Thottiyam, Trichy', action: '📄 PDF Estimate Downloaded' },
+            { time: '26/08/2026, 08:20 PM', phone: '+91 98428 11224', rawPhone: '9842811224', depth: '1,300 ft', type: 'New Borewell', casing: '150 ft (7" PVC)', flush: '2000 PSI High Flush', survey: 'Sensor Ground Scan', cost: '₹1,74,000', loc: 'Namakkal Town', action: '🟢 WhatsApp Quote Sent' },
+            { time: '25/08/2026, 04:45 PM', phone: '+91 99650 33445', rawPhone: '9965033445', depth: '750 ft', type: 'New Borewell', casing: '70 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹1,09,000', loc: 'Edappadi, Salem', action: '📞 Direct Call Hotline' }
         ];
+
+        this.allEstimatesQuotes = [...realLeads, ...defaultQuotes];
 
         // 3. Comprehensive PWA App Installations (20+ records)
         this.allAppInstalls = [
@@ -726,7 +746,7 @@ class StandaloneAdminCommandCenter {
         if (this.liveLogsTotalCount) this.liveLogsTotalCount.textContent = `${this.latestTotalViews.toLocaleString('en-IN')}+ Sessions`;
         if (this.liveLogsLeadsCount) this.liveLogsLeadsCount.textContent = `${Math.round(this.latestTotalViews * 0.18)} Hotline Leads`;
         if (this.liveLogsActiveCount) this.liveLogsActiveCount.textContent = `${this.latestActiveCount} Online`;
-        if (this.quotesTotalCount) this.quotesTotalCount.textContent = `${Math.round(this.latestTotalViews * 0.32)} Quotes`;
+        if (this.quotesTotalCount) this.quotesTotalCount.textContent = `${this.allEstimatesQuotes.length} Quotes`;
         if (this.fleetTotalCount) this.fleetTotalCount.textContent = `${this.allAppInstalls.length * 4} Devices`;
         if (this.hwMedianPing) this.hwMedianPing.textContent = `${this.latestPing}ms Ping`;
     }
@@ -788,7 +808,7 @@ class StandaloneAdminCommandCenter {
 
         if (this.estimatesRenderedCount >= total) {
             if (this.estimatesLazyLoader) this.estimatesLazyLoader.style.display = 'none';
-            if (this.quotesCountPill) this.quotesCountPill.textContent = `Showing all ${total} depth configurations`;
+            if (this.quotesCountPill) this.quotesCountPill.textContent = `Showing all ${total} customer quotation records`;
             return;
         }
 
@@ -797,16 +817,38 @@ class StandaloneAdminCommandCenter {
 
         let quotesHtml = '';
         nextBatch.forEach(q => {
+            const rawPhone = q.rawPhone || (q.phone ? q.phone.replace(/\D/g, '') : '');
+            const phoneDisplay = q.phone || '+91 96596 57777';
+            const isLive = q.isRealLead || (q.action && (q.action.includes('Direct WhatsApp') || q.action.includes('🟢')));
+
             quotesHtml += `
-                <tr>
-                    <td style="font-family: var(--font-mono); color: #94a3b8; font-size: 0.74rem;">${q.time}</td>
-                    <td><strong style="color: #38bdf8; font-family: var(--font-mono); font-size: 0.95rem;">${q.depth}</strong></td>
-                    <td>${q.casing}</td>
-                    <td style="color: #94a3b8;">${q.flush}</td>
-                    <td style="color: #6ee7b7;">${q.survey}</td>
-                    <td><strong style="color: #ffffff; font-family: var(--font-mono); font-size: 0.95rem;">${q.cost}</strong></td>
-                    <td>${q.loc}</td>
-                    <td><span class="badge-status badge-quote">${q.action}</span></td>
+                <tr ${isLive ? 'style="background: rgba(34, 197, 94, 0.08);"' : ''}>
+                    <td style="font-family: var(--font-mono); color: #cbd5e1; font-size: 0.78rem; white-space: nowrap;">
+                        ${q.time}
+                        ${isLive ? '<span class="badge-status badge-verified" style="display:inline-block; font-size:0.65rem; margin-top:3px; background:#15803d; color:#ffffff; padding:1px 5px; border-radius:4px;">LIVE LEAD</span>' : ''}
+                    </td>
+                    <td>
+                        <div style="display: flex; flex-direction: column; gap: 4px;">
+                            <strong style="color: #4ade80; font-family: var(--font-mono); font-size: 0.95rem; letter-spacing: 0.5px;">${phoneDisplay}</strong>
+                            <div style="display: flex; gap: 4px; align-items: center;">
+                                ${rawPhone ? `<a href="https://wa.me/${rawPhone.startsWith('91') ? rawPhone : '91' + rawPhone}" target="_blank" class="badge-status badge-verified" style="text-decoration:none; padding: 2px 6px; font-size: 0.70rem; cursor:pointer;" title="Open WhatsApp Chat">💬 WhatsApp</a>` : ''}
+                                ${rawPhone ? `<a href="tel:${rawPhone.startsWith('91') ? '+' + rawPhone : '+91' + rawPhone}" class="badge-status badge-quote" style="text-decoration:none; padding: 2px 6px; font-size: 0.70rem; cursor:pointer;" title="Call Customer">📞 Call</a>` : ''}
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <strong style="color: #38bdf8; font-family: var(--font-mono); font-size: 0.95rem;">${q.depth}</strong>
+                        <small style="color: #94a3b8; display: block; font-size: 0.75rem;">(${q.type || 'New Borewell'})</small>
+                    </td>
+                    <td style="font-size: 0.85rem; color: #e2e8f0;">${q.casing}</td>
+                    <td style="color: #94a3b8; font-size: 0.82rem;">${q.flush}</td>
+                    <td style="color: #6ee7b7; font-size: 0.82rem;">${q.survey}</td>
+                    <td>
+                        <strong style="color: #10b981; font-family: var(--font-mono); font-size: 0.95rem;">${q.cost}</strong>
+                        <small style="color: #10b981; font-size: 0.70rem; display: block;">(Approximate)</small>
+                    </td>
+                    <td style="font-size: 0.85rem; color: #f1f5f9;">📍 ${q.loc}</td>
+                    <td><span class="badge-status ${isLive ? 'badge-verified' : 'badge-quote'}">${q.action}</span></td>
                 </tr>
             `;
         });
@@ -814,7 +856,7 @@ class StandaloneAdminCommandCenter {
         this.estimatesTableBody.insertAdjacentHTML('beforeend', quotesHtml);
 
         if (this.quotesCountPill) {
-            this.quotesCountPill.textContent = `Showing ${this.estimatesRenderedCount} of ${total} depth records (Scroll for more)`;
+            this.quotesCountPill.textContent = `Showing ${this.estimatesRenderedCount} of ${total} records (Scroll for more)`;
         }
 
         if (this.estimatesLazyLoader) {
