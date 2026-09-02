@@ -93,8 +93,8 @@ Anjaneya Borewells is a high-performance, mobile-first Progressive Web Applicati
 
 ### 1. Access & Security
 - Accessible via **Footer Badge (`⚙️ Admin Portal`)** or URL hash.
-- Authorized Admin Email: `manirajankg@gmail.com`
-- Security PIN / OTP Verification: `7777`
+- Authorized Admin Emails: `manirajankg@gmail.com`, `nesamaniraja@gmail.com`
+- Security PIN / OTP Verification: `5599`
 
 ### 2. Features & Controls
 - **Live Executive KPIs**: Cumulative Views, Active Visitors Online, Avg Session Duration, Peak Hours (08:00 AM - 09:30 PM IST).
@@ -170,8 +170,8 @@ const CACHE_NAME = 'anjaneya-borewells-cache-v2.9.6';
 | :--- | :--- | :--- |
 | **App Version** | `v2.9.6` | Production release version |
 | **Firebase RTDB Endpoint** | `https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app` | Realtime Database |
-| **SuperAdmin Email** | `manirajankg@gmail.com` | Authorized Admin Email |
-| **Admin OTP / PIN** | `7777` | Command Center Access Code |
+| **SuperAdmin Emails** | `manirajankg@gmail.com`, `nesamaniraja@gmail.com` | Authorized Admin Emails |
+| **Admin OTP / PIN** | `5599` | Command Center Access Code |
 | **Support Hotline 1** | `+91 965 965 7777` | Primary Borewell Rig Support |
 | **Support Hotline 2** | `+91 944 33 73573` | Secondary Field Manager |
 | **Developer Phone** | `+91 830 003 0123` | Developer Contact & Maintenance |

@@ -9,11 +9,12 @@ class StandaloneAdminCommandCenter {
         this.firebaseUrl = 'https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app';
         this.authorizedEmails = [
             'manirajankg@gmail.com',
+            'nesamaniraja@gmail.com',
             'maniraja5599@gmail.com',
             'admin@anjaneyaborewells.com',
             'contact@anjaneyaborewells.com'
         ];
-        this.securityPin = '7777';
+        this.securityPin = '5599';
         this.isAuthorized = false;
         this.autoRefreshTimer = null;
         this.charts = {};

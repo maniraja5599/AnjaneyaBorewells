@@ -3934,8 +3934,8 @@ class PwaInstallManager {
 // ==========================================================================
 class AdminCommandCenter {
     constructor() {
-        this.authorizedEmails = ['manirajankg@gmail.com', 'manirajankgr@gmail.com', 'admin@anjaneyaborewells.com'];
-        this.defaultOtp = '7777';
+        this.authorizedEmails = ['manirajankg@gmail.com', 'nesamaniraja@gmail.com', 'manirajankgr@gmail.com', 'admin@anjaneyaborewells.com'];
+        this.defaultOtp = '5599';
         this.isAuthenticated = sessionStorage.getItem('ab_admin_auth') === 'true';
         this.autoRefreshTimer = null;
         this.firebaseUrl = 'https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app/pageviews.json';
