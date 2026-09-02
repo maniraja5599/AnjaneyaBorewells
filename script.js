@@ -16,12 +16,14 @@ class AnjaneyaBorewells {
     }
 
     setupEventListeners() {
-        // Smooth scrolling for navigation links (only for internal hash links)
+        // Smooth scrolling for navigation links with sticky navbar offset
         document.querySelectorAll('a[href^="#"]:not([href^="https://"]):not([href^="http://"])').forEach(link => {
             link.addEventListener('click', (e) => {
-                e.preventDefault();
                 const targetId = link.getAttribute('href');
-                if (targetId === '#home' || targetId === '#' || targetId === '') {
+                if (!targetId || targetId === '#') return;
+                e.preventDefault();
+                
+                if (targetId === '#home') {
                     window.scrollTo({
                         top: 0,
                         left: 0,
@@ -30,23 +32,28 @@ class AnjaneyaBorewells {
                 } else {
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
+                        const navEl = document.getElementById('navbar') || document.querySelector('.navbar');
+                        const navHeight = navEl ? navEl.offsetHeight : 70;
+                        const elementTop = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementTop + window.pageYOffset - navHeight - 10;
+
+                        window.scrollTo({
+                            top: Math.max(0, offsetPosition),
+                            behavior: 'smooth'
                         });
                     }
                 }
                 
-                // Close mobile menu if it's open (for nav-link clicks)
-                if (link.classList.contains('nav-link') || link.id === 'navWhatsappBtn') {
+                // Close mobile menu if it's open
+                if (this.navigation) {
                     this.navigation.closeMobileMenu();
+                } else {
+                    const navMenu = document.getElementById('navMenu');
+                    const navToggle = document.getElementById('navToggle');
+                    if (navMenu) navMenu.classList.remove('active');
+                    if (navToggle) navToggle.classList.remove('active');
                 }
             });
-        });
-
-        // Get Quote button goes to calculator section
-        document.getElementById('navWhatsappBtn')?.addEventListener('click', (e) => {
-            console.log('Get Quote button clicked - going to calculator');
         });
 
         // Company name & Brand link click goes directly to absolute top of page

@@ -1289,48 +1289,53 @@ section {
     .nav-menu {
         display: none;
         position: fixed;
-        top: 70px;
+        top: 68px;
         left: 0;
         right: 0;
-        background: #ffffff;
+        background: #ffffff !important;
         border: none;
-        border-radius: 12px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        border-radius: 0 0 16px 16px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.22);
         z-index: 10000;
+        padding: 8px 12px 18px;
     }
     
     .nav-menu.active {
         display: flex !important;
         flex-direction: column !important;
         animation: slideDown 0.3s ease;
-        min-height: 200px !important;
-        max-height: 400px !important;
+        height: auto !important;
+        max-height: calc(100vh - 80px) !important;
+        overflow-y: auto !important;
         opacity: 1 !important;
         visibility: visible !important;
     }
     
     .nav-menu a {
-        padding: 16px 20px;
-        border-bottom: 1px solid #f0f0f0;
+        padding: 14px 18px;
+        border-bottom: 1px solid #f1f5f9;
         width: 100%;
-        text-align: center;
-        color: #333333 !important;
+        text-align: left;
+        color: #1e293b !important;
         text-decoration: none;
-        transition: all 0.3s ease;
-        font-weight: 500;
-        font-size: 16px;
+        transition: all 0.2s ease;
+        font-weight: 600;
+        font-size: 15px;
         border-radius: 8px;
-        margin: 4px 8px;
+        margin: 2px 0;
+        display: flex;
+        align-items: center;
+        gap: 12px;
     }
     
-    .nav-menu a:last-child {
+    .nav-menu a:last-of-type {
         border-bottom: none;
     }
     
     .nav-menu a:hover {
-        background: #f8f9fa;
+        background: #f0fdf4;
         color: #15803d !important;
-        transform: translateY(-2px);
+        transform: translateX(4px);
     }
 }
 
@@ -2140,9 +2145,6 @@ section {
 /* Mobile responsive for compact drilling type */
 @media (max-width: 768px) {
     .drilling-type-compact {
-        flex-direction: row !important;
-        align-items: center !important;
-    .drilling-type-compact {
         display: flex !important;
         flex-direction: column !important;
         align-items: stretch !important;
@@ -2498,10 +2500,25 @@ section {
     width: 100%;
 }
 
+/* Global Scroll Margin for Sticky Navbar Offset */
+section, [id] {
+    scroll-margin-top: 85px !important;
+}
+
+#calculator {
+    scroll-margin-top: 85px !important;
+}
+
 .nav-icon {
-    width: 18px;
-    height: 18px;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    max-width: 18px !important;
+    min-height: 18px !important;
+    max-height: 18px !important;
     stroke: currentColor;
+    display: inline-block;
+    vertical-align: middle;
     transition: var(--transition);
 }
 
@@ -2520,12 +2537,15 @@ section {
     gap: 16px;
 }
 
-
-/* Smaller Get Quote button in navigation */
+/* Rate Button in navigation */
 #navWhatsappBtn {
     padding: 8px 16px;
     font-size: 0.9rem;
     min-height: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
 
 .nav-toggle {
@@ -2703,6 +2723,31 @@ section {
     margin-bottom: 1rem;
     white-space: nowrap;
     animation: fadeInUp 0.8s ease both;
+}
+
+.badge-icon-svg {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    max-width: 16px !important;
+    min-height: 16px !important;
+    max-height: 16px !important;
+    display: inline-block !important;
+    flex-shrink: 0;
+}
+
+.hero-social-btn svg {
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    max-width: 18px !important;
+}
+
+.section-icon {
+    width: 24px !important;
+    height: 24px !important;
+    min-width: 24px !important;
+    max-width: 24px !important;
 }
 
 .hero-title {
@@ -2965,7 +3010,7 @@ section {
 .section-header h2::before {
     content: '';
     position: absolute;
-    top: 50%;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     width: 80px;
@@ -2978,7 +3023,7 @@ section {
 .section-header h2::after {
     content: '';
     position: absolute;
-    top: 50%;
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     width: 200px;
@@ -10425,6 +10470,8 @@ img {
 .pwa-popup-progress-fill.run {
     width: 0%;
 }
+
+.btn-pwa-dismiss {
     line-height: 1;
     transition: color 0.2s ease;
 }
