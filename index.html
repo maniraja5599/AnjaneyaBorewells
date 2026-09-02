@@ -1649,13 +1649,14 @@
                         </div>
                     </div>
                     <div class="admin-header-status-row">
-                        <span class="admin-live-pulse-badge"><span class="pulse-green"></span> AUTO-REFRESH LIVE (3s)</span>
+                        <span class="admin-live-pulse-badge" id="adminAutoRefreshBadge"><span class="pulse-green"></span> AUTO-SYNC (60s)</span>
                         <span class="admin-latency-pill"><span class="latency-dot"></span> 38ms Cloud Ping</span>
                         <span class="admin-clock-pill" id="adminLiveClock">12:00 PM IST</span>
                         <span class="admin-auth-badge" id="adminAuthBadge" style="display: none;">🔐 SuperAdmin Active</span>
                     </div>
                 </div>
                 <div class="admin-header-actions">
+                    <button type="button" class="btn-admin-refresh" id="adminManualRefreshBtn" style="display: none;" title="Refresh Live Analytics Data">🔄 Refresh Data</button>
                     <div class="admin-export-dropdown" id="adminExportDropdown" style="display: none;">
                         <button type="button" class="btn-admin-export" id="adminExportBtn" title="Export Full Analytics Data">
                             📥 Download Data ▾

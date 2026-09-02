@@ -3967,6 +3967,7 @@ class AdminCommandCenter {
         this.dashboardView = document.getElementById('adminDashboard');
         this.logoutBtn = document.getElementById('adminLogoutBtn');
         this.purgeCacheBtn = document.getElementById('adminPurgeCacheBtn');
+        this.manualRefreshBtn = document.getElementById('adminManualRefreshBtn');
         this.authBadge = document.getElementById('adminAuthBadge');
         this.exportDropdown = document.getElementById('adminExportDropdown');
         this.exportBtn = document.getElementById('adminExportBtn');
@@ -3994,6 +3995,19 @@ class AdminCommandCenter {
         }
         if (this.logoutBtn) {
             this.logoutBtn.addEventListener('click', () => this.logout());
+        }
+        if (this.manualRefreshBtn) {
+            this.manualRefreshBtn.addEventListener('click', async () => {
+                const orig = this.manualRefreshBtn.innerHTML;
+                this.manualRefreshBtn.disabled = true;
+                this.manualRefreshBtn.innerHTML = '⏳ Syncing...';
+                await this.pollAndRenderTelemetry();
+                this.manualRefreshBtn.innerHTML = '✅ Synced!';
+                setTimeout(() => {
+                    this.manualRefreshBtn.innerHTML = orig;
+                    this.manualRefreshBtn.disabled = false;
+                }, 1000);
+            });
         }
 
         // Export Dropdown Controls
@@ -4106,6 +4120,7 @@ class AdminCommandCenter {
         if (this.authBadge) this.authBadge.style.display = 'none';
         if (this.logoutBtn) this.logoutBtn.style.display = 'none';
         if (this.purgeCacheBtn) this.purgeCacheBtn.style.display = 'none';
+        if (this.manualRefreshBtn) this.manualRefreshBtn.style.display = 'none';
         if (this.exportDropdown) this.exportDropdown.style.display = 'none';
         if (this.errorMsg) this.errorMsg.style.display = 'none';
     }
@@ -4116,6 +4131,7 @@ class AdminCommandCenter {
         if (this.authBadge) this.authBadge.style.display = 'inline-flex';
         if (this.logoutBtn) this.logoutBtn.style.display = 'block';
         if (this.purgeCacheBtn) this.purgeCacheBtn.style.display = 'inline-flex';
+        if (this.manualRefreshBtn) this.manualRefreshBtn.style.display = 'inline-flex';
         if (this.exportDropdown) this.exportDropdown.style.display = 'block';
         this.startLiveAutoRefresh();
     }
@@ -4166,8 +4182,8 @@ class AdminCommandCenter {
     startLiveAutoRefresh() {
         this.stopLiveAutoRefresh();
         this.pollAndRenderTelemetry();
-        // 3-second live pulse without any manual refresh button
-        this.autoRefreshTimer = setInterval(() => this.pollAndRenderTelemetry(), 3000);
+        // Relaxed 60-second background polling while Admin Panel is open
+        this.autoRefreshTimer = setInterval(() => this.pollAndRenderTelemetry(), 60000);
     }
 
     stopLiveAutoRefresh() {
