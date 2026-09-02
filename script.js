@@ -2153,27 +2153,38 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
                 casingStr = 'Standard Casing';
             }
 
-            // Track lead in LocalStorage & Telemetry
+            const leadData = {
+                id: 'lead_' + Date.now(),
+                phone: `+91 ${rawPhone.substring(0, 5)} ${rawPhone.substring(5)}`,
+                rawPhone: rawPhone,
+                depth: `${inputs.totalDepth || 800} ft`,
+                type: inputs.drillingType === 'repair' ? 'Rebore / Deepening' : 'New Borewell',
+                casing: casingStr,
+                flush: 'Included (2000 PSI)',
+                survey: 'Groundwater Sensor Scan',
+                cost: `₹${(res.totalCost || 0).toLocaleString('en-IN')}`,
+                totalCostNum: res.totalCost || 0,
+                loc: 'Namakkal / Tamil Nadu',
+                action: '🟢 Direct WhatsApp Sent',
+                timestamp: now.toISOString(),
+                time: formattedTime,
+                isRealLead: true
+            };
+
+            // 1. Track lead in LocalStorage
             try {
                 const quoteLeads = JSON.parse(localStorage.getItem('anjaneya_whatsapp_leads') || '[]');
-                quoteLeads.unshift({
-                    id: 'lead_' + Date.now(),
-                    phone: `+91 ${rawPhone.substring(0, 5)} ${rawPhone.substring(5)}`,
-                    rawPhone: rawPhone,
-                    depth: `${inputs.totalDepth || 800} ft`,
-                    type: inputs.drillingType === 'repair' ? 'Rebore / Deepening' : 'New Borewell',
-                    casing: casingStr,
-                    flush: 'Included (2000 PSI)',
-                    survey: 'Groundwater Sensor Scan',
-                    cost: `₹${(res.totalCost || 0).toLocaleString('en-IN')}`,
-                    totalCostNum: res.totalCost || 0,
-                    loc: 'Namakkal / Tamil Nadu',
-                    action: '🟢 Direct WhatsApp Sent',
-                    timestamp: now.toISOString(),
-                    time: formattedTime,
-                    isRealLead: true
-                });
+                quoteLeads.unshift(leadData);
                 localStorage.setItem('anjaneya_whatsapp_leads', JSON.stringify(quoteLeads.slice(0, 50)));
+            } catch(e) {}
+
+            // 2. Sync to Firebase Realtime Database across all devices worldwide
+            try {
+                fetch('https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app/whatsapp_leads.json', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(leadData)
+                }).catch(err => console.warn('Firebase RTDB Lead sync:', err));
             } catch(e) {}
 
             closeModal();
@@ -2209,26 +2220,38 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
                 casingStr = 'Standard Casing';
             }
 
+            const officeLeadData = {
+                id: 'lead_office_' + Date.now(),
+                phone: '+91 96596 57777 (Hotline Desk)',
+                rawPhone: '9659657777',
+                depth: `${inputs.totalDepth || 800} ft`,
+                type: inputs.drillingType === 'repair' ? 'Rebore / Deepening' : 'New Borewell',
+                casing: casingStr,
+                flush: 'Included (2000 PSI)',
+                survey: 'Groundwater Sensor Scan',
+                cost: `₹${(res.totalCost || 0).toLocaleString('en-IN')}`,
+                totalCostNum: res.totalCost || 0,
+                loc: 'Namakkal & Tamil Nadu',
+                action: '🏢 Sent to Office Hotline',
+                timestamp: now.toISOString(),
+                time: formattedTime,
+                isRealLead: true
+            };
+
+            // 1. Track in LocalStorage
             try {
                 const quoteLeads = JSON.parse(localStorage.getItem('anjaneya_whatsapp_leads') || '[]');
-                quoteLeads.unshift({
-                    id: 'lead_office_' + Date.now(),
-                    phone: '+91 96596 57777 (Hotline Desk)',
-                    rawPhone: '9659657777',
-                    depth: `${inputs.totalDepth || 800} ft`,
-                    type: inputs.drillingType === 'repair' ? 'Rebore / Deepening' : 'New Borewell',
-                    casing: casingStr,
-                    flush: 'Included (2000 PSI)',
-                    survey: 'Groundwater Sensor Scan',
-                    cost: `₹${(res.totalCost || 0).toLocaleString('en-IN')}`,
-                    totalCostNum: res.totalCost || 0,
-                    loc: 'Namakkal & Tamil Nadu',
-                    action: '🏢 Sent to Office Hotline',
-                    timestamp: now.toISOString(),
-                    time: formattedTime,
-                    isRealLead: true
-                });
+                quoteLeads.unshift(officeLeadData);
                 localStorage.setItem('anjaneya_whatsapp_leads', JSON.stringify(quoteLeads.slice(0, 50)));
+            } catch(e) {}
+
+            // 2. Sync to Firebase Realtime Database
+            try {
+                fetch('https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app/whatsapp_leads.json', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(officeLeadData)
+                }).catch(err => console.warn('Firebase RTDB Office Lead sync:', err));
             } catch(e) {}
 
             closeModal();

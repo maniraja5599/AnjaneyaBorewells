@@ -363,7 +363,7 @@ class StandaloneAdminCommandCenter {
         try {
             const [
                 pageviewsRes, presRes, locRes, stateRes, countryRes,
-                sessRes, recentRes, installsRes, devRes, engRes
+                sessRes, recentRes, installsRes, devRes, engRes, whatsappLeadsRes
             ] = await Promise.all([
                 fetch(`${this.firebaseUrl}/pageviews.json`, { cache: 'no-store' }),
                 fetch(`${this.firebaseUrl}/active_presence.json`, { cache: 'no-store' }),
@@ -374,11 +374,14 @@ class StandaloneAdminCommandCenter {
                 fetch(`${this.firebaseUrl}/recent_logs.json`, { cache: 'no-store' }),
                 fetch(`${this.firebaseUrl}/app_installs.json`, { cache: 'no-store' }),
                 fetch(`${this.firebaseUrl}/devices.json`, { cache: 'no-store' }),
-                fetch(`${this.firebaseUrl}/engagement.json`, { cache: 'no-store' })
+                fetch(`${this.firebaseUrl}/engagement.json`, { cache: 'no-store' }),
+                fetch(`${this.firebaseUrl}/whatsapp_leads.json`, { cache: 'no-store' })
             ]);
 
             const pingMs = Math.max(18, Date.now() - startTime);
             if (this.pingVal) this.pingVal.textContent = `${pingMs}ms Latency`;
+
+            const rawWhatsAppLeads = whatsappLeadsRes.ok ? await whatsappLeadsRes.json() : null;
 
             const fbData = {
                 pageviews: pageviewsRes.ok ? await pageviewsRes.json() : null,
@@ -390,7 +393,8 @@ class StandaloneAdminCommandCenter {
                 recentLogs: recentRes.ok ? await recentRes.json() : null,
                 appInstalls: installsRes.ok ? await installsRes.json() : null,
                 devices: devRes.ok ? await devRes.json() : null,
-                engagement: engRes.ok ? await engRes.json() : null
+                engagement: engRes.ok ? await engRes.json() : null,
+                whatsappLeads: rawWhatsAppLeads
             };
 
             this.latestFbData = fbData;
@@ -410,6 +414,59 @@ class StandaloneAdminCommandCenter {
                 if (valid > 0) activeCount = valid;
             }
             this.latestActiveCount = activeCount;
+
+            // Process Real-Time Worldwide WhatsApp Leads from Firebase RTDB
+            let liveFirebaseLeads = [];
+            if (rawWhatsAppLeads && typeof rawWhatsAppLeads === 'object') {
+                const leadKeys = Object.keys(rawWhatsAppLeads);
+                leadKeys.forEach(k => {
+                    const l = rawWhatsAppLeads[k];
+                    if (l && typeof l === 'object') {
+                        liveFirebaseLeads.push({
+                            id: k,
+                            time: l.time || (new Date(l.timestamp || Date.now()).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + new Date(l.timestamp || Date.now()).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })),
+                            phone: l.phone || '+91 96596 57777',
+                            rawPhone: l.rawPhone || (l.phone ? l.phone.replace(/\D/g, '') : '9659657777'),
+                            depth: l.depth || '800 ft',
+                            type: l.type || 'New Borewell',
+                            casing: l.casing || '60 ft (7" PVC)',
+                            flush: l.flush || 'Included (2000 PSI)',
+                            survey: l.survey || 'Groundwater Sensor Scan',
+                            cost: l.cost || '₹1,08,500',
+                            loc: l.loc || 'Namakkal / Tamil Nadu',
+                            action: l.action || '🟢 Direct WhatsApp Sent',
+                            timestamp: l.timestamp || new Date().toISOString(),
+                            isRealLead: true
+                        });
+                    }
+                });
+                // Sort newest timestamp first
+                liveFirebaseLeads.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            }
+
+            // Combine Real Firebase Leads + LocalStorage + Default Fallbacks
+            const seenPhones = new Set();
+            const combinedLeads = [];
+            
+            liveFirebaseLeads.forEach(lead => {
+                const sig = (lead.rawPhone || lead.phone) + '_' + lead.time;
+                if (!seenPhones.has(sig)) {
+                    seenPhones.add(sig);
+                    combinedLeads.push(lead);
+                }
+            });
+
+            // LocalStorage fallback
+            const localLeads = JSON.parse(localStorage.getItem('anjaneya_whatsapp_leads') || '[]');
+            localLeads.forEach(lead => {
+                const sig = (lead.rawPhone || lead.phone) + '_' + lead.time;
+                if (!seenPhones.has(sig)) {
+                    seenPhones.add(sig);
+                    combinedLeads.push(lead);
+                }
+            });
+
+            this.allEstimatesQuotes = [...combinedLeads, ...(this.defaultQuotes || [])];
 
             this.renderTickerAndKpis();
             this.renderOverviewCharts();
@@ -691,7 +748,7 @@ class StandaloneAdminCommandCenter {
             isRealLead: true
         }));
 
-        const defaultQuotes = [
+        this.defaultQuotes = [
             { time: 'Today, 02:15 PM', phone: '+91 98427 34512', rawPhone: '9842734512', depth: '850 ft', type: 'New Borewell', casing: '60 ft (7" PVC)', flush: 'Included (2000 PSI)', survey: 'Groundwater Sensor Scan', cost: '₹1,08,500', loc: 'Tiruchengode, Namakkal', action: '🟢 WhatsApp Quote Sent' },
             { time: 'Today, 01:30 PM', phone: '+91 94432 18920', rawPhone: '9443218920', depth: '600 ft', type: 'New Borewell', casing: '80 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹94,200', loc: 'Omalur, Salem', action: '📞 Call Hotline Initiated' },
             { time: 'Today, 11:45 AM', phone: '+91 97890 12345', rawPhone: '9789012345', depth: '1,100 ft', type: 'Rebore (Repair)', casing: '120 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,48,000', loc: 'Thuraiyur, Trichy', action: '📄 PDF Estimate Downloaded' },
@@ -713,7 +770,7 @@ class StandaloneAdminCommandCenter {
             { time: '25/08/2026, 04:45 PM', phone: '+91 99650 33445', rawPhone: '9965033445', depth: '750 ft', type: 'New Borewell', casing: '70 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹1,09,000', loc: 'Edappadi, Salem', action: '📞 Direct Call Hotline' }
         ];
 
-        this.allEstimatesQuotes = [...realLeads, ...defaultQuotes];
+        this.allEstimatesQuotes = [...realLeads, ...this.defaultQuotes];
 
         // 3. Comprehensive PWA App Installations (20+ records)
         this.allAppInstalls = [
