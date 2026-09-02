@@ -2075,12 +2075,98 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
 
 📋 _Please confirm this quotation to schedule the drilling rig._`;
 
-        // Encode message for WhatsApp URL
-        const encodedMessage = encodeURIComponent(message);
-        const whatsappUrl = `https://wa.me/919659657777?text=${encodedMessage}`;
+        this.currentWhatsAppQuoteText = message;
+        this.currentQuoteResults = results;
 
-        // Open WhatsApp
-        window.open(whatsappUrl, '_blank');
+        // Open WhatsApp Modal
+        const modal = document.getElementById('whatsappQuoteModal');
+        const modalTotal = document.getElementById('whatsappModalTotal');
+        const phoneInput = document.getElementById('whatsappCustomerPhone');
+        const errorMsg = document.getElementById('whatsappPhoneError');
+
+        if (modal) {
+            if (modalTotal) {
+                modalTotal.textContent = `₹${results.totalCost.toLocaleString('en-IN')}`;
+            }
+            if (errorMsg) errorMsg.style.display = 'none';
+            modal.style.display = 'flex';
+            if (phoneInput) {
+                phoneInput.focus();
+            }
+            this.setupWhatsAppModalEvents();
+        } else {
+            // Fallback direct open
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/919659657777?text=${encoded}`, '_blank');
+        }
+    }
+
+    setupWhatsAppModalEvents() {
+        if (this._whatsappModalInitialized) return;
+        this._whatsappModalInitialized = true;
+
+        const modal = document.getElementById('whatsappQuoteModal');
+        const closeBtn = document.getElementById('whatsappModalClose');
+        const directBtn = document.getElementById('sendDirectWhatsAppBtn');
+        const officeBtn = document.getElementById('sendOfficeWhatsAppBtn');
+        const phoneInput = document.getElementById('whatsappCustomerPhone');
+        const errorMsg = document.getElementById('whatsappPhoneError');
+
+        const closeModal = () => {
+            if (modal) modal.style.display = 'none';
+            if (errorMsg) errorMsg.style.display = 'none';
+        };
+
+        closeBtn?.addEventListener('click', closeModal);
+        modal?.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        const sendToCustomerNumber = () => {
+            const rawPhone = (phoneInput?.value || '').replace(/\D/g, '');
+            if (rawPhone.length !== 10) {
+                if (errorMsg) {
+                    errorMsg.style.display = 'block';
+                    errorMsg.textContent = '⚠️ Please enter a valid 10-digit mobile number (10 இலக்க வாட்ஸ்அப் எண் தேவை)';
+                }
+                phoneInput?.focus();
+                return;
+            }
+
+            if (errorMsg) errorMsg.style.display = 'none';
+            const encoded = encodeURIComponent(this.currentWhatsAppQuoteText || '');
+            const targetUrl = `https://wa.me/91${rawPhone}?text=${encoded}`;
+
+            // Track lead in LocalStorage & Telemetry
+            try {
+                const quoteLeads = JSON.parse(localStorage.getItem('anjaneya_whatsapp_leads') || '[]');
+                quoteLeads.unshift({
+                    phone: `+91 ${rawPhone}`,
+                    total: this.currentQuoteResults ? this.currentQuoteResults.totalCost : 0,
+                    time: new Date().toISOString()
+                });
+                localStorage.setItem('anjaneya_whatsapp_leads', JSON.stringify(quoteLeads.slice(0, 50)));
+            } catch(e) {}
+
+            closeModal();
+            window.open(targetUrl, '_blank');
+        };
+
+        directBtn?.addEventListener('click', sendToCustomerNumber);
+        
+        phoneInput?.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                sendToCustomerNumber();
+            }
+        });
+
+        officeBtn?.addEventListener('click', () => {
+            const encoded = encodeURIComponent(this.currentWhatsAppQuoteText || '');
+            const targetUrl = `https://wa.me/919659657777?text=${encoded}`;
+            closeModal();
+            window.open(targetUrl, '_blank');
+        });
     }
 
 }

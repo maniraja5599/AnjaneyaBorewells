@@ -1658,6 +1658,56 @@
         </div>
     </div>
 
+    <!-- WhatsApp Direct Customer Quote Modal -->
+    <div class="modal" id="whatsappQuoteModal" style="display: none;" aria-hidden="true">
+        <div class="modal-content whatsapp-modal-content" style="max-width: 440px; border-radius: 18px; border: 1.5px solid #22c55e; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.3); background: #ffffff;">
+            <div class="modal-header whatsapp-modal-header" style="background: linear-gradient(135deg, #15803d, #16a34a); color: white; padding: 18px 20px; display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.5rem;">💬</span>
+                    <div>
+                        <h4 style="margin: 0; font-size: 1.1rem; font-weight: 700; color: white;">Send Quote to WhatsApp</h4>
+                        <span style="font-size: 0.78rem; opacity: 0.92; color: #f0fdf4;">வாட்ஸ்அப் மூலம் உத்தேச மதிப்பீடு பெறுக</span>
+                    </div>
+                </div>
+                <button type="button" class="modal-close" id="whatsappModalClose" aria-label="Close WhatsApp Modal" style="color: white; font-size: 26px; background: none; border: none; cursor: pointer; line-height: 1;">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 22px 20px; background: #ffffff;">
+                <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 12px; padding: 12px 16px; margin-bottom: 18px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                        <span style="font-size: 0.88rem; color: #166534; font-weight: 600;">Quotation Total:</span>
+                        <strong id="whatsappModalTotal" style="font-size: 1.25rem; color: #15803d; font-weight: 800;">₹1,31,500</strong>
+                    </div>
+                    <small style="color: #166534; font-size: 0.75rem; display: block; font-weight: 600;">(Approximate / உத்தேச மதிப்பு)</small>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                    <label for="whatsappCustomerPhone" style="display: block; font-weight: 700; font-size: 0.92rem; color: #1e293b; margin-bottom: 8px;">
+                        Enter Customer Mobile Number (வாடிக்கையாளர் எண்):
+                    </label>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="background: #f1f5f9; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; font-weight: 700; font-size: 0.95rem; color: #334155;">+91</span>
+                        <input type="tel" id="whatsappCustomerPhone" class="form-input" placeholder="Enter 10-digit mobile number" maxlength="10" style="flex: 1; padding: 10px 14px; font-size: 1.05rem; border-radius: 8px; border: 1.5px solid #cbd5e1; font-weight: 600; color: #0f172a;" autocomplete="tel">
+                    </div>
+                    <small id="whatsappPhoneError" style="color: #dc2626; font-size: 0.78rem; display: none; margin-top: 6px; font-weight: 600;">⚠️ Please enter a valid 10-digit mobile number</small>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="btn btn-primary ripple" id="sendDirectWhatsAppBtn" style="background: #16a34a; border-color: #16a34a; color: #ffffff; font-weight: 700; padding: 12px 16px; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; gap: 8px; border-radius: 10px;">
+                        <span>🚀 Send to This Customer Number</span>
+                    </button>
+                    <div style="display: flex; align-items: center; gap: 8px; margin: 4px 0;">
+                        <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+                        <span style="font-size: 0.75rem; color: #94a3b8; font-weight: 700;">OR</span>
+                        <div style="flex: 1; height: 1px; background: #e2e8f0;"></div>
+                    </div>
+                    <button type="button" class="btn btn-secondary ripple" id="sendOfficeWhatsAppBtn" style="padding: 10px 14px; font-size: 0.82rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 6px; border-radius: 10px; white-space: nowrap;">
+                        <span>🏢 Send to Office (+91 965 965 7777)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Admin Portal Modal: Enterprise Analytics & IP Intelligence Command Center -->
     <div class="modal" id="adminModal" style="display: none;">
         <div class="modal-content admin-modal-content">
