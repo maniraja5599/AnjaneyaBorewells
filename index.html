@@ -1014,12 +1014,12 @@
                             <div class="drilling-type-compact">
                                 <label class="drilling-type-label">Drilling Type</label>
                                 <div class="drilling-type-buttons">
-                                    <div class="drilling-button" data-type="new">
-                                        <input type="radio" name="drillingType" value="new" checked style="display: none;">
+                                    <div class="drilling-button selected" data-type="new">
+                                        <input type="radio" name="drillingType" id="drillingTypeNew" value="new" checked style="display: none;">
                                         <span>New Drilling</span>
                                     </div>
                                     <div class="drilling-button" data-type="repair">
-                                        <input type="radio" name="drillingType" value="repair" style="display: none;">
+                                        <input type="radio" name="drillingType" id="drillingTypeRepair" value="repair" style="display: none;">
                                         <span>Rebore (Repair)</span>
                                     </div>
                                 </div>
@@ -1064,6 +1064,7 @@
                         <div class="form-group">
                             <div class="live-total-display">
                                 <div class="total-amount" id="liveTotalCost">₹0</div>
+                                <div class="approx-tag" style="text-align: center; font-size: 0.72rem; color: #166534; font-weight: 700; margin-top: 3px; letter-spacing: 0.02em;">(Approximate / உத்தேச மதிப்பு)</div>
                             </div>
                         </div>
 
@@ -1279,7 +1280,10 @@
                             <span id="gstAmount">₹0</span>
                         </div>
                         <div class="cost-item total">
-                            <span>Total Cost:</span>
+                            <div>
+                                <span>Total Cost:</span>
+                                <small style="display:block; font-size:0.75rem; color:#15803d; font-weight:700;">(Approximate / உத்தேச மதிப்பு)</small>
+                            </div>
                             <span id="totalCost">₹0</span>
                         </div>
                     </div>

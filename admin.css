@@ -401,80 +401,83 @@ body.admin-body {
 }
 
 /* ==========================================================================
-   EXECUTIVE LIVE METRIC TICKER BAR (Number Count Bar)
+   EXECUTIVE LIVE METRIC TICKER BAR (Compact & Smart Chips)
    ========================================================================== */
 .executive-ticker-bar {
     max-width: 1600px;
-    margin: 20px auto 0 auto;
+    margin: 14px auto 0 auto;
     padding: 0 24px;
     width: 100%;
 }
 
 .ticker-scroll-track {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    gap: 8px;
 }
 
 .ticker-item {
     background: var(--bg-card);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-md);
-    padding: 14px 16px;
+    border-radius: 10px;
+    padding: 10px 12px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
-    transition: transform 0.2s ease, border-color 0.2s ease;
-    box-shadow: var(--shadow-card);
+    gap: 2px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
 .ticker-item:hover {
     transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.16);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
 }
 
 .t-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 6px;
+    gap: 4px;
 }
 
 .t-icon {
-    font-size: 0.95rem;
+    font-size: 0.82rem;
 }
 
 .t-label {
-    font-size: 0.65rem;
+    font-size: 0.58rem;
     font-weight: 800;
     letter-spacing: 0.05em;
     color: var(--text-muted);
 }
 
 .t-badge {
-    font-size: 0.58rem;
-    font-weight: 700;
-    padding: 1px 5px;
-    border-radius: 4px;
+    font-size: 0.50rem;
+    font-weight: 800;
+    padding: 1px 4px;
+    border-radius: 3px;
     background: rgba(255, 255, 255, 0.08);
     color: var(--text-secondary);
 }
 
 .t-val {
-    font-size: 1.45rem;
+    font-size: 1.15rem;
     font-weight: 900;
     font-family: var(--font-mono);
     color: #ffffff;
-    line-height: 1.1;
-    margin-top: 2px;
+    line-height: 1.15;
+    margin-top: 1px;
+    letter-spacing: -0.02em;
 }
 
 .t-val.text-sm {
-    font-size: 0.95rem;
+    font-size: 0.82rem;
 }
 
 .t-sub {
-    font-size: 0.68rem;
+    font-size: 0.58rem;
     color: var(--text-muted);
     font-weight: 500;
 }
@@ -503,6 +506,23 @@ body.admin-body {
 
 .item-teal { border-left: 3px solid #14b8a6; }
 .item-teal .t-val { color: #2dd4bf; }
+
+/* Traffic Channel Badges */
+.badge-source {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.70rem;
+    font-weight: 700;
+}
+.badge-source-wa { background: rgba(37, 211, 102, 0.15); color: #4ade80; border: 1px solid rgba(37, 211, 102, 0.3); }
+.badge-source-insta { background: rgba(225, 48, 108, 0.15); color: #f472b6; border: 1px solid rgba(225, 48, 108, 0.3); }
+.badge-source-google { background: rgba(66, 133, 244, 0.15); color: #60a5fa; border: 1px solid rgba(66, 133, 244, 0.3); }
+.badge-source-direct { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3); }
+.badge-source-pwa { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3); }
+.badge-source-qr { background: rgba(245, 158, 11, 0.15); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.3); }
 
 /* ==========================================================================
    AUTHENTICATION GATEWAY CARD

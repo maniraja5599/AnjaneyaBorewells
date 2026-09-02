@@ -1224,17 +1224,34 @@ class CostCalculator {
         // Drilling type button handlers
         const drillingButtons = document.querySelectorAll('.drilling-button');
         drillingButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                drillingButtons.forEach(b => b.classList.remove('selected'));
-                button.classList.add('selected');
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 
+                drillingButtons.forEach(b => b.classList.remove('selected', 'active'));
+                button.classList.add('selected', 'active');
+                
+                const type = button.dataset.type || (button.querySelector('input[type="radio"]')?.value) || 'new';
                 const radio = button.querySelector('input[type="radio"]');
                 if (radio) {
                     radio.checked = true;
-                    this.handleDrillingTypeChange(radio.value);
                 }
+                const otherRadio = document.querySelector(`input[name="drillingType"][value="${type === 'new' ? 'repair' : 'new'}"]`);
+                if (otherRadio) otherRadio.checked = false;
+
+                this.handleDrillingTypeChange(type);
             });
         });
+
+        // Ensure New Drilling is selected by default on startup
+        const defaultNewBtn = document.querySelector('.drilling-button[data-type="new"]');
+        if (defaultNewBtn) {
+            drillingButtons.forEach(b => b.classList.remove('selected', 'active'));
+            defaultNewBtn.classList.add('selected', 'active');
+            const newRadio = defaultNewBtn.querySelector('input[type="radio"]');
+            if (newRadio) newRadio.checked = true;
+            this.handleDrillingTypeChange('new');
+        }
         
         // Compact GST toggle
         const gstToggleCompact = document.getElementById('gstToggleCompact');
@@ -2043,7 +2060,7 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
             message += `\n• GST (${results.gstPercentage}%): Rs.${results.gstAmount.toLocaleString('en-IN')}`;
         }
 
-        message += `\n\n*✅ Total Estimated Cost: Rs.${results.totalCost.toLocaleString('en-IN')}*
+        message += `\n\n*✅ Total Estimated Cost: Rs.${results.totalCost.toLocaleString('en-IN')} (Approximate / உத்தேச மதிப்பு)*
 
 📞 Hotline: +91 965 965 7777 / +91 83000 30123
 🌐 Website: https://anjaneyaborewells.com

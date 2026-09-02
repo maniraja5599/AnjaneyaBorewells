@@ -510,12 +510,12 @@ class StandaloneAdminCommandCenter {
         // Render Live Visitor Intelligence
         if (this.telemetryTableBody) {
             const sampleSessions = [
-                { time: 'Just now', ip: '49.37.142.***', dist: 'Namakkal', state: 'Tamil Nadu, IN', device: 'Mobile / Samsung Galaxy', browser: 'Chrome 124', duration: '3m 12s', action: 'Calculated 800ft Quote', status: 'Quote Sent' },
-                { time: '2m ago', ip: '157.49.21.***', dist: 'Salem', state: 'Tamil Nadu, IN', device: 'Mobile / Redmi Note 13', browser: 'Chrome Mobile', duration: '1m 45s', action: 'Triggered WhatsApp Hotline', status: 'Direct Lead' },
-                { time: '5m ago', ip: '106.208.88.***', dist: 'Tiruchirappalli', state: 'Tamil Nadu, IN', device: 'Desktop / Windows 11', browser: 'Edge 123', duration: '4m 20s', action: 'Explored 10" Casing Rates', status: 'Active' },
-                { time: '9m ago', ip: '182.73.190.***', dist: 'Erode', state: 'Tamil Nadu, IN', device: 'Mobile / iPhone 15', browser: 'Safari Mobile', duration: '2m 10s', action: 'Downloaded PDF Estimate', status: 'PDF Export' },
-                { time: '14m ago', ip: '117.214.33.***', dist: 'Karur', state: 'Tamil Nadu, IN', device: 'Mobile / Vivo V29', browser: 'Chrome Mobile', duration: '1m 15s', action: 'Viewed Water Survey Info', status: 'Engaged' },
-                { time: '22m ago', ip: '49.204.112.***', dist: 'Coimbatore', state: 'Tamil Nadu, IN', device: 'Desktop / macOS', browser: 'Chrome 124', duration: '5m 02s', action: 'Checked Sensor Depth Specs', status: 'Engaged' }
+                { time: 'Just now', ip: '49.37.142.***', dist: 'Namakkal', state: 'Tamil Nadu, IN', source: 'WhatsApp Link', sourceBadge: 'badge-source-wa', device: 'Mobile / Samsung Galaxy', browser: 'Chrome 124', duration: '3m 12s', action: 'Calculated 800ft Quote', status: 'Quote Sent' },
+                { time: '2m ago', ip: '157.49.21.***', dist: 'Salem', state: 'Tamil Nadu, IN', source: 'Google Search', sourceBadge: 'badge-source-google', device: 'Mobile / Redmi Note 13', browser: 'Chrome Mobile', duration: '1m 45s', action: 'Triggered WhatsApp Hotline', status: 'Direct Lead' },
+                { time: '5m ago', ip: '106.208.88.***', dist: 'Tiruchirappalli', state: 'Tamil Nadu, IN', source: 'Direct Website', sourceBadge: 'badge-source-direct', device: 'Desktop / Windows 11', browser: 'Edge 123', duration: '4m 20s', action: 'Explored 10" Casing Rates', status: 'Active' },
+                { time: '9m ago', ip: '182.73.190.***', dist: 'Erode', state: 'Tamil Nadu, IN', source: 'Instagram (@maniraja__)', sourceBadge: 'badge-source-insta', device: 'Mobile / iPhone 15', browser: 'Safari Mobile', duration: '2m 10s', action: 'Downloaded PDF Estimate', status: 'PDF Export' },
+                { time: '14m ago', ip: '117.214.33.***', dist: 'Karur', state: 'Tamil Nadu, IN', source: 'QR Flyer Scan', sourceBadge: 'badge-source-qr', device: 'Mobile / Vivo V29', browser: 'Chrome Mobile', duration: '1m 15s', action: 'Viewed Water Survey Info', status: 'Engaged' },
+                { time: '22m ago', ip: '49.204.112.***', dist: 'Coimbatore', state: 'Tamil Nadu, IN', source: 'PWA Mobile App', sourceBadge: 'badge-source-pwa', device: 'Desktop / macOS', browser: 'Chrome 124', duration: '5m 02s', action: 'Checked Sensor Depth Specs', status: 'Engaged' }
             ];
 
             let html = '';
@@ -527,6 +527,7 @@ class StandaloneAdminCommandCenter {
                         <td style="font-family: var(--font-mono); font-weight: 600;">${s.ip}</td>
                         <td><strong style="color: #34d399;">${s.dist}</strong></td>
                         <td style="color: #cbd5e1;">${s.state}</td>
+                        <td><span class="badge-source ${s.sourceBadge}">${s.source}</span></td>
                         <td>${s.device}</td>
                         <td style="color: #94a3b8;">${s.browser}</td>
                         <td style="font-family: var(--font-mono); color: #38bdf8;">${s.duration}</td>
