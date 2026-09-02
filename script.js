@@ -675,6 +675,7 @@ class AnjaneyaBorewells {
         const oldBoreRate = settings.oldBoreRate || this.calculator.defaults.oldBoreRate || 40;
         const boreBataRate = settings.boreBataRate || this.calculator.defaults.boreBataRate || 2000;
         const gstPercentage = settings.gstPercentage || this.calculator.defaults.gstPercentage || 18;
+        const slabBufferFt = (typeof settings.slabBufferFt === 'number') ? settings.slabBufferFt : (this.calculator.defaults.slabBufferFt !== undefined ? this.calculator.defaults.slabBufferFt : 5);
         
         const pvc7Input = document.getElementById('inlinePvc7Rate');
         const pvc10Input = document.getElementById('inlinePvc10Rate');
@@ -682,6 +683,7 @@ class AnjaneyaBorewells {
         const oldBoreInput = document.getElementById('inlineOldBoreRate');
         const boreBataInput = document.getElementById('inlineBoreBataRate');
         const gstInput = document.getElementById('inlineGstPercentage');
+        const slabBufferInput = document.getElementById('inlineSlabBufferFt');
         
         if (pvc7Input) pvc7Input.value = pvc7Rate;
         if (pvc10Input) pvc10Input.value = pvc10Rate;
@@ -689,6 +691,7 @@ class AnjaneyaBorewells {
         if (oldBoreInput) oldBoreInput.value = oldBoreRate;
         if (boreBataInput) boreBataInput.value = boreBataRate;
         if (gstInput) gstInput.value = gstPercentage;
+        if (slabBufferInput) slabBufferInput.value = slabBufferFt;
         
         // Also load slab rates if they exist
         if (settings.slabRates && settings.slabRates.length > 0) {
@@ -717,6 +720,8 @@ class AnjaneyaBorewells {
         const oldBoreRate = parseFloat(document.getElementById('inlineOldBoreRate')?.value) || 40;
         const boreBataRate = parseFloat(document.getElementById('inlineBoreBataRate')?.value) || 2000;
         const gstPercentage = parseFloat(document.getElementById('inlineGstPercentage')?.value) || 18;
+        const rawBufferFt = parseInt(document.getElementById('inlineSlabBufferFt')?.value, 10);
+        const slabBufferFt = !isNaN(rawBufferFt) && rawBufferFt >= 0 ? rawBufferFt : 5;
         
         // Get current slab rates
         const slabRates = [];
@@ -746,6 +751,7 @@ class AnjaneyaBorewells {
         this.calculator.defaults.flushingRate = oldBoreRate;
         this.calculator.defaults.boreBataRate = boreBataRate;
         this.calculator.defaults.gstPercentage = gstPercentage;
+        this.calculator.defaults.slabBufferFt = slabBufferFt;
         
         // Update calculator slab rates
         this.calculator.slabRates = slabRates;
@@ -765,6 +771,7 @@ class AnjaneyaBorewells {
             flushingRate: oldBoreRate,
             boreBataRate,
             gstPercentage,
+            slabBufferFt,
             slabRates: slabRates
         }));
         
@@ -787,6 +794,7 @@ class AnjaneyaBorewells {
             if (document.getElementById('inlineOldBoreRate')) document.getElementById('inlineOldBoreRate').value = 40;
             if (document.getElementById('inlineBoreBataRate')) document.getElementById('inlineBoreBataRate').value = 2000;
             if (document.getElementById('inlineGstPercentage')) document.getElementById('inlineGstPercentage').value = 18;
+            if (document.getElementById('inlineSlabBufferFt')) document.getElementById('inlineSlabBufferFt').value = 5;
             
             // Reset slab rates to defaults
             const defaultSlabs = CostCalculator.DEPTH_SLABS.map(d => ({ ...d, rate: d.defaultRate }));
@@ -803,6 +811,7 @@ class AnjaneyaBorewells {
             this.calculator.defaults.flushingRate = 40;
             this.calculator.defaults.boreBataRate = 2000;
             this.calculator.defaults.gstPercentage = 18;
+            this.calculator.defaults.slabBufferFt = 5;
             
             // Update calculator slab rates
             this.calculator.slabRates = defaultSlabs;
@@ -1168,7 +1177,8 @@ class CostCalculator {
             pvc7Rate: 400,
             pvc10Rate: 700,
             oldBoreRate: 40,
-            boreBataRate: 2000
+            boreBataRate: 2000,
+            slabBufferFt: 5
         };
         
         this.slabRates = [];
@@ -1491,6 +1501,7 @@ class CostCalculator {
 
     calculateSlabRate(totalDepth, baseRate) {
         const slabs = this.getNormalizedSlabRates(baseRate);
+        const bufferFt = (this.defaults && typeof this.defaults.slabBufferFt === 'number') ? this.defaults.slabBufferFt : 5;
         const slabDetails = [];
         let totalCost = 0;
         let remaining = totalDepth;
@@ -1499,7 +1510,14 @@ class CostCalculator {
         for (let i = 0; i < slabs.length; i++) {
             if (remaining <= 0) break;
             const slab = slabs[i];
-            const applicable = Math.min(slab.span, remaining);
+            const isLastActiveSlab = (i === slabs.length - 1);
+            
+            let applicable;
+            if (!isLastActiveSlab && remaining > slab.span && (remaining - slab.span) <= bufferFt) {
+                applicable = remaining;
+            } else {
+                applicable = Math.min(slab.span, remaining);
+            }
             
             if (applicable > 0) {
                 const cost = applicable * slab.rate;
@@ -1525,6 +1543,7 @@ class CostCalculator {
 
     calculateRepairSlabRate(oldBoreDepth, totalDepth, baseRate) {
         const slabs = this.getNormalizedSlabRates(baseRate);
+        const bufferFt = (this.defaults && typeof this.defaults.slabBufferFt === 'number') ? this.defaults.slabBufferFt : 5;
         const slabDetails = [];
         let totalCost = 0;
         let remaining = totalDepth - oldBoreDepth;
@@ -1534,20 +1553,31 @@ class CostCalculator {
             if (remaining <= 0) break;
             const slab = slabs[i];
             const adjStart = Math.max(slab.start, currentDepth);
-            const adjEnd = Math.min(slab.end, totalDepth);
-
-            if (adjStart <= adjEnd) {
-                const applicable = adjEnd - adjStart + 1;
-                const cost = applicable * slab.rate;
-                totalCost += cost;
-                slabDetails.push({
-                    range: `${String(adjStart).padStart(3, '0')}-${adjEnd} ft`,
-                    rate: slab.rate,
-                    cost: cost,
-                    depth: applicable
-                });
-                remaining -= applicable;
-                currentDepth = adjEnd + 1;
+            
+            if (adjStart <= slab.end) {
+                const standardSpan = slab.end - adjStart + 1;
+                const isLastActiveSlab = (i === slabs.length - 1);
+                
+                let applicable;
+                if (!isLastActiveSlab && remaining > standardSpan && (remaining - standardSpan) <= bufferFt) {
+                    applicable = remaining;
+                } else {
+                    applicable = Math.min(standardSpan, remaining);
+                }
+                
+                if (applicable > 0) {
+                    const adjEnd = adjStart + applicable - 1;
+                    const cost = applicable * slab.rate;
+                    totalCost += cost;
+                    slabDetails.push({
+                        range: `${String(adjStart).padStart(3, '0')}-${adjEnd} ft`,
+                        rate: slab.rate,
+                        cost: cost,
+                        depth: applicable
+                    });
+                    remaining -= applicable;
+                    currentDepth = adjEnd + 1;
+                }
             }
         }
 
