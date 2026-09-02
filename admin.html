@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Command Center | Anjaneya Borewells Admin Dashboard</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="theme-color" content="#0b132b">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon-32x32.png">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+    <!-- Fonts & Chart.js -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+    <link rel="stylesheet" href="admin.css?v=2.9.6">
+</head>
+<body class="admin-body">
+    <!-- Top Header Navigation -->
+    <header class="admin-topbar">
+        <div class="admin-brand-section">
+            <a href="index.html" class="admin-brand-link" title="Return to Main Website">
+                <img src="logo.png" alt="Anjaneya Borewells Logo" class="admin-logo-img">
+                <div class="admin-brand-text">
+                    <h2>ANJANEYA BOREWELLS</h2>
+                    <span class="admin-badge-portal">Enterprise Command Center</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="admin-status-strip">
+            <div class="status-pill live-pulse" id="adminAutoSyncPill">
+                <span class="pulse-dot"></span>
+                <span>AUTO-SYNC (60s)</span>
+            </div>
+            <div class="status-pill ping-pill" id="adminPingPill">
+                <span class="ping-dot"></span>
+                <span id="adminPingText">32ms Cloud Ping</span>
+            </div>
+            <div class="status-pill clock-pill" id="adminClockPill">
+                <span id="adminClockText">12:00:00 PM IST</span>
+            </div>
+            <div class="status-pill superadmin-pill" id="superAdminBadge" style="display: none;">
+                <span>🔐 SuperAdmin Active</span>
+            </div>
+        </div>
+
+        <div class="admin-top-actions">
+            <button type="button" class="btn-top-action btn-refresh" id="adminRefreshBtn" style="display: none;" title="Fetch latest data from Firebase">
+                🔄 Refresh Data
+            </button>
+            
+            <div class="export-dropdown-wrapper" id="adminExportWrapper" style="display: none;">
+                <button type="button" class="btn-top-action btn-export" id="adminExportToggleBtn">
+                    📥 Export Data ▾
+                </button>
+                <div class="export-dropdown-menu" id="adminExportDropdownMenu" style="display: none;">
+                    <button type="button" class="export-menu-btn" id="exportCsvBtn">
+                        📊 Download CSV Audit Report
+                    </button>
+                    <button type="button" class="export-menu-btn" id="exportJsonBtn">
+                        💾 Export JSON Database Snapshot
+                    </button>
+                </div>
+            </div>
+
+            <button type="button" class="btn-top-action btn-purge" id="adminPurgeBtn" style="display: none;" title="Purge cached data and refresh">
+                🧹 Purge Cache
+            </button>
+
+            <a href="index.html" class="btn-top-action btn-website" title="View Public Website">
+                🌐 Main Website
+            </a>
+
+            <button type="button" class="btn-top-action btn-logout" id="adminLogoutBtn" style="display: none;" title="Log out from Command Center">
+                Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="admin-main">
+        <!-- 1. Authentication Screen -->
+        <section class="admin-auth-card" id="adminAuthSection">
+            <div class="auth-icon-wrap">
+                <div class="auth-radar-ring"></div>
+                <span class="auth-icon">🛡️</span>
+            </div>
+            <h3>Command Center Authentication</h3>
+            <p class="auth-desc">Enter authorized credentials to access enterprise IP intelligence, real-time telemetry &amp; visitor analytics.</p>
+            
+            <form class="auth-form" id="adminAuthForm" onsubmit="return false;">
+                <div class="form-group">
+                    <label for="adminAuthEmail">SuperAdmin Email Address</label>
+                    <input type="email" id="adminAuthEmail" class="auth-input" placeholder="manirajankg@gmail.com" required autocomplete="email">
+                </div>
+
+                <div class="form-group" id="adminOtpGroup" style="display: none;">
+                    <label for="adminAuthOtp">Security PIN / OTP Code</label>
+                    <input type="password" id="adminAuthOtp" class="auth-input" placeholder="Enter 4-digit code (7777)" maxlength="4" autocomplete="one-time-code">
+                    <small class="auth-hint">Default Security PIN: <strong>7777</strong></small>
+                </div>
+
+                <div class="auth-error" id="adminAuthError" style="display: none;"></div>
+
+                <button type="submit" class="btn-auth-submit" id="adminAuthSubmitBtn">
+                    Verify Email &amp; Proceed ➔
+                </button>
+            </form>
+
+            <div class="auth-footer-note">
+                🔒 256-bit TLS Encrypted Connection • Direct Google Firebase Cloud Sync
+            </div>
+        </section>
+
+        <!-- 2. Dashboard Interface (Shown after Auth) -->
+        <div class="admin-dashboard-view" id="adminDashboardSection" style="display: none;">
+            
+            <!-- Row 1: Executive KPI Cards -->
+            <section class="kpi-grid">
+                <div class="kpi-card kpi-views">
+                    <div class="kpi-top">
+                        <span class="kpi-icon">🌐</span>
+                        <span class="kpi-badge badge-green">Firebase Live</span>
+                    </div>
+                    <div class="kpi-value" id="kpiTotalPageViews">110</div>
+                    <div class="kpi-title">Cumulative Page Views</div>
+                    <div class="kpi-subtext">Strict Monotonic Real-Time Counter</div>
+                </div>
+
+                <div class="kpi-card kpi-active">
+                    <div class="kpi-top">
+                        <span class="kpi-icon">🟢</span>
+                        <span class="kpi-badge badge-active">
+                            <span class="pulse-green-dot"></span> Active Now
+                        </span>
+                    </div>
+                    <div class="kpi-value" id="kpiActiveUsers">1 Online</div>
+                    <div class="kpi-title">Live Active Visitors</div>
+                    <div class="kpi-subtext">Real-Time Presence Heartbeat</div>
+                </div>
+
+                <div class="kpi-card kpi-duration">
+                    <div class="kpi-top">
+                        <span class="kpi-icon">⏱️</span>
+                        <span class="kpi-badge badge-blue">Engagement</span>
+                    </div>
+                    <div class="kpi-value" id="kpiAvgDuration">2m 45s</div>
+                    <div class="kpi-title">Avg Session Duration</div>
+                    <div class="kpi-subtext">Borewell Calculator Interactions</div>
+                </div>
+
+                <div class="kpi-card kpi-peak">
+                    <div class="kpi-top">
+                        <span class="kpi-icon">⏰</span>
+                        <span class="kpi-badge badge-purple">Peak Hours</span>
+                    </div>
+                    <div class="kpi-value kpi-value-sm" id="kpiPeakHours">08:00 AM - 09:30 PM</div>
+                    <div class="kpi-title">High-Enquiry Time Slot</div>
+                    <div class="kpi-subtext">Tamil Nadu Operational Windows</div>
+                </div>
+            </section>
+
+            <!-- Row 2: Visual Interactive Charts Grid -->
+            <section class="charts-grid">
+                <!-- Chart 1: Traffic Trends -->
+                <div class="chart-card chart-wide">
+                    <div class="chart-header">
+                        <div class="chart-title-group">
+                            <span class="chart-icon">📈</span>
+                            <div>
+                                <h4>Visitor Traffic &amp; Peak Enquiry Timeline</h4>
+                                <p>24-Hour hourly visitor distribution curve</p>
+                            </div>
+                        </div>
+                        <span class="chart-badge">Live Curve</span>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="trafficTrendsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Top 10 Districts -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title-group">
+                            <span class="chart-icon">📍</span>
+                            <div>
+                                <h4>Top 10 Tamil Nadu Districts</h4>
+                                <p>Drilling demand by territory (Zero grouping)</p>
+                            </div>
+                        </div>
+                        <span class="chart-badge">Territory</span>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="districtsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 3: Device & OS Split -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title-group">
+                            <span class="chart-icon">📱</span>
+                            <div>
+                                <h4>Hardware &amp; Operating Systems</h4>
+                                <p>Mobile vs Desktop breakdown</p>
+                            </div>
+                        </div>
+                        <span class="chart-badge">Hardware</span>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="devicesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 4: Feature Engagement Heatmap -->
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <div class="chart-title-group">
+                            <span class="chart-icon">🔥</span>
+                            <div>
+                                <h4>Customer Action Intent &amp; Conversion</h4>
+                                <p>Calculator vs WhatsApp vs Call vs PDF Quote</p>
+                            </div>
+                        </div>
+                        <span class="chart-badge">Conversion</span>
+                    </div>
+                    <div class="chart-canvas-wrapper">
+                        <canvas id="engagementChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Row 3: Sub-Tabs & Detailed Telemetry Tables -->
+            <section class="telemetry-section">
+                <div class="telemetry-tabs-bar">
+                    <button type="button" class="tab-btn active" data-tab="tabLiveLogs">
+                        👥 Live Visitor &amp; IP Logs
+                    </button>
+                    <button type="button" class="tab-btn" data-tab="tabAppInstalls">
+                        📲 PWA App Installs
+                    </button>
+                    <button type="button" class="tab-btn" data-tab="tabGeoBreakdown">
+                        🗺️ Geo &amp; State Breakdown
+                    </button>
+                    <button type="button" class="tab-btn" data-tab="tabHardware">
+                        💻 Hardware Diagnostics
+                    </button>
+                    <button type="button" class="tab-btn" data-tab="tabActivityStream">
+                        ⚡ Real-Time Live Feed
+                    </button>
+                </div>
+
+                <!-- Tab 1: Live Logs -->
+                <div class="tab-pane active" id="tabLiveLogs">
+                    <div class="pane-toolbar">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="telemetrySearchInput" placeholder="Filter by IP, District, Device, or Action...">
+                        </div>
+                        <span class="table-count-pill" id="telemetryCountPill">Showing Real-Time Sessions</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="telemetry-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp (IST)</th>
+                                    <th>Client IP / Hash</th>
+                                    <th>Detected District</th>
+                                    <th>State / Country</th>
+                                    <th>Device / OS</th>
+                                    <th>Browser</th>
+                                    <th>Time Spent</th>
+                                    <th>Last Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="telemetryTableBody">
+                                <!-- Populated dynamically by admin.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 2: App Installs -->
+                <div class="tab-pane" id="tabAppInstalls" style="display: none;">
+                    <div class="pane-toolbar">
+                        <h4>📲 Mobile &amp; Desktop App Installations</h4>
+                        <span class="table-count-pill" id="installsCountPill">0 Total Installs</span>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="telemetry-table">
+                            <thead>
+                                <tr>
+                                    <th>Install Date &amp; Time</th>
+                                    <th>Client IP / Session</th>
+                                    <th>Platform</th>
+                                    <th>Device Model</th>
+                                    <th>Location</th>
+                                    <th>Install Source</th>
+                                </tr>
+                            </thead>
+                            <tbody id="installsTableBody">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Geo Breakdown -->
+                <div class="tab-pane" id="tabGeoBreakdown" style="display: none;">
+                    <div class="geo-grids-container">
+                        <div class="geo-card-box">
+                            <h4>📍 Tamil Nadu Districts (10 Individual Territories)</h4>
+                            <div class="geo-list" id="geoDistrictsList"></div>
+                        </div>
+                        <div class="geo-card-box">
+                            <h4>🇮🇳 Indian States</h4>
+                            <div class="geo-pills-list" id="geoStatesList"></div>
+                            
+                            <h4 style="margin-top: 20px;">🌐 Global Countries</h4>
+                            <div class="geo-pills-list" id="geoCountriesList"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 4: Hardware Diagnostics -->
+                <div class="tab-pane" id="tabHardware" style="display: none;">
+                    <div class="hardware-grid" id="hardwareGrid">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Tab 5: Live Activity Stream -->
+                <div class="tab-pane" id="tabActivityStream" style="display: none;">
+                    <div class="stream-container" id="liveActivityStream">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Row 4: Cloud Health & Diagnostics -->
+            <section class="diagnostics-bar">
+                <div class="diag-item">
+                    <span class="diag-icon">☁️</span>
+                    <div>
+                        <strong>Firebase Realtime Database</strong>
+                        <span class="diag-status green">Connected &amp; Healthy</span>
+                    </div>
+                </div>
+                <div class="diag-item">
+                    <span class="diag-icon">🔒</span>
+                    <div>
+                        <strong>Security &amp; SSL</strong>
+                        <span class="diag-status green">256-bit TLS 1.3 Active</span>
+                    </div>
+                </div>
+                <div class="diag-item">
+                    <span class="diag-icon">⚡</span>
+                    <div>
+                        <strong>PWA Network-First Cache</strong>
+                        <span class="diag-status green">v2.9.6 Active</span>
+                    </div>
+                </div>
+                <div class="diag-item">
+                    <span class="diag-icon">💾</span>
+                    <div>
+                        <strong>Bandwidth Optimization</strong>
+                        <span class="diag-status green">Smart 60s Polling Active</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="admin-footer">
+        <div class="admin-footer-left">
+            <span>&copy; 2026 Anjaneya Borewells — Enterprise Admin Command Center. All rights reserved.</span>
+        </div>
+        <div class="admin-footer-right">
+            <span>Designed &amp; Developed by <strong>Mani Raja</strong> (+91-8300030123)</span>
+        </div>
+    </footer>
+
+    <script src="admin.js?v=2.9.6"></script>
+</body>
+</html>
