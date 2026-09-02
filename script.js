@@ -1356,13 +1356,16 @@ class CostCalculator {
             totalDepth = parseFloat(el.totalDepth?.value) || 0;
         }
         
+        const drillingRate = parseFloat(el.drillingRate?.value) || this.defaults.drillingRate || 90;
+
         return {
             drillingType,
             oldBoreDepth: parseFloat(el.oldBoreDepth?.value) || 0,
             totalDepth,
             pvc7Length: parseFloat(el.pvc7Length?.value) || 0,
             pvc10Length: parseFloat(el.pvc10Length?.value) || 0,
-            drillingRate: parseFloat(el.drillingRate?.value) || 0,
+            drillingRate,
+            baseRate: drillingRate,
             gstPercentage: gstEnabled ? (parseFloat(el.inlineGstPercentage?.value) || 18) : 0,
             gstEnabled
         };
@@ -1993,76 +1996,60 @@ class CostCalculator {
     }
 
     sendWhatsAppQuote() {
-        const results = this.performCalculation(this.getInputs());
+        const inputs = this.getInputs();
+        const results = this.performCalculation(inputs);
         if (!results) {
             alert('Please calculate costs first');
             return;
         }
 
-        const inputs = this.getInputs();
         const gstEnabled = this.isGstEnabled();
+        const baseRate = inputs.baseRate || inputs.drillingRate || this.defaults.drillingRate || 90;
+        const pvc7Rate = this.defaults.pvc7Rate || 400;
+        const pvc10Rate = this.defaults.pvc10Rate || 700;
 
-        // Create WhatsApp message with simplified format
-        let message = `Borewell Quote Request
+        // Create WhatsApp message with professional format
+        let message = `*ANJANEYA BOREWELLS - QUOTATION ESTIMATE*
 📅 Date: ${new Date().toLocaleDateString('en-IN')}
 
-Project Details:
-• Depth: ${inputs.totalDepth} ft
-• Base Rate: ₹${inputs.baseRate}/ft
-• 7" PVC: ${inputs.pvc7Length} ft
-• 10" PVC: ${inputs.pvc10Length} ft
-
-Cost Breakdown:
-Drilling Cost (Slab Rate):`;
+*Project Details:*
+• Drilling Type: ${inputs.drillingType === 'repair' ? 'Re-Drilling / Deepening' : 'New Borewell'}
+• Total Depth: ${inputs.totalDepth} ft
+• Base Rate: ₹${baseRate}/ft
+${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${inputs.pvc10Length > 0 ? `• 10" PVC Casing: ${inputs.pvc10Length} ft\n` : ''}
+*Cost Breakdown:*
+• Drilling Cost: Rs.${results.drillingCost.toLocaleString('en-IN')}`;
 
         // Add drilling cost breakdown with bullet points
-        if (results.slabCalculation.slabDetails.length > 1) {
+        if (results.slabCalculation && results.slabCalculation.slabDetails && results.slabCalculation.slabDetails.length > 1) {
             results.slabCalculation.slabDetails.forEach(slab => {
-                const formattedRange = slab.range.replace(/(\d+)-(\d+)\s*ft/, (match, start, end) => {
-                    return `${start}-${end} ft`;
-                });
-                message += `
-• ${formattedRange}: ₹${slab.rate}/ft = Rs.${slab.cost.toLocaleString('en-IN')}`;
+                const formattedRange = slab.range.replace(/(\d+)-(\d+)\s*ft/, (match, start, end) => `${start}-${end} ft`);
+                message += `\n  - ${formattedRange}: ₹${slab.rate}/ft = Rs.${slab.cost.toLocaleString('en-IN')}`;
             });
-        } else {
-            message += `
-• Drilling Cost: ₹${results.drillingCost.toLocaleString('en-IN')}`;
         }
 
-        message += `
-• Total Drilling: Rs.${results.drillingCost.toLocaleString('en-IN')}`;
-
-        // Additional items with bullet points
         if (inputs.pvc7Length > 0) {
-            message += `
-• 7" PVC: ${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = Rs.${results.pvc7Cost.toLocaleString('en-IN')}`;
+            message += `\n• 7" PVC Casing: ${inputs.pvc7Length} ft × ₹${pvc7Rate}/ft = Rs.${results.pvc7Cost.toLocaleString('en-IN')}`;
         }
         
         if (inputs.pvc10Length > 0) {
-            message += `
-• 10" PVC: ${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = Rs.${results.pvc10Cost.toLocaleString('en-IN')}`;
+            message += `\n• 10" PVC Casing: ${inputs.pvc10Length} ft × ₹${pvc10Rate}/ft = Rs.${results.pvc10Cost.toLocaleString('en-IN')}`;
         }
         
-        message += `
-• Bore Bata: Rs.${results.boreBataCost.toLocaleString('en-IN')}
+        message += `\n• Bore Bata: Rs.${results.boreBataCost.toLocaleString('en-IN')}
 • Subtotal: Rs.${results.subtotal.toLocaleString('en-IN')}`;
 
-        if (gstEnabled) {
-            message += `
-
-✅ Total Cost: Rs.${results.totalCost.toLocaleString('en-IN')}`;
-        } else {
-            message += `
-
-✅ Total Cost: Rs.${results.totalCost.toLocaleString('en-IN')}`;
+        if (gstEnabled && results.gstAmount > 0) {
+            message += `\n• GST (${results.gstPercentage}%): Rs.${results.gstAmount.toLocaleString('en-IN')}`;
         }
 
-        message += `
+        message += `\n\n*✅ Total Estimated Cost: Rs.${results.totalCost.toLocaleString('en-IN')}*
 
-Contact: +91 965 965 7777
-🌐 Instagram: https://instagram.com/anjaneyaborewells
+📞 Hotline: +91 965 965 7777 / +91 83000 30123
+🌐 Website: https://anjaneyaborewells.com
+📍 Namakkal & All Tamil Nadu Districts
 
-📋 Please confirm this quote and schedule a site visit.`;
+📋 _Please confirm this quotation to schedule the drilling rig._`;
 
         // Encode message for WhatsApp URL
         const encodedMessage = encodeURIComponent(message);
