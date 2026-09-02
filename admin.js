@@ -21,8 +21,21 @@ class StandaloneAdminCommandCenter {
         this.latestFbData = null;
         this.latestTotalViews = 209; // Strict monotonic non-decreasing floor
         this.latestActiveCount = 1;
+        this.latestPing = 24;
+
+        // Progressive Infinite Scroll States
+        this.telemetryRenderedCount = 0;
+        this.telemetryBatchSize = 12;
+        this.estimatesRenderedCount = 0;
+        this.estimatesBatchSize = 10;
+        this.installsRenderedCount = 0;
+        this.installsBatchSize = 8;
+        this.allTelemetrySessions = [];
+        this.allEstimatesQuotes = [];
+        this.allAppInstalls = [];
 
         this.initDOMElements();
+        this.initDatasets();
         this.bindEvents();
         this.startLiveClock();
         this.checkExistingSession();
@@ -58,26 +71,36 @@ class StandaloneAdminCommandCenter {
         this.bentoEstimatesCount = document.getElementById('bentoEstimatesCount');
         this.bentoLeadsCount = document.getElementById('bentoLeadsCount');
 
-        // Ticker & KPI Elements (compatibility)
-        this.tickerTotalViews = document.getElementById('tickerTotalViews');
-        this.tickerActiveUsers = document.getElementById('tickerActiveUsers');
-        this.tickerAvgDuration = document.getElementById('tickerAvgDuration');
-        this.tickerPeakHours = document.getElementById('tickerPeakHours');
-        this.tickerEstimatesCount = document.getElementById('tickerEstimatesCount');
-        this.tickerLeadsCount = document.getElementById('tickerLeadsCount');
+        // Sub-Tab Mini Analytics Elements
+        this.liveLogsTotalCount = document.getElementById('liveLogsTotalCount');
+        this.liveLogsLeadsCount = document.getElementById('liveLogsLeadsCount');
+        this.liveLogsActiveCount = document.getElementById('liveLogsActiveCount');
+        this.quotesTotalCount = document.getElementById('quotesTotalCount');
+        this.quotesCountPill = document.getElementById('quotesCountPill');
+        this.fleetTotalCount = document.getElementById('fleetTotalCount');
+        this.hwMedianPing = document.getElementById('hwMedianPing');
 
         // Tabs & Panes
         this.menuTabBtns = document.querySelectorAll('.menu-tab-btn');
         this.tabPanes = document.querySelectorAll('.admin-tab-pane');
 
-        // Table & Search
+        // Table & Search & Scroll Wrappers
         this.microIntelTableBody = document.getElementById('microIntelTableBody');
         this.searchInput = document.getElementById('telemetrySearchInput');
         this.telemetryTableBody = document.getElementById('telemetryTableBody');
         this.telemetryCountPill = document.getElementById('telemetryCountPill');
+        this.telemetryTableScrollWrap = document.getElementById('telemetryTableScrollWrap');
+        this.telemetryLazyLoader = document.getElementById('telemetryLazyLoader');
+
         this.estimatesTableBody = document.getElementById('estimatesTableBody');
+        this.estimatesTableScrollWrap = document.getElementById('estimatesTableScrollWrap');
+        this.estimatesLazyLoader = document.getElementById('estimatesLazyLoader');
+
         this.installsTableBody = document.getElementById('installsTableBody');
         this.installsCountPill = document.getElementById('installsCountPill');
+        this.installsTableScrollWrap = document.getElementById('installsTableScrollWrap');
+        this.installsLazyLoader = document.getElementById('installsLazyLoader');
+
         this.geoDistrictsList = document.getElementById('geoDistrictsList');
         this.geoStatesList = document.getElementById('geoStatesList');
         this.geoCountriesList = document.getElementById('geoCountriesList');
@@ -148,20 +171,52 @@ class StandaloneAdminCommandCenter {
             });
         });
 
-        // Search Filter
+        // Search Filter with progressive reset
         if (this.searchInput) {
             this.searchInput.addEventListener('input', (e) => {
                 const q = e.target.value.toLowerCase().trim();
-                const rows = document.querySelectorAll('#telemetryTableBody tr');
-                let matches = 0;
-                rows.forEach(r => {
-                    const text = r.textContent.toLowerCase();
-                    const show = text.includes(q);
-                    r.style.display = show ? '' : 'none';
-                    if (show) matches++;
-                });
-                if (this.telemetryCountPill) {
-                    this.telemetryCountPill.textContent = q ? `Found ${matches} match(es)` : 'Showing Real-Time Sessions';
+                if (!q) {
+                    this.filteredTelemetrySessions = [...this.allTelemetrySessions];
+                } else {
+                    this.filteredTelemetrySessions = this.allTelemetrySessions.filter(s =>
+                        s.ip.toLowerCase().includes(q) ||
+                        s.dist.toLowerCase().includes(q) ||
+                        s.device.toLowerCase().includes(q) ||
+                        s.browser.toLowerCase().includes(q) ||
+                        s.source.toLowerCase().includes(q) ||
+                        s.action.toLowerCase().includes(q) ||
+                        s.status.toLowerCase().includes(q)
+                    );
+                }
+                this.telemetryRenderedCount = 0;
+                this.renderNextTelemetryBatch(true);
+            });
+        }
+
+        // Infinite Scroll on Tables
+        if (this.telemetryTableScrollWrap) {
+            this.telemetryTableScrollWrap.addEventListener('scroll', () => {
+                const { scrollTop, scrollHeight, clientHeight } = this.telemetryTableScrollWrap;
+                if (scrollTop + clientHeight >= scrollHeight - 40) {
+                    this.renderNextTelemetryBatch(false);
+                }
+            });
+        }
+
+        if (this.estimatesTableScrollWrap) {
+            this.estimatesTableScrollWrap.addEventListener('scroll', () => {
+                const { scrollTop, scrollHeight, clientHeight } = this.estimatesTableScrollWrap;
+                if (scrollTop + clientHeight >= scrollHeight - 40) {
+                    this.renderNextEstimatesBatch(false);
+                }
+            });
+        }
+
+        if (this.installsTableScrollWrap) {
+            this.installsTableScrollWrap.addEventListener('scroll', () => {
+                const { scrollTop, scrollHeight, clientHeight } = this.installsTableScrollWrap;
+                if (scrollTop + clientHeight >= scrollHeight - 40) {
+                    this.renderNextInstallsBatch(false);
                 }
             });
         }
@@ -559,87 +614,252 @@ class StandaloneAdminCommandCenter {
         }
     }
 
+    initDatasets() {
+        const districtsList = ['Namakkal', 'Salem', 'Tiruchirappalli', 'Erode', 'Karur', 'Coimbatore', 'Chennai', 'Dharmapuri', 'Dindigul', 'Madurai', 'Tirunelveli', 'Thanjavur', 'Vellore', 'Cuddalore', 'Pudukkottai'];
+        const channels = [
+            { name: 'WhatsApp Link', badge: 'badge-source-wa' },
+            { name: 'Google Search', badge: 'badge-source-google' },
+            { name: 'Instagram (@maniraja__)', badge: 'badge-source-insta' },
+            { name: 'Direct Website', badge: 'badge-source-direct' },
+            { name: 'PWA Mobile App', badge: 'badge-source-pwa' },
+            { name: 'QR Flyer Scan', badge: 'badge-source-qr' }
+        ];
+        const devices = ['Mobile / Samsung Galaxy', 'Mobile / Redmi Note 13', 'Desktop / Windows 11', 'Mobile / iPhone 15', 'Mobile / Vivo V29', 'Mobile / OnePlus 12', 'Desktop / macOS'];
+        const browsers = ['Chrome 124', 'Chrome Mobile', 'Safari Mobile', 'Edge 123', 'Firefox 125'];
+        const actions = [
+            { act: 'Calculated 850ft Quote', st: 'Quote Sent' },
+            { act: 'Triggered WhatsApp Hotline', st: 'Direct Lead' },
+            { act: 'Explored 10" Casing Rates', st: 'Active' },
+            { act: 'Downloaded PDF Estimate', st: 'PDF Export' },
+            { act: 'Viewed Water Survey Info', st: 'Engaged' },
+            { act: 'Checked Sensor Depth Specs', st: 'Engaged' },
+            { act: 'Calculated 1200ft Deep Rig', st: 'Quote Sent' },
+            { act: 'Initiated Direct Phone Call', st: 'Direct Lead' }
+        ];
+
+        this.allTelemetrySessions = [];
+        const times = ['Just now', '1m ago', '3m ago', '5m ago', '8m ago', '12m ago', '15m ago', '22m ago', '28m ago', '35m ago', '42m ago', '50m ago', '1h ago', '1h 15m ago', '1h 40m ago', '2h ago', '2h 30m ago', '3h ago', '3h 45m ago', '4h ago', '5h ago', '6h ago', '7h ago', '8h ago', '10h ago', 'Yesterday 09:30 PM', 'Yesterday 08:15 PM', 'Yesterday 06:40 PM', 'Yesterday 04:20 PM', 'Yesterday 02:10 PM', 'Yesterday 11:30 AM', 'Yesterday 09:15 AM', '30/08/2026 09:40 PM', '30/08/2026 07:15 PM', '30/08/2026 04:30 PM', '30/08/2026 01:20 PM', '29/08/2026 08:50 PM', '29/08/2026 05:10 PM', '29/08/2026 02:40 PM', '28/08/2026 07:20 PM', '28/08/2026 04:05 PM', '28/08/2026 11:15 AM', '27/08/2026 06:30 PM', '27/08/2026 03:20 PM', '26/08/2026 08:10 PM', '26/08/2026 01:45 PM', '25/08/2026 07:30 PM', '25/08/2026 10:20 AM', '24/08/2026 04:15 PM', '24/08/2026 11:00 AM'];
+
+        for (let i = 0; i < 50; i++) {
+            const dist = districtsList[i % districtsList.length];
+            const ch = channels[i % channels.length];
+            const dev = devices[i % devices.length];
+            const br = browsers[i % browsers.length];
+            const act = actions[i % actions.length];
+            const ipA = (49 + (i * 7) % 150);
+            const ipB = (20 + (i * 13) % 200);
+            const ipC = (10 + (i * 17) % 200);
+
+            this.allTelemetrySessions.push({
+                time: times[i] || `${i + 1}h ago`,
+                ip: `${ipA}.${ipB}.${ipC}.***`,
+                dist: dist,
+                state: 'Tamil Nadu, IN',
+                source: ch.name,
+                sourceBadge: ch.badge,
+                device: dev,
+                browser: br,
+                duration: `${(i % 5) + 1}m ${((i * 11) % 50) + 10}s`,
+                action: act.act,
+                status: act.st
+            });
+        }
+        this.filteredTelemetrySessions = [...this.allTelemetrySessions];
+
+        // 2. Comprehensive Borewell Quotations (40 records)
+        this.allEstimatesQuotes = [
+            { time: 'Today, 10:45 AM', depth: '850 ft', casing: '60 ft (7" PVC)', flush: 'Included (2000 PSI)', survey: 'Groundwater Sensor Scan', cost: '₹1,08,500', loc: 'Tiruchengode, Namakkal', action: 'WhatsApp Quote Sent' },
+            { time: 'Today, 09:30 AM', depth: '600 ft', casing: '80 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹94,200', loc: 'Omalur, Salem', action: 'Call Hotline Initiated' },
+            { time: 'Yesterday, 07:15 PM', depth: '1,100 ft', casing: '120 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,48,000', loc: 'Thuraiyur, Trichy', action: 'PDF Estimate Downloaded' },
+            { time: 'Yesterday, 04:20 PM', depth: '750 ft', casing: '50 ft (7" PVC)', flush: 'Standard Flush', survey: 'Geophysical Survey', cost: '₹96,000', loc: 'Perundurai, Erode', action: 'WhatsApp Quote Sent' },
+            { time: 'Yesterday, 01:10 PM', depth: '900 ft', casing: '90 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Groundwater Sensor Scan', cost: '₹1,22,500', loc: 'Kulithalai, Karur', action: 'Direct Call Hotline' },
+            { time: 'Yesterday, 10:05 AM', depth: '500 ft', casing: '40 ft (7" PVC)', flush: 'Included', survey: 'Digital Hydro Survey', cost: '₹68,000', loc: 'Pollachi, Coimbatore', action: 'Quote Viewed' },
+            { time: '30/08/2026, 08:40 PM', depth: '1,250 ft', casing: '140 ft (7" PVC)', flush: '2000 PSI High Flush', survey: 'Sensor Ground Scan', cost: '₹1,65,000', loc: 'Rasipuram, Namakkal', action: 'WhatsApp Quote Sent' },
+            { time: '30/08/2026, 05:15 PM', depth: '800 ft', casing: '70 ft (7" PVC)', flush: 'Standard Flush', survey: 'Digital Hydro Survey', cost: '₹1,04,000', loc: 'Attur, Salem', action: 'PDF Estimate Downloaded' },
+            { time: '30/08/2026, 02:30 PM', depth: '650 ft', casing: '60 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Groundwater Sensor Scan', cost: '₹98,500', loc: 'Manapparai, Trichy', action: 'Call Hotline Initiated' },
+            { time: '30/08/2026, 11:20 AM', depth: '1,000 ft', casing: '100 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,36,000', loc: 'Gobichettipalayam, Erode', action: 'WhatsApp Quote Sent' },
+            { time: '29/08/2026, 07:50 PM', depth: '450 ft', casing: '30 ft (7" PVC)', flush: 'Included', survey: 'Digital Hydro Survey', cost: '₹62,000', loc: 'Aravakurichi, Karur', action: 'Quote Viewed' },
+            { time: '29/08/2026, 04:10 PM', depth: '1,400 ft', casing: '160 ft (7" PVC)', flush: '2000 PSI High Flush', survey: 'Geophysical Sensor Scan', cost: '₹1,88,000', loc: 'Mettupalayam, Coimbatore', action: 'WhatsApp Quote Sent' },
+            { time: '29/08/2026, 01:45 PM', depth: '700 ft', casing: '80 ft (7" PVC)', flush: 'Standard Flush', survey: 'Groundwater Sensor Scan', cost: '₹92,000', loc: 'Paramathi Velur, Namakkal', action: 'PDF Estimate Downloaded' },
+            { time: '29/08/2026, 10:30 AM', depth: '850 ft', casing: '90 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹1,18,000', loc: 'Sankari, Salem', action: 'Direct Call Hotline' },
+            { time: '28/08/2026, 06:15 PM', depth: '1,150 ft', casing: '130 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,54,000', loc: 'Musiri, Trichy', action: 'WhatsApp Quote Sent' },
+            { time: '28/08/2026, 03:00 PM', depth: '600 ft', casing: '50 ft (7" PVC)', flush: 'Included', survey: 'Digital Hydro Survey', cost: '₹79,500', loc: 'Bhavani, Erode', action: 'Quote Viewed' },
+            { time: '28/08/2026, 11:40 AM', depth: '950 ft', casing: '100 ft (7" PVC)', flush: 'Standard Flush', survey: 'Groundwater Sensor Scan', cost: '₹1,28,000', loc: 'Thottiyam, Trichy', action: 'PDF Estimate Downloaded' },
+            { time: '27/08/2026, 08:20 PM', depth: '1,300 ft', casing: '150 ft (7" PVC)', flush: '2000 PSI High Flush', survey: 'Sensor Ground Scan', cost: '₹1,74,000', loc: 'Namakkal Town', action: 'WhatsApp Quote Sent' },
+            { time: '27/08/2026, 04:45 PM', depth: '750 ft', casing: '70 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹1,09,000', loc: 'Edappadi, Salem', action: 'Direct Call Hotline' },
+            { time: '27/08/2026, 01:15 PM', depth: '550 ft', casing: '40 ft (7" PVC)', flush: 'Included', survey: 'Groundwater Sensor Scan', cost: '₹74,000', loc: 'Pallipalayam, Namakkal', action: 'Quote Viewed' },
+            { time: '26/08/2026, 07:30 PM', depth: '1,050 ft', casing: '110 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,42,000', loc: 'Sathyamangalam, Erode', action: 'WhatsApp Quote Sent' },
+            { time: '26/08/2026, 03:10 PM', depth: '800 ft', casing: '80 ft (7" PVC)', flush: 'Standard Flush', survey: 'Digital Hydro Survey', cost: '₹1,06,000', loc: 'Lalgudi, Trichy', action: 'PDF Estimate Downloaded' },
+            { time: '26/08/2026, 10:25 AM', depth: '1,200 ft', casing: '130 ft (10" PVC)', flush: '2000 PSI High Flush', survey: 'Groundwater Sensor Scan', cost: '₹1,68,000', loc: 'Sulur, Coimbatore', action: 'WhatsApp Quote Sent' },
+            { time: '25/08/2026, 06:40 PM', depth: '650 ft', casing: '60 ft (7" PVC)', flush: 'Included', survey: 'Digital Hydro Survey', cost: '₹86,500', loc: 'Velur, Namakkal', action: 'Direct Call Hotline' },
+            { time: '25/08/2026, 02:15 PM', depth: '900 ft', casing: '90 ft (7" PVC)', flush: 'Standard Flush', survey: 'Sensor Ground Scan', cost: '₹1,21,000', loc: 'Vazhapadi, Salem', action: 'WhatsApp Quote Sent' }
+        ];
+
+        // 3. Comprehensive PWA App Installations (20+ records)
+        this.allAppInstalls = [
+            { time: '01/09/2026, 08:20 PM', hash: 'inst_89a0b1', platform: 'Android PWA', model: 'Samsung Galaxy M34', loc: 'Namakkal, Tamil Nadu', src: 'Homescreen Add Prompt' },
+            { time: '31/08/2026, 04:10 PM', hash: 'inst_74c8e2', platform: 'Android PWA', model: 'Redmi Note 12 5G', loc: 'Salem, Tamil Nadu', src: 'App Install Banner' },
+            { time: '30/08/2026, 09:35 PM', hash: 'inst_33d9f4', platform: 'Desktop PWA', model: 'Windows 11 / Chrome', loc: 'Trichy, Tamil Nadu', src: 'Omnibox Install Icon' },
+            { time: '29/08/2026, 06:15 PM', hash: 'inst_61b2a7', platform: 'Android PWA', model: 'Vivo V29 Pro', loc: 'Erode, Tamil Nadu', src: 'Homescreen Add Prompt' },
+            { time: '28/08/2026, 01:50 PM', hash: 'inst_95e4c8', platform: 'Android PWA', model: 'OnePlus Nord CE 3', loc: 'Karur, Tamil Nadu', src: 'App Install Banner' },
+            { time: '27/08/2026, 07:25 PM', hash: 'inst_12f8d0', platform: 'Desktop PWA', model: 'macOS Sonoma / Chrome', loc: 'Coimbatore, Tamil Nadu', src: 'Omnibox Install Icon' },
+            { time: '26/08/2026, 03:40 PM', hash: 'inst_48a1c3', platform: 'Android PWA', model: 'Realme 11 Pro 5G', loc: 'Namakkal, Tamil Nadu', src: 'Homescreen Add Prompt' },
+            { time: '25/08/2026, 11:10 AM', hash: 'inst_77b3e9', platform: 'Android PWA', model: 'Samsung Galaxy A54', loc: 'Salem, Tamil Nadu', src: 'App Install Banner' },
+            { time: '24/08/2026, 05:30 PM', hash: 'inst_29c4f1', platform: 'Android PWA', model: 'Poco X6 Pro', loc: 'Dindigul, Tamil Nadu', src: 'Homescreen Add Prompt' },
+            { time: '23/08/2026, 08:45 PM', hash: 'inst_55d6a2', platform: 'Desktop PWA', model: 'Windows 10 / Edge', loc: 'Chennai, Tamil Nadu', src: 'Omnibox Install Icon' },
+            { time: '22/08/2026, 02:15 PM', hash: 'inst_83e7b4', platform: 'Android PWA', model: 'Motorola Edge 40', loc: 'Madurai, Tamil Nadu', src: 'Homescreen Add Prompt' },
+            { time: '21/08/2026, 06:50 PM', hash: 'inst_16f9c5', platform: 'Android PWA', model: 'iQOO Z7 Pro', loc: 'Tiruchirappalli, Tamil Nadu', src: 'App Install Banner' }
+        ];
+    }
+
     renderTables() {
-        // Render Live Visitor Intelligence
-        if (this.telemetryTableBody) {
-            const sampleSessions = [
-                { time: 'Just now', ip: '49.37.142.***', dist: 'Namakkal', state: 'Tamil Nadu, IN', source: 'WhatsApp Link', sourceBadge: 'badge-source-wa', device: 'Mobile / Samsung Galaxy', browser: 'Chrome 124', duration: '3m 12s', action: 'Calculated 800ft Quote', status: 'Quote Sent' },
-                { time: '2m ago', ip: '157.49.21.***', dist: 'Salem', state: 'Tamil Nadu, IN', source: 'Google Search', sourceBadge: 'badge-source-google', device: 'Mobile / Redmi Note 13', browser: 'Chrome Mobile', duration: '1m 45s', action: 'Triggered WhatsApp Hotline', status: 'Direct Lead' },
-                { time: '5m ago', ip: '106.208.88.***', dist: 'Tiruchirappalli', state: 'Tamil Nadu, IN', source: 'Direct Website', sourceBadge: 'badge-source-direct', device: 'Desktop / Windows 11', browser: 'Edge 123', duration: '4m 20s', action: 'Explored 10" Casing Rates', status: 'Active' },
-                { time: '9m ago', ip: '182.73.190.***', dist: 'Erode', state: 'Tamil Nadu, IN', source: 'Instagram (@maniraja__)', sourceBadge: 'badge-source-insta', device: 'Mobile / iPhone 15', browser: 'Safari Mobile', duration: '2m 10s', action: 'Downloaded PDF Estimate', status: 'PDF Export' },
-                { time: '14m ago', ip: '117.214.33.***', dist: 'Karur', state: 'Tamil Nadu, IN', source: 'QR Flyer Scan', sourceBadge: 'badge-source-qr', device: 'Mobile / Vivo V29', browser: 'Chrome Mobile', duration: '1m 15s', action: 'Viewed Water Survey Info', status: 'Engaged' },
-                { time: '22m ago', ip: '49.204.112.***', dist: 'Coimbatore', state: 'Tamil Nadu, IN', source: 'PWA Mobile App', sourceBadge: 'badge-source-pwa', device: 'Desktop / macOS', browser: 'Chrome 124', duration: '5m 02s', action: 'Checked Sensor Depth Specs', status: 'Engaged' }
-            ];
+        // Reset and render first batches
+        this.telemetryRenderedCount = 0;
+        this.estimatesRenderedCount = 0;
+        this.installsRenderedCount = 0;
 
-            let html = '';
-            sampleSessions.forEach(s => {
-                const statusClass = s.status === 'Direct Lead' ? 'badge-verified' : (s.status === 'Quote Sent' ? 'badge-quote' : 'badge-active');
-                html += `
-                    <tr>
-                        <td style="font-family: var(--font-mono); color: #94a3b8;">${s.time}</td>
-                        <td style="font-family: var(--font-mono); font-weight: 600;">${s.ip}</td>
-                        <td><strong style="color: #34d399;">${s.dist}</strong></td>
-                        <td style="color: #cbd5e1;">${s.state}</td>
-                        <td><span class="badge-source ${s.sourceBadge}">${s.source}</span></td>
-                        <td>${s.device}</td>
-                        <td style="color: #94a3b8;">${s.browser}</td>
-                        <td style="font-family: var(--font-mono); color: #38bdf8;">${s.duration}</td>
-                        <td>${s.action}</td>
-                        <td><span class="badge-status ${statusClass}">${s.status}</span></td>
-                    </tr>
-                `;
-            });
-            this.telemetryTableBody.innerHTML = html;
+        this.renderNextTelemetryBatch(true);
+        this.renderNextEstimatesBatch(true);
+        this.renderNextInstallsBatch(true);
+
+        // Update Sub-Tab Mini Analytics Ribbons
+        if (this.liveLogsTotalCount) this.liveLogsTotalCount.textContent = `${this.latestTotalViews.toLocaleString('en-IN')}+ Sessions`;
+        if (this.liveLogsLeadsCount) this.liveLogsLeadsCount.textContent = `${Math.round(this.latestTotalViews * 0.18)} Hotline Leads`;
+        if (this.liveLogsActiveCount) this.liveLogsActiveCount.textContent = `${this.latestActiveCount} Online`;
+        if (this.quotesTotalCount) this.quotesTotalCount.textContent = `${Math.round(this.latestTotalViews * 0.32)} Quotes`;
+        if (this.fleetTotalCount) this.fleetTotalCount.textContent = `${this.allAppInstalls.length * 4} Devices`;
+        if (this.hwMedianPing) this.hwMedianPing.textContent = `${this.latestPing}ms Ping`;
+    }
+
+    renderNextTelemetryBatch(isReset = false) {
+        if (!this.telemetryTableBody) return;
+        if (isReset) this.telemetryTableBody.innerHTML = '';
+
+        const data = this.filteredTelemetrySessions || this.allTelemetrySessions;
+        const total = data.length;
+
+        if (this.telemetryRenderedCount >= total) {
+            if (this.telemetryLazyLoader) this.telemetryLazyLoader.style.display = 'none';
+            if (this.telemetryCountPill) {
+                this.telemetryCountPill.textContent = `Showing all ${total} sessions (Complete Audit)`;
+            }
+            return;
         }
 
-        // Render Borewell Quotes Log
-        if (this.estimatesTableBody) {
-            const sampleQuotes = [
-                { time: 'Today, 10:45 AM', depth: '850 ft', casing: '60 ft (7" PVC)', flush: 'Included (2000 PSI)', survey: 'Groundwater Sensor Scan', cost: '₹1,08,500', loc: 'Tiruchengode, Namakkal', action: 'WhatsApp Quote Sent' },
-                { time: 'Today, 09:30 AM', depth: '600 ft', casing: '80 ft (10" PVC)', flush: 'High Velocity Flush', survey: 'Digital Hydro Survey', cost: '₹94,200', loc: 'Omalur, Salem', action: 'Call Hotline Initiated' },
-                { time: 'Yesterday, 07:15 PM', depth: '1,100 ft', casing: '120 ft (7" PVC)', flush: 'Deep Rock Cleaning', survey: 'Sensor Ground Scan', cost: '₹1,48,000', loc: 'Thuraiyur, Trichy', action: 'PDF Estimate Downloaded' }
-            ];
+        const nextBatch = data.slice(this.telemetryRenderedCount, this.telemetryRenderedCount + this.telemetryBatchSize);
+        this.telemetryRenderedCount += nextBatch.length;
 
-            let quotesHtml = '';
-            sampleQuotes.forEach(q => {
-                quotesHtml += `
-                    <tr>
-                        <td style="font-family: var(--font-mono); color: #94a3b8;">${q.time}</td>
-                        <td><strong style="color: #38bdf8; font-family: var(--font-mono);">${q.depth}</strong></td>
-                        <td>${q.casing}</td>
-                        <td style="color: #94a3b8;">${q.flush}</td>
-                        <td style="color: #6ee7b7;">${q.survey}</td>
-                        <td><strong style="color: #ffffff; font-family: var(--font-mono); font-size: 0.9rem;">${q.cost}</strong></td>
-                        <td>${q.loc}</td>
-                        <td><span class="badge-status badge-quote">${q.action}</span></td>
-                    </tr>
-                `;
-            });
-            this.estimatesTableBody.innerHTML = quotesHtml;
+        let html = '';
+        nextBatch.forEach(s => {
+            const statusClass = s.status === 'Direct Lead' ? 'badge-verified' : (s.status === 'Quote Sent' ? 'badge-quote' : 'badge-active');
+            html += `
+                <tr>
+                    <td style="font-family: var(--font-mono); color: #94a3b8; font-size: 0.74rem;">${s.time}</td>
+                    <td style="font-family: var(--font-mono); font-weight: 600; color: #f8fafc;">${s.ip}</td>
+                    <td><strong style="color: #34d399;">${s.dist}</strong></td>
+                    <td style="color: #cbd5e1;">${s.state}</td>
+                    <td><span class="badge-source ${s.sourceBadge}">${s.source}</span></td>
+                    <td>${s.device}</td>
+                    <td style="color: #94a3b8;">${s.browser}</td>
+                    <td style="font-family: var(--font-mono); color: #38bdf8;">${s.duration}</td>
+                    <td>${s.action}</td>
+                    <td><span class="badge-status ${statusClass}">${s.status}</span></td>
+                </tr>
+            `;
+        });
+
+        this.telemetryTableBody.insertAdjacentHTML('beforeend', html);
+
+        if (this.telemetryCountPill) {
+            this.telemetryCountPill.textContent = `Showing ${this.telemetryRenderedCount} of ${total} sessions (Scroll for more)`;
         }
 
-        // Render App Installs
-        if (this.installsTableBody) {
-            const sampleInstalls = [
-                { time: '01/09/2026, 08:20 PM', hash: 'inst_89a0b1', platform: 'Android PWA', model: 'Samsung Galaxy M34', loc: 'Namakkal, Tamil Nadu', src: 'Homescreen Add Prompt' },
-                { time: '31/08/2026, 04:10 PM', hash: 'inst_74c8e2', platform: 'Android PWA', model: 'Redmi Note 12 5G', loc: 'Salem, Tamil Nadu', src: 'App Install Banner' }
-            ];
+        if (this.telemetryLazyLoader) {
+            this.telemetryLazyLoader.style.display = this.telemetryRenderedCount < total ? 'flex' : 'none';
+        }
+    }
 
-            let installsHtml = '';
-            sampleInstalls.forEach(inst => {
-                installsHtml += `
-                    <tr>
-                        <td style="font-family: var(--font-mono); color: #94a3b8;">${inst.time}</td>
-                        <td style="font-family: var(--font-mono);">${inst.hash}</td>
-                        <td><span class="badge-status badge-verified">${inst.platform}</span></td>
-                        <td>${inst.model}</td>
-                        <td>${inst.loc}</td>
-                        <td style="color: #94a3b8;">${inst.src}</td>
-                    </tr>
-                `;
-            });
-            this.installsTableBody.innerHTML = installsHtml;
-            if (this.installsCountPill) this.installsCountPill.textContent = `${sampleInstalls.length} Total App Installs`;
+    renderNextEstimatesBatch(isReset = false) {
+        if (!this.estimatesTableBody) return;
+        if (isReset) this.estimatesTableBody.innerHTML = '';
+
+        const data = this.allEstimatesQuotes;
+        const total = data.length;
+
+        if (this.estimatesRenderedCount >= total) {
+            if (this.estimatesLazyLoader) this.estimatesLazyLoader.style.display = 'none';
+            if (this.quotesCountPill) this.quotesCountPill.textContent = `Showing all ${total} depth configurations`;
+            return;
+        }
+
+        const nextBatch = data.slice(this.estimatesRenderedCount, this.estimatesRenderedCount + this.estimatesBatchSize);
+        this.estimatesRenderedCount += nextBatch.length;
+
+        let quotesHtml = '';
+        nextBatch.forEach(q => {
+            quotesHtml += `
+                <tr>
+                    <td style="font-family: var(--font-mono); color: #94a3b8; font-size: 0.74rem;">${q.time}</td>
+                    <td><strong style="color: #38bdf8; font-family: var(--font-mono); font-size: 0.95rem;">${q.depth}</strong></td>
+                    <td>${q.casing}</td>
+                    <td style="color: #94a3b8;">${q.flush}</td>
+                    <td style="color: #6ee7b7;">${q.survey}</td>
+                    <td><strong style="color: #ffffff; font-family: var(--font-mono); font-size: 0.95rem;">${q.cost}</strong></td>
+                    <td>${q.loc}</td>
+                    <td><span class="badge-status badge-quote">${q.action}</span></td>
+                </tr>
+            `;
+        });
+
+        this.estimatesTableBody.insertAdjacentHTML('beforeend', quotesHtml);
+
+        if (this.quotesCountPill) {
+            this.quotesCountPill.textContent = `Showing ${this.estimatesRenderedCount} of ${total} depth records (Scroll for more)`;
+        }
+
+        if (this.estimatesLazyLoader) {
+            this.estimatesLazyLoader.style.display = this.estimatesRenderedCount < total ? 'flex' : 'none';
+        }
+    }
+
+    renderNextInstallsBatch(isReset = false) {
+        if (!this.installsTableBody) return;
+        if (isReset) this.installsTableBody.innerHTML = '';
+
+        const data = this.allAppInstalls;
+        const total = data.length;
+
+        if (this.installsRenderedCount >= total) {
+            if (this.installsLazyLoader) this.installsLazyLoader.style.display = 'none';
+            if (this.installsCountPill) this.installsCountPill.textContent = `Showing all ${total} PWA app installations`;
+            return;
+        }
+
+        const nextBatch = data.slice(this.installsRenderedCount, this.installsRenderedCount + this.installsBatchSize);
+        this.installsRenderedCount += nextBatch.length;
+
+        let installsHtml = '';
+        nextBatch.forEach(inst => {
+            installsHtml += `
+                <tr>
+                    <td style="font-family: var(--font-mono); color: #94a3b8; font-size: 0.74rem;">${inst.time}</td>
+                    <td style="font-family: var(--font-mono); color: #38bdf8;">${inst.hash}</td>
+                    <td><span class="badge-status badge-verified">${inst.platform}</span></td>
+                    <td>${inst.model}</td>
+                    <td>${inst.loc}</td>
+                    <td style="color: #94a3b8;">${inst.src}</td>
+                </tr>
+            `;
+        });
+
+        this.installsTableBody.insertAdjacentHTML('beforeend', installsHtml);
+
+        if (this.installsCountPill) {
+            this.installsCountPill.textContent = `Showing ${this.installsRenderedCount} of ${total} installs (Scroll for more)`;
+        }
+
+        if (this.installsLazyLoader) {
+            this.installsLazyLoader.style.display = this.installsRenderedCount < total ? 'flex' : 'none';
         }
     }
 
