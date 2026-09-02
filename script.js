@@ -1605,11 +1605,13 @@ class CostCalculator {
         const gstRow = document.getElementById('gstCostRow') || (el.gstAmount ? el.gstAmount.closest('.cost-item') : null);
         if (gstRow) {
             if (gstEnabled && results.gstAmount > 0) {
+                gstRow.classList.remove('gst-hidden');
                 gstRow.style.display = 'flex';
                 if (el.gstAmount) el.gstAmount.textContent = this.formatCurrency(results.gstAmount);
                 const gstLabel = gstRow.querySelector('span:first-child');
                 if (gstLabel) gstLabel.textContent = `GST (${results.gstPercentage || 18}%):`;
             } else {
+                gstRow.classList.add('gst-hidden');
                 gstRow.style.display = 'none';
             }
         }
