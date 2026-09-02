@@ -1945,78 +1945,346 @@ class CostCalculator {
         }, 1000);
     }
 
-    saveAsImage() {
+    async saveAsImage() {
         const resultsContainer = document.getElementById('calculatorResults');
         const resultsActions = document.querySelector('.results-actions');
+        const saveBtn = document.getElementById('saveImageBtn');
         
         if (!resultsContainer) {
             alert('No results to save');
             return;
         }
 
-        // Show loading state
-        const saveBtn = document.getElementById('saveImageBtn');
-        const originalText = saveBtn.innerHTML;
-        saveBtn.innerHTML = '<span class="loading-spinner"></span> Saving Image...';
-        saveBtn.disabled = true;
-
-        // Hide the action buttons before capturing
-        if (resultsActions) {
-            resultsActions.style.display = 'none';
+        const originalBtnHtml = saveBtn ? saveBtn.innerHTML : '';
+        if (saveBtn) {
+            saveBtn.innerHTML = '<span class="loading-spinner"></span> Saving...';
+            saveBtn.disabled = true;
         }
 
-        // Use html2canvas to capture the results section
-        if (typeof html2canvas !== 'undefined') {
-            html2canvas(resultsContainer, {
-                backgroundColor: '#ffffff',
-                scale: 2,
-                useCORS: true,
-                allowTaint: true
-            }).then(canvas => {
-                // Create download link
-                const link = document.createElement('a');
-                link.download = `anjaneya-borewell-quote-${new Date().toISOString().split('T')[0]}.png`;
-                link.href = canvas.toDataURL('image/png');
-                
-                // Trigger download
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                // Show action buttons again
-                if (resultsActions) {
-                    resultsActions.style.display = 'flex';
-                }
-
-                // Restore button state
-                saveBtn.innerHTML = originalText;
+        const restoreBtn = () => {
+            if (saveBtn) {
+                saveBtn.innerHTML = originalBtnHtml;
                 saveBtn.disabled = false;
-            }).catch(error => {
-                console.error('Error saving image:', error);
-                alert('Failed to save image. Please try again.');
-                
-                // Show action buttons again
-                if (resultsActions) {
-                    resultsActions.style.display = 'flex';
-                }
-
-                // Restore button state
-                saveBtn.innerHTML = originalText;
-                saveBtn.disabled = false;
-            });
-        } else {
-            // Fallback: try to use browser's built-in screenshot capability
-            alert('Image saving feature requires additional setup. Please use the PDF download option instead.');
-            
-            // Show action buttons again
+            }
             if (resultsActions) {
                 resultsActions.style.display = 'flex';
             }
-            
-            // Restore button state
-            saveBtn.innerHTML = originalText;
-            saveBtn.disabled = false;
+        };
+
+        const filename = `Anjaneya-Borewells-Quote-${new Date().toISOString().split('T')[0]}.png`;
+
+        // Helper to deliver canvas to user across all operating systems
+        const deliverCanvas = async (canvas) => {
+            canvas.toBlob(async (blob) => {
+                if (!blob) {
+                    restoreBtn();
+                    alert('Could not generate image. Please use Download PDF Quote.');
+                    return;
+                }
+
+                // 1. Web Share API (Primary for iPhone/iPad iOS Safari & Android Chrome)
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                const file = new File([blob], filename, { type: 'image/png' });
+                if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
+                    try {
+                        await navigator.share({
+                            title: 'Anjaneya Borewells Quotation',
+                            text: 'Borewell Cost Estimate - Anjaneya Borewells',
+                            files: [file]
+                        });
+                        restoreBtn();
+                        return;
+                    } catch (shareErr) {
+                        if (shareErr.name === 'AbortError') {
+                            restoreBtn();
+                            return;
+                        }
+                        console.warn('Web Share fallback:', shareErr);
+                    }
+                }
+
+                // 2. Direct Blob Download (Standard for Desktop Windows, Mac, Linux, Android)
+                try {
+                    const blobUrl = URL.createObjectURL(blob);
+                    const link = document.createElement('a');
+                    link.download = filename;
+                    link.href = blobUrl;
+                    link.style.display = 'none';
+                    document.body.appendChild(link);
+                    link.click();
+
+                    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+                    if (isIOS) {
+                        this.showImagePreviewModal(blobUrl, filename);
+                    }
+
+                    setTimeout(() => {
+                        document.body.removeChild(link);
+                        if (!isIOS) URL.revokeObjectURL(blobUrl);
+                    }, 4000);
+
+                    restoreBtn();
+                } catch (dlErr) {
+                    console.warn('Direct download error:', dlErr);
+                    const dataUrl = canvas.toDataURL('image/png');
+                    this.showImagePreviewModal(dataUrl, filename);
+                    restoreBtn();
+                }
+            }, 'image/png', 1.0);
+        };
+
+        // Try Method A: html2canvas
+        if (typeof html2canvas !== 'undefined') {
+            if (resultsActions) resultsActions.style.display = 'none';
+            try {
+                const canvas = await html2canvas(resultsContainer, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    ignoreElements: (el) => el.classList && el.classList.contains('results-actions')
+                });
+                await deliverCanvas(canvas);
+                return;
+            } catch (h2cError) {
+                console.warn('html2canvas render error, using high-res native canvas fallback:', h2cError);
+            }
         }
+
+        // Method B: High-Definition Pure Native HTML5 Canvas Generator Fallback
+        try {
+            const inputs = this.getInputs ? this.getInputs() : {};
+            const results = this.currentQuoteResults || (this.performCalculation ? this.performCalculation(inputs) : null);
+            const fallbackCanvas = this.generateHighResQuoteCanvas(inputs, results);
+            await deliverCanvas(fallbackCanvas);
+        } catch (fbErr) {
+            console.error('Save image final error:', fbErr);
+            alert('Failed to save image. Please use the Download PDF Quote button.');
+            restoreBtn();
+        }
+    }
+
+    generateHighResQuoteCanvas(inputs, results) {
+        const canvas = document.createElement('canvas');
+        const width = 800;
+        let height = 980;
+        
+        const slabs = (results && results.slabCalculation && results.slabCalculation.slabDetails) ? results.slabCalculation.slabDetails : [];
+        if (slabs.length > 5) {
+            height += (slabs.length - 5) * 32;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+
+        // Background
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, width, height);
+
+        // Green Border
+        ctx.strokeStyle = '#16a34a';
+        ctx.lineWidth = 8;
+        ctx.strokeRect(4, 4, width - 8, height - 8);
+
+        // Header Gradient
+        const grad = ctx.createLinearGradient(0, 0, width, 120);
+        grad.addColorStop(0, '#15803d');
+        grad.addColorStop(1, '#047857');
+        ctx.fillStyle = grad;
+        ctx.fillRect(8, 8, width - 16, 120);
+
+        // Header Title
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 30px system-ui, -apple-system, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('ANJANEYA BOREWELLS', width / 2, 55);
+
+        // Header Tagline
+        ctx.font = 'bold 18px system-ui, -apple-system, sans-serif';
+        ctx.fillStyle = '#bbf7d0';
+        ctx.fillText('ஆழமான நம்பிக்கை! • Cost Quotation Estimate', width / 2, 88);
+
+        ctx.font = '14px system-ui, -apple-system, sans-serif';
+        ctx.fillStyle = '#e2e8f0';
+        const dateStr = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+        ctx.fillText(`Generated: ${dateStr}`, width / 2, 112);
+
+        // Specifications Card
+        let y = 145;
+        ctx.fillStyle = '#f0fdf4';
+        ctx.strokeStyle = '#86efac';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(30, y, width - 60, 80, 8);
+        else ctx.rect(30, y, width - 60, 80);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#166534';
+        ctx.font = 'bold 16px system-ui, -apple-system, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('DRILLING SPECIFICATIONS', 45, y + 25);
+
+        ctx.font = '14px monospace, system-ui';
+        ctx.fillStyle = '#0f172a';
+        const isRepair = inputs.drillingType === 'repair';
+        const typeStr = isRepair ? 'Rebore (Repair)' : 'New Borewell';
+        const depthStr = `Depth: ${inputs.totalDepth || 800} ft | Rate: ₹${inputs.drillingRate || 90}/ft`;
+        ctx.fillText(`• Type: ${typeStr}  |  ${depthStr}`, 45, y + 50);
+
+        const casing7 = inputs.pvc7Length || 0;
+        const casing10 = inputs.pvc10Length || 0;
+        const casingStr = `• Casing: 7" PVC: ${casing7} ft | 10" PVC: ${casing10} ft ${isRepair ? `| Old Bore: ${inputs.oldBoreDepth || 0} ft` : ''}`;
+        ctx.fillText(casingStr, 45, y + 70);
+
+        // Slab Breakdown Section
+        y += 95;
+        ctx.fillStyle = '#f8fafc';
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(30, y, width - 60, 35 + (slabs.length * 26) + 30, 8);
+        else ctx.rect(30, y, width - 60, 35 + (slabs.length * 26) + 30);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#15803d';
+        ctx.font = 'bold 15px system-ui, -apple-system, sans-serif';
+        ctx.fillText('DRILLING COST BREAKDOWN (SLAB RATE)', 45, y + 24);
+
+        // Slab header divider
+        ctx.strokeStyle = '#94a3b8';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(45, y + 32);
+        ctx.lineTo(width - 45, y + 32);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        let slabY = y + 52;
+        ctx.font = '14px monospace, system-ui';
+        slabs.forEach(s => {
+            ctx.fillStyle = '#334155';
+            ctx.textAlign = 'left';
+            ctx.fillText(s.range, 50, slabY);
+
+            ctx.textAlign = 'center';
+            ctx.fillText(`₹${s.rate}/ft`, width / 2, slabY);
+
+            ctx.textAlign = 'right';
+            ctx.fillStyle = '#16a34a';
+            ctx.font = 'bold 14px monospace, system-ui';
+            ctx.fillText(`Rs.${s.cost.toLocaleString('en-IN')}`, width - 50, slabY);
+            ctx.font = '14px monospace, system-ui';
+
+            slabY += 26;
+        });
+
+        // Total Drilling Cost
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.beginPath();
+        ctx.moveTo(45, slabY - 8);
+        ctx.lineTo(width - 45, slabY - 8);
+        ctx.stroke();
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 15px system-ui, -apple-system, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('Total Drilling Cost:', 50, slabY + 12);
+        ctx.textAlign = 'right';
+        ctx.fillStyle = '#15803d';
+        ctx.fillText(`Rs.${(results.drillingCost || 0).toLocaleString('en-IN')}`, width - 50, slabY + 12);
+
+        // Summary Lines Section
+        y = slabY + 35;
+        const drawCostRow = (label, val, isBold = false) => {
+            ctx.fillStyle = isBold ? '#0f172a' : '#475569';
+            ctx.font = isBold ? 'bold 15px system-ui' : '14px system-ui';
+            ctx.textAlign = 'left';
+            ctx.fillText(label, 50, y);
+
+            ctx.fillStyle = isBold ? '#0f172a' : '#1e293b';
+            ctx.font = isBold ? 'bold 15px monospace' : '14px monospace';
+            ctx.textAlign = 'right';
+            ctx.fillText(val, width - 50, y);
+            y += 24;
+        };
+
+        if (casing7 > 0) drawCostRow(`7" PVC Casing (${casing7} ft × ₹400/ft):`, `Rs.${(results.pvc7Cost || 0).toLocaleString('en-IN')}`);
+        if (casing10 > 0) drawCostRow(`10" PVC Casing (${casing10} ft × ₹700/ft):`, `Rs.${(results.pvc10Cost || 0).toLocaleString('en-IN')}`);
+        drawCostRow('Bore Bata (per bore):', `Rs.${(results.boreBataCost || 2000).toLocaleString('en-IN')}`);
+        drawCostRow('Subtotal:', `Rs.${(results.subtotal || 0).toLocaleString('en-IN')}`, true);
+        if (results.gstAmount > 0) {
+            drawCostRow(`GST (${results.gstPercentage || 18}%):`, `Rs.${(results.gstAmount || 0).toLocaleString('en-IN')}`);
+        }
+
+        // Total Cost Grand Banner
+        y += 10;
+        ctx.fillStyle = '#15803d';
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(30, y, width - 60, 65, 8);
+        else ctx.rect(30, y, width - 60, 65);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 18px system-ui, -apple-system, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('Total Estimated Cost:', 50, y + 38);
+        ctx.font = '12px system-ui';
+        ctx.fillStyle = '#bbf7d0';
+        ctx.fillText('(Approximate / உத்தேச மதிப்பு)', 50, y + 54);
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 24px monospace, system-ui';
+        ctx.textAlign = 'right';
+        ctx.fillText(`Rs.${(results.totalCost || 0).toLocaleString('en-IN')}`, width - 50, y + 42);
+
+        // Footer Contact
+        y += 85;
+        ctx.fillStyle = '#64748b';
+        ctx.font = '12px system-ui, -apple-system, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('📞 24x7 Hotline: +91 96596 57777 / 97869 78889  •  🌐 anjaneyaborewells.com', width / 2, y);
+        ctx.fillText('HQ: Sendamangalam & Namakkal, Tamil Nadu, India', width / 2, y + 18);
+
+        return canvas;
+    }
+
+    showImagePreviewModal(imgSrc, filename) {
+        document.getElementById('quoteImgPreviewModal')?.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'quoteImgPreviewModal';
+        modal.style.cssText = 'position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:999999; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:15px; box-sizing:border-box; backdrop-filter:blur(8px);';
+        
+        modal.innerHTML = `
+            <div style="background:#ffffff; border-radius:12px; max-width:480px; width:100%; max-height:90vh; overflow-y:auto; padding:16px; box-sizing:border-box; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.4);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid #e2e8f0; padding-bottom:8px;">
+                    <strong style="color:#15803d; font-size:0.95rem;">📸 Quotation Image Ready</strong>
+                    <button id="closeImgPreviewModal" style="background:#f1f5f9; border:none; font-size:1.2rem; cursor:pointer; width:28px; height:28px; border-radius:50%; line-height:1;">&times;</button>
+                </div>
+                <div style="margin-bottom:12px;">
+                    <img src="${imgSrc}" style="width:100%; height:auto; border-radius:8px; border:1px solid #cbd5e1; box-shadow:0 4px 12px rgba(0,0,0,0.08);" alt="Anjaneya Borewells Quote">
+                </div>
+                <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:6px; padding:8px 10px; margin-bottom:12px; font-size:0.78rem; color:#166534; line-height:1.3;">
+                    💡 <strong>iPhone / Mobile Tip:</strong> Press and hold the image above and tap <strong>"Save to Photos"</strong> or <strong>"Share"</strong>.
+                </div>
+                <div style="display:flex; gap:8px;">
+                    <a href="${imgSrc}" download="${filename}" style="flex:1; background:#15803d; color:#ffffff; padding:10px; border-radius:6px; text-decoration:none; font-weight:700; font-size:0.85rem; display:inline-block;">📥 Download Image</a>
+                    <button id="closeImgPreviewBtn" style="background:#64748b; color:#ffffff; border:none; padding:10px 14px; border-radius:6px; font-weight:600; font-size:0.85rem; cursor:pointer;">Close</button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        const closeModal = () => modal.remove();
+        document.getElementById('closeImgPreviewModal')?.addEventListener('click', closeModal);
+        document.getElementById('closeImgPreviewBtn')?.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
     }
 
     sendWhatsAppQuote() {
