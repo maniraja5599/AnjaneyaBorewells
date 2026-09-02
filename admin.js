@@ -433,24 +433,8 @@ class StandaloneAdminCommandCenter {
                 const leadKeys = Object.keys(rawWhatsAppLeads);
                 leadKeys.forEach(k => {
                     const l = rawWhatsAppLeads[k];
-                    if (l && typeof l === 'object') {
-                        liveFirebaseLeads.push({
-                            id: k,
-                            time: l.time || (new Date(l.timestamp || Date.now()).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + new Date(l.timestamp || Date.now()).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })),
-                            phone: l.phone || '+91 96596 57777',
-                            rawPhone: l.rawPhone || (l.phone ? l.phone.replace(/\D/g, '') : '9659657777'),
-                            depth: l.depth || '800 ft',
-                            type: l.type || 'New Borewell',
-                            casing: l.casing || '60 ft (7" PVC)',
-                            flush: l.flush || 'Included (2000 PSI)',
-                            survey: l.survey || 'Groundwater Sensor Scan',
-                            cost: l.cost || '₹1,08,500',
-                            loc: l.loc || 'Namakkal / Tamil Nadu',
-                            action: l.action || '🟢 Direct WhatsApp Sent',
-                            timestamp: l.timestamp || new Date().toISOString(),
-                            isRealLead: true
-                        });
-                    }
+                    const norm = this.normalizeLead(l, k);
+                    if (norm) liveFirebaseLeads.push(norm);
                 });
                 // Sort newest timestamp first
                 liveFirebaseLeads.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
@@ -471,10 +455,13 @@ class StandaloneAdminCommandCenter {
             // LocalStorage fallback
             const localLeads = JSON.parse(localStorage.getItem('anjaneya_whatsapp_leads') || '[]');
             localLeads.forEach(lead => {
-                const sig = (lead.rawPhone || lead.phone) + '_' + lead.time;
-                if (!seenPhones.has(sig)) {
-                    seenPhones.add(sig);
-                    combinedLeads.push(lead);
+                const norm = this.normalizeLead(lead);
+                if (norm) {
+                    const sig = (norm.rawPhone || norm.phone) + '_' + norm.time;
+                    if (!seenPhones.has(sig)) {
+                        seenPhones.add(sig);
+                        combinedLeads.push(norm);
+                    }
                 }
             });
 
@@ -777,23 +764,57 @@ class StandaloneAdminCommandCenter {
 
         // 2. 100% REAL Customer WhatsApp Leads from LocalStorage Cache (Zero Mock Rows)
         const storedWhatsAppLeads = JSON.parse(localStorage.getItem('anjaneya_whatsapp_leads') || '[]');
-        const realLeads = storedWhatsAppLeads.map(lead => ({
-            time: lead.time || (new Date(lead.timestamp || Date.now()).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + new Date(lead.timestamp || Date.now()).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true })),
-            phone: lead.phone || '+91 96596 57777',
-            rawPhone: lead.rawPhone || (lead.phone ? lead.phone.replace(/\D/g, '') : '9659657777'),
-            depth: lead.depth || '800 ft',
-            type: lead.type || 'New Borewell',
-            casing: lead.casing || '60 ft (7" PVC)',
-            flush: lead.flush || 'Included (2000 PSI)',
-            survey: lead.survey || 'Groundwater Sensor Scan',
-            cost: lead.cost || '₹1,08,500',
-            loc: lead.loc || 'Namakkal / Tamil Nadu',
-            action: lead.action || '🟢 Direct WhatsApp Sent',
-            timestamp: lead.timestamp || new Date().toISOString(),
-            isRealLead: true
-        }));
+        const realLeads = [];
+        storedWhatsAppLeads.forEach(lead => {
+            const norm = this.normalizeLead(lead);
+            if (norm) realLeads.push(norm);
+        });
 
         this.allEstimatesQuotes = [...realLeads];
+    }
+
+    normalizeLead(l, fallbackId = '') {
+        if (!l || typeof l !== 'object') return null;
+        const isRepair = (l.drillingType === 'repair') || 
+                         (l.type && (l.type.toLowerCase().includes('rebore') || l.type.toLowerCase().includes('repair')));
+        const rawPhone = l.rawPhone || (l.phone ? l.phone.replace(/\D/g, '') : '9659657777');
+        const phoneDisplay = l.phone || `+91 ${rawPhone.substring(0, 5)} ${rawPhone.substring(5)}`;
+        
+        let formattedTime = l.time;
+        if (!formattedTime && l.timestamp) {
+            const d = new Date(l.timestamp);
+            formattedTime = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+        }
+        if (!formattedTime) formattedTime = 'Recent';
+
+        let oldBoreVal = '-';
+        if (isRepair) {
+            if (l.oldBore && l.oldBore !== '-') {
+                oldBoreVal = l.oldBore;
+            } else if (l.oldBoreDepth) {
+                oldBoreVal = `${l.oldBoreDepth} ft`;
+            } else {
+                oldBoreVal = '350 ft';
+            }
+        }
+
+        return {
+            id: l.id || fallbackId || ('lead_' + Date.now()),
+            time: formattedTime,
+            phone: phoneDisplay,
+            rawPhone: rawPhone,
+            depth: l.depth || '800 ft',
+            type: isRepair ? 'Rebore (Repair)' : 'New Borewell',
+            isRepair: isRepair,
+            baseRate: l.baseRate || '₹90/ft',
+            oldBore: oldBoreVal,
+            casing: l.casing || '60 ft (7" PVC)',
+            cost: l.cost || '₹1,08,500',
+            loc: l.loc || 'Namakkal / Tamil Nadu',
+            action: l.action || '🟢 Direct WhatsApp Sent',
+            timestamp: l.timestamp || new Date().toISOString(),
+            isRealLead: true
+        };
     }
 
     renderTables() {
@@ -899,32 +920,38 @@ class StandaloneAdminCommandCenter {
             const isLive = q.isRealLead || (q.action && (q.action.includes('Direct WhatsApp') || q.action.includes('🟢')));
 
             quotesHtml += `
-                <tr ${isLive ? 'style="background: rgba(34, 197, 94, 0.08);"' : ''}>
-                    <td style="font-family: var(--font-mono); color: #cbd5e1; font-size: 0.78rem; white-space: nowrap;">
+                <tr ${isLive ? 'style="background: rgba(34, 197, 94, 0.05);"' : ''}>
+                    <td style="font-family: var(--font-mono); color: #94a3b8; font-size: 0.70rem; white-space: nowrap; letter-spacing: 0.2px;">
                         ${q.time}
-                        ${isLive ? '<span class="badge-status badge-verified" style="display:inline-block; font-size:0.65rem; margin-top:3px; background:#15803d; color:#ffffff; padding:1px 5px; border-radius:4px;">LIVE LEAD</span>' : ''}
                     </td>
                     <td>
                         <div style="display: flex; flex-direction: column; gap: 4px;">
-                            <strong style="color: #4ade80; font-family: var(--font-mono); font-size: 0.95rem; letter-spacing: 0.5px;">${phoneDisplay}</strong>
+                            <strong style="color: #4ade80; font-family: var(--font-mono); font-size: 0.90rem; letter-spacing: 0.5px;">${phoneDisplay}</strong>
                             <div style="display: flex; gap: 4px; align-items: center;">
-                                ${rawPhone ? `<a href="https://wa.me/${rawPhone.startsWith('91') ? rawPhone : '91' + rawPhone}" target="_blank" class="badge-status badge-verified" style="text-decoration:none; padding: 2px 6px; font-size: 0.70rem; cursor:pointer;" title="Open WhatsApp Chat">💬 WhatsApp</a>` : ''}
-                                ${rawPhone ? `<a href="tel:${rawPhone.startsWith('91') ? '+' + rawPhone : '+91' + rawPhone}" class="badge-status badge-quote" style="text-decoration:none; padding: 2px 6px; font-size: 0.70rem; cursor:pointer;" title="Call Customer">📞 Call</a>` : ''}
+                                ${rawPhone ? `<a href="https://wa.me/${rawPhone.startsWith('91') ? rawPhone : '91' + rawPhone}" target="_blank" class="badge-status badge-verified" style="text-decoration:none; padding: 2px 6px; font-size: 0.68rem; cursor:pointer;" title="Open WhatsApp Chat">💬 WhatsApp</a>` : ''}
+                                ${rawPhone ? `<a href="tel:${rawPhone.startsWith('91') ? '+' + rawPhone : '+91' + rawPhone}" class="badge-status badge-quote" style="text-decoration:none; padding: 2px 6px; font-size: 0.68rem; cursor:pointer;" title="Call Customer">📞 Call</a>` : ''}
                             </div>
                         </div>
                     </td>
                     <td>
-                        <strong style="color: #38bdf8; font-family: var(--font-mono); font-size: 0.95rem;">${q.depth}</strong>
-                        <small style="color: #94a3b8; display: block; font-size: 0.75rem;">(${q.type || 'New Borewell'})</small>
+                        <strong style="color: #38bdf8; font-family: var(--font-mono); font-size: 0.90rem;">${q.depth}</strong>
+                        <small style="color: ${q.isRepair ? '#f59e0b' : '#94a3b8'}; display: block; font-size: 0.70rem; font-weight: ${q.isRepair ? '700' : '500'};">(${q.type || 'New Borewell'})</small>
                     </td>
-                    <td style="font-size: 0.85rem; color: #e2e8f0;">${q.casing}</td>
-                    <td style="color: #94a3b8; font-size: 0.82rem;">${q.flush}</td>
-                    <td style="color: #6ee7b7; font-size: 0.82rem;">${q.survey}</td>
                     <td>
-                        <strong style="color: #10b981; font-family: var(--font-mono); font-size: 0.95rem;">${q.cost}</strong>
-                        <small style="color: #10b981; font-size: 0.70rem; display: block;">(Approximate)</small>
+                        <strong style="color: #a7f3d0; font-family: var(--font-mono); font-size: 0.84rem;">${q.baseRate || '₹90/ft'}</strong>
                     </td>
-                    <td style="font-size: 0.85rem; color: #f1f5f9;">📍 ${q.loc}</td>
+                    <td>
+                        ${q.isRepair 
+                            ? `<strong style="color: #f59e0b; font-family: var(--font-mono); font-size: 0.84rem; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 2px 6px; border-radius: 4px; display: inline-block;">${q.oldBore}</strong>`
+                            : `<span style="color: #64748b; font-size: 0.80rem;">-</span>`
+                        }
+                    </td>
+                    <td style="font-size: 0.82rem; color: #e2e8f0;">${q.casing}</td>
+                    <td>
+                        <strong style="color: #10b981; font-family: var(--font-mono); font-size: 0.92rem;">${q.cost}</strong>
+                        <small style="color: #10b981; font-size: 0.68rem; display: block;">(Approximate)</small>
+                    </td>
+                    <td style="font-size: 0.82rem; color: #f1f5f9;">📍 ${q.loc}</td>
                     <td><span class="badge-status ${isLive ? 'badge-verified' : 'badge-quote'}">${q.action}</span></td>
                 </tr>
             `;
