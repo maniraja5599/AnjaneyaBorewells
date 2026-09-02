@@ -4264,53 +4264,77 @@ input[type="number"]::-webkit-inner-spin-button {
     margin: 0;
 }
 
-/* Stepper Buttons Compact */
-.input-with-buttons {
+/* Stepper Buttons Compact - Dual Wing Stepper [ - ] [ 800 ] [ + ] */
+.stepper-input-group {
     display: flex !important;
     align-items: center !important;
     position: relative !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 7px !important;
+    overflow: hidden !important;
+    transition: all 0.2s ease !important;
+    height: 35px !important;
+}
+
+.stepper-input-group:focus-within {
+    border-color: #16a34a !important;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.18) !important;
+}
+
+.stepper-input-group input {
     flex: 1 !important;
+    border: none !important;
+    background: transparent !important;
+    text-align: center !important;
+    font-size: 16px !important; /* Prevents auto-zoom on mobile/iOS Safari */
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    font-family: var(--font-mono) !important;
+    padding: 0 4px !important;
+    height: 100% !important;
+    outline: none !important;
+    box-shadow: none !important;
+    min-width: 0 !important;
 }
 
-.input-with-buttons input {
-    flex: 1 !important;
-    margin: 0 !important;
-}
-
-.input-buttons {
-    display: flex !important;
-    flex-direction: column !important;
-    margin-left: 4px !important;
-    gap: 1px !important;
-}
-
-.input-btn {
-    width: 18px !important;
-    height: 15px !important;
-    border: 1px solid #16a34a !important;
-    background: linear-gradient(135deg, #16a34a, #10b981) !important;
-    color: #ffffff !important;
-    font-size: 8px !important;
+.stepper-btn {
+    width: 34px !important;
+    min-width: 34px !important;
+    height: 100% !important;
+    background: #f1f5f9 !important;
+    border: none !important;
+    color: #1e293b !important;
+    font-size: 1.15rem !important;
     font-weight: 800 !important;
     cursor: pointer !important;
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    user-select: none !important;
     transition: all 0.15s ease !important;
     padding: 0 !important;
-    box-shadow: 0 1px 2px rgba(22, 163, 74, 0.2) !important;
+    line-height: 1 !important;
 }
 
-.input-btn-up {
-    border-radius: 3px 3px 0 0 !important;
+.stepper-btn:hover {
+    background: #16a34a !important;
+    color: #ffffff !important;
 }
 
-.input-btn-down {
-    border-radius: 0 0 3px 3px !important;
-}
-
-.input-btn:hover {
+.stepper-btn:active {
     background: #15803d !important;
+    color: #ffffff !important;
+    transform: scale(0.96);
+}
+
+.stepper-btn-minus {
+    border-right: 1px solid #e2e8f0 !important;
+}
+
+.stepper-btn-plus {
+    border-left: 1px solid #e2e8f0 !important;
 }
 
 /* Drilling Type Compact */
@@ -4396,20 +4420,21 @@ input[type="number"]::-webkit-inner-spin-button {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
     gap: 0.50rem !important;
-    margin-top: 0.35rem !important;
+    margin-top: 0.40rem !important;
     margin-bottom: 0 !important;
+    align-items: center !important;
 }
 
 .settings-action-pill,
 .gst-toggle-action-pill {
     width: 100% !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
+    height: 35px !important;
+    min-height: 35px !important;
+    max-height: 35px !important;
     background: #ffffff !important;
     border: 1.5px solid #cbd5e1 !important;
     border-radius: 7px !important;
-    padding: 0 10px !important;
+    padding: 0 8px !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
@@ -4452,6 +4477,7 @@ input[type="number"]::-webkit-inner-spin-button {
     justify-content: center !important;
     gap: 8px !important;
     user-select: none !important;
+    margin: 0 auto !important;
 }
 
 .gst-toggle-action-pill input[type="checkbox"] {
@@ -4513,8 +4539,14 @@ input[type="number"]::-webkit-inner-spin-button {
 .results-header {
     background: linear-gradient(135deg, #15803d, #047857) !important;
     color: #ffffff !important;
-    padding: 0.40rem 0.80rem !important;
-    text-align: center !important;
+    padding: 0.45rem 0.85rem !important;
+}
+
+.results-header-flex {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 6px !important;
 }
 
 .results-header h3 {
@@ -4524,51 +4556,63 @@ input[type="number"]::-webkit-inner-spin-button {
     letter-spacing: 0.01em !important;
 }
 
+.calculator-date-badge {
+    background: rgba(255, 255, 255, 0.22) !important;
+    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    color: #ffffff !important;
+    font-size: 0.68rem !important;
+    font-weight: 700 !important;
+    padding: 2px 7px !important;
+    border-radius: 12px !important;
+    white-space: nowrap !important;
+    font-family: var(--font-mono) !important;
+}
+
 .results-content {
-    padding: 0.45rem 0.85rem !important;
+    padding: 0.50rem 0.90rem !important;
 }
 
 .input-summary {
     background: #f0fdf4 !important;
     border: 1px solid #bbf7d0 !important;
-    border-radius: 5px !important;
-    padding: 3px 6px !important;
-    margin-bottom: 3px !important;
-    font-size: 0.68rem !important;
+    border-radius: 6px !important;
+    padding: 4px 8px !important;
+    margin-bottom: 4px !important;
+    font-size: 0.76rem !important;
     color: #166534 !important;
-    line-height: 1.2 !important;
+    line-height: 1.3 !important;
 }
 
 .slab-breakdown {
     background: #f8fafc !important;
     border: 1px solid #e2e8f0 !important;
-    border-radius: 5px !important;
-    padding: 3px 6px !important;
-    margin-bottom: 3px !important;
+    border-radius: 6px !important;
+    padding: 4px 8px !important;
+    margin-bottom: 4px !important;
     max-height: none !important;
     overflow: visible !important;
 }
 
 .slab-header {
-    font-size: 0.68rem !important;
+    font-size: 0.76rem !important;
     font-weight: 700 !important;
     color: #15803d !important;
     border-bottom: 1px dashed #cbd5e1 !important;
-    padding-bottom: 1px !important;
-    margin-bottom: 2px !important;
+    padding-bottom: 2px !important;
+    margin-bottom: 3px !important;
 }
 
 #slabDetails {
-    font-size: 0.68rem !important;
+    font-size: 0.75rem !important;
 }
 
 .slab-item {
     display: grid !important;
     grid-template-columns: 1.2fr 1fr 1fr !important;
     align-items: center !important;
-    padding: 0.5px 0 !important;
-    font-size: 0.67rem !important;
-    line-height: 1.2 !important;
+    padding: 2px 0 !important;
+    font-size: 0.75rem !important;
+    line-height: 1.25 !important;
 }
 
 .slab-range {
@@ -4593,9 +4637,9 @@ input[type="number"]::-webkit-inner-spin-button {
     display: flex !important;
     justify-content: space-between !important;
     align-items: center !important;
-    padding: 0.10rem 0 !important;
+    padding: 0.16rem 0 !important;
     border-bottom: 1px solid #f1f5f9 !important;
-    font-size: 0.72rem !important;
+    font-size: 0.78rem !important;
     color: #334155 !important;
 }
 
@@ -4608,24 +4652,24 @@ input[type="number"]::-webkit-inner-spin-button {
 .cost-item.subtotal {
     font-weight: 700 !important;
     border-top: 1.5px solid #e2e8f0 !important;
-    margin-top: 0.10rem !important;
-    padding-top: 0.15rem !important;
-    font-size: 0.75rem !important;
+    margin-top: 0.12rem !important;
+    padding-top: 0.20rem !important;
+    font-size: 0.82rem !important;
     color: #0f172a !important;
 }
 
 .cost-item.total {
     font-weight: 900 !important;
-    font-size: 0.95rem !important;
+    font-size: 1.02rem !important;
     color: #15803d !important;
     border-top: 2px solid #16a34a !important;
-    margin-top: 0.15rem !important;
-    padding-top: 0.25rem !important;
+    margin-top: 0.18rem !important;
+    padding-top: 0.28rem !important;
 }
 
 .cost-item.total span:last-child {
     color: #15803d !important;
-    font-size: 1.05rem !important;
+    font-size: 1.15rem !important;
 }
 
 .results-actions {

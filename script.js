@@ -271,13 +271,13 @@ class AnjaneyaBorewells {
             }
         });
         
-        // Mobile input increment/decrement buttons (▲ / ▼)
+        // Stepper buttons (Minus − / Plus + / Up ▲ / Down ▼)
         document.querySelectorAll('.input-btn').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetId = button.getAttribute('data-target');
                 const step = button.getAttribute('data-step') || 1;
-                const isUp = button.classList.contains('input-btn-up');
+                const isUp = button.classList.contains('input-btn-up') || button.classList.contains('stepper-btn-plus');
                 handleStep(targetId, step, isUp);
             });
         });
@@ -1602,17 +1602,23 @@ class CostCalculator {
         if (el.boreBataCost) el.boreBataCost.textContent = this.formatCurrency(results.boreBataCost);
         if (el.subtotal) el.subtotal.textContent = this.formatCurrency(results.subtotal);
         
-        if (el.gstAmount) {
-            const gstLabel = el.gstAmount.parentElement.querySelector('span:first-child');
-            if (gstEnabled) {
-                el.gstAmount.textContent = this.formatCurrency(results.gstAmount);
-                if (gstLabel) gstLabel.textContent = `GST (${results.gstPercentage}%):`;
-                el.gstAmount.parentElement.style.display = 'flex';
+        const gstRow = document.getElementById('gstCostRow') || (el.gstAmount ? el.gstAmount.closest('.cost-item') : null);
+        if (gstRow) {
+            if (gstEnabled && results.gstAmount > 0) {
+                gstRow.style.display = 'flex';
+                if (el.gstAmount) el.gstAmount.textContent = this.formatCurrency(results.gstAmount);
+                const gstLabel = gstRow.querySelector('span:first-child');
+                if (gstLabel) gstLabel.textContent = `GST (${results.gstPercentage || 18}%):`;
             } else {
-                el.gstAmount.textContent = this.formatCurrency(0);
-                if (gstLabel) gstLabel.textContent = 'GST (0%):';
-                el.gstAmount.parentElement.style.display = 'none';
+                gstRow.style.display = 'none';
             }
+        }
+        
+        // Update live today date in header
+        const dateBadge = document.getElementById('calcLiveTodayDate');
+        if (dateBadge) {
+            const today = new Date();
+            dateBadge.textContent = `📅 ${today.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`;
         }
         
         if (el.totalCost) el.totalCost.textContent = this.formatCurrency(results.totalCost);
