@@ -966,7 +966,7 @@ class AnjaneyaBorewells {
                     <span class="inline-slab-name">📏 ${def.rangeStr}</span>
                     <div class="inline-slab-input-wrap">
                         <span class="inline-slab-currency">₹</span>
-                        <input type="number" class="inline-slab-input-box" data-index="${idx}" value="${savedRate}" min="1" step="1">
+                        <input type="number" class="inline-slab-input-box" data-index="${idx}" value="${savedRate}" min="1" step="1" inputmode="numeric" pattern="[0-9]*">
                     </div>
                 </div>
             `;

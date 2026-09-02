@@ -1057,7 +1057,7 @@
                                             <label for="oldBoreDepth">Old Bore Depth (ft)</label>
                                             <div class="stepper-input-group">
                                                 <button type="button" class="input-btn stepper-btn stepper-btn-minus" data-target="oldBoreDepth" data-step="50" aria-label="Decrease Old Bore">−</button>
-                                                <input type="number" id="oldBoreDepth" name="oldBoreDepth" value="0" min="0">
+                                                <input type="number" id="oldBoreDepth" name="oldBoreDepth" value="0" min="0" inputmode="numeric" pattern="[0-9]*">
                                                 <button type="button" class="input-btn stepper-btn stepper-btn-plus" data-target="oldBoreDepth" data-step="50" aria-label="Increase Old Bore">+</button>
                                             </div>
                                         </div>
@@ -1065,7 +1065,7 @@
                                             <label for="totalDepthRepair">Total Depth (ft)</label>
                                             <div class="stepper-input-group">
                                                 <button type="button" class="input-btn stepper-btn stepper-btn-minus" data-target="totalDepthRepair" data-step="50" aria-label="Decrease Total Depth">−</button>
-                                                <input type="number" id="totalDepthRepair" name="totalDepthRepair" value="800" min="1" required>
+                                                <input type="number" id="totalDepthRepair" name="totalDepthRepair" value="800" min="1" inputmode="numeric" pattern="[0-9]*" required>
                                                 <button type="button" class="input-btn stepper-btn stepper-btn-plus" data-target="totalDepthRepair" data-step="50" aria-label="Increase Total Depth">+</button>
                                             </div>
                                         </div>
@@ -1088,7 +1088,7 @@
                                 <label for="totalDepth">Total Depth (ft)</label>
                                 <div class="stepper-input-group">
                                     <button type="button" class="input-btn stepper-btn stepper-btn-minus" data-target="totalDepth" data-step="50" aria-label="Decrease Depth">−</button>
-                                    <input type="number" id="totalDepth" name="totalDepth" value="800" min="1" required>
+                                    <input type="number" id="totalDepth" name="totalDepth" value="800" min="1" inputmode="numeric" pattern="[0-9]*" required>
                                     <button type="button" class="input-btn stepper-btn stepper-btn-plus" data-target="totalDepth" data-step="50" aria-label="Increase Depth">+</button>
                                 </div>
                             </div>
@@ -1096,7 +1096,7 @@
                                 <label for="drillingRate">Base Drilling Rate per ft</label>
                                 <div class="stepper-input-group">
                                     <button type="button" class="input-btn stepper-btn stepper-btn-minus" data-target="drillingRate" data-step="1" aria-label="Decrease Base Rate">−</button>
-                                    <input type="number" id="drillingRate" name="drillingRate" value="90" min="1" required>
+                                    <input type="number" id="drillingRate" name="drillingRate" value="90" min="1" inputmode="numeric" pattern="[0-9]*" required>
                                     <button type="button" class="input-btn stepper-btn stepper-btn-plus" data-target="drillingRate" data-step="1" aria-label="Increase Base Rate">+</button>
                                 </div>
                             </div>
@@ -1107,7 +1107,7 @@
                                 <label for="pvc7Length">7" PVC Length (ft)</label>
                                 <div class="stepper-input-group">
                                     <button type="button" class="input-btn stepper-btn stepper-btn-minus" data-target="pvc7Length" data-step="5" aria-label="Decrease 7 inch PVC">−</button>
-                                    <input type="number" id="pvc7Length" name="pvc7Length" value="30" min="0" required>
+                                    <input type="number" id="pvc7Length" name="pvc7Length" value="30" min="0" inputmode="numeric" pattern="[0-9]*" required>
                                     <button type="button" class="input-btn stepper-btn stepper-btn-plus" data-target="pvc7Length" data-step="5" aria-label="Increase 7 inch PVC">+</button>
                                 </div>
                             </div>
@@ -1115,7 +1115,7 @@
                                 <label for="pvc10Length">10" PVC Length (ft)</label>
                                 <div class="stepper-input-group">
                                     <button type="button" class="input-btn stepper-btn stepper-btn-minus" data-target="pvc10Length" data-step="5" aria-label="Decrease 10 inch PVC">−</button>
-                                    <input type="number" id="pvc10Length" name="pvc10Length" value="15" min="0" required>
+                                    <input type="number" id="pvc10Length" name="pvc10Length" value="15" min="0" inputmode="numeric" pattern="[0-9]*" required>
                                     <button type="button" class="input-btn stepper-btn stepper-btn-plus" data-target="pvc10Length" data-step="5" aria-label="Increase 10 inch PVC">+</button>
                                 </div>
                             </div>
@@ -1153,15 +1153,15 @@
                                     <h5>Pipe Rates</h5>
                                     <div class="inline-form-group">
                                         <label for="inlinePvc7Rate">PVC 7" Rate (₹/ft):</label>
-                                        <input type="number" id="inlinePvc7Rate" value="400" min="0" step="1">
+                                        <input type="number" id="inlinePvc7Rate" value="400" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
                                     </div>
                                     <div class="inline-form-group">
                                         <label for="inlinePvc10Rate">PVC 10" Rate (₹/ft):</label>
-                                        <input type="number" id="inlinePvc10Rate" value="700" min="0" step="1">
+                                        <input type="number" id="inlinePvc10Rate" value="700" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
                                     </div>
                                     <div class="inline-form-group">
                                         <label for="inlineGstPercentage">GST Percentage (%):</label>
-                                        <input type="number" id="inlineGstPercentage" value="18" min="0" max="100" step="0.1">
+                                        <input type="number" id="inlineGstPercentage" value="18" min="0" max="100" step="0.1" inputmode="decimal">
                                     </div>
                                 </div>
                                 
@@ -1169,19 +1169,19 @@
                                     <h5>Drilling Rates</h5>
                                     <div class="inline-form-group">
                                         <label for="inlineBaseDrillingRate">Base Drilling Rate (₹/ft):</label>
-                                        <input type="number" id="inlineBaseDrillingRate" value="90" min="0" step="1">
+                                        <input type="number" id="inlineBaseDrillingRate" value="90" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
                                     </div>
                                     <div class="inline-form-group">
                                         <label for="inlineOldBoreRate">Old Bore Rate (₹/ft):</label>
-                                        <input type="number" id="inlineOldBoreRate" value="40" min="0" step="1">
+                                        <input type="number" id="inlineOldBoreRate" value="40" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
                                     </div>
                                     <div class="inline-form-group">
                                         <label for="inlineBoreBataRate">Bore Bata Rate (₹):</label>
-                                        <input type="number" id="inlineBoreBataRate" value="2000" min="0" step="1">
+                                        <input type="number" id="inlineBoreBataRate" value="2000" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
                                     </div>
                                     <div class="inline-form-group">
                                         <label for="inlineSlabBufferFt">Slab Grace / Buffer (ft):</label>
-                                        <input type="number" id="inlineSlabBufferFt" value="5" min="0" max="20" step="1" title="Excess depth up to this limit (e.g. 5 ft) over a slab boundary stays at the previous slab rate">
+                                        <input type="number" id="inlineSlabBufferFt" value="5" min="0" max="20" step="1" inputmode="numeric" pattern="[0-9]*" title="Excess depth up to this limit (e.g. 5 ft) over a slab boundary stays at the previous slab rate">
                                     </div>
                                 </div>
                             </div>
@@ -1199,7 +1199,7 @@
                                     <div class="inline-slab-controls-wrap">
                                         <div class="inline-step-input-group">
                                             <span class="inline-step-label">Step (₹):</span>
-                                            <input type="number" id="inlineStepAmount" value="5" min="1" step="1" class="inline-step-num-input" title="Enter step amount (e.g. 1, 5, 10, 20)">
+                                            <input type="number" id="inlineStepAmount" value="5" min="1" step="1" inputmode="numeric" pattern="[0-9]*" class="inline-step-num-input" title="Enter step amount (e.g. 1, 5, 10, 20)">
                                             <button type="button" class="inline-tool-btn step-btn" id="inlineDeductStepBtn" title="Deduct step from all slab rates">➖ Deduct</button>
                                             <button type="button" class="inline-tool-btn step-btn" id="inlineAddStepBtn" title="Add step to all slab rates">➕ Add</button>
                                         </div>
@@ -1633,7 +1633,7 @@
                     </div>
                     <div class="form-group">
                         <label for="callbackPhone">Phone *</label>
-                        <input type="tel" id="callbackPhone" name="phone" required>
+                        <input type="tel" id="callbackPhone" name="phone" inputmode="tel" pattern="[0-9]*" required>
                     </div>
                     <div class="form-group">
                         <label for="callbackTime">Preferred Time</label>
@@ -1683,7 +1683,7 @@
                     </label>
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <span style="background: #f1f5f9; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px 12px; font-weight: 700; font-size: 0.95rem; color: #334155;">+91</span>
-                        <input type="tel" id="whatsappCustomerPhone" class="form-input" placeholder="Enter 10-digit mobile number" maxlength="10" style="flex: 1; padding: 10px 14px; font-size: 1.05rem; border-radius: 8px; border: 1.5px solid #cbd5e1; font-weight: 600; color: #0f172a;" autocomplete="tel">
+                        <input type="tel" id="whatsappCustomerPhone" class="form-input" placeholder="Enter 10-digit mobile number" maxlength="10" inputmode="tel" pattern="[0-9]*" style="flex: 1; padding: 10px 14px; font-size: 1.05rem; border-radius: 8px; border: 1.5px solid #cbd5e1; font-weight: 600; color: #0f172a;" autocomplete="tel">
                     </div>
                     <small id="whatsappPhoneError" style="color: #dc2626; font-size: 0.78rem; display: none; margin-top: 6px; font-weight: 600;">⚠️ Please enter a valid 10-digit mobile number</small>
                 </div>
@@ -1759,7 +1759,7 @@
                         </div>
                         <div class="form-group" id="adminOtpGroup" style="display: none;">
                             <label for="adminOtp">Security OTP (Sent to Email)</label>
-                            <input type="text" id="adminOtp" placeholder="Enter 4-digit security OTP" maxlength="6">
+                            <input type="password" id="adminOtp" placeholder="Enter 4-digit security OTP" maxlength="6" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code">
                             <small class="admin-otp-hint">Access OTP: <strong>7777</strong></small>
                         </div>
                         <button type="button" class="btn btn-primary btn-full ripple" id="adminAuthBtn">
