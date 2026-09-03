@@ -4445,7 +4445,21 @@ input[type="number"]::-webkit-inner-spin-button {
     align-items: center !important;
 }
 
+.price-controls-form-row .form-group {
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+.price-controls-form-row .settings-action-pill,
+.price-controls-form-row .form-group label.gst-toggle-action-pill,
+.price-controls-form-row .gst-toggle-action-pill,
 .settings-action-pill,
+label.gst-toggle-action-pill,
 .gst-toggle-action-pill {
     width: 100% !important;
     height: 35px !important;
@@ -4455,14 +4469,17 @@ input[type="number"]::-webkit-inner-spin-button {
     border: 1.5px solid #cbd5e1 !important;
     border-radius: 7px !important;
     padding: 0 8px !important;
-    display: inline-flex !important;
+    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     box-sizing: border-box !important;
     text-align: center !important;
+    line-height: 1 !important;
 }
 
 .settings-action-pill {
@@ -4490,20 +4507,25 @@ input[type="number"]::-webkit-inner-spin-button {
     font-weight: 700 !important;
     color: #1e293b !important;
     line-height: 1 !important;
-    display: inline-flex !important;
+    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     margin: 0 !important;
     padding: 0 !important;
 }
 
+.price-controls-form-row .form-group label.gst-toggle-action-pill,
+.price-controls-form-row .gst-toggle-action-pill,
+label.gst-toggle-action-pill,
 .gst-toggle-action-pill {
-    display: inline-flex !important;
+    display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 8px !important;
     user-select: none !important;
-    margin: 0 auto !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     line-height: 1 !important;
 }
 
@@ -4517,7 +4539,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .toggle-slider-compact {
     position: relative !important;
-    display: inline-flex !important;
+    display: flex !important;
     align-items: center !important;
     width: 30px !important;
     height: 17px !important;
@@ -11643,3 +11665,105 @@ img {
     background: rgba(255, 255, 255, 0.15);
     color: #ffffff;
 }
+
+/* ==========================================================================
+   Definitive Centering & Geometry Lock: Price Settings & GST Action Pill
+   ========================================================================== */
+.price-controls-form-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.50rem !important;
+    margin-top: 0.40rem !important;
+    margin-bottom: 0 !important;
+    align-items: center !important;
+}
+
+.price-controls-form-row .form-group {
+    margin: 0 !important;
+    padding: 0 !important;
+    margin-bottom: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+}
+
+.price-controls-form-row .settings-action-pill,
+.price-controls-form-row .form-group label.gst-toggle-action-pill,
+.price-controls-form-row .gst-toggle-action-pill,
+label.gst-toggle-action-pill,
+.gst-toggle-action-pill {
+    width: 100% !important;
+    height: 35px !important;
+    min-height: 35px !important;
+    max-height: 35px !important;
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 7px !important;
+    padding: 0 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    box-sizing: border-box !important;
+    text-align: center !important;
+    line-height: 1 !important;
+    user-select: none !important;
+}
+
+.price-controls-form-row .settings-action-pill {
+    gap: 6px !important;
+    color: #1e293b !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+}
+
+.price-controls-form-row .form-group label.gst-toggle-action-pill,
+.price-controls-form-row .gst-toggle-action-pill,
+label.gst-toggle-action-pill,
+.gst-toggle-action-pill {
+    gap: 8px !important;
+    color: #1e293b !important;
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+}
+
+.price-controls-form-row .settings-action-pill:hover,
+.price-controls-form-row .form-group label.gst-toggle-action-pill:hover,
+.price-controls-form-row .gst-toggle-action-pill:hover {
+    background: #f0fdf4 !important;
+    border-color: #16a34a !important;
+    color: #15803d !important;
+}
+
+.settings-text,
+.toggle-text-compact {
+    font-size: 0.76rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.toggle-slider-compact {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 30px !important;
+    height: 17px !important;
+    background: #cbd5e1 !important;
+    border: 1.5px solid #94a3b8 !important;
+    border-radius: 17px !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
