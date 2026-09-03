@@ -1782,7 +1782,7 @@ section {
     border: 1.5px solid #d1d5db !important;
     border-radius: 12px !important;
     padding: 0 16px !important;
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     box-sizing: border-box !important;
@@ -1793,6 +1793,7 @@ section {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
     font-family: inherit !important;
     margin: 0 !important;
+    line-height: 1 !important;
 }
 
 .settings-action-pill {
@@ -1828,14 +1829,17 @@ section {
     font-weight: 700 !important;
     white-space: nowrap !important;
     line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
 }
 
 .gst-toggle-action-pill {
-    display: flex !important;
+    display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 12px !important;
     position: relative !important;
+    line-height: 1 !important;
 }
 
 .gst-toggle-action-pill:hover {
@@ -1865,6 +1869,9 @@ section {
     transition: color 0.2s ease !important;
     display: inline-flex !important;
     align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .toggle-slider-compact {
@@ -1877,8 +1884,9 @@ section {
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
     flex-shrink: 0 !important;
     box-sizing: border-box !important;
-    display: inline-block !important;
-    vertical-align: middle !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    margin: 0 !important;
 }
 
 .toggle-slider-compact::before {
@@ -4481,6 +4489,12 @@ input[type="number"]::-webkit-inner-spin-button {
     font-size: 0.76rem !important;
     font-weight: 700 !important;
     color: #1e293b !important;
+    line-height: 1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .gst-toggle-action-pill {
@@ -4490,6 +4504,7 @@ input[type="number"]::-webkit-inner-spin-button {
     gap: 8px !important;
     user-select: none !important;
     margin: 0 auto !important;
+    line-height: 1 !important;
 }
 
 .gst-toggle-action-pill input[type="checkbox"] {
@@ -4502,7 +4517,8 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .toggle-slider-compact {
     position: relative !important;
-    display: inline-block !important;
+    display: inline-flex !important;
+    align-items: center !important;
     width: 30px !important;
     height: 17px !important;
     background: #cbd5e1 !important;
@@ -4510,6 +4526,7 @@ input[type="number"]::-webkit-inner-spin-button {
     border-radius: 17px !important;
     transition: all 0.2s ease !important;
     flex-shrink: 0 !important;
+    margin: 0 !important;
 }
 
 .toggle-slider-compact::before {
