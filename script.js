@@ -1413,9 +1413,25 @@ class CostCalculator {
         const el = this.cachedEls;
         if (drillingType === 'repair') {
             if (el.depthInputsCard) el.depthInputsCard.style.display = 'block';
+            // Default both PVC pipe lengths to 0 ft for Repair/Rebore (can be increased manually if needed)
+            if (el.pvc7Length) el.pvc7Length.value = 0;
+            if (el.pvc10Length) el.pvc10Length.value = 0;
+            if (el.totalDepth && el.totalDepthRepair && (!el.totalDepthRepair.value || el.totalDepthRepair.value === '0')) {
+                el.totalDepthRepair.value = el.totalDepth.value || 800;
+            }
         } else {
             if (el.depthInputsCard) el.depthInputsCard.style.display = 'none';
             if (el.oldBoreDepth) el.oldBoreDepth.value = 0;
+            // Restore standard default PVC lengths for New Drilling if they were 0
+            if (el.pvc7Length && (el.pvc7Length.value === '0' || el.pvc7Length.value === 0)) {
+                el.pvc7Length.value = this.defaults.pvc7Length || 30;
+            }
+            if (el.pvc10Length && (el.pvc10Length.value === '0' || el.pvc10Length.value === 0)) {
+                el.pvc10Length.value = this.defaults.pvc10Length || 15;
+            }
+            if (el.totalDepth && el.totalDepthRepair && el.totalDepthRepair.value) {
+                el.totalDepth.value = el.totalDepthRepair.value;
+            }
         }
         this.calculate();
     }
@@ -1620,13 +1636,13 @@ class CostCalculator {
         if (el.pvc7Cost) {
             el.pvc7Cost.textContent = inputs.pvc7Length > 0 
                 ? `${inputs.pvc7Length} ft × ₹${this.defaults.pvc7Rate}/ft = ${this.formatCurrency(results.pvc7Cost)}`
-                : this.formatCurrency(0);
+                : `0 ft = ${this.formatCurrency(0)}`;
         }
         
         if (el.pvc10Cost) {
             el.pvc10Cost.textContent = inputs.pvc10Length > 0 
                 ? `${inputs.pvc10Length} ft × ₹${this.defaults.pvc10Rate}/ft = ${this.formatCurrency(results.pvc10Cost)}`
-                : this.formatCurrency(0);
+                : `0 ft = ${this.formatCurrency(0)}`;
         }
             
         if (el.boreBataCost) el.boreBataCost.textContent = this.formatCurrency(results.boreBataCost);
