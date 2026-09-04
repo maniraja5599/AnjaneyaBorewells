@@ -2130,17 +2130,18 @@ class CostCalculator {
         }
 
         canvas.width = width;
-        canvas.height = height;
+        let finalHeight = height + 110;
+        canvas.height = finalHeight;
         const ctx = canvas.getContext('2d');
 
         // Background
         ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, width, height);
+        ctx.fillRect(0, 0, width, finalHeight);
 
         // Green Border
         ctx.strokeStyle = '#16a34a';
         ctx.lineWidth = 8;
-        ctx.strokeRect(4, 4, width - 8, height - 8);
+        ctx.strokeRect(4, 4, width - 8, finalHeight - 8);
 
         // Header Gradient
         const grad = ctx.createLinearGradient(0, 0, width, 120);
@@ -2294,8 +2295,71 @@ class CostCalculator {
         ctx.textAlign = 'right';
         ctx.fillText(`Rs.${(results.totalCost || 0).toLocaleString('en-IN')}`, width - 50, y + 42);
 
+        // Official Rubber Seal Stamp on Canvas
+        y += 100;
+        const sealX = width / 2;
+        const sealY = y;
+        ctx.save();
+        ctx.translate(sealX, sealY);
+        ctx.rotate(-4 * Math.PI / 180); // -4 degree official stamp tilt
+
+        // Outer dashed stamp box
+        ctx.strokeStyle = '#15803d';
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([6, 4]);
+        ctx.fillStyle = 'rgba(240, 253, 244, 0.95)';
+        if (ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(-175, -36, 350, 72, 10);
+            ctx.fill();
+            ctx.stroke();
+        } else {
+            ctx.fillRect(-175, -36, 350, 72);
+            ctx.strokeRect(-175, -36, 350, 72);
+        }
+        ctx.setLineDash([]);
+
+        // Inner solid border
+        ctx.strokeStyle = 'rgba(22, 163, 74, 0.4)';
+        ctx.lineWidth = 1;
+        if (ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(-171, -32, 342, 64, 8);
+            ctx.stroke();
+        } else {
+            ctx.strokeRect(-171, -32, 342, 64);
+        }
+
+        // Stamp Text
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#16a34a';
+        ctx.font = '11px system-ui, sans-serif';
+        ctx.fillText('★  ★  ★', 0, -18);
+
+        ctx.fillStyle = '#15803d';
+        ctx.font = 'bold 15px system-ui, -apple-system, sans-serif';
+        ctx.fillText('ANJANEYA BOREWELLS', 0, -2);
+
+        // Stamp badge capsule
+        ctx.fillStyle = '#15803d';
+        if (ctx.roundRect) {
+            ctx.beginPath();
+            ctx.roundRect(-75, 4, 150, 16, 4);
+            ctx.fill();
+        } else {
+            ctx.fillRect(-75, 4, 150, 16);
+        }
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 10px system-ui, sans-serif';
+        ctx.fillText('OFFICIAL ESTIMATE', 0, 16);
+
+        ctx.fillStyle = '#16a34a';
+        ctx.font = 'bold 11px system-ui, sans-serif';
+        ctx.fillText('✓ VERIFIED & APPROVED', 0, 30);
+        ctx.restore();
+
         // Footer Contact
-        y += 85;
+        y += 88;
         ctx.fillStyle = '#64748b';
         ctx.font = '12px system-ui, -apple-system, sans-serif';
         ctx.textAlign = 'center';
@@ -2411,6 +2475,7 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
                 modalTotal.textContent = `₹${results.totalCost.toLocaleString('en-IN')}`;
             }
             if (errorMsg) errorMsg.style.display = 'none';
+            modal.classList.add('show');
             modal.style.display = 'flex';
             if (phoneInput) {
                 phoneInput.focus();
@@ -2435,7 +2500,10 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
         const errorMsg = document.getElementById('whatsappPhoneError');
 
         const closeModal = () => {
-            if (modal) modal.style.display = 'none';
+            if (modal) {
+                modal.classList.remove('show');
+                modal.style.display = 'none';
+            }
             if (errorMsg) errorMsg.style.display = 'none';
         };
 
@@ -3285,35 +3353,55 @@ function initPagePreloader() {
     }
 }
 
-// Interactive Driving Rig Truck on Page Scroll & Direct Drag (Fixed Bottom Bar)
+// Interactive Driving Rig Truck on Page Scroll & Direct Drag (Fixed Bottom Bar - Safari & Mobile Compatible)
 function initScrollLorry() {
     const fixedTruck = document.getElementById('fixedRigTruck');
     const fixedBar = document.getElementById('fixedScrollRigBar');
     if (!fixedTruck || !fixedBar) return;
 
     let ticking = false;
-    let lastScrollY = window.pageYOffset || 0;
     let isDragging = false;
     let startX = 0;
     let startScrollTop = 0;
 
+    function getScrollPosition() {
+        if (document.scrollingElement) return document.scrollingElement.scrollTop;
+        return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || window.scrollY || 0;
+    }
+
+    let lastScrollY = getScrollPosition();
+
+    function getMaxScroll() {
+        const scrollHeight = Math.max(
+            document.body.scrollHeight || 0,
+            document.documentElement.scrollHeight || 0,
+            document.scrollingElement ? document.scrollingElement.scrollHeight : 0
+        );
+        const clientHeight = window.innerHeight || document.documentElement.clientHeight || 0;
+        return Math.max(1, scrollHeight - clientHeight);
+    }
+
     function getMaxTravel() {
         const fixedRoad = fixedBar.querySelector('.fixed-rig-road') || fixedBar;
-        const roadWidth = fixedRoad.clientWidth;
-        const truckWidth = fixedTruck.clientWidth || 80;
+        const roadWidth = fixedRoad.clientWidth || window.innerWidth;
+        const truckWidth = fixedTruck.clientWidth || 75;
         const badge = fixedBar.querySelector('.fixed-road-badge');
-        const badgeWidth = badge ? (badge.clientWidth + 20) : 100;
+        const badgeWidth = badge ? (badge.clientWidth + 16) : 90;
         return Math.max(1, roadWidth - truckWidth - badgeWidth);
+    }
+
+    function applyTruckTransform(x, tilt) {
+        const transformStr = `translate3d(${x}px, 0, 0) rotate(${tilt}deg)`;
+        fixedTruck.style.webkitTransform = transformStr;
+        fixedTruck.style.transform = transformStr;
     }
 
     function updateTrucks() {
         if (isDragging) return;
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
-        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-        const clientHeight = window.innerHeight || document.documentElement.clientHeight;
-        const maxScroll = Math.max(1, scrollHeight - clientHeight);
+        const scrollTop = getScrollPosition();
+        const maxScroll = getMaxScroll();
         
-        // Progress from 0 to 1 based on page scroll
+        // Progress strictly clamped between 0 and 1 (prevents iOS Safari rubber-band bounce negative values)
         const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
         
         // Subtle tilt depending on scroll speed/direction (dampened)
@@ -3324,7 +3412,7 @@ function initScrollLorry() {
         const maxTravel = getMaxTravel();
         const fixedX = progress * maxTravel;
 
-        fixedTruck.style.transform = `translate3d(${fixedX}px, 0, 0) rotate(${tilt}deg)`;
+        applyTruckTransform(fixedX, tilt);
         ticking = false;
     }
 
@@ -3332,29 +3420,30 @@ function initScrollLorry() {
     function onDragStart(e) {
         isDragging = true;
         fixedTruck.style.cursor = 'grabbing';
-        startX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        startScrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+        startX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+        startScrollTop = getScrollPosition();
     }
 
     function onDragMove(e) {
         if (!isDragging) return;
-        const currentX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        const currentX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
         const deltaX = currentX - startX;
         const maxTravel = getMaxTravel();
-        
-        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-        const clientHeight = window.innerHeight || document.documentElement.clientHeight;
-        const maxScroll = Math.max(1, scrollHeight - clientHeight);
+        const maxScroll = getMaxScroll();
 
         const scrollDelta = (deltaX / maxTravel) * maxScroll;
         const newScrollTop = Math.max(0, Math.min(maxScroll, startScrollTop + scrollDelta));
 
-        window.scrollTo(0, newScrollTop);
+        if (document.scrollingElement) {
+            document.scrollingElement.scrollTop = newScrollTop;
+        } else {
+            window.scrollTo(0, newScrollTop);
+        }
 
         const progress = newScrollTop / maxScroll;
         const fixedX = progress * maxTravel;
         const tilt = deltaX > 0 ? 2 : (deltaX < 0 ? -2 : 0);
-        fixedTruck.style.transform = `translate3d(${fixedX}px, 0, 0) rotate(${tilt}deg)`;
+        applyTruckTransform(fixedX, tilt);
     }
 
     function onDragEnd() {
@@ -3372,9 +3461,7 @@ function initScrollLorry() {
         const clickX = e.clientX - rect.left;
         const maxTravel = getMaxTravel();
         const progress = Math.min(Math.max(clickX / maxTravel, 0), 1);
-        const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-        const clientHeight = window.innerHeight || document.documentElement.clientHeight;
-        const maxScroll = Math.max(1, scrollHeight - clientHeight);
+        const maxScroll = getMaxScroll();
         window.scrollTo({
             top: progress * maxScroll,
             behavior: 'smooth'
@@ -3389,16 +3476,26 @@ function initScrollLorry() {
     window.addEventListener('touchmove', onDragMove, { passive: false });
     window.addEventListener('touchend', onDragEnd, { passive: true });
 
-    window.addEventListener('scroll', () => {
+    const onScrollTick = () => {
         if (!ticking && !isDragging) {
             window.requestAnimationFrame(updateTrucks);
             ticking = true;
         }
-    }, { passive: true });
+    };
+
+    window.addEventListener('scroll', onScrollTick, { passive: true });
+    document.addEventListener('scroll', onScrollTick, { passive: true });
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('scroll', onScrollTick, { passive: true });
+        window.visualViewport.addEventListener('resize', onScrollTick, { passive: true });
+    }
 
     window.addEventListener('resize', updateTrucks, { passive: true });
+    window.addEventListener('orientationchange', () => setTimeout(updateTrucks, 100), { passive: true });
+
     // Initial call
     updateTrucks();
+    setTimeout(updateTrucks, 300);
 }
 
 // ==========================================================================

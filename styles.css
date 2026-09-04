@@ -4620,12 +4620,12 @@ label.gst-toggle-action-pill,
 
 /* Calculator Receipt Results Card */
 .calculator-results {
-    background: rgba(255, 255, 255, 0.95) !important;
+    background: linear-gradient(180deg, #ffffff 0%, #fafffa 50%, #f4fbf5 100%) !important;
     backdrop-filter: blur(16px) !important;
-    border: 1px solid rgba(22, 163, 74, 0.2) !important;
-    border-radius: 12px !important;
+    border: 1.5px solid rgba(22, 163, 74, 0.28) !important;
+    border-radius: 14px !important;
     overflow: hidden !important;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: 0 8px 30px rgba(21, 128, 61, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
     position: sticky !important;
     top: 75px !important;
 }
@@ -4664,6 +4664,7 @@ label.gst-toggle-action-pill,
 
 .results-content {
     padding: 0.50rem 0.90rem !important;
+    position: relative !important;
 }
 
 .input-summary {
@@ -4678,13 +4679,14 @@ label.gst-toggle-action-pill,
 }
 
 .slab-breakdown {
-    background: #f8fafc !important;
+    background: #ffffff !important;
     border: 1px solid #e2e8f0 !important;
     border-radius: 6px !important;
     padding: 4px 8px !important;
     margin-bottom: 4px !important;
     max-height: none !important;
     overflow: visible !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
 }
 
 .slab-header {
@@ -4768,6 +4770,78 @@ label.gst-toggle-action-pill,
 .cost-item.total span:last-child {
     color: #15803d !important;
     font-size: 1.15rem !important;
+}
+
+/* Official Rubber Seal Stamp Design */
+.official-rubber-seal {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 8px auto 2px !important;
+    text-align: center !important;
+    user-select: none !important;
+}
+
+.official-rubber-seal .seal-inner {
+    border: 2px dashed #15803d !important;
+    border-radius: 8px !important;
+    padding: 4px 14px 4px !important;
+    background: rgba(240, 253, 244, 0.7) !important;
+    color: #15803d !important;
+    transform: rotate(-3deg) !important;
+    box-shadow: inset 0 0 0 1px rgba(21, 128, 61, 0.2), 0 2px 6px rgba(21, 128, 61, 0.08) !important;
+    display: inline-flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    transition: transform 0.2s ease !important;
+    max-width: 92% !important;
+}
+
+.official-rubber-seal .seal-inner:hover {
+    transform: rotate(0deg) scale(1.02) !important;
+}
+
+.official-rubber-seal .seal-star {
+    font-size: 0.62rem !important;
+    letter-spacing: 3px !important;
+    color: #16a34a !important;
+    line-height: 1 !important;
+}
+
+.official-rubber-seal .seal-brand {
+    font-size: 0.72rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+    color: #15803d !important;
+    line-height: 1.2 !important;
+}
+
+.official-rubber-seal .seal-badge {
+    font-size: 0.65rem !important;
+    font-weight: 900 !important;
+    letter-spacing: 0.1em !important;
+    background: #15803d !important;
+    color: #ffffff !important;
+    padding: 1px 8px !important;
+    border-radius: 3px !important;
+    margin: 2px 0 1px !important;
+    line-height: 1.2 !important;
+}
+
+.official-rubber-seal .seal-status {
+    font-size: 0.65rem !important;
+    font-weight: 800 !important;
+    color: #16a34a !important;
+    line-height: 1.2 !important;
+}
+
+.official-rubber-seal .seal-sub {
+    font-size: 0.58rem !important;
+    color: #64748b !important;
+    letter-spacing: 0.04em !important;
+    font-weight: 600 !important;
+    line-height: 1.1 !important;
 }
 
 /* Luxury Quotation Action Buttons */
@@ -5050,19 +5124,20 @@ label.gst-toggle-action-pill,
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(15, 23, 42, 0.65);
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.70);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     z-index: 100000;
+    box-sizing: border-box;
 }
 
 .modal.show {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
 }
 
 .modal-content {
@@ -5074,6 +5149,42 @@ label.gst-toggle-action-pill,
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: var(--shadow-lg);
+    margin: auto !important;
+    box-sizing: border-box;
+}
+
+/* Dedicated WhatsApp Quote Modal Layout */
+#whatsappQuoteModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(15, 23, 42, 0.72) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 100000;
+    box-sizing: border-box;
+    padding: 16px;
+}
+
+#whatsappQuoteModal.show {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+#whatsappQuoteModal .whatsapp-modal-content {
+    margin: auto !important;
+    max-width: 440px !important;
+    width: 100% !important;
+    max-height: 90vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
 }
 
 /* Inline Price Settings Panel */
@@ -6556,8 +6667,9 @@ img {
     }
     
     .modal-content {
-        margin: 20px 10px;
-        width: calc(100% - 20px);
+        margin: auto !important;
+        width: 100% !important;
+        max-width: 95vw !important;
         max-height: 90vh;
         overflow-y: auto;
     }
@@ -6938,8 +7050,9 @@ img {
     }
     
     .modal-content {
-        margin: 10px 5px;
-        width: calc(100% - 10px);
+        margin: auto !important;
+        width: 100% !important;
+        max-width: 95vw !important;
     }
     
     .modal-body {
