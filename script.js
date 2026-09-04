@@ -2032,7 +2032,7 @@ class CostCalculator {
             canvas.toBlob(async (blob) => {
                 if (!blob) {
                     restoreBtn();
-                    alert('Could not generate image. Please use Download PDF Quote.');
+                    alert('Could not generate image. Please use WhatsApp Quote.');
                     return;
                 }
 
@@ -2114,7 +2114,7 @@ class CostCalculator {
             await deliverCanvas(fallbackCanvas);
         } catch (fbErr) {
             console.error('Save image final error:', fbErr);
-            alert('Failed to save image. Please use the Download PDF Quote button.');
+            alert('Failed to save image. Please use the WhatsApp Quote button.');
             restoreBtn();
         }
     }
