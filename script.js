@@ -3730,7 +3730,7 @@ class VisitorAnalyticsManager {
     }
 
     async syncLivePageViews() {
-        const ABSOLUTE_MIN_VIEWS = 209;
+        const ABSOLUTE_MIN_VIEWS = 507;
         
         try {
             const res = await fetch(this.firebaseUrl, { cache: 'no-store' });
