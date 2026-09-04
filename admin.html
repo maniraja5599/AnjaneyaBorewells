@@ -455,8 +455,13 @@
                             <span class="search-ico">🔍</span>
                             <input type="text" id="telemetrySearchInput" placeholder="Filter by IP, District, Device, Browser, Channel, or Action...">
                         </div>
-                        <div class="toolbar-stat-pill" id="telemetryCountPill">
-                            Showing Real-Time Live Sessions (Scroll to load more)
+                        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                            <button type="button" id="toggleAllIpsBtn" style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;" title="Reveal all unmasked client IP addresses">
+                                <span class="eye-ico">👁️</span> <span>Reveal All IPs</span>
+                            </button>
+                            <div class="toolbar-stat-pill" id="telemetryCountPill">
+                                Showing Real-Time Live Sessions (Scroll to load more)
+                            </div>
                         </div>
                     </div>
 

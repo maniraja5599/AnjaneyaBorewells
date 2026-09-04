@@ -22,6 +22,7 @@ class StandaloneAdminCommandCenter {
         this.latestTotalViews = 507; // Strict monotonic non-decreasing floor
         this.latestActiveCount = 1;
         this.latestPing = 24;
+        this.isGlobalIpRevealed = false;
 
         // Progressive Infinite Scroll States
         this.telemetryRenderedCount = 0;
@@ -207,6 +208,81 @@ class StandaloneAdminCommandCenter {
                 }
                 this.telemetryRenderedCount = 0;
                 this.renderNextTelemetryBatch(true);
+            });
+        }
+
+        // Click on Client IP to reveal Full IP / Toggle & Copy
+        if (this.telemetryTableBody) {
+            this.telemetryTableBody.addEventListener('click', (e) => {
+                const ipCell = e.target.closest('.ip-cell-action');
+                if (!ipCell) return;
+
+                const currentState = ipCell.getAttribute('data-state');
+                const isMasked = currentState !== 'raw';
+                const targetIp = isMasked ? ipCell.getAttribute('data-raw') : ipCell.getAttribute('data-masked');
+                const textSpan = ipCell.querySelector('.ip-text');
+                const toggleBtn = ipCell.querySelector('.ip-toggle-btn');
+
+                if (textSpan) {
+                    textSpan.textContent = targetIp;
+                    textSpan.style.color = isMasked ? '#4ade80' : '#f8fafc';
+                }
+                if (toggleBtn) {
+                    toggleBtn.textContent = isMasked ? '🔓' : '👁️';
+                }
+                ipCell.setAttribute('data-state', isMasked ? 'raw' : 'masked');
+
+                // If revealing full IP, auto copy to clipboard with friendly visual feedback
+                if (isMasked && navigator.clipboard && ipCell.getAttribute('data-raw')) {
+                    navigator.clipboard.writeText(ipCell.getAttribute('data-raw')).then(() => {
+                        if (toggleBtn) {
+                            toggleBtn.textContent = '✅ Copied';
+                            toggleBtn.style.background = 'rgba(34, 197, 94, 0.25)';
+                            toggleBtn.style.color = '#4ade80';
+                            setTimeout(() => {
+                                toggleBtn.textContent = '🔓';
+                                toggleBtn.style.background = 'rgba(56, 189, 248, 0.15)';
+                                toggleBtn.style.color = '#38bdf8';
+                            }, 1200);
+                        }
+                    }).catch(() => {});
+                }
+            });
+        }
+
+        // Global Reveal All Full IPs button in toolbar
+        const toggleAllBtn = document.getElementById('toggleAllIpsBtn');
+        if (toggleAllBtn) {
+            toggleAllBtn.addEventListener('click', () => {
+                this.isGlobalIpRevealed = !this.isGlobalIpRevealed;
+                toggleAllBtn.innerHTML = this.isGlobalIpRevealed
+                    ? '<span class="eye-ico">🔒</span> <span>Mask All IPs</span>'
+                    : '<span class="eye-ico">👁️</span> <span>Reveal All IPs</span>';
+                toggleAllBtn.style.color = this.isGlobalIpRevealed ? '#4ade80' : '#38bdf8';
+                toggleAllBtn.style.borderColor = this.isGlobalIpRevealed ? 'rgba(74, 222, 128, 0.4)' : 'rgba(56, 189, 248, 0.35)';
+
+                const cells = document.querySelectorAll('.ip-cell-action');
+                cells.forEach(cell => {
+                    const raw = cell.getAttribute('data-raw');
+                    const masked = cell.getAttribute('data-masked');
+                    const textSpan = cell.querySelector('.ip-text');
+                    const toggleBtn = cell.querySelector('.ip-toggle-btn');
+                    if (this.isGlobalIpRevealed) {
+                        if (textSpan) {
+                            textSpan.textContent = raw;
+                            textSpan.style.color = '#4ade80';
+                        }
+                        if (toggleBtn) toggleBtn.textContent = '🔓';
+                        cell.setAttribute('data-state', 'raw');
+                    } else {
+                        if (textSpan) {
+                            textSpan.textContent = masked;
+                            textSpan.style.color = '#f8fafc';
+                        }
+                        if (toggleBtn) toggleBtn.textContent = '👁️';
+                        cell.setAttribute('data-state', 'masked');
+                    }
+                });
             });
         }
 
@@ -555,6 +631,7 @@ class StandaloneAdminCommandCenter {
                         fullTime: `${dateStr}, ${timeStr}`,
                         ip: maskedIp,
                         rawIp: rawIp,
+                        isp: s.isp || '',
                         dist: dist,
                         state: state,
                         source: channelName,
@@ -1035,7 +1112,18 @@ class StandaloneAdminCommandCenter {
                         <div style="color: #f8fafc; font-weight: 600;">${s.dateStr || ''}</div>
                         <div style="color: #94a3b8; font-size: 0.68rem;">${s.timeStr || ''} IST</div>
                     </td>
-                    <td style="font-family: var(--font-mono); font-weight: 600; color: #f8fafc;">${s.ip}</td>
+                    <td class="ip-cell-action" 
+                        data-masked="${s.ip}" 
+                        data-raw="${s.rawIp}" 
+                        data-state="${this.isGlobalIpRevealed ? 'raw' : 'masked'}"
+                        title="Click to reveal Full IP / Copy to clipboard"
+                        style="font-family: var(--font-mono); font-weight: 600; color: #f8fafc; cursor: pointer; user-select: text;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 6px; border-radius: 4px; background: rgba(255, 255, 255, 0.03); transition: all 0.2s;">
+                            <span class="ip-text" style="color: ${this.isGlobalIpRevealed ? '#4ade80' : '#f8fafc'};">${this.isGlobalIpRevealed ? s.rawIp : s.ip}</span>
+                            <span class="ip-toggle-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; border-radius: 4px; padding: 1px 5px; font-size: 0.65rem; cursor: pointer;" title="Toggle Full IP">${this.isGlobalIpRevealed ? '🔓' : '👁️'}</span>
+                        </div>
+                        ${s.isp ? `<div style="font-size: 0.65rem; color: #94a3b8; font-weight: 400; font-family: var(--font-sans); margin-top: 2px;">${s.isp}</div>` : ''}
+                    </td>
                     <td><strong style="color: #34d399;">${s.dist}</strong></td>
                     <td style="color: #cbd5e1;">${s.state}</td>
                     <td><span class="badge-source ${s.sourceBadge}">${s.source}</span></td>
