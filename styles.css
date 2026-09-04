@@ -11001,14 +11001,19 @@ img {
 /* iOS Safari Installation Modal */
 .ios-modal-content {
     max-width: 440px !important;
-    border-radius: 20px !important;
-    border: 1px solid rgba(16, 185, 129, 0.3) !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(16, 185, 129, 0.25) !important;
+    box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
 }
 
 .ios-modal-header {
-    background: #0f172a !important;
+    background: linear-gradient(135deg, #09371d 0%, #064e26 50%, #032e16 100%) !important;
     color: #ffffff !important;
     padding: 16px 20px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    position: relative;
 }
 
 .ios-modal-title {
@@ -11017,8 +11022,18 @@ img {
     gap: 12px;
 }
 
-.ios-apple-icon {
-    font-size: 1.8rem;
+.ios-brand-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
 }
 
 .ios-modal-title h3 {
@@ -11026,35 +11041,111 @@ img {
     font-size: 1.05rem;
     color: #ffffff;
     font-weight: 800;
+    letter-spacing: -0.01em;
 }
 
 .ios-modal-subtitle {
-    margin: 2px 0 0 0;
+    margin: 3px 0 0 0;
     font-size: 0.76rem;
-    color: #94a3b8;
+    color: #a7f3d0;
+}
+
+.ios-close-icon-btn {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 1.6rem !important;
+    line-height: 1 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+}
+
+.ios-close-icon-btn:hover {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.2) !important;
 }
 
 .ios-modal-body {
-    padding: 20px !important;
+    padding: 18px 20px 22px !important;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
+}
+
+.ios-app-preview-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f1f5f9;
+    border-radius: 14px;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+}
+
+.ios-preview-app-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.ios-preview-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.ios-preview-info strong {
+    display: block;
+    font-size: 0.88rem;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.ios-preview-url {
+    display: block;
+    font-size: 0.72rem;
+    color: #64748b;
+}
+
+.ios-safari-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 9px;
+    background: #e0f2fe;
+    color: #0284c7;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    flex-shrink: 0;
 }
 
 .ios-step-card {
     display: flex;
     align-items: flex-start;
-    gap: 14px;
+    gap: 12px;
     background: #f8fafc;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
     padding: 12px 14px;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.ios-step-card:hover {
+    border-color: #86efac;
+    background: #ffffff;
 }
 
 .ios-step-num {
     width: 28px;
     height: 28px;
-    background: #10b981;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
     color: #ffffff;
     border-radius: 50%;
     display: flex;
@@ -11063,29 +11154,84 @@ img {
     font-weight: 800;
     font-size: 0.85rem;
     flex-shrink: 0;
+    margin-top: 1px;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35);
 }
 
 .ios-step-info {
     flex: 1;
+    min-width: 0;
 }
 
-.ios-step-info strong {
+.ios-step-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 3px;
+}
+
+.ios-step-title strong {
     font-size: 0.88rem;
     color: #0f172a;
-    display: block;
-    margin-bottom: 2px;
+    font-weight: 700;
+}
+
+.ios-step-badge-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.ios-step-badge-icon.share {
+    background: #e0f2fe;
+}
+
+.ios-step-badge-icon.add {
+    background: #dcfce7;
+}
+
+.ios-step-badge-icon.check {
+    background: #d1fae5;
 }
 
 .ios-step-info p {
     margin: 0;
     font-size: 0.78rem;
     color: #475569;
-    line-height: 1.35;
+    line-height: 1.45;
 }
 
-.ios-svg-icon {
-    vertical-align: middle;
+.ios-inline-icon {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: -2px;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.ios-inline-icon.share {
+    background: #e0f2fe;
     color: #0284c7;
+}
+
+.ios-inline-icon.add {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.ios-gotit-btn {
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    padding: 13px !important;
+    margin-top: 4px !important;
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25) !important;
 }
 
 @media (max-width: 640px) {

@@ -4356,7 +4356,8 @@ function initFaqAccordion() {
 class PwaInstallManager {
     constructor() {
         this.deferredPrompt = null;
-        this.isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
+        this.isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase()) || 
+                     (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1);
         this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
         this.autoCloseTimer = null;
         this.init();

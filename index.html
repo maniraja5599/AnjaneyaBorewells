@@ -2397,37 +2397,89 @@
         <div class="modal-content ios-modal-content">
             <div class="modal-header ios-modal-header">
                 <div class="ios-modal-title">
-                    <span class="ios-apple-icon">🍎</span>
+                    <div class="ios-brand-avatar">
+                        <svg class="ios-apple-svg" viewBox="0 0 170 170" width="24" height="24" fill="currentColor">
+                            <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.69-7.75-11.97-14.14-6.41-9.56-11.2-20.91-14.38-34.06-3.18-13.15-4.77-25.07-4.77-35.77 0-14.66 3.73-26.78 11.19-36.35 7.46-9.57 16.71-14.45 27.75-14.64 4.57 0 9.78 1.25 15.63 3.76 5.85 2.5 9.77 3.82 11.75 3.93 1.52-.11 5.56-1.5 12.13-4.18 6.57-2.69 12.12-3.87 16.66-3.56 12.63.76 22.42 5.38 29.37 13.86-11.09 6.74-16.53 16.14-16.32 28.2 0 10.22 4.02 18.96 12.06 26.22 3.81 3.59 8.16 6.2 13.05 7.83-2.61 7.72-5.77 15.66-9.48 23.82zM119.22 31.84c0-7.72 2.76-14.89 8.28-21.51 5.53-6.63 12.39-10.33 20.59-11.1-1.09 7.72-4.02 14.84-8.81 21.36-4.78 6.52-11.45 10.27-20.06 11.25z"/>
+                        </svg>
+                    </div>
                     <div>
                         <h3>Install on iPhone / iPad</h3>
-                        <p class="ios-modal-subtitle">Follow 3 quick steps in Safari</p>
+                        <p class="ios-modal-subtitle">Safari Browser-ல் எளிதாக 3 படிகளில் நிறுவலாம்</p>
                     </div>
                 </div>
-                <button type="button" class="modal-close" id="iosModalClose">&times;</button>
+                <button type="button" class="modal-close ios-close-icon-btn" id="iosModalClose" aria-label="Close">&times;</button>
             </div>
             <div class="modal-body ios-modal-body">
+                <div class="ios-app-preview-card">
+                    <img src="favicon.png" alt="Anjaneya App" class="ios-preview-app-icon">
+                    <div class="ios-preview-info">
+                        <strong>Anjaneya Borewells App</strong>
+                        <span class="ios-preview-url">anjaneyaborewells.in • Safari PWA</span>
+                    </div>
+                    <span class="ios-safari-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                        </svg>
+                        Safari
+                    </span>
+                </div>
+
+                <!-- Step 1 -->
                 <div class="ios-step-card">
                     <div class="ios-step-num">1</div>
                     <div class="ios-step-info">
-                        <strong>Tap the Share Button</strong>
-                        <p>Tap the <strong>Share icon ( <svg class="ios-svg-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg> )</strong> at the bottom bar of Safari.</p>
+                        <div class="ios-step-title">
+                            <strong>1. Tap Safari Share Button</strong>
+                            <span class="ios-step-badge-icon share">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                                    <polyline points="16 6 12 2 8 6"/>
+                                    <line x1="12" y1="2" x2="12" y2="15"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <p>Safari பிரவுசரின் கீழ்ப்பகுதியில் உள்ள <strong>Share ஐகானை (<span class="ios-inline-icon share"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></span>)</strong> அழுத்தவும்.</p>
                     </div>
                 </div>
+
+                <!-- Step 2 -->
                 <div class="ios-step-card">
                     <div class="ios-step-num">2</div>
                     <div class="ios-step-info">
-                        <strong>Add to Home Screen</strong>
-                        <p>Scroll down and tap <strong>'Add to Home Screen' ( ➕ முகப்புத் திரையில் சேர்)</strong>.</p>
+                        <div class="ios-step-title">
+                            <strong>2. Tap 'Add to Home Screen'</strong>
+                            <span class="ios-step-badge-icon add">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="4" ry="4"/>
+                                    <line x1="12" y1="8" x2="12" y2="16"/>
+                                    <line x1="8" y1="12" x2="16" y2="12"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <p>கீழே scroll செய்து <strong>'Add to Home Screen' (<span class="ios-inline-icon add">➕ முகப்புத் திரையில் சேர்</span>)</strong> என்பதைத் தேர்ந்தெடுக்கவும்.</p>
                     </div>
                 </div>
+
+                <!-- Step 3 -->
                 <div class="ios-step-card">
                     <div class="ios-step-num">3</div>
                     <div class="ios-step-info">
-                        <strong>Confirm &amp; Add</strong>
-                        <p>Tap <strong>'Add'</strong> in top right. Official 3D emblem icon will be added to your home screen!</p>
+                        <div class="ios-step-title">
+                            <strong>3. Tap 'Add' in Top Right</strong>
+                            <span class="ios-step-badge-icon check">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <p>மேல் வலது மூலையில் உள்ள <strong>'Add'</strong> பட்டனைத் தட்டவும். உடனே உங்கள் iPhone-ல் ஆப் தயாராகிவிடும்!</p>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary btn-full" id="iosGotItBtn" style="border-radius: 12px; font-weight: 700; padding: 12px;">👍 Got It / புரிந்தது</button>
+
+                <button type="button" class="btn btn-primary btn-full ios-gotit-btn" id="iosGotItBtn">
+                    👍 புரிந்தது / Got It
+                </button>
             </div>
         </div>
     </div>
