@@ -4960,8 +4960,10 @@ class AdminCommandCenter {
         // Render Detailed IP Audit Logs Table
         if (tableBody) {
             tableBody.innerHTML = allSessions.map((s, idx) => {
-                const elapsedSec = Math.max(5, Math.round((now - (s.lastActive || s.startTime || now - 120000)) / 1000));
-                const timeStr = elapsedSec < 60 ? 'Just now' : `${Math.floor(elapsedSec / 60)}m ago`;
+                const ts = s.lastActive || s.startTime || now;
+                const d = new Date(ts);
+                const dateStr = d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+                const timeStr = d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
                 return `
                     <tr>
                         <td><strong style="color:#10b981;">#${idx + 1}</strong></td>
@@ -4970,7 +4972,10 @@ class AdminCommandCenter {
                         <td>${s.device || 'Mobile'} • <span style="color:#38bdf8;">${s.os || 'Android'}</span></td>
                         <td>${s.browser || 'Chrome'}</td>
                         <td><span class="stat-badge">${s.action || 'Viewing Rig Specs'}</span></td>
-                        <td style="color:#94a3b8;">${timeStr}</td>
+                        <td style="color:#cbd5e1; font-family:var(--font-mono); font-size:0.75rem; white-space:nowrap;">
+                            <div style="color:#f8fafc; font-weight:600;">${dateStr}</div>
+                            <div style="color:#94a3b8; font-size:0.68rem;">${timeStr} IST</div>
+                        </td>
                     </tr>
                 `;
             }).join('');
