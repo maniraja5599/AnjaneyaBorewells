@@ -1144,52 +1144,92 @@
                         <!-- Inline Price Settings Panel -->
                         <div class="inline-price-settings" id="inlinePriceSettings" style="display: none;">
                             <div class="inline-settings-header">
-                                <h4>Price Settings</h4>
-                                <button type="button" class="close-inline-settings" id="closeInlineSettings">×</button>
+                                <div class="inline-header-left">
+                                    <span class="inline-gear-badge">⚙️</span>
+                                    <div>
+                                        <h4>Price Settings</h4>
+                                        <span class="inline-header-sub">Custom rates &amp; taxes</span>
+                                    </div>
+                                </div>
+                                <button type="button" class="close-inline-settings" id="closeInlineSettings" aria-label="Close settings">✕</button>
                             </div>
                             
                             <div class="inline-settings-grid">
                                 <div class="inline-settings-section">
-                                    <h5>Pipe Rates</h5>
-                                    <div class="inline-form-group">
-                                        <label for="inlinePvc7Rate">PVC 7" Rate (₹/ft):</label>
-                                        <input type="number" id="inlinePvc7Rate" value="400" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
-                                    </div>
-                                    <div class="inline-form-group">
-                                        <label for="inlinePvc10Rate">PVC 10" Rate (₹/ft):</label>
-                                        <input type="number" id="inlinePvc10Rate" value="700" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
-                                    </div>
-                                    <div class="inline-form-group">
-                                        <label for="inlineGstPercentage">GST Percentage (%):</label>
-                                        <input type="number" id="inlineGstPercentage" value="18" min="0" max="100" step="0.1" inputmode="decimal">
+                                    <h5>
+                                        <span>🛠️ Pipe &amp; Tax Rates</span>
+                                    </h5>
+                                    <div class="inline-fields-compact-list">
+                                        <div class="inline-form-group">
+                                            <label for="inlinePvc7Rate">PVC 7" Rate</label>
+                                            <div class="inline-input-suffix-wrap">
+                                                <span class="inline-unit-prefix">₹</span>
+                                                <input type="number" id="inlinePvc7Rate" value="400" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
+                                                <span class="inline-unit-tag">/ft</span>
+                                            </div>
+                                        </div>
+                                        <div class="inline-form-group">
+                                            <label for="inlinePvc10Rate">PVC 10" Rate</label>
+                                            <div class="inline-input-suffix-wrap">
+                                                <span class="inline-unit-prefix">₹</span>
+                                                <input type="number" id="inlinePvc10Rate" value="700" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
+                                                <span class="inline-unit-tag">/ft</span>
+                                            </div>
+                                        </div>
+                                        <div class="inline-form-group">
+                                            <label for="inlineGstPercentage">GST Rate</label>
+                                            <div class="inline-input-suffix-wrap">
+                                                <input type="number" id="inlineGstPercentage" value="18" min="0" max="100" step="0.1" inputmode="decimal">
+                                                <span class="inline-unit-tag">%</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 
                                 <div class="inline-settings-section">
-                                    <h5>Drilling Rates</h5>
-                                    <div class="inline-form-group">
-                                        <label for="inlineBaseDrillingRate">Base Drilling Rate (₹/ft):</label>
-                                        <input type="number" id="inlineBaseDrillingRate" value="90" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
-                                    </div>
-                                    <div class="inline-form-group">
-                                        <label for="inlineOldBoreRate">Old Bore Rate (₹/ft):</label>
-                                        <input type="number" id="inlineOldBoreRate" value="40" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
-                                    </div>
-                                    <div class="inline-form-group">
-                                        <label for="inlineBoreBataRate">Bore Bata Rate (₹):</label>
-                                        <input type="number" id="inlineBoreBataRate" value="2000" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
-                                    </div>
-                                    <div class="inline-form-group">
-                                        <label for="inlineSlabBufferFt">Slab Grace / Buffer (ft):</label>
-                                        <input type="number" id="inlineSlabBufferFt" value="5" min="0" max="20" step="1" inputmode="numeric" pattern="[0-9]*" title="Excess depth up to this limit (e.g. 5 ft) over a slab boundary stays at the previous slab rate">
+                                    <h5>
+                                        <span>⚡ Drilling Charges</span>
+                                    </h5>
+                                    <div class="inline-fields-compact-list">
+                                        <div class="inline-form-group">
+                                            <label for="inlineBaseDrillingRate">Base Drilling Rate</label>
+                                            <div class="inline-input-suffix-wrap">
+                                                <span class="inline-unit-prefix">₹</span>
+                                                <input type="number" id="inlineBaseDrillingRate" value="90" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
+                                                <span class="inline-unit-tag">/ft</span>
+                                            </div>
+                                        </div>
+                                        <div class="inline-form-group">
+                                            <label for="inlineOldBoreRate">Old Bore / Flushing</label>
+                                            <div class="inline-input-suffix-wrap">
+                                                <span class="inline-unit-prefix">₹</span>
+                                                <input type="number" id="inlineOldBoreRate" value="40" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
+                                                <span class="inline-unit-tag">/ft</span>
+                                            </div>
+                                        </div>
+                                        <div class="inline-form-group">
+                                            <label for="inlineBoreBataRate">Bore Bata</label>
+                                            <div class="inline-input-suffix-wrap">
+                                                <span class="inline-unit-prefix">₹</span>
+                                                <input type="number" id="inlineBoreBataRate" value="2000" min="0" step="1" inputmode="numeric" pattern="[0-9]*">
+                                                <span class="inline-unit-tag">fixed</span>
+                                            </div>
+                                        </div>
+                                        <div class="inline-form-group">
+                                            <label for="inlineSlabBufferFt" title="Excess depth up to this limit over a slab boundary stays at previous rate">Grace Buffer</label>
+                                            <div class="inline-input-suffix-wrap">
+                                                <input type="number" id="inlineSlabBufferFt" value="5" min="0" max="20" step="1" inputmode="numeric" pattern="[0-9]*">
+                                                <span class="inline-unit-tag">ft</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="inline-settings-actions">
                                 <button type="button" class="btn btn-secondary" id="resetInlineSettings">Reset</button>
-                                <button type="button" class="btn btn-primary" id="saveInlineSettings">Save</button>
-                                <button type="button" class="btn btn-outline" id="toggleSlabRates">Configure Slab Rates</button>
+                                <button type="button" class="btn btn-primary" id="saveInlineSettings">Save Settings</button>
+                                <button type="button" class="btn btn-outline" id="toggleSlabRates">📊 Slab Rates</button>
                             </div>
                             
                             <!-- Slab Rate Configuration -->
