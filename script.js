@@ -1365,6 +1365,7 @@ class CostCalculator {
     _executeCalculation() {
         const inputs = this.getInputs();
         const results = this.performCalculation(inputs);
+        this.currentQuoteResults = results;
         this.displayResults(results);
         this.updateLiveCalculator(results);
     }
@@ -2157,37 +2158,38 @@ class CostCalculator {
         ctx.strokeRect(4, 4, width - 8, finalHeight - 8);
 
         // Elegant Blue Brand Watermark in Canvas Center Background
+        // Elegant Blue Brand Watermark in Canvas Background (Positioned lower behind totals & contact footer)
         ctx.save();
         const wX = width / 2;
-        const wY = finalHeight / 2 + 20;
+        const wY = finalHeight - 165;
         ctx.translate(wX, wY);
 
         // Draw soft blue brand watermark circle
         ctx.strokeStyle = 'rgba(30, 64, 175, 0.08)'; // Deep royal blue tint
-        ctx.lineWidth = 4;
-        ctx.setLineDash([8, 6]);
+        ctx.lineWidth = 3.5;
+        ctx.setLineDash([7, 5]);
         ctx.beginPath();
-        ctx.arc(0, 0, 140, 0, Math.PI * 2);
+        ctx.arc(0, 0, 105, 0, Math.PI * 2);
         ctx.stroke();
         ctx.setLineDash([]);
 
         ctx.strokeStyle = 'rgba(37, 99, 235, 0.06)';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.arc(0, 0, 126, 0, Math.PI * 2);
+        ctx.arc(0, 0, 94, 0, Math.PI * 2);
         ctx.stroke();
 
         // Watermark Inner Emblem & Text
         ctx.textAlign = 'center';
         ctx.fillStyle = 'rgba(30, 64, 175, 0.09)';
-        ctx.font = 'bold 18px system-ui, -apple-system, sans-serif';
-        ctx.fillText('ANJANEYA BOREWELLS', 0, -25);
-        ctx.font = 'bold 14px system-ui';
+        ctx.font = 'bold 15px system-ui, -apple-system, sans-serif';
+        ctx.fillText('ANJANEYA BOREWELLS', 0, -20);
+        ctx.font = 'bold 12px system-ui';
         ctx.fillText('★  ★  ★  ★  ★', 0, 0);
-        ctx.font = 'bold 13px system-ui';
-        ctx.fillText('GOVT APPROVED • ESTD 1990', 0, 24);
         ctx.font = 'bold 11px system-ui';
-        ctx.fillText('AUTHENTIC ESTIMATE', 0, 44);
+        ctx.fillText('GOVT APPROVED • ESTD 1990', 0, 20);
+        ctx.font = 'bold 10px system-ui';
+        ctx.fillText('AUTHENTIC ESTIMATE', 0, 36);
         ctx.restore();
 
         // Header Gradient
@@ -2244,20 +2246,45 @@ class CostCalculator {
 
         // Left accent bar
         ctx.fillStyle = '#16a34a';
+        ctx.beginPath();
         if (ctx.roundRect) ctx.roundRect(30, y, 6, 88, [10, 0, 0, 10]);
-        else ctx.fillRect(30, y, 6, 88);
+        else ctx.rect(30, y, 6, 88);
+        ctx.fill();
 
         ctx.fillStyle = '#166534';
         ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
         ctx.textAlign = 'left';
         ctx.fillText('⚙️ DRILLING SPECIFICATIONS', 50, y + 25);
 
+        // 6.5" Bore Tag next to Drilling Specifications
+        const specTextWidth = ctx.measureText('⚙️ DRILLING SPECIFICATIONS').width;
+        const tagX = 50 + specTextWidth + 10;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(tagX, y + 10, 70, 20, 5);
+        else ctx.rect(tagX, y + 10, 70, 20);
+        ctx.fillStyle = '#e0f2fe';
+        ctx.fill();
+        ctx.strokeStyle = '#7dd3fc';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.fillStyle = '#0369a1';
+        ctx.font = 'bold 11px system-ui, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('6.5" Bore', tagX + 35, y + 24);
+
         // Drilling Type Pill Badge in card
         const isRepair = inputs.drillingType === 'repair';
         const typeStr = isRepair ? 'Rebore (Repair)' : 'New Borewell';
-        ctx.fillStyle = '#dcfce7';
+        ctx.beginPath();
         if (ctx.roundRect) ctx.roundRect(width - 190, y + 10, 145, 22, 11);
-        else ctx.fillRect(width - 190, y + 10, 145, 22);
+        else ctx.rect(width - 190, y + 10, 145, 22);
+        ctx.fillStyle = '#dcfce7';
+        ctx.fill();
+        ctx.strokeStyle = '#86efac';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
         ctx.fillStyle = '#15803d';
         ctx.font = 'bold 12px system-ui';
         ctx.textAlign = 'center';
@@ -2265,12 +2292,13 @@ class CostCalculator {
 
         // Specification Chips inside Card
         const drawSpecChip = (chipX, chipY, chipW, label, val) => {
-            ctx.fillStyle = '#ffffff';
-            ctx.strokeStyle = '#cbd5e1';
-            ctx.lineWidth = 1;
+            ctx.beginPath();
             if (ctx.roundRect) ctx.roundRect(chipX, chipY, chipW, 42, 6);
             else ctx.rect(chipX, chipY, chipW, 42);
+            ctx.fillStyle = '#ffffff';
             ctx.fill();
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 1;
             ctx.stroke();
 
             ctx.textAlign = 'center';
