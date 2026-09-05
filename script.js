@@ -4519,6 +4519,8 @@ class PwaInstallManager {
         this.deferredPrompt = null;
         this.isIos = /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase()) || 
                      (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1);
+        this.isDesktop = !/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(window.navigator.userAgent.toLowerCase()) && 
+                         (window.navigator.maxTouchPoints || 0) <= 1;
         this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
         this.autoCloseTimer = null;
         this.init();
@@ -4544,6 +4546,9 @@ class PwaInstallManager {
         this.iosModal = document.getElementById('iosInstallModal');
         this.iosCloseBtn = document.getElementById('iosModalClose');
         this.iosGotItBtn = document.getElementById('iosGotItBtn');
+        this.desktopModal = document.getElementById('desktopInstallModal');
+        this.desktopCloseBtn = document.getElementById('desktopModalClose');
+        this.desktopGotItBtn = document.getElementById('desktopGotItBtn');
 
         if (this.isStandalone) {
             // Already installed as standalone app, no need to prompt
@@ -4597,6 +4602,14 @@ class PwaInstallManager {
             });
         }
 
+        if (this.desktopCloseBtn) this.desktopCloseBtn.addEventListener('click', () => this.hideDesktopModal());
+        if (this.desktopGotItBtn) this.desktopGotItBtn.addEventListener('click', () => this.hideDesktopModal());
+        if (this.desktopModal) {
+            this.desktopModal.addEventListener('click', (e) => {
+                if (e.target === this.desktopModal) this.hideDesktopModal();
+            });
+        }
+
         window.addEventListener('appinstalled', () => {
             this.deferredPrompt = null;
             this.hideBanner();
@@ -4621,12 +4634,32 @@ class PwaInstallManager {
                 this.deferredPrompt = null;
             } catch (err) {
                 console.warn('Install prompt error:', err);
-                this.showIosModal();
+                if (this.isDesktop) this.showDesktopModal();
+                else this.showIosModal();
             }
         } else {
-            // Fallback for iOS, Safari, Firefox, or unsupported environments
-            this.showIosModal();
+            // Fallback: Show desktop modal on PC, or iOS modal on iOS devices
+            if (this.isDesktop) {
+                this.showDesktopModal();
+            } else {
+                this.showIosModal();
+            }
         }
+    }
+
+    showDesktopModal() {
+        if (!this.desktopModal) return;
+        this.hideBanner();
+        this.desktopModal.style.display = 'flex';
+        this.desktopModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    hideDesktopModal() {
+        if (!this.desktopModal) return;
+        this.desktopModal.classList.remove('active');
+        this.desktopModal.style.display = 'none';
+        document.body.style.overflow = '';
     }
 
     checkBannerAutoPrompt() {

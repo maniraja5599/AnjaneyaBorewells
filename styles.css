@@ -4668,21 +4668,20 @@ label.gst-toggle-action-pill,
     z-index: 1 !important;
 }
 
-/* Elegant Blue Brand Logo Watermark in Results Card Background */
+/* Elegant Blue Brand Logo Watermark in Results Card Background (Pure transparent vector - zero square box) */
 .results-content::before {
     content: '' !important;
     position: absolute !important;
     bottom: 22px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
-    width: 120px !important;
-    height: 120px !important;
-    background-image: url('logo.png') !important;
+    width: 125px !important;
+    height: 125px !important;
+    background-image: url('logo_blue_watermark.png') !important;
     background-repeat: no-repeat !important;
     background-position: center center !important;
     background-size: contain !important;
-    opacity: 0.085 !important;
-    filter: invert(34%) sepia(85%) saturate(2200%) hue-rotate(195deg) brightness(92%) contrast(102%) !important;
+    opacity: 0.12 !important;
     pointer-events: none !important;
     z-index: 0 !important;
 }
@@ -11461,6 +11460,224 @@ img {
 }
 
 .ios-gotit-btn {
+    border-radius: 14px !important;
+    font-weight: 700 !important;
+    font-size: 0.95rem !important;
+    padding: 13px !important;
+    margin-top: 4px !important;
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25) !important;
+}
+
+/* Desktop PC PWA Installation Modal */
+.desktop-modal-content {
+    max-width: 480px !important;
+    border-radius: 24px !important;
+    border: 1px solid rgba(16, 185, 129, 0.25) !important;
+    box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1) !important;
+    overflow: hidden !important;
+    background: #ffffff !important;
+}
+
+.desktop-modal-header {
+    background: linear-gradient(135deg, #09371d 0%, #064e26 50%, #032e16 100%) !important;
+    color: #ffffff !important;
+    padding: 16px 20px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    position: relative;
+}
+
+.desktop-modal-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.desktop-brand-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #34d399;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    flex-shrink: 0;
+}
+
+.desktop-modal-title h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #ffffff;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+}
+
+.desktop-modal-subtitle {
+    margin: 3px 0 0 0;
+    font-size: 0.76rem;
+    color: #a7f3d0;
+}
+
+.desktop-close-icon-btn {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 1.6rem !important;
+    line-height: 1 !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+}
+
+.desktop-close-icon-btn:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+.desktop-modal-body {
+    padding: 18px 20px !important;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: #ffffff !important;
+}
+
+.desktop-app-preview-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f1f5f9;
+    border-radius: 16px;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+}
+
+.desktop-preview-app-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+.desktop-preview-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.desktop-preview-info strong {
+    display: block;
+    font-size: 0.88rem;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.desktop-preview-url {
+    display: block;
+    font-size: 0.72rem;
+    color: #64748b;
+}
+
+.desktop-pwa-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 9px;
+    background: #dcfce7;
+    color: #15803d;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.desktop-step-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 12px 14px;
+    transition: all 0.2s ease;
+}
+
+.desktop-step-card:hover {
+    border-color: #86efac;
+    background: #f0fdf4;
+}
+
+.desktop-step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.3);
+}
+
+.desktop-step-info {
+    flex: 1;
+}
+
+.desktop-step-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 3px;
+}
+
+.desktop-step-title strong {
+    font-size: 0.88rem;
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.desktop-step-badge-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: #f1f5f9;
+    color: #334155;
+}
+
+.desktop-step-info p {
+    margin: 0;
+    font-size: 0.78rem;
+    color: #475569;
+    line-height: 1.45;
+}
+
+.desktop-inline-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-weight: 700;
+    background: #dcfce7;
+    color: #15803d;
+    border: 1px solid #86efac;
+    font-size: 0.74rem;
+}
+
+.desktop-gotit-btn {
     border-radius: 14px !important;
     font-weight: 700 !important;
     font-size: 0.95rem !important;

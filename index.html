@@ -2460,8 +2460,8 @@
             <div class="modal-header ios-modal-header">
                 <div class="ios-modal-title">
                     <div class="ios-brand-avatar">
-                        <svg class="ios-apple-svg" viewBox="0 0 170 170" width="24" height="24" fill="currentColor">
-                            <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.69-7.75-11.97-14.14-6.41-9.56-11.2-20.91-14.38-34.06-3.18-13.15-4.77-25.07-4.77-35.77 0-14.66 3.73-26.78 11.19-36.35 7.46-9.57 16.71-14.45 27.75-14.64 4.57 0 9.78 1.25 15.63 3.76 5.85 2.5 9.77 3.82 11.75 3.93 1.52-.11 5.56-1.5 12.13-4.18 6.57-2.69 12.12-3.87 16.66-3.56 12.63.76 22.42 5.38 29.37 13.86-11.09 6.74-16.53 16.14-16.32 28.2 0 10.22 4.02 18.96 12.06 26.22 3.81 3.59 8.16 6.2 13.05 7.83-2.61 7.72-5.77 15.66-9.48 23.82zM119.22 31.84c0-7.72 2.76-14.89 8.28-21.51 5.53-6.63 12.39-10.33 20.59-11.1-1.09 7.72-4.02 14.84-8.81 21.36-4.78 6.52-11.45 10.27-20.06 11.25z"/>
+                        <svg class="ios-apple-svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.63-.77 1.06-1.85.94-2.93-.91.04-2.02.6-2.66 1.36-.57.66-.99 1.74-.86 2.8 1.02.08 2.05-.51 2.58-1.23"/>
                         </svg>
                     </div>
                     <div>
@@ -2540,6 +2540,99 @@
                 </div>
 
                 <button type="button" class="btn btn-primary btn-full ios-gotit-btn" id="iosGotItBtn">
+                    👍 புரிந்தது / Got It
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Desktop PC Step-by-Step Installation Modal -->
+    <div class="modal" id="desktopInstallModal" style="display: none;">
+        <div class="modal-content desktop-modal-content">
+            <div class="modal-header desktop-modal-header">
+                <div class="desktop-modal-title">
+                    <div class="desktop-brand-avatar">
+                        <svg class="desktop-pc-svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3>Install App on PC / Laptop</h3>
+                        <p class="desktop-modal-subtitle">கம்ப்யூட்டரில் எளிதாக ஆப் போல சேமிக்கலாம்</p>
+                    </div>
+                </div>
+                <button type="button" class="modal-close desktop-close-icon-btn" id="desktopModalClose" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body desktop-modal-body">
+                <div class="desktop-app-preview-card">
+                    <img src="favicon.png" alt="Anjaneya App" class="desktop-preview-app-icon">
+                    <div class="desktop-preview-info">
+                        <strong>Anjaneya Borewells Desktop</strong>
+                        <span class="desktop-preview-url">anjaneyaborewells.in • Desktop Web App</span>
+                    </div>
+                    <span class="desktop-pwa-badge">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M20 6L9 17l-5-5"/>
+                        </svg>
+                        Standalone
+                    </span>
+                </div>
+
+                <!-- Step 1: Address Bar Install Icon -->
+                <div class="desktop-step-card">
+                    <div class="desktop-step-num">1</div>
+                    <div class="desktop-step-info">
+                        <div class="desktop-step-title">
+                            <strong>1. Address Bar Install Icon (முகவரி பட்டை)</strong>
+                            <span class="desktop-step-badge-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7 10 12 15 17 10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <p>பிரவுசரின் மேல் Address Bar (URL பார்)-ன் வலது மூலையில் உள்ள <strong>Install Icon (<span class="desktop-inline-badge">💻 ⊕ Install</span>)</strong>-ஐ கிளிக் செய்து <strong>'Install'</strong> கொடுக்கவும்.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2: Chrome / Edge Menu -->
+                <div class="desktop-step-card">
+                    <div class="desktop-step-num">2</div>
+                    <div class="desktop-step-info">
+                        <div class="desktop-step-title">
+                            <strong>2. Chrome / Edge Menu (மெனு மூலம்)</strong>
+                            <span class="desktop-step-badge-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                    <circle cx="12" cy="5" r="2"/>
+                                    <circle cx="12" cy="12" r="2"/>
+                                    <circle cx="12" cy="19" r="2"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <p>பிரவுசர் மேல் வலது <strong>3 புள்ளிகள் (⋮)</strong> அழுத்தி ➔ <strong>'Save and share'</strong> (அல்லது <strong>'Install'</strong>) ➔ <strong>'Install Anjaneya Borewells'</strong> என்பதைத் தேர்ந்தெடுக்கவும்.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3: Mac Safari User -->
+                <div class="desktop-step-card">
+                    <div class="desktop-step-num">3</div>
+                    <div class="desktop-step-info">
+                        <div class="desktop-step-title">
+                            <strong>3. Mac Safari (Apple Mac பயனர்கள்)</strong>
+                            <span class="desktop-step-badge-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.63-.77 1.06-1.85.94-2.93-.91.04-2.02.6-2.66 1.36-.57.66-.99 1.74-.86 2.8 1.02.08 2.05-.51 2.58-1.23"/>
+                                </svg>
+                            </span>
+                        </div>
+                        <p>Mac Safari-ல் மேல் மெனுவில் <strong>File</strong> ➔ <strong>'Add to Dock...'</strong> என்பதை கிளிக் செய்தால் Mac Dock-ல் தனி ஆப் போல சேமிக்கப்படும்.</p>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary btn-full desktop-gotit-btn" id="desktopGotItBtn">
                     👍 புரிந்தது / Got It
                 </button>
             </div>
