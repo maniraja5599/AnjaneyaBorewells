@@ -1,4 +1,18 @@
 // Anjaneya Borewells Website JavaScript
+// Check PWA installed state immediately to avoid layout shifts or unwanted prompts
+(function() {
+    try {
+        if (localStorage.getItem('ab_pwa_installed') === 'true' || 
+            window.matchMedia('(display-mode: standalone)').matches || 
+            window.matchMedia('(display-mode: fullscreen)').matches ||
+            window.navigator.standalone === true ||
+            (document.referrer && document.referrer.startsWith('android-app://'))) {
+            document.documentElement.classList.add('pwa-installed');
+            if (document.body) document.body.classList.add('pwa-installed');
+        }
+    } catch (e) {}
+})();
+
 class AnjaneyaBorewells {
     constructor() {
         this.init();
@@ -4626,9 +4640,42 @@ class PwaInstallManager {
                      (window.navigator.platform === 'MacIntel' && window.navigator.maxTouchPoints > 1);
         this.isDesktop = !/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(window.navigator.userAgent.toLowerCase()) && 
                          (window.navigator.maxTouchPoints || 0) <= 1;
-        this.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
         this.autoCloseTimer = null;
         this.init();
+    }
+
+    isAppInstalled() {
+        // 1. Standalone display mode or iOS standalone or Android WebAPK
+        if (window.matchMedia('(display-mode: standalone)').matches || 
+            window.matchMedia('(display-mode: fullscreen)').matches ||
+            window.navigator.standalone === true ||
+            (document.referrer && document.referrer.startsWith('android-app://'))) {
+            return true;
+        }
+        // 2. Previously marked as installed in localStorage
+        try {
+            if (localStorage.getItem('ab_pwa_installed') === 'true') {
+                return true;
+            }
+        } catch (e) {}
+        return false;
+    }
+
+    markAsInstalled() {
+        try {
+            localStorage.setItem('ab_pwa_installed', 'true');
+            localStorage.setItem('ab_pwa_banner_dismissed', 'true');
+        } catch (e) {}
+        if (document.documentElement) {
+            document.documentElement.classList.add('pwa-installed');
+        }
+        if (document.body) {
+            document.body.classList.add('pwa-installed');
+        }
+        this.hideBanner();
+        if (this.drawerBtn) this.drawerBtn.style.display = 'none';
+        if (this.iosModal) this.hideIosModal();
+        if (this.desktopModal) this.hideDesktopModal();
     }
 
     init() {
@@ -4655,20 +4702,36 @@ class PwaInstallManager {
         this.desktopCloseBtn = document.getElementById('desktopModalClose');
         this.desktopGotItBtn = document.getElementById('desktopGotItBtn');
 
-        if (this.isStandalone) {
-            // Already installed as standalone app, no need to prompt
+        // Check if already installed
+        if (this.isAppInstalled()) {
+            this.markAsInstalled();
             return;
+        }
+
+        // Check using modern Chromium getInstalledRelatedApps API if available
+        if ('getInstalledRelatedApps' in navigator) {
+            navigator.getInstalledRelatedApps().then(relatedApps => {
+                if (relatedApps && relatedApps.length > 0) {
+                    this.markAsInstalled();
+                }
+            }).catch(() => {});
         }
 
         // Listen for Android/Desktop install prompt
         window.addEventListener('beforeinstallprompt', (e) => {
+            if (this.isAppInstalled()) {
+                e.preventDefault();
+                return;
+            }
             e.preventDefault();
             this.deferredPrompt = e;
             if (this.drawerBtn) this.drawerBtn.style.display = 'block';
         });
 
-        // Show drawer button by default
-        if (this.drawerBtn) this.drawerBtn.style.display = 'block';
+        // Show drawer button only if not installed
+        if (this.drawerBtn && !this.isAppInstalled()) {
+            this.drawerBtn.style.display = 'block';
+        }
 
         this.bindEvents();
         this.checkBannerAutoPrompt();
@@ -4682,7 +4745,9 @@ class PwaInstallManager {
 
         const handleDismiss = () => {
             this.hideBanner();
-            sessionStorage.setItem('ab_pwa_banner_dismissed', 'true');
+            try {
+                localStorage.setItem('ab_pwa_banner_dismissed', 'true');
+            } catch (e) {}
         };
 
         if (this.bannerDismissBtn) this.bannerDismissBtn.addEventListener('click', handleDismiss);
@@ -4700,7 +4765,10 @@ class PwaInstallManager {
         }
 
         if (this.iosCloseBtn) this.iosCloseBtn.addEventListener('click', () => this.hideIosModal());
-        if (this.iosGotItBtn) this.iosGotItBtn.addEventListener('click', () => this.hideIosModal());
+        if (this.iosGotItBtn) this.iosGotItBtn.addEventListener('click', () => {
+            this.hideIosModal();
+            this.markAsInstalled();
+        });
         if (this.iosModal) {
             this.iosModal.addEventListener('click', (e) => {
                 if (e.target === this.iosModal) this.hideIosModal();
@@ -4708,7 +4776,10 @@ class PwaInstallManager {
         }
 
         if (this.desktopCloseBtn) this.desktopCloseBtn.addEventListener('click', () => this.hideDesktopModal());
-        if (this.desktopGotItBtn) this.desktopGotItBtn.addEventListener('click', () => this.hideDesktopModal());
+        if (this.desktopGotItBtn) this.desktopGotItBtn.addEventListener('click', () => {
+            this.hideDesktopModal();
+            this.markAsInstalled();
+        });
         if (this.desktopModal) {
             this.desktopModal.addEventListener('click', (e) => {
                 if (e.target === this.desktopModal) this.hideDesktopModal();
@@ -4717,13 +4788,14 @@ class PwaInstallManager {
 
         window.addEventListener('appinstalled', () => {
             this.deferredPrompt = null;
-            this.hideBanner();
-            if (this.drawerBtn) this.drawerBtn.style.display = 'none';
+            this.markAsInstalled();
             console.log('Anjaneya Borewells App was installed successfully!');
         });
     }
 
     async triggerInstall() {
+        if (this.isAppInstalled()) return;
+
         if (this.isIos) {
             this.showIosModal();
             return;
@@ -4734,7 +4806,7 @@ class PwaInstallManager {
                 this.deferredPrompt.prompt();
                 const choiceResult = await this.deferredPrompt.userChoice;
                 if (choiceResult.outcome === 'accepted') {
-                    this.hideBanner();
+                    this.markAsInstalled();
                 }
                 this.deferredPrompt = null;
             } catch (err) {
@@ -4753,7 +4825,7 @@ class PwaInstallManager {
     }
 
     showDesktopModal() {
-        if (!this.desktopModal) return;
+        if (!this.desktopModal || this.isAppInstalled()) return;
         this.hideBanner();
         this.desktopModal.style.display = 'flex';
         this.desktopModal.classList.add('active');
@@ -4768,12 +4840,19 @@ class PwaInstallManager {
     }
 
     checkBannerAutoPrompt() {
-        if (this.isStandalone) return;
-        if (sessionStorage.getItem('ab_pwa_banner_dismissed')) return;
+        if (this.isAppInstalled()) return;
+        try {
+            if (localStorage.getItem('ab_pwa_banner_dismissed') === 'true') return;
+        } catch (e) {}
 
         // Auto show bottom popup after 10 seconds of comfortable page browsing
         setTimeout(() => {
-            if (this.banner && !sessionStorage.getItem('ab_pwa_banner_dismissed')) {
+            if (this.isAppInstalled()) return;
+            try {
+                if (localStorage.getItem('ab_pwa_banner_dismissed') === 'true') return;
+            } catch (e) {}
+
+            if (this.banner) {
                 this.banner.style.display = 'flex';
                 requestAnimationFrame(() => {
                     this.banner.classList.add('show');
@@ -4801,19 +4880,18 @@ class PwaInstallManager {
     }
 
     showIosModal() {
-        if (this.iosModal) {
-            this.iosModal.classList.add('show');
-            this.iosModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
+        if (!this.iosModal || this.isAppInstalled()) return;
+        this.hideBanner();
+        this.iosModal.classList.add('show');
+        this.iosModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
     }
 
     hideIosModal() {
-        if (this.iosModal) {
-            this.iosModal.classList.remove('show');
-            this.iosModal.style.display = 'none';
-            document.body.style.overflow = '';
-        }
+        if (!this.iosModal) return;
+        this.iosModal.classList.remove('show');
+        this.iosModal.style.display = 'none';
+        document.body.style.overflow = '';
     }
 }
 

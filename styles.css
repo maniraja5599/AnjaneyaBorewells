@@ -11189,6 +11189,36 @@ img {
     font-size: 1rem;
 }
 
+/* Hide install prompts completely if running as installed standalone PWA app or marked installed */
+@media (display-mode: standalone), (display-mode: fullscreen) {
+    #pwaInstallBanner,
+    .pwa-smart-popup,
+    #drawerPwaInstallBtn,
+    #iosInstallModal,
+    #desktopInstallModal {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+    }
+}
+
+html.pwa-installed #pwaInstallBanner,
+html.pwa-installed .pwa-smart-popup,
+html.pwa-installed #drawerPwaInstallBtn,
+html.pwa-installed #iosInstallModal,
+html.pwa-installed #desktopInstallModal,
+body.pwa-installed #pwaInstallBanner,
+body.pwa-installed .pwa-smart-popup,
+body.pwa-installed #drawerPwaInstallBtn,
+body.pwa-installed #iosInstallModal,
+body.pwa-installed #desktopInstallModal {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
 /* Smart Floating PWA Prompt (Appears after 10s, auto-closes in 5s, positioned below center) */
 .pwa-smart-popup {
     position: fixed;
