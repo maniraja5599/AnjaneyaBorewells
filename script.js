@@ -2258,26 +2258,8 @@ class CostCalculator {
         const anjWidth = ctx.measureText('ANJANEYA ').width;
         ctx.fillStyle = '#fbbf24';
         ctx.fillText('BOREWELLS', brandStartX + anjWidth, 52);
-        const boreWidth = ctx.measureText('BOREWELLS').width;
-
-        // "Approx Cost" Pill badge
-        const pillX = brandStartX + anjWidth + boreWidth + 12;
-        ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(pillX, 35, 95, 20, 5);
-        else ctx.rect(pillX, 35, 95, 20);
-        ctx.fillStyle = '#a7f3d0';
-        ctx.fill();
-        ctx.strokeStyle = '#6ee7b7';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-
-        ctx.fillStyle = '#064e3b';
-        ctx.font = 'bold 10px system-ui';
-        ctx.textAlign = 'center';
-        ctx.fillText('APPROX COST', pillX + 47.5, 49);
 
         // Header Tagline & Date
-        ctx.textAlign = 'left';
         ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
         ctx.fillStyle = '#86efac';
         ctx.fillText('ஆழமான நம்பிக்கை! • Govt Approved Borewell Contractor', brandStartX, 78);
@@ -2288,7 +2270,7 @@ class CostCalculator {
         ctx.fillText(`📅 Quotation Date: ${dateStr}`, brandStartX, 100);
         ctx.restore();
 
-        // Specifications Card
+        // Specifications Card (Approx Cost For:)
         let y = 142;
         ctx.fillStyle = '#f8fafc';
         ctx.strokeStyle = '#e2e8f0';
@@ -2307,14 +2289,16 @@ class CostCalculator {
         ctx.fill();
 
         ctx.fillStyle = '#166534';
-        ctx.font = 'bold 15px system-ui, -apple-system, sans-serif';
+        ctx.font = 'bold 13.5px system-ui, -apple-system, sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('⚙️ SPECS', 46, y + 25);
+        ctx.fillText('APPROX COST FOR:', 46, y + 25);
 
         // 6.5" Bore Tag
+        const approxTextWidth = ctx.measureText('APPROX COST FOR:').width;
+        const tagX = 46 + approxTextWidth + 12;
         ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(132, y + 10, 75, 22, 6);
-        else ctx.rect(132, y + 10, 75, 22);
+        if (ctx.roundRect) ctx.roundRect(tagX, y + 10, 75, 22, 6);
+        else ctx.rect(tagX, y + 10, 75, 22);
         ctx.fillStyle = '#eff6ff';
         ctx.fill();
         ctx.strokeStyle = '#93c5fd';
@@ -2324,7 +2308,7 @@ class CostCalculator {
         ctx.fillStyle = '#1d4ed8';
         ctx.font = 'bold 12px system-ui, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('6.5" Bore', 132 + 37.5, y + 25);
+        ctx.fillText('6.5" Bore', tagX + 37.5, y + 25);
 
         // Drilling Type Pill Badge
         const isRepair = inputs.drillingType === 'repair';

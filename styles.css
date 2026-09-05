@@ -4736,21 +4736,19 @@ label.gst-toggle-action-pill,
 
 @media (max-width: 400px) {
     .results-header {
-        padding: 0.40rem 0.60rem !important;
+        padding: 0.38rem 0.55rem !important;
     }
     .results-header-brand-wrap {
         gap: 6px !important;
         justify-content: flex-start !important;
     }
     .results-brand-name {
-        font-size: 0.82rem !important;
-    }
-    .results-est-pill {
-        font-size: 0.62rem !important;
-        padding: 2px 5px !important;
+        font-size: 0.80rem !important;
     }
     .calculator-date-badge {
-        display: none !important;
+        display: inline-block !important;
+        font-size: 0.60rem !important;
+        padding: 1.5px 5px !important;
     }
 }
 
@@ -4801,11 +4799,11 @@ label.gst-toggle-action-pill,
 }
 
 .summary-title {
-    font-size: 0.68rem !important;
+    font-size: clamp(0.64rem, 2.3vw, 0.72rem) !important;
     font-weight: 800 !important;
     color: #166534 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.04em !important;
+    letter-spacing: 0.03em !important;
     display: flex !important;
     align-items: center !important;
     gap: 3px !important;
