@@ -4762,7 +4762,7 @@ label.gst-toggle-action-pill,
 .results-content::before {
     content: '' !important;
     position: absolute !important;
-    bottom: 22px !important;
+    bottom: 95px !important;
     left: 50% !important;
     transform: translateX(-50%) !important;
     width: 125px !important;
