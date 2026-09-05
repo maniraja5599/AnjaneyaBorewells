@@ -1217,10 +1217,13 @@ class CostCalculator {
             totalCost: document.getElementById('totalCost'),
             liveTotalCost: document.getElementById('liveTotalCost'),
             inputSummary: document.getElementById('inputSummary'),
+            inputDrillTypeBadge: document.getElementById('inputDrillTypeBadge'),
             inputDepth: document.getElementById('inputDepth'),
             inputDrillingRate: document.getElementById('inputDrillingRate'),
             inputPvc7Length: document.getElementById('inputPvc7Length'),
             inputPvc10Length: document.getElementById('inputPvc10Length'),
+            chipPvc7Wrapper: document.getElementById('chipPvc7Wrapper'),
+            chipPvc10Wrapper: document.getElementById('chipPvc10Wrapper'),
             slabBreakdown: document.getElementById('slabBreakdown'),
             slabDetails: document.getElementById('slabDetails'),
             calculatorResults: document.getElementById('calculatorResults'),
@@ -1679,10 +1682,20 @@ class CostCalculator {
         const inputs = this.getInputs();
 
         el.inputSummary.style.display = 'block';
+        if (el.inputDrillTypeBadge) {
+            el.inputDrillTypeBadge.textContent = inputs.drillingType === 'repair' ? 'Rebore (Repair)' : 'New Borewell';
+        }
         if (el.inputDepth) el.inputDepth.textContent = `${inputs.totalDepth} ft`;
         if (el.inputDrillingRate) el.inputDrillingRate.textContent = `₹${inputs.drillingRate}/ft`;
         if (el.inputPvc7Length) el.inputPvc7Length.textContent = `${inputs.pvc7Length} ft`;
         if (el.inputPvc10Length) el.inputPvc10Length.textContent = `${inputs.pvc10Length} ft`;
+
+        if (el.chipPvc7Wrapper) {
+            el.chipPvc7Wrapper.style.display = inputs.pvc7Length > 0 ? 'flex' : 'none';
+        }
+        if (el.chipPvc10Wrapper) {
+            el.chipPvc10Wrapper.style.display = inputs.pvc10Length > 0 ? 'flex' : 'none';
+        }
     }
 
     displaySlabBreakdown(slabCalculation) {
@@ -2130,7 +2143,7 @@ class CostCalculator {
         }
 
         canvas.width = width;
-        let finalHeight = height + 110;
+        let finalHeight = height + 40;
         canvas.height = finalHeight;
         const ctx = canvas.getContext('2d');
 
@@ -2138,10 +2151,44 @@ class CostCalculator {
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, width, finalHeight);
 
-        // Green Border
+        // Subtle Luxury Border
         ctx.strokeStyle = '#16a34a';
         ctx.lineWidth = 8;
         ctx.strokeRect(4, 4, width - 8, finalHeight - 8);
+
+        // Elegant Blue Brand Watermark in Canvas Center Background
+        ctx.save();
+        const wX = width / 2;
+        const wY = finalHeight / 2 + 20;
+        ctx.translate(wX, wY);
+
+        // Draw soft blue brand watermark circle
+        ctx.strokeStyle = 'rgba(30, 64, 175, 0.08)'; // Deep royal blue tint
+        ctx.lineWidth = 4;
+        ctx.setLineDash([8, 6]);
+        ctx.beginPath();
+        ctx.arc(0, 0, 140, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.strokeStyle = 'rgba(37, 99, 235, 0.06)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, 0, 126, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Watermark Inner Emblem & Text
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'rgba(30, 64, 175, 0.09)';
+        ctx.font = 'bold 18px system-ui, -apple-system, sans-serif';
+        ctx.fillText('ANJANEYA BOREWELLS', 0, -25);
+        ctx.font = 'bold 14px system-ui';
+        ctx.fillText('★  ★  ★  ★  ★', 0, 0);
+        ctx.font = 'bold 13px system-ui';
+        ctx.fillText('GOVT APPROVED • ESTD 1990', 0, 24);
+        ctx.font = 'bold 11px system-ui';
+        ctx.fillText('AUTHENTIC ESTIMATE', 0, 44);
+        ctx.restore();
 
         // Header Gradient
         const grad = ctx.createLinearGradient(0, 0, width, 120);
@@ -2149,6 +2196,24 @@ class CostCalculator {
         grad.addColorStop(1, '#047857');
         ctx.fillStyle = grad;
         ctx.fillRect(8, 8, width - 16, 120);
+
+        // Header Brand Logo Vector Badge
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(80, 68, 38, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#22c55e';
+        ctx.stroke();
+
+        // Vector Logo Rig/Star Symbol inside badge
+        ctx.fillStyle = '#15803d';
+        ctx.font = 'bold 26px system-ui';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🚜', 80, 67);
+        ctx.restore();
 
         // Header Title
         ctx.fillStyle = '#ffffff';
@@ -2166,36 +2231,69 @@ class CostCalculator {
         const dateStr = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
         ctx.fillText(`Generated: ${dateStr}`, width / 2, 112);
 
-        // Specifications Card
+        // Improved Specifications Card (Modern Pill / Card Style)
         let y = 145;
-        ctx.fillStyle = '#f0fdf4';
-        ctx.strokeStyle = '#86efac';
+        ctx.fillStyle = '#f8fafc';
+        ctx.strokeStyle = '#e2e8f0';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(30, y, width - 60, 80, 8);
-        else ctx.rect(30, y, width - 60, 80);
+        if (ctx.roundRect) ctx.roundRect(30, y, width - 60, 88, 10);
+        else ctx.rect(30, y, width - 60, 88);
         ctx.fill();
         ctx.stroke();
 
-        ctx.fillStyle = '#166534';
-        ctx.font = 'bold 16px system-ui, -apple-system, sans-serif';
-        ctx.textAlign = 'left';
-        ctx.fillText('DRILLING SPECIFICATIONS', 45, y + 25);
+        // Left accent bar
+        ctx.fillStyle = '#16a34a';
+        if (ctx.roundRect) ctx.roundRect(30, y, 6, 88, [10, 0, 0, 10]);
+        else ctx.fillRect(30, y, 6, 88);
 
-        ctx.font = '14px monospace, system-ui';
-        ctx.fillStyle = '#0f172a';
+        ctx.fillStyle = '#166534';
+        ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('⚙️ DRILLING SPECIFICATIONS', 50, y + 25);
+
+        // Drilling Type Pill Badge in card
         const isRepair = inputs.drillingType === 'repair';
         const typeStr = isRepair ? 'Rebore (Repair)' : 'New Borewell';
-        const depthStr = `Depth: ${inputs.totalDepth || 800} ft | Rate: ₹${inputs.drillingRate || 90}/ft`;
-        ctx.fillText(`• Type: ${typeStr}  |  ${depthStr}`, 45, y + 50);
+        ctx.fillStyle = '#dcfce7';
+        if (ctx.roundRect) ctx.roundRect(width - 190, y + 10, 145, 22, 11);
+        else ctx.fillRect(width - 190, y + 10, 145, 22);
+        ctx.fillStyle = '#15803d';
+        ctx.font = 'bold 12px system-ui';
+        ctx.textAlign = 'center';
+        ctx.fillText(`✓ ${typeStr}`, width - 117, y + 25);
+
+        // Specification Chips inside Card
+        const drawSpecChip = (chipX, chipY, chipW, label, val) => {
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 1;
+            if (ctx.roundRect) ctx.roundRect(chipX, chipY, chipW, 42, 6);
+            else ctx.rect(chipX, chipY, chipW, 42);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#64748b';
+            ctx.font = 'bold 10px system-ui';
+            ctx.fillText(label, chipX + chipW / 2, chipY + 16);
+
+            ctx.fillStyle = '#0f172a';
+            ctx.font = 'bold 13px monospace, system-ui';
+            ctx.fillText(val, chipX + chipW / 2, chipY + 33);
+        };
 
         const casing7 = inputs.pvc7Length || 0;
         const casing10 = inputs.pvc10Length || 0;
-        const casingStr = `• Casing: 7" PVC: ${casing7} ft | 10" PVC: ${casing10} ft ${isRepair ? `| Old Bore: ${inputs.oldBoreDepth || 0} ft` : ''}`;
-        ctx.fillText(casingStr, 45, y + 70);
+        const chipWidth = (width - 120) / 4;
+        const chipY = y + 36;
+        drawSpecChip(45, chipY, chipWidth - 5, 'TOTAL DEPTH', `${inputs.totalDepth || 800} ft`);
+        drawSpecChip(45 + chipWidth, chipY, chipWidth - 5, 'BASE RATE', `₹${inputs.drillingRate || 90}/ft`);
+        drawSpecChip(45 + chipWidth * 2, chipY, chipWidth - 5, '7" PVC CASING', `${casing7} ft`);
+        drawSpecChip(45 + chipWidth * 3, chipY, chipWidth - 5, '10" PVC CASING', `${casing10} ft`);
 
         // Slab Breakdown Section
-        y += 95;
+        y += 105;
         ctx.fillStyle = '#f8fafc';
         ctx.strokeStyle = '#cbd5e1';
         ctx.beginPath();
@@ -2206,6 +2304,7 @@ class CostCalculator {
 
         ctx.fillStyle = '#15803d';
         ctx.font = 'bold 15px system-ui, -apple-system, sans-serif';
+        ctx.textAlign = 'left';
         ctx.fillText('DRILLING COST BREAKDOWN (SLAB RATE)', 45, y + 24);
 
         // Slab header divider
@@ -2295,71 +2394,8 @@ class CostCalculator {
         ctx.textAlign = 'right';
         ctx.fillText(`Rs.${(results.totalCost || 0).toLocaleString('en-IN')}`, width - 50, y + 42);
 
-        // Official Rubber Seal Stamp on Canvas
-        y += 100;
-        const sealX = width / 2;
-        const sealY = y;
-        ctx.save();
-        ctx.translate(sealX, sealY);
-        ctx.rotate(-4 * Math.PI / 180); // -4 degree official stamp tilt
-
-        // Outer dashed stamp box
-        ctx.strokeStyle = '#15803d';
-        ctx.lineWidth = 2.5;
-        ctx.setLineDash([6, 4]);
-        ctx.fillStyle = 'rgba(240, 253, 244, 0.95)';
-        if (ctx.roundRect) {
-            ctx.beginPath();
-            ctx.roundRect(-175, -36, 350, 72, 10);
-            ctx.fill();
-            ctx.stroke();
-        } else {
-            ctx.fillRect(-175, -36, 350, 72);
-            ctx.strokeRect(-175, -36, 350, 72);
-        }
-        ctx.setLineDash([]);
-
-        // Inner solid border
-        ctx.strokeStyle = 'rgba(22, 163, 74, 0.4)';
-        ctx.lineWidth = 1;
-        if (ctx.roundRect) {
-            ctx.beginPath();
-            ctx.roundRect(-171, -32, 342, 64, 8);
-            ctx.stroke();
-        } else {
-            ctx.strokeRect(-171, -32, 342, 64);
-        }
-
-        // Stamp Text
-        ctx.textAlign = 'center';
-        ctx.fillStyle = '#16a34a';
-        ctx.font = '11px system-ui, sans-serif';
-        ctx.fillText('★  ★  ★', 0, -18);
-
-        ctx.fillStyle = '#15803d';
-        ctx.font = 'bold 15px system-ui, -apple-system, sans-serif';
-        ctx.fillText('ANJANEYA BOREWELLS', 0, -2);
-
-        // Stamp badge capsule
-        ctx.fillStyle = '#15803d';
-        if (ctx.roundRect) {
-            ctx.beginPath();
-            ctx.roundRect(-75, 4, 150, 16, 4);
-            ctx.fill();
-        } else {
-            ctx.fillRect(-75, 4, 150, 16);
-        }
-        ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 10px system-ui, sans-serif';
-        ctx.fillText('OFFICIAL ESTIMATE', 0, 16);
-
-        ctx.fillStyle = '#16a34a';
-        ctx.font = 'bold 11px system-ui, sans-serif';
-        ctx.fillText('✓ VERIFIED & APPROVED', 0, 30);
-        ctx.restore();
-
-        // Footer Contact
-        y += 88;
+        // Clean Official Quotation Footer (Rubber stamp removed per user request)
+        y += 85;
         ctx.fillStyle = '#64748b';
         ctx.font = '12px system-ui, -apple-system, sans-serif';
         ctx.textAlign = 'center';

@@ -1292,14 +1292,33 @@
                     </div>
                     <div class="results-content">
                         <div class="input-summary" id="inputSummary" style="display: none;">
-                            <div class="input-compact">
-                                <span class="input-line">
-                                    <strong>Drilling Details:</strong> 
-                                    Total Depth: <span id="inputDepth">0 ft</span> | 
-                                    Rate: <span id="inputDrillingRate">₹90/ft</span> | 
-                                    7" PVC: <span id="inputPvc7Length">0 ft</span> | 
-                                    10" PVC: <span id="inputPvc10Length">0 ft</span>
+                            <div class="input-summary-header">
+                                <span class="summary-title">
+                                    <svg class="summary-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    Drilling Specifications
                                 </span>
+                                <span class="summary-type-badge" id="inputDrillTypeBadge">New Borewell</span>
+                            </div>
+                            <div class="input-summary-chips">
+                                <div class="summary-chip">
+                                    <span class="chip-label">Total Depth</span>
+                                    <strong class="chip-val" id="inputDepth">0 ft</strong>
+                                </div>
+                                <div class="summary-chip">
+                                    <span class="chip-label">Base Rate</span>
+                                    <strong class="chip-val" id="inputDrillingRate">₹90/ft</strong>
+                                </div>
+                                <div class="summary-chip" id="chipPvc7Wrapper">
+                                    <span class="chip-label">7" PVC</span>
+                                    <strong class="chip-val" id="inputPvc7Length">0 ft</strong>
+                                </div>
+                                <div class="summary-chip" id="chipPvc10Wrapper">
+                                    <span class="chip-label">10" PVC</span>
+                                    <strong class="chip-val" id="inputPvc10Length">0 ft</strong>
+                                </div>
                             </div>
                         </div>
         <div class="slab-breakdown" id="slabBreakdown" style="display: none;">
@@ -1338,17 +1357,6 @@
                                 <small style="display:block; font-size:0.75rem; color:#15803d; font-weight:700;">(Approximate / உத்தேச மதிப்பு)</small>
                             </div>
                             <span id="totalCost">₹0</span>
-                        </div>
-
-                        <!-- Official Rubber Seal Stamp -->
-                        <div class="official-rubber-seal" id="calculatorRubberSeal">
-                            <div class="seal-inner">
-                                <div class="seal-star">★ ★ ★</div>
-                                <div class="seal-brand">ANJANEYA BOREWELLS</div>
-                                <div class="seal-badge">OFFICIAL ESTIMATE</div>
-                                <div class="seal-status">✓ VERIFIED & APPROVED</div>
-                                <div class="seal-sub">ESTD 1990 • SENDAMANGALAM</div>
-                            </div>
                         </div>
                     </div>
                     <div class="results-actions">
