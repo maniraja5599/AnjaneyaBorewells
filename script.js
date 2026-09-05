@@ -44,6 +44,12 @@ class AnjaneyaBorewells {
                     }
                 }
                 
+                // Highlight clicked nav link immediately across both desktop and mobile menus
+                if (targetId.startsWith('#')) {
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    document.querySelectorAll(`.nav-link[href="${targetId}"]`).forEach(l => l.classList.add('active'));
+                }
+
                 // Close mobile menu if it's open
                 if (this.navigation) {
                     this.navigation.closeMobileMenu();
@@ -78,6 +84,7 @@ class AnjaneyaBorewells {
             if (!scrollRaf) {
                 scrollRaf = requestAnimationFrame(() => {
                     this.navigation.handleScroll();
+                    this.updateActiveNav();
                     scrollRaf = null;
                 });
             }
@@ -339,33 +346,73 @@ class AnjaneyaBorewells {
         this.setupNavigationHighlighting();
     }
     
-    setupNavigationHighlighting() {
+    updateActiveNav() {
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-link');
-        
+        if (!sections.length || !navLinks.length) return;
+
+        const navEl = document.getElementById('navbar') || document.querySelector('.navbar');
+        const navHeight = navEl ? navEl.offsetHeight : 70;
+        const scrollPos = window.scrollY + navHeight + 60;
+
+        let currentSectionId = '';
+
+        // If at the very top of page
+        if (window.scrollY < 120) {
+            currentSectionId = 'home';
+        } else if ((window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 60)) {
+            // At bottom of page
+            currentSectionId = 'contact';
+        } else {
+            sections.forEach(section => {
+                const top = section.offsetTop;
+                const height = section.offsetHeight;
+                if (scrollPos >= top && scrollPos < top + height) {
+                    currentSectionId = section.getAttribute('id');
+                }
+            });
+        }
+
+        if (currentSectionId) {
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === `#${currentSectionId}`) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+    }
+
+    setupNavigationHighlighting() {
+        // Initial highlight check on page load
+        this.updateActiveNav();
+
+        // Also setup IntersectionObserver with threshold 0 and top root margin to trigger reliably for tall sections like #gallery
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+        if (!sections.length || !navLinks.length) return;
+
         const navObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const sectionId = entry.target.getAttribute('id');
-                    
-                    // Remove active class from all nav links
-                    navLinks.forEach(link => {
-                        link.classList.remove('active');
-                    });
-                    
-                    // Add active class to corresponding nav link
-                    const activeLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
-                    if (activeLink) {
-                        activeLink.classList.add('active');
+                    if (sectionId) {
+                        navLinks.forEach(link => {
+                            if (link.getAttribute('href') === `#${sectionId}`) {
+                                link.classList.add('active');
+                            } else {
+                                link.classList.remove('active');
+                            }
+                        });
                     }
                 }
             });
         }, {
-            threshold: 0.3,
-            rootMargin: '-20% 0px -20% 0px'
+            threshold: 0,
+            rootMargin: '-80px 0px -60% 0px'
         });
-        
-        // Observe all sections with IDs
+
         sections.forEach(section => {
             navObserver.observe(section);
         });
