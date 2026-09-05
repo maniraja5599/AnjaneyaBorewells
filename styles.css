@@ -6099,6 +6099,63 @@ img {
         border-bottom: none;
     }
     
+    .navbar .container {
+        padding: 10px 14px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: nowrap !important;
+    }
+    
+    .nav-brand {
+        order: 1 !important;
+        flex: 0 1 auto !important;
+        min-width: 0 !important;
+        max-width: calc(100% - 105px) !important;
+        overflow: hidden !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        padding-right: 4px !important;
+    }
+
+    .brand-link {
+        gap: 6px !important;
+        align-items: center !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+    }
+
+    .brand-logo-img {
+        width: 36px !important;
+        height: 36px !important;
+        flex-shrink: 0 !important;
+    }
+
+    .brand-title-wrap {
+        min-width: 0 !important;
+        overflow: hidden !important;
+    }
+
+    .company-name {
+        font-size: clamp(0.66rem, 3.2vw, 0.88rem) !important;
+        line-height: 1.15 !important;
+        white-space: nowrap !important;
+        text-align: left !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        letter-spacing: -0.02em !important;
+    }
+
+    .tamil-slogan {
+        font-size: clamp(0.55rem, 2.4vw, 0.62rem) !important;
+        margin: 1px 0 0 0 !important;
+        white-space: nowrap !important;
+        text-align: left !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
     .nav-cta {
         order: 2 !important;
         display: flex !important;
@@ -6110,10 +6167,13 @@ img {
         z-index: 50 !important;
     }
     
-    /* Mobile Compact Rate button */
+    /* Mobile Compact Rate button - Fixed width:auto so it never inherits .btn full width or overlaps company name */
     #navWhatsappBtn {
+        width: auto !important;
+        max-width: none !important;
+        flex: 0 0 auto !important;
         padding: 4px 8px !important;
-        font-size: 0.72rem !important;
+        font-size: 0.70rem !important;
         font-weight: 700 !important;
         min-height: 28px !important;
         height: 28px !important;
@@ -6124,6 +6184,7 @@ img {
         flex-shrink: 0 !important;
         display: inline-flex !important;
         align-items: center !important;
+        box-sizing: border-box !important;
     }
 
     #navWhatsappBtn svg {
@@ -6146,7 +6207,7 @@ img {
         border: none !important;
         cursor: pointer !important;
         padding: 0 !important;
-        margin: 0 0 0 4px !important;
+        margin: 0 !important;
         flex-shrink: 0 !important;
         z-index: 100 !important;
     }
@@ -6160,54 +6221,71 @@ img {
         margin: 0 !important;
         transition: all 0.3s ease !important;
     }
-    
-    .nav-brand {
-        order: 1 !important;
-        flex: 1 1 auto !important;
-        min-width: 0 !important;
-        max-width: calc(100% - 120px) !important;
-        overflow: hidden !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: flex-start !important;
-        padding-right: 2px !important;
+
+    @media (max-width: 360px) {
+        .navbar .container {
+            padding: 8px 10px !important;
+        }
+
+        .nav-brand {
+            max-width: calc(100% - 94px) !important;
+            padding-right: 2px !important;
+        }
+
+        .brand-logo-img {
+            width: 34px !important;
+            height: 34px !important;
+        }
+
+        .company-name {
+            font-size: 0.65rem !important;
+            letter-spacing: -0.03em !important;
+        }
+
+        .tamil-slogan {
+            font-size: 0.52rem !important;
+        }
+
+        .nav-cta {
+            gap: 4px !important;
+        }
+
+        #navWhatsappBtn {
+            padding: 3px 6px !important;
+            font-size: 0.66rem !important;
+            min-height: 26px !important;
+            height: 26px !important;
+        }
+
+        #navWhatsappBtn svg {
+            width: 11px !important;
+            height: 11px !important;
+            margin-right: 1px !important;
+        }
     }
 
-    .brand-link {
-        gap: 6px !important;
-        align-items: center !important;
-        min-width: 0 !important;
-        max-width: 100% !important;
-    }
+    @media (max-width: 330px) {
+        .navbar .container {
+            padding: 6px 8px !important;
+        }
 
-    .brand-logo-img {
-        width: 38px !important;
-        height: 38px !important;
-        flex-shrink: 0 !important;
-    }
+        .nav-brand {
+            max-width: calc(100% - 88px) !important;
+        }
 
-    .brand-title-wrap {
-        min-width: 0 !important;
-        overflow: hidden !important;
-    }
+        .brand-logo-img {
+            width: 30px !important;
+            height: 30px !important;
+        }
 
-    .company-name {
-        font-size: clamp(0.70rem, 3.4vw, 0.88rem) !important;
-        line-height: 1.15 !important;
-        white-space: nowrap !important;
-        text-align: left !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
-        letter-spacing: -0.02em !important;
-    }
+        .company-name {
+            font-size: 0.62rem !important;
+        }
 
-    .tamil-slogan {
-        font-size: clamp(0.55rem, 2.4vw, 0.62rem) !important;
-        margin: 1px 0 0 0 !important;
-        white-space: nowrap !important;
-        text-align: left !important;
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
+        #navWhatsappBtn {
+            padding: 2px 5px !important;
+            font-size: 0.62rem !important;
+        }
     }
 
     .global-bg-logo-layer {
