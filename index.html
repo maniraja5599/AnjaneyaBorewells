@@ -394,8 +394,9 @@
             var preloader = document.getElementById('pagePreloader');
             if (!preloader) return;
             var bar = preloader.querySelector('.preloader-progress-bar');
+            var logoImg = preloader.querySelector('.preloader-logo-img');
             var startTime = Date.now();
-            var minShowTime = 3000; // 3 seconds smooth brand showcase
+            var minShowTime = 2500; // 2.5 seconds smooth brand showcase
 
             var progress = 0;
             var tickTimer = setInterval(function() {
@@ -404,9 +405,16 @@
                     if (progress > 90) progress = 90;
                     if (bar) bar.style.width = progress + '%';
                 }
-            }, 120);
+            }, 100);
 
             function dismissPreloader() {
+                // Ensure logo is loaded so it never appears blank or half-loaded
+                if (logoImg && !logoImg.complete) {
+                    logoImg.addEventListener('load', function() {
+                        dismissPreloader();
+                    }, { once: true });
+                    return;
+                }
                 clearInterval(tickTimer);
                 if (bar) bar.style.width = '100%';
                 var elapsed = Date.now() - startTime;
@@ -425,8 +433,8 @@
                 dismissPreloader();
             } else {
                 window.addEventListener('load', dismissPreloader);
-                // Guaranteed safety fallback: auto-dismiss after 3.5s max
-                setTimeout(dismissPreloader, 3500);
+                // Guaranteed safety fallback: auto-dismiss after 4s max
+                setTimeout(dismissPreloader, 4000);
             }
         })();
     </script>
@@ -1286,24 +1294,30 @@
                 <div class="calculator-results" id="calculatorResults">
                     <div class="results-header">
                         <div class="results-header-flex">
-                            <h3>Anjaneya Borewells - Approximate Cost</h3>
+                            <div class="results-header-brand-wrap">
+                                <img src="logo.png" alt="Anjaneya Logo" class="results-header-logo">
+                                <div class="results-header-title-group">
+                                    <span class="results-brand-name"><span class="brand-word-white">ANJANEYA</span> <span class="brand-word-yellow">BOREWELLS</span></span>
+                                    <span class="results-est-pill">Approx Cost</span>
+                                </div>
+                            </div>
                             <span class="calculator-date-badge" id="calcLiveTodayDate">📅 02 Sep 2026</span>
                         </div>
                     </div>
                     <div class="results-content">
                         <div class="input-summary" id="inputSummary" style="display: none;">
                             <div class="input-summary-header">
-                                <div class="summary-title-group">
-                                    <span class="summary-title">
-                                        <svg class="summary-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <polyline points="12 6 12 12 16 14"></polyline>
-                                        </svg>
-                                        Drilling Specifications
-                                    </span>
+                                <span class="summary-title">
+                                    <svg class="summary-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    Specs
+                                </span>
+                                <div class="summary-badges-wrap">
                                     <span class="summary-dia-tag">6.5" Bore</span>
+                                    <span class="summary-type-badge" id="inputDrillTypeBadge">New Borewell</span>
                                 </div>
-                                <span class="summary-type-badge" id="inputDrillTypeBadge">New Borewell</span>
                             </div>
                             <div class="input-summary-chips">
                                 <div class="summary-chip">
@@ -1360,6 +1374,13 @@
                                 <small style="display:block; font-size:0.75rem; color:#15803d; font-weight:700;">(Approximate / உத்தேச மதிப்பு)</small>
                             </div>
                             <span id="totalCost">₹0</span>
+                        </div>
+                        <div class="calc-price-notice">
+                            <span class="notice-icon">⚠️</span>
+                            <div class="notice-text">
+                                <strong>இன்றைய நேரடி விலை மாறுபடலாம்:</strong> மண் &amp; பாறை கடினம் மற்றும் டீசல் விலைக்கு ஏற்ப இறுதி கட்டணம் சற்றே மாறுபடலாம்.
+                                <span class="notice-sub">Prices are estimated slab rates &amp; may vary by ground strata and current fuel rates.</span>
+                            </div>
                         </div>
                     </div>
                     <div class="results-actions">

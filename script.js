@@ -2136,149 +2136,202 @@ class CostCalculator {
     generateHighResQuoteCanvas(inputs, results) {
         const canvas = document.createElement('canvas');
         const width = 800;
-        let height = 980;
+        const scale = 2; // 2x Retina rendering (1600px canvas width for ultra-high quality export)
         
         const slabs = (results && results.slabCalculation && results.slabCalculation.slabDetails) ? results.slabCalculation.slabDetails : [];
-        if (slabs.length > 5) {
-            height += (slabs.length - 5) * 32;
-        }
+        const casing7 = inputs.pvc7Length || 0;
+        const casing10 = inputs.pvc10Length || 0;
+        const slabCount = slabs.length || 4;
 
-        canvas.width = width;
-        let finalHeight = height + 40;
-        canvas.height = finalHeight;
+        // Accurate height calculation to eliminate trailing empty space
+        let finalHeight = 580 + (slabCount * 26);
+        if (casing7 > 0) finalHeight += 24;
+        if (casing10 > 0) finalHeight += 24;
+        if (results && results.gstAmount > 0) finalHeight += 24;
+
+        canvas.width = width * scale;
+        canvas.height = finalHeight * scale;
         const ctx = canvas.getContext('2d');
+        ctx.scale(scale, scale);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
 
         // Background
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, width, finalHeight);
 
         // Subtle Luxury Border
-        ctx.strokeStyle = '#16a34a';
-        ctx.lineWidth = 8;
-        ctx.strokeRect(4, 4, width - 8, finalHeight - 8);
+        ctx.strokeStyle = '#15803d';
+        ctx.lineWidth = 6;
+        ctx.strokeRect(3, 3, width - 6, finalHeight - 6);
 
-        // Elegant Blue Brand Watermark in Canvas Center Background
-        // Elegant Blue Brand Watermark in Canvas Background (Positioned lower behind totals & contact footer)
+        // Watermark Inner Emblem & Text (soft royal blue tint placed gracefully behind calculation)
         ctx.save();
         const wX = width / 2;
-        const wY = finalHeight - 165;
+        const wY = finalHeight - 170;
         ctx.translate(wX, wY);
 
-        // Draw soft blue brand watermark circle
-        ctx.strokeStyle = 'rgba(30, 64, 175, 0.08)'; // Deep royal blue tint
+        ctx.strokeStyle = 'rgba(30, 64, 175, 0.08)';
         ctx.lineWidth = 3.5;
         ctx.setLineDash([7, 5]);
         ctx.beginPath();
-        ctx.arc(0, 0, 105, 0, Math.PI * 2);
+        ctx.arc(0, 0, 95, 0, Math.PI * 2);
         ctx.stroke();
         ctx.setLineDash([]);
 
         ctx.strokeStyle = 'rgba(37, 99, 235, 0.06)';
         ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.arc(0, 0, 94, 0, Math.PI * 2);
+        ctx.arc(0, 0, 85, 0, Math.PI * 2);
         ctx.stroke();
 
-        // Watermark Inner Emblem & Text
         ctx.textAlign = 'center';
         ctx.fillStyle = 'rgba(30, 64, 175, 0.09)';
-        ctx.font = 'bold 15px system-ui, -apple-system, sans-serif';
-        ctx.fillText('ANJANEYA BOREWELLS', 0, -20);
-        ctx.font = 'bold 12px system-ui';
-        ctx.fillText('★  ★  ★  ★  ★', 0, 0);
+        ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
+        ctx.fillText('ANJANEYA BOREWELLS', 0, -18);
         ctx.font = 'bold 11px system-ui';
-        ctx.fillText('GOVT APPROVED • ESTD 1990', 0, 20);
+        ctx.fillText('★  ★  ★  ★  ★', 0, 0);
         ctx.font = 'bold 10px system-ui';
-        ctx.fillText('AUTHENTIC ESTIMATE', 0, 36);
+        ctx.fillText('GOVT APPROVED • ESTD 1990', 0, 18);
+        ctx.font = 'bold 9px system-ui';
+        ctx.fillText('AUTHENTIC ESTIMATE', 0, 32);
         ctx.restore();
 
-        // Header Gradient
-        const grad = ctx.createLinearGradient(0, 0, width, 120);
-        grad.addColorStop(0, '#15803d');
-        grad.addColorStop(1, '#047857');
+        // Navbar-Style Header Gradient (Matching website menu bar)
+        const grad = ctx.createLinearGradient(0, 0, width, 125);
+        grad.addColorStop(0, '#0b5930');
+        grad.addColorStop(0.5, '#064020');
+        grad.addColorStop(1, '#032b15');
         ctx.fillStyle = grad;
-        ctx.fillRect(8, 8, width - 16, 120);
+        ctx.fillRect(6, 6, width - 12, 118);
 
-        // Header Brand Logo Vector Badge
-        ctx.save();
+        // Gold Accent Border below Header
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 2.5;
         ctx.beginPath();
-        ctx.arc(80, 68, 38, 0, Math.PI * 2);
-        ctx.fillStyle = '#ffffff';
-        ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = '#22c55e';
+        ctx.moveTo(6, 124);
+        ctx.lineTo(width - 6, 124);
         ctx.stroke();
 
-        // Vector Logo Rig/Star Symbol inside badge
-        ctx.fillStyle = '#15803d';
-        ctx.font = 'bold 26px system-ui';
+        // Header Brand Logo Vector Emblem Badge (Never taints canvas on any origin/protocol)
+        const logoX = 72;
+        const logoY = 65;
+        const logoRadius = 34;
+
+        ctx.save();
+        // Base white circle
+        ctx.beginPath();
+        ctx.arc(logoX, logoY, logoRadius, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+
+        // Outer Gold Ring & Inner Emerald Ring
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 2.8;
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(logoX, logoY, logoRadius - 3.5, 0, Math.PI * 2);
+        ctx.strokeStyle = '#15803d';
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        // Rig / Drilling Symbol & Stars
+        ctx.font = 'bold 22px system-ui';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText('🚜', 80, 67);
+        ctx.fillText('🚜', logoX, logoY - 3);
+
+        ctx.fillStyle = '#15803d';
+        ctx.font = 'bold 8.5px system-ui, -apple-system, sans-serif';
+        ctx.fillText('ESTD 1990', logoX, logoY + 18);
         ctx.restore();
 
-        // Header Title
+        // Header Title: ANJANEYA (white) + BOREWELLS (gold yellow #fbbf24)
+        ctx.save();
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
+        ctx.font = 'bold 26px system-ui, -apple-system, sans-serif';
+        const brandStartX = 125;
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 30px system-ui, -apple-system, sans-serif';
+        ctx.fillText('ANJANEYA ', brandStartX, 52);
+        const anjWidth = ctx.measureText('ANJANEYA ').width;
+        ctx.fillStyle = '#fbbf24';
+        ctx.fillText('BOREWELLS', brandStartX + anjWidth, 52);
+        const boreWidth = ctx.measureText('BOREWELLS').width;
+
+        // "Approx Cost" Pill badge
+        const pillX = brandStartX + anjWidth + boreWidth + 12;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(pillX, 35, 95, 20, 5);
+        else ctx.rect(pillX, 35, 95, 20);
+        ctx.fillStyle = '#a7f3d0';
+        ctx.fill();
+        ctx.strokeStyle = '#6ee7b7';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        ctx.fillStyle = '#064e3b';
+        ctx.font = 'bold 10px system-ui';
         ctx.textAlign = 'center';
-        ctx.fillText('ANJANEYA BOREWELLS', width / 2, 55);
+        ctx.fillText('APPROX COST', pillX + 47.5, 49);
 
-        // Header Tagline
-        ctx.font = 'bold 18px system-ui, -apple-system, sans-serif';
-        ctx.fillStyle = '#bbf7d0';
-        ctx.fillText('ஆழமான நம்பிக்கை! • Cost Quotation Estimate', width / 2, 88);
+        // Header Tagline & Date
+        ctx.textAlign = 'left';
+        ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
+        ctx.fillStyle = '#86efac';
+        ctx.fillText('ஆழமான நம்பிக்கை! • Govt Approved Borewell Contractor', brandStartX, 78);
 
-        ctx.font = '14px system-ui, -apple-system, sans-serif';
-        ctx.fillStyle = '#e2e8f0';
+        ctx.font = '12px system-ui, -apple-system, sans-serif';
+        ctx.fillStyle = '#cbd5e1';
         const dateStr = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
-        ctx.fillText(`Generated: ${dateStr}`, width / 2, 112);
+        ctx.fillText(`📅 Quotation Date: ${dateStr}`, brandStartX, 100);
+        ctx.restore();
 
-        // Improved Specifications Card (Modern Pill / Card Style)
-        let y = 145;
+        // Specifications Card
+        let y = 142;
         ctx.fillStyle = '#f8fafc';
         ctx.strokeStyle = '#e2e8f0';
         ctx.lineWidth = 1.5;
         ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(30, y, width - 60, 88, 10);
-        else ctx.rect(30, y, width - 60, 88);
+        if (ctx.roundRect) ctx.roundRect(28, y, width - 56, 88, 10);
+        else ctx.rect(28, y, width - 56, 88);
         ctx.fill();
         ctx.stroke();
 
         // Left accent bar
         ctx.fillStyle = '#16a34a';
         ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(30, y, 6, 88, [10, 0, 0, 10]);
-        else ctx.rect(30, y, 6, 88);
+        if (ctx.roundRect) ctx.roundRect(28, y, 6, 88, [10, 0, 0, 10]);
+        else ctx.rect(28, y, 6, 88);
         ctx.fill();
 
         ctx.fillStyle = '#166534';
-        ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
+        ctx.font = 'bold 15px system-ui, -apple-system, sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('⚙️ DRILLING SPECIFICATIONS', 50, y + 25);
+        ctx.fillText('⚙️ SPECS', 46, y + 25);
 
-        // 6.5" Bore Tag next to Drilling Specifications
-        const specTextWidth = ctx.measureText('⚙️ DRILLING SPECIFICATIONS').width;
-        const tagX = 50 + specTextWidth + 10;
+        // 6.5" Bore Tag
         ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(tagX, y + 10, 70, 20, 5);
-        else ctx.rect(tagX, y + 10, 70, 20);
-        ctx.fillStyle = '#e0f2fe';
+        if (ctx.roundRect) ctx.roundRect(132, y + 10, 75, 22, 6);
+        else ctx.rect(132, y + 10, 75, 22);
+        ctx.fillStyle = '#eff6ff';
         ctx.fill();
-        ctx.strokeStyle = '#7dd3fc';
+        ctx.strokeStyle = '#93c5fd';
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        ctx.fillStyle = '#0369a1';
-        ctx.font = 'bold 11px system-ui, sans-serif';
+        ctx.fillStyle = '#1d4ed8';
+        ctx.font = 'bold 12px system-ui, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('6.5" Bore', tagX + 35, y + 24);
+        ctx.fillText('6.5" Bore', 132 + 37.5, y + 25);
 
-        // Drilling Type Pill Badge in card
+        // Drilling Type Pill Badge
         const isRepair = inputs.drillingType === 'repair';
         const typeStr = isRepair ? 'Rebore (Repair)' : 'New Borewell';
         ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(width - 190, y + 10, 145, 22, 11);
-        else ctx.rect(width - 190, y + 10, 145, 22);
+        if (ctx.roundRect) ctx.roundRect(width - 180, y + 10, 135, 22, 11);
+        else ctx.rect(width - 180, y + 10, 135, 22);
         ctx.fillStyle = '#dcfce7';
         ctx.fill();
         ctx.strokeStyle = '#86efac';
@@ -2288,7 +2341,7 @@ class CostCalculator {
         ctx.fillStyle = '#15803d';
         ctx.font = 'bold 12px system-ui';
         ctx.textAlign = 'center';
-        ctx.fillText(`✓ ${typeStr}`, width - 117, y + 25);
+        ctx.fillText(`✓ ${typeStr}`, width - 112, y + 25);
 
         // Specification Chips inside Card
         const drawSpecChip = (chipX, chipY, chipW, label, val) => {
@@ -2311,36 +2364,34 @@ class CostCalculator {
             ctx.fillText(val, chipX + chipW / 2, chipY + 33);
         };
 
-        const casing7 = inputs.pvc7Length || 0;
-        const casing10 = inputs.pvc10Length || 0;
-        const chipWidth = (width - 120) / 4;
+        const chipWidth = (width - 110) / 4;
         const chipY = y + 36;
-        drawSpecChip(45, chipY, chipWidth - 5, 'TOTAL DEPTH', `${inputs.totalDepth || 800} ft`);
-        drawSpecChip(45 + chipWidth, chipY, chipWidth - 5, 'BASE RATE', `₹${inputs.drillingRate || 90}/ft`);
-        drawSpecChip(45 + chipWidth * 2, chipY, chipWidth - 5, '7" PVC CASING', `${casing7} ft`);
-        drawSpecChip(45 + chipWidth * 3, chipY, chipWidth - 5, '10" PVC CASING', `${casing10} ft`);
+        drawSpecChip(42, chipY, chipWidth - 5, 'TOTAL DEPTH', `${inputs.totalDepth || 800} ft`);
+        drawSpecChip(42 + chipWidth, chipY, chipWidth - 5, 'BASE RATE', `₹${inputs.drillingRate || 90}/ft`);
+        drawSpecChip(42 + chipWidth * 2, chipY, chipWidth - 5, '7" PVC CASING', `${casing7} ft`);
+        drawSpecChip(42 + chipWidth * 3, chipY, chipWidth - 5, '10" PVC CASING', `${casing10} ft`);
 
         // Slab Breakdown Section
-        y += 105;
+        y += 102;
         ctx.fillStyle = '#f8fafc';
         ctx.strokeStyle = '#cbd5e1';
         ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(30, y, width - 60, 35 + (slabs.length * 26) + 30, 8);
-        else ctx.rect(30, y, width - 60, 35 + (slabs.length * 26) + 30);
+        if (ctx.roundRect) ctx.roundRect(28, y, width - 56, 35 + (slabs.length * 26) + 30, 8);
+        else ctx.rect(28, y, width - 56, 35 + (slabs.length * 26) + 30);
         ctx.fill();
         ctx.stroke();
 
         ctx.fillStyle = '#15803d';
-        ctx.font = 'bold 15px system-ui, -apple-system, sans-serif';
+        ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('DRILLING COST BREAKDOWN (SLAB RATE)', 45, y + 24);
+        ctx.fillText('DRILLING COST BREAKDOWN (SLAB RATE)', 44, y + 24);
 
         // Slab header divider
         ctx.strokeStyle = '#94a3b8';
         ctx.setLineDash([4, 4]);
         ctx.beginPath();
-        ctx.moveTo(45, y + 32);
-        ctx.lineTo(width - 45, y + 32);
+        ctx.moveTo(44, y + 32);
+        ctx.lineTo(width - 44, y + 32);
         ctx.stroke();
         ctx.setLineDash([]);
 
@@ -2349,7 +2400,7 @@ class CostCalculator {
         slabs.forEach(s => {
             ctx.fillStyle = '#334155';
             ctx.textAlign = 'left';
-            ctx.fillText(s.range, 50, slabY);
+            ctx.fillText(s.range, 48, slabY);
 
             ctx.textAlign = 'center';
             ctx.fillText(`₹${s.rate}/ft`, width / 2, slabY);
@@ -2357,7 +2408,7 @@ class CostCalculator {
             ctx.textAlign = 'right';
             ctx.fillStyle = '#16a34a';
             ctx.font = 'bold 14px monospace, system-ui';
-            ctx.fillText(`Rs.${s.cost.toLocaleString('en-IN')}`, width - 50, slabY);
+            ctx.fillText(`Rs.${s.cost.toLocaleString('en-IN')}`, width - 48, slabY);
             ctx.font = '14px monospace, system-ui';
 
             slabY += 26;
@@ -2366,30 +2417,30 @@ class CostCalculator {
         // Total Drilling Cost
         ctx.strokeStyle = '#e2e8f0';
         ctx.beginPath();
-        ctx.moveTo(45, slabY - 8);
-        ctx.lineTo(width - 45, slabY - 8);
+        ctx.moveTo(44, slabY - 8);
+        ctx.lineTo(width - 44, slabY - 8);
         ctx.stroke();
 
         ctx.fillStyle = '#0f172a';
-        ctx.font = 'bold 15px system-ui, -apple-system, sans-serif';
+        ctx.font = 'bold 14px system-ui, -apple-system, sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('Total Drilling Cost:', 50, slabY + 12);
+        ctx.fillText('Total Drilling Cost:', 48, slabY + 12);
         ctx.textAlign = 'right';
         ctx.fillStyle = '#15803d';
-        ctx.fillText(`Rs.${(results.drillingCost || 0).toLocaleString('en-IN')}`, width - 50, slabY + 12);
+        ctx.fillText(`Rs.${(results.drillingCost || 0).toLocaleString('en-IN')}`, width - 48, slabY + 12);
 
         // Summary Lines Section
-        y = slabY + 35;
+        y = slabY + 34;
         const drawCostRow = (label, val, isBold = false) => {
             ctx.fillStyle = isBold ? '#0f172a' : '#475569';
-            ctx.font = isBold ? 'bold 15px system-ui' : '14px system-ui';
+            ctx.font = isBold ? 'bold 14px system-ui' : '13px system-ui';
             ctx.textAlign = 'left';
-            ctx.fillText(label, 50, y);
+            ctx.fillText(label, 48, y);
 
             ctx.fillStyle = isBold ? '#0f172a' : '#1e293b';
-            ctx.font = isBold ? 'bold 15px monospace' : '14px monospace';
+            ctx.font = isBold ? 'bold 14px monospace' : '13px monospace';
             ctx.textAlign = 'right';
-            ctx.fillText(val, width - 50, y);
+            ctx.fillText(val, width - 48, y);
             y += 24;
         };
 
@@ -2402,33 +2453,56 @@ class CostCalculator {
         }
 
         // Total Cost Grand Banner
-        y += 10;
+        y += 8;
         ctx.fillStyle = '#15803d';
         ctx.beginPath();
-        if (ctx.roundRect) ctx.roundRect(30, y, width - 60, 65, 8);
-        else ctx.rect(30, y, width - 60, 65);
+        if (ctx.roundRect) ctx.roundRect(28, y, width - 56, 62, 8);
+        else ctx.rect(28, y, width - 56, 62);
         ctx.fill();
 
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 18px system-ui, -apple-system, sans-serif';
+        ctx.font = 'bold 17px system-ui, -apple-system, sans-serif';
         ctx.textAlign = 'left';
-        ctx.fillText('Total Estimated Cost:', 50, y + 38);
-        ctx.font = '12px system-ui';
+        ctx.fillText('Total Estimated Cost:', 46, y + 36);
+        ctx.font = '11px system-ui';
         ctx.fillStyle = '#bbf7d0';
-        ctx.fillText('(Approximate / உத்தேச மதிப்பு)', 50, y + 54);
+        ctx.fillText('(Approximate / உத்தேச மதிப்பு)', 46, y + 51);
 
         ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 24px monospace, system-ui';
         ctx.textAlign = 'right';
-        ctx.fillText(`Rs.${(results.totalCost || 0).toLocaleString('en-IN')}`, width - 50, y + 42);
+        ctx.fillText(`Rs.${(results.totalCost || 0).toLocaleString('en-IN')}`, width - 46, y + 40);
 
-        // Clean Official Quotation Footer (Rubber stamp removed per user request)
-        y += 85;
+        // Warning / Price Notice Banner (User request 1)
+        const noticeY = y + 74;
+        ctx.fillStyle = '#fffbeb';
+        ctx.strokeStyle = '#fcd34d';
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(28, noticeY, width - 56, 46, 8);
+        else ctx.rect(28, noticeY, width - 56, 46);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.font = '16px system-ui';
+        ctx.textAlign = 'left';
+        ctx.fillText('⚠️', 42, noticeY + 28);
+
+        ctx.fillStyle = '#92400e';
+        ctx.font = 'bold 10.8px system-ui, -apple-system, sans-serif';
+        ctx.fillText('இன்றைய நேரடி விலை மாறுபடலாம்: பாறை கடினம் & டீசல் விலைக்கு ஏற்ப இறுதி கட்டணம் மாறுபடலாம்.', 66, noticeY + 20);
+
+        ctx.fillStyle = '#b45309';
+        ctx.font = '10px system-ui, -apple-system, sans-serif';
+        ctx.fillText('Indicative estimate only. Actual rates depend on site strata & prevailing operational fuel costs.', 66, noticeY + 36);
+
+        // Official Quotation Footer
+        const footerY = noticeY + 64;
         ctx.fillStyle = '#64748b';
         ctx.font = '12px system-ui, -apple-system, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('📞 24x7 Hotline: +91 96596 57777 / 97869 78889  •  🌐 anjaneyaborewells.com', width / 2, y);
-        ctx.fillText('HQ: Sendamangalam & Namakkal, Tamil Nadu, India', width / 2, y + 18);
+        ctx.fillText('📞 24x7 Hotline: +91 96596 57777 / 97869 78889  •  🌐 anjaneyaborewells.com', width / 2, footerY);
+        ctx.fillText('HQ: Sendamangalam & Namakkal, Tamil Nadu, India', width / 2, footerY + 18);
 
         return canvas;
     }

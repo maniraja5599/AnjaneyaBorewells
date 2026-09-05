@@ -2679,6 +2679,7 @@ section, [id] {
     border: 1.5px solid rgba(16, 185, 129, 0.22) !important;
     pointer-events: none !important;
     animation: globalSensorWave 6s infinite cubic-bezier(0.215, 0.61, 0.355, 1) !important;
+    will-change: transform, opacity !important;
 }
 
 .global-sensor-ring.ring-1 {
@@ -2701,31 +2702,50 @@ section, [id] {
     border-color: rgba(16, 185, 129, 0.12) !important;
 }
 
+.global-bg-logo {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 320px !important;
+    height: 320px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    opacity: 0.07 !important;
+    filter: drop-shadow(0 0 45px rgba(16, 185, 129, 0.35)) !important;
+    animation: globalLogoPulse 8s ease-in-out infinite alternate !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    will-change: transform, opacity !important;
+}
+
 @keyframes globalLogoPulse {
     0% {
-        transform: scale(0.95) rotate(0deg);
+        transform: translate(-50%, -50%) scale(0.95) rotate(0deg);
         opacity: 0.065;
     }
     50% {
-        transform: scale(1.04) rotate(1.5deg);
+        transform: translate(-50%, -50%) scale(1.04) rotate(1.5deg);
         opacity: 0.095;
     }
     100% {
-        transform: scale(0.95) rotate(0deg);
+        transform: translate(-50%, -50%) scale(0.95) rotate(0deg);
         opacity: 0.065;
     }
 }
 
 @keyframes globalSensorWave {
     0% {
-        transform: scale(0.7);
+        transform: translate(-50%, -50%) scale(0.7);
         opacity: 0.65;
     }
     50% {
+        transform: translate(-50%, -50%) scale(1.1);
         opacity: 0.35;
     }
     100% {
-        transform: scale(1.45);
+        transform: translate(-50%, -50%) scale(1.45);
         opacity: 0;
     }
 }
@@ -4631,39 +4651,111 @@ label.gst-toggle-action-pill,
 }
 
 .results-header {
-    background: linear-gradient(135deg, #15803d, #047857) !important;
-    color: #ffffff !important;
-    padding: 0.45rem 0.85rem !important;
+    background: linear-gradient(135deg, #0b5930 0%, #064020 50%, #032b15 100%) !important;
+    border-bottom: 1.5px solid rgba(250, 204, 21, 0.35) !important;
+    padding: 0.40rem 0.70rem !important;
 }
 
 .results-header-flex {
     display: flex !important;
-    justify-content: space-between !important;
     align-items: center !important;
+    justify-content: space-between !important;
     gap: 6px !important;
+    flex-wrap: nowrap !important;
 }
 
-.results-header h3 {
-    margin: 0 !important;
-    font-size: 0.88rem !important;
+.results-header-brand-wrap {
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    overflow: hidden !important;
+}
+
+.results-header-logo {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 1.5px solid #facc15 !important;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+.results-header-title-group {
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    min-width: 0 !important;
+    white-space: nowrap !important;
+}
+
+.results-brand-name {
+    font-size: clamp(0.72rem, 3.2vw, 0.92rem) !important;
     font-weight: 800 !important;
-    letter-spacing: 0.01em !important;
+    letter-spacing: -0.01em !important;
+    line-height: 1.1 !important;
+    white-space: nowrap !important;
+}
+
+.results-brand-name .brand-word-white {
+    color: #ffffff !important;
+}
+
+.results-brand-name .brand-word-yellow {
+    color: #fbbf24 !important;
+}
+
+.results-est-pill {
+    font-size: clamp(0.56rem, 2.1vw, 0.65rem) !important;
+    font-weight: 700 !important;
+    color: #064e3b !important;
+    background: #a7f3d0 !important;
+    border: 1px solid #6ee7b7 !important;
+    padding: 1px 5px !important;
+    border-radius: 5px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.02em !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
 }
 
 .calculator-date-badge {
-    background: rgba(255, 255, 255, 0.22) !important;
-    border: 1px solid rgba(255, 255, 255, 0.4) !important;
+    background: rgba(255, 255, 255, 0.14) !important;
+    border: 1px solid rgba(255, 255, 255, 0.28) !important;
     color: #ffffff !important;
-    font-size: 0.68rem !important;
+    font-size: clamp(0.60rem, 2.3vw, 0.70rem) !important;
     font-weight: 700 !important;
-    padding: 2px 7px !important;
-    border-radius: 12px !important;
+    padding: 2px 6px !important;
+    border-radius: 10px !important;
     white-space: nowrap !important;
     font-family: var(--font-mono) !important;
+    flex-shrink: 0 !important;
+}
+
+@media (max-width: 400px) {
+    .results-header {
+        padding: 0.40rem 0.60rem !important;
+    }
+    .results-header-brand-wrap {
+        gap: 6px !important;
+        justify-content: flex-start !important;
+    }
+    .results-brand-name {
+        font-size: 0.82rem !important;
+    }
+    .results-est-pill {
+        font-size: 0.62rem !important;
+        padding: 2px 5px !important;
+    }
+    .calculator-date-badge {
+        display: none !important;
+    }
 }
 
 .results-content {
-    padding: 0.50rem 0.90rem !important;
+    padding: 0.45rem 0.80rem !important;
     position: relative !important;
     z-index: 1 !important;
 }
@@ -4692,8 +4784,8 @@ label.gst-toggle-action-pill,
     border: 1.5px solid #e2e8f0 !important;
     border-left: 3.5px solid #16a34a !important;
     border-radius: 8px !important;
-    padding: 6px 10px !important;
-    margin-bottom: 6px !important;
+    padding: 4px 8px !important;
+    margin-bottom: 5px !important;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
 }
 
@@ -4701,73 +4793,76 @@ label.gst-toggle-action-pill,
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    margin-bottom: 5px !important;
-    padding-bottom: 3px !important;
+    margin-bottom: 3px !important;
+    padding-bottom: 2px !important;
     border-bottom: 1px dashed #e2e8f0 !important;
-    gap: 6px !important;
-}
-
-.summary-title-group {
-    display: flex !important;
-    align-items: center !important;
-    gap: 6px !important;
-    flex-wrap: wrap !important;
+    gap: 4px !important;
+    flex-wrap: nowrap !important;
 }
 
 .summary-title {
-    font-size: 0.72rem !important;
+    font-size: 0.68rem !important;
     font-weight: 800 !important;
     color: #166534 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
+    letter-spacing: 0.04em !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 3px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+}
+
+.summary-badges-wrap {
     display: flex !important;
     align-items: center !important;
     gap: 4px !important;
+    flex-wrap: nowrap !important;
 }
 
 .summary-dia-tag {
-    font-size: 0.64rem !important;
+    font-size: 0.60rem !important;
     font-weight: 800 !important;
     color: #0369a1 !important;
     background: #e0f2fe !important;
     border: 1px solid #7dd3fc !important;
-    padding: 1.5px 6px !important;
-    border-radius: 6px !important;
+    padding: 1px 5px !important;
+    border-radius: 5px !important;
     letter-spacing: 0.02em !important;
     display: inline-flex !important;
     align-items: center !important;
     line-height: 1.2 !important;
-    box-shadow: 0 1px 2px rgba(3, 105, 161, 0.08) !important;
     white-space: nowrap !important;
 }
 
 .summary-icon {
-    width: 13px !important;
-    height: 13px !important;
+    width: 12px !important;
+    height: 12px !important;
     color: #16a34a !important;
 }
 
 .summary-type-badge {
-    font-size: 0.65rem !important;
+    font-size: 0.60rem !important;
     font-weight: 700 !important;
     color: #15803d !important;
     background: #dcfce7 !important;
     border: 1px solid #86efac !important;
-    padding: 1px 6px !important;
-    border-radius: 10px !important;
+    padding: 1px 5px !important;
+    border-radius: 8px !important;
+    white-space: nowrap !important;
 }
 
 .input-summary-chips {
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;
-    gap: 4px !important;
+    gap: 3px !important;
 }
 
 .summary-chip {
     background: #ffffff !important;
     border: 1px solid #cbd5e1 !important;
-    border-radius: 6px !important;
-    padding: 3px 5px !important;
+    border-radius: 5px !important;
+    padding: 2px 3px !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
@@ -4777,21 +4872,60 @@ label.gst-toggle-action-pill,
 }
 
 .chip-label {
-    font-size: 0.60rem !important;
+    font-size: 0.54rem !important;
     color: #64748b !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.02em !important;
+    letter-spacing: 0.01em !important;
     line-height: 1 !important;
-    margin-bottom: 2px !important;
+    margin-bottom: 1px !important;
+    white-space: nowrap !important;
 }
 
 .chip-val {
-    font-size: 0.76rem !important;
+    font-size: 0.70rem !important;
     color: #0f172a !important;
     font-weight: 800 !important;
     font-family: var(--font-mono) !important;
     line-height: 1.1 !important;
+    white-space: nowrap !important;
+}
+
+.calc-price-notice {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+    background: #fffbeb !important;
+    border: 1px solid #fde68a !important;
+    border-left: 3px solid #f59e0b !important;
+    border-radius: 7px !important;
+    padding: 5px 8px !important;
+    margin-top: 6px !important;
+    font-size: 0.68rem !important;
+    color: #78350f !important;
+    line-height: 1.35 !important;
+}
+
+.notice-icon {
+    font-size: 0.85rem !important;
+    flex-shrink: 0 !important;
+    margin-top: -1px !important;
+}
+
+.notice-text {
+    flex: 1 !important;
+}
+
+.notice-text strong {
+    color: #92400e !important;
+    font-weight: 800 !important;
+}
+
+.notice-sub {
+    display: block !important;
+    font-size: 0.60rem !important;
+    color: #a16207 !important;
+    margin-top: 1px !important;
 }
 
 .slab-breakdown {
