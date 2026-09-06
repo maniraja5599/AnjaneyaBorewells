@@ -37,7 +37,7 @@ body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
-    background-color: #f8fafc;
+    background-color: #e4e4e4;
     background-image: 
         radial-gradient(at 0% 0%, rgba(11, 197, 36, 0.035) 0px, transparent 50%),
         radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.04) 0px, transparent 50%),
@@ -12712,7 +12712,7 @@ label.gst-toggle-action-pill,
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #f8fafc;
+      background-color: #e4e4e4;
       color: var(--text-main);
       overflow-x: hidden;
       min-height: 100vh;
@@ -12721,7 +12721,7 @@ label.gst-toggle-action-pill,
       position: relative;
     }
 
-    /* Watermark Background & Sensor Rings */
+    /* Watermark Background, Sensor Rings & Eco Leaf Curves */
     .global-bg-logo-layer {
       position: fixed;
       top: 0;
@@ -12731,9 +12731,36 @@ label.gst-toggle-action-pill,
       pointer-events: none;
       z-index: 0;
       overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    }
+
+    /* Left Side Soft Eco Leaf Shapes matching User Image */
+    .bg-leaf-decor-left {
+      position: absolute;
+      left: 0;
+      top: 10%;
+      width: 320px;
+      height: 520px;
+      pointer-events: none;
+      opacity: 0.85;
+      z-index: 1;
+    }
+
+    /* Right Side Soft Eco Leaf Shapes matching User Image */
+    .bg-leaf-decor-right {
+      position: absolute;
+      right: 0;
+      top: 6%;
+      width: 350px;
+      height: 560px;
+      pointer-events: none;
+      opacity: 0.85;
+      z-index: 1;
+    }
+
+    .bg-leaf-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
     }
 
     .global-sensor-ring {
@@ -12744,6 +12771,7 @@ label.gst-toggle-action-pill,
       border-radius: 50%;
       border: 1.5px solid rgba(16, 185, 129, 0.15);
       pointer-events: none;
+      z-index: 2;
     }
 
     .global-sensor-ring.ring-1 {
@@ -12789,11 +12817,11 @@ label.gst-toggle-action-pill,
       right: 0 !important;
       z-index: 1000 !important;
       width: 100% !important;
-      background: linear-gradient(180deg, #072a15 0%, #0c3e20 100%);
-      border-bottom: 2.5px solid var(--accent-green-border);
-      border-radius: 0 0 26px 26px;
-      box-shadow: 0 10px 30px rgba(7, 42, 21, 0.28);
-      padding: 10px 24px;
+      background: linear-gradient(175deg, #062312 0%, #17b800 100%);
+      border-bottom: 1.30px solid #ffd31c;
+      border-radius: 0 0 28px 24px;
+      box-shadow: 0 6px 31px rgb(8 35 8 / 84%);
+      padding: 14px 28px;
       transition: all 0.3s ease;
       flex-shrink: 0;
       margin: 0 !important;
@@ -13418,26 +13446,65 @@ label.gst-toggle-action-pill,
       line-height: 1.35;
     }
 
-    /* Slogan Section */
+    /* Slogan Section - Centered Text with Valluvar Avatar matching img-1 */
     .slogan-highlight-block {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 18px;
+      padding: 12px 24px;
+      background: #ffffff;
+      border: 1.5px solid #dcfce7;
+      border-radius: 20px;
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.08);
+      position: relative;
+      overflow: visible;
+      margin-top: 36px; /* Desktop: innum nalla keela இறக்கியாச்சு */
+    }
+
+    .slogan-valluvar-avatar {
+      width: 58px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .slogan-valluvar-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.18));
+      transform: scale(1.18);
+      transition: transform 0.2s ease;
+    }
+
+    .slogan-highlight-block:hover .slogan-valluvar-avatar img {
+      transform: scale(1.24);
+    }
+
+    /* Text Centered within its space as requested in img-1 */
+    .slogan-text-group {
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      padding: 11px 18px;
-      background: #ffffff;
-      border: 1px solid #e2e8f0;
-      border-radius: 18px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.02);
+      flex: 1;
+      gap: 3px;
+      padding-right: 28px; /* Counterbalances avatar for true horizontal centering */
     }
 
     .slogan-tamil-title {
-      font-size: 1.38rem;
+      font-size: 1.35rem;
       font-weight: 800;
       color: #0d763e;
       position: relative;
       display: inline-block;
       letter-spacing: 0.02em;
+      line-height: 1.2;
     }
 
     .slogan-tamil-title .slogan-brush-underline {
@@ -13450,11 +13517,11 @@ label.gst-toggle-action-pill,
     }
 
     .slogan-eng-sub {
-      margin-top: 9px;
-      font-size: 0.74rem;
+      margin-top: 5px;
+      font-size: 0.72rem;
       font-weight: 800;
-      color: #475569;
-      letter-spacing: 0.15em;
+      color: #1e293b;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
     }
 
@@ -13531,6 +13598,88 @@ label.gst-toggle-action-pill,
       color: #64748b;
       font-weight: 500;
       white-space: nowrap;
+    }
+
+    /* Google Reviews Star Badge - Directly Below Trust Bar */
+    .google-reviews-badge-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      width: 100%;
+    }
+
+    .google-reviews-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 20px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 999px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+      text-decoration: none;
+      color: #0f172a;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .google-reviews-badge:hover {
+      transform: translateY(-2px);
+      border-color: #facc15;
+      box-shadow: 0 8px 22px rgba(250, 204, 21, 0.25);
+    }
+
+    .google-icon-svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .google-stars-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .google-star-svg {
+      width: 17px;
+      height: 17px;
+      fill: #f59e0b; /* Golden Amber Star */
+    }
+
+    .google-rating-num {
+      font-weight: 900;
+      font-size: 0.95rem;
+      color: #0f172a;
+      margin-left: 3px;
+    }
+
+    .google-badge-sep {
+      width: 1px;
+      height: 16px;
+      background: #cbd5e1;
+    }
+
+    .google-read-review-txt {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0d763e;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: gap 0.2s ease;
+    }
+
+    .google-reviews-badge:hover .google-read-review-txt {
+      gap: 8px;
+      color: #059669;
+    }
+
+    .google-arrow-icon {
+      font-size: 0.95rem;
+      font-weight: 800;
     }
 
     /* Fixed Bottom Scroll-Driven Rig Track */
@@ -13767,26 +13916,65 @@ label.gst-toggle-action-pill,
       }
       .slogan-highlight-block {
         margin-top: 6px;
-        padding: 8px 10px;
+        padding: 8px 12px;
+        gap: 8px;
+      }
+      .slogan-valluvar-avatar {
+        width: 44px;
+        height: 44px;
+      }
+      .slogan-valluvar-avatar img {
+        transform: scale(1.12);
+      }
+      .slogan-text-group {
+        padding-right: 0 !important;
+        align-items: center !important;
+        text-align: center !important;
       }
       .slogan-tamil-title {
-        font-size: 1.12rem;
+        font-size: 1.02rem;
       }
       .slogan-eng-sub {
-        font-size: 0.62rem;
-        letter-spacing: 0.1em;
+        font-size: 0.56rem;
+        letter-spacing: 0.08em;
+      }
+
+      /* Google Reviews Badge Mobile */
+      .google-reviews-badge-container {
+        margin-top: 10px;
+      }
+      .google-reviews-badge {
+        padding: 6px 14px;
+        gap: 8px;
+      }
+      .google-icon-svg {
+        width: 16px;
+        height: 16px;
+      }
+      .google-star-svg {
+        width: 13px;
+        height: 13px;
+      }
+      .google-rating-num {
+        font-size: 0.82rem;
+      }
+      .google-badge-sep {
+        height: 12px;
+      }
+      .google-read-review-txt {
+        font-size: 0.72rem;
       }
 
       /* 4-Metric Trust Card on Mobile: Strictly 1 SINGLE LINE as requested */
       .trust-features-card {
         grid-template-columns: repeat(4, 1fr) !important;
-        padding: 10px 6px !important;
+        padding: 12px 6px !important;
         gap: 4px !important;
-        border-radius: 14px !important;
-        margin-top: 14px !important;
+        border-radius: 16px !important;
+        margin-top: 16px !important;
       }
       .trust-feat-item {
-        gap: 4px !important;
+        gap: 5px !important;
         align-items: center;
       }
       .trust-feat-item:not(:last-child)::after {

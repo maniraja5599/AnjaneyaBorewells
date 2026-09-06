@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anjaneya Borewells | New Design Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Mukta+Malar:wght@500;600;700;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-dark-green: #072a15;
+      --forest-green: #0d5229;
+      --emerald-text: #0d763e;
+      --accent-yellow: #fde047;
+      --bright-gold: #facc15;
+      --accent-green-border: #86efac;
+      --light-green-bg: #f2fbf5;
+      --card-white: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --brand-emerald: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #e4e4e4;
+      color: var(--text-main);
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Watermark Background, Sensor Rings & Eco Leaf Curves */
+    .global-bg-logo-layer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    /* Left Side Soft Eco Leaf Shapes matching User Image */
+    .bg-leaf-decor-left {
+      position: absolute;
+      left: 0;
+      top: 10%;
+      width: 320px;
+      height: 520px;
+      pointer-events: none;
+      opacity: 0.85;
+      z-index: 1;
+    }
+
+    /* Right Side Soft Eco Leaf Shapes matching User Image */
+    .bg-leaf-decor-right {
+      position: absolute;
+      right: 0;
+      top: 6%;
+      width: 350px;
+      height: 560px;
+      pointer-events: none;
+      opacity: 0.85;
+      z-index: 1;
+    }
+
+    .bg-leaf-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .global-sensor-ring {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1.5px solid rgba(16, 185, 129, 0.15);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .global-sensor-ring.ring-1 {
+      width: 600px;
+      height: 600px;
+      border-color: rgba(16, 185, 129, 0.12);
+    }
+
+    .global-sensor-ring.ring-2 {
+      width: 900px;
+      height: 900px;
+      border-color: rgba(16, 185, 129, 0.08);
+      border-style: dashed;
+    }
+
+    .global-sensor-ring.ring-3 {
+      width: 1200px;
+      height: 1200px;
+      border-color: rgba(16, 185, 129, 0.04);
+    }
+
+    /* Center Logo Watermark strictly preserved clean in the center */
+    .global-bg-logo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(540px, 85vw);
+      opacity: 0.045;
+      filter: grayscale(35%) contrast(90%);
+      z-index: 3;
+    }
+
+    .global-bg-logo img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    /* Top Curved Menu Bar - ALWAYS FIXED TO PAGE TOP (Updated with User Settings) */
+    .top-header {
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      z-index: 1000 !important;
+      width: 100% !important;
+      background: linear-gradient(175deg, #062312 0%, #17b800 100%);
+      border-bottom: 1.30px solid #ffd31c;
+      border-radius: 0 0 28px 24px;
+      box-shadow: 0 6px 31px rgb(8 35 8 / 84%);
+      padding: 14px 28px;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      margin: 0 !important;
+    }
+
+    .header-container {
+      max-width: 1260px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .brand-logo-circle {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #ffffff;
+      padding: 2.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .brand-logo-circle img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .brand-text-col {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* Official Geometric Logo Font */
+    .brand-main-title {
+      font-family: 'Montserrat', 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.28rem;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      line-height: 1.15;
+      color: #ffffff;
+      white-space: nowrap;
+      text-transform: uppercase;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    }
+
+    .brand-main-title .white-part {
+      color: #ffffff;
+      font-weight: 900;
+    }
+
+    .brand-main-title .yellow-part {
+      color: #facc15;
+      font-weight: 900;
+    }
+
+    .brand-tamil-sub {
+      font-family: 'Mukta Malar', 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #86efac;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      margin-top: 2px;
+    }
+
+    /* Desktop Navigation Menu */
+    .desktop-nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 980px) {
+      .desktop-nav-menu {
+        display: none;
+      }
+    }
+
+    .nav-item-link {
+      color: #f1f5f9;
+      text-decoration: none;
+      font-size: 0.98rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+
+    .nav-item-link svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .nav-item-link:hover {
+      color: #86efac;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-shrink: 0;
+    }
+
+    /* Golden Yellow Rate Button */
+    .rate-btn {
+      background: linear-gradient(135deg, #fef08a 0%, #fde047 60%, #facc15 100%);
+      color: #0f172a;
+      font-size: 0.94rem;
+      font-weight: 800;
+      padding: 9px 20px;
+      border-radius: 999px;
+      border: 1.5px solid #fef08a;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(250, 204, 21, 0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .rate-btn svg {
+      width: 17px;
+      height: 17px;
+      stroke: #0f172a;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .rate-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(250, 204, 21, 0.45);
+    }
+
+    /* Hamburger Menu Button - COMPLETELY REMOVED ON DESKTOP */
+    .menu-toggle-btn {
+      display: none !important; /* Strictly hidden on desktop */
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+      transition: all 0.2s;
+    }
+
+    .menu-toggle-btn span {
+      width: 20px;
+      height: 2px;
+      background: #ffffff;
+      border-radius: 2px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .menu-toggle-btn.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .menu-toggle-btn.open span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    .menu-toggle-btn.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+
+    /* Enhanced Mobile Nav Drawer */
+    .mobile-nav-drawer {
+      display: none;
+      background: linear-gradient(180deg, #072a15 0%, #051d0e 100%);
+      border-top: 1.5px solid rgba(134, 239, 172, 0.3);
+      padding: 16px 18px 20px 18px;
+      border-radius: 0 0 24px 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+      animation: drawerSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes drawerSlideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .mobile-nav-drawer.active {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mobile-drawer-link {
+      color: #f1f5f9;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.2s ease;
+    }
+
+    .mobile-drawer-link-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mobile-drawer-icon-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(16, 185, 129, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #86efac;
+    }
+
+    .mobile-drawer-icon-box svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .mobile-drawer-arrow {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .mobile-drawer-link:hover,
+    .mobile-drawer-link:active {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #86efac;
+      color: #ffffff;
+      transform: translateX(4px);
+    }
+
+    /* Main Container: Adjusted for 78px fixed top-header */
+    .main-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 108px 24px 90px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Badges Row */
+    .hero-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: nowrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .tag-specialists {
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #0d5229;
+      background: #eafbf0;
+      padding: 6px 16px;
+      border-radius: 999px;
+      border: 1.2px solid #86efac;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .tag-specialists svg {
+      width: 15px;
+      height: 15px;
+      fill: #eab308;
+      flex-shrink: 0;
+    }
+
+    .tn-location-box {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border: 1.2px solid #86efac;
+      padding: 6px 16px;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0f172a;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .tn-location-box .pin-icon {
+      width: 15px;
+      height: 15px;
+      fill: #0d5229;
+      flex-shrink: 0;
+    }
+
+    .tn-location-box .loc-bold {
+      color: #0f172a;
+      font-weight: 800;
+    }
+
+    .tn-location-box .loc-pipe {
+      color: #cbd5e1;
+      margin: 0 2px;
+    }
+
+    .tn-location-box .loc-sub {
+      color: #0d763e;
+      font-weight: 600;
+    }
+
+    /* Hero Main Grid */
+    .hero-main-row {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 36px;
+      align-items: start;
+      margin-bottom: 22px;
+    }
+
+    @media (max-width: 960px) {
+      .hero-main-row {
+        grid-template-columns: 1fr;
+        gap: 22px;
+      }
+    }
+
+    /* Left Column */
+    .hero-left-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .main-title {
+      font-size: clamp(2.3rem, 4.2vw, 3.7rem);
+      font-weight: 800;
+      line-height: 1.16;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .drill-wrap {
+      position: relative;
+      display: inline-block;
+      color: var(--emerald-text);
+    }
+
+    .swoosh-brush-drilling {
+      position: absolute;
+      left: 0;
+      bottom: -8px;
+      width: 100%;
+      height: 14px;
+      pointer-events: none;
+    }
+
+    .hero-tagline-sentence {
+      font-size: clamp(0.94rem, 1.4vw, 1.08rem);
+      color: #475569;
+      font-weight: 500;
+      line-height: 1.55;
+      margin-top: 4px;
+      margin-bottom: 20px;
+      max-width: 580px;
+    }
+
+    /* Action Buttons */
+    .buttons-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .btn-calc-main {
+      background: linear-gradient(135deg, #fef08a 0%, #fde047 50%, #facc15 100%);
+      color: #0f172a;
+      font-size: 1.02rem;
+      font-weight: 800;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: 2px solid #fef08a;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(250, 204, 21, 0.4);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-calc-main .btn-txt-short,
+    .btn-phone-main .btn-txt-short {
+      display: none;
+    }
+    .btn-calc-main .btn-txt-full,
+    .btn-phone-main .btn-txt-full {
+      display: inline;
+    }
+
+    .btn-calc-main:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(250, 204, 21, 0.5);
+    }
+
+    .btn-phone-main {
+      background: #ffffff;
+      color: #0f172a;
+      font-size: 1.02rem;
+      font-weight: 800;
+      padding: 13px 26px;
+      border-radius: 999px;
+      border: 1.5px solid #cbd5e1;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      transition: all 0.2s;
+    }
+
+    .btn-phone-main:hover {
+      border-color: #10b981;
+      color: #0d763e;
+      transform: translateY(-2px);
+    }
+
+    /* Exact Trust Badges Row with Pipe Dividers */
+    .trust-badges-inline-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 4px;
+    }
+
+    .trust-badge-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .trust-check-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #0d763e;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.70rem;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .trust-pipe-sep {
+      width: 1px;
+      height: 18px;
+      background: #cbd5e1;
+      opacity: 0.9;
+    }
+
+    /* Right Column: 4 Category Boxes + Slogan block */
+    .hero-right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .improved-category-panel {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      width: 100%;
+    }
+
+    .cat-box-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-top: 3.5px solid #10b981;
+      border-radius: 18px;
+      padding: 15px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .cat-box-card:hover {
+      border-color: #10b981;
+      border-top-color: #059669;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 26px rgba(16, 185, 129, 0.15);
+    }
+
+    .cat-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .cat-icon-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #f0fdf4;
+      border: 1.5px solid #bbf7d0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      flex-shrink: 0;
+      transition: transform 0.2s;
+    }
+
+    .cat-box-card:hover .cat-icon-circle {
+      transform: scale(1.06);
+    }
+
+    .cat-arrow-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 1.5px solid #bbf7d0;
+      color: #0d763e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 800;
+      transition: all 0.2s;
+    }
+
+    .cat-box-card:hover .cat-arrow-btn {
+      background: #0d763e;
+      color: #ffffff;
+      border-color: #0d763e;
+    }
+
+    .cat-card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .cat-box-name {
+      font-size: 0.90rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.25;
+    }
+
+    .cat-box-sub {
+      font-size: 0.72rem;
+      color: #64748b;
+      font-weight: 500;
+      line-height: 1.35;
+    }
+
+    /* Slogan Section - Centered Text with Valluvar Avatar matching img-1 */
+    .slogan-highlight-block {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 18px;
+      padding: 12px 24px;
+      background: #ffffff;
+      border: 1.5px solid #dcfce7;
+      border-radius: 20px;
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.08);
+      position: relative;
+      overflow: visible;
+      margin-top: 36px; /* Desktop: innum nalla keela இறக்கியாச்சு */
+    }
+
+    .slogan-valluvar-avatar {
+      width: 58px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .slogan-valluvar-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.18));
+      transform: scale(1.18);
+      transition: transform 0.2s ease;
+    }
+
+    .slogan-highlight-block:hover .slogan-valluvar-avatar img {
+      transform: scale(1.24);
+    }
+
+    /* Text Centered within its space as requested in img-1 */
+    .slogan-text-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      gap: 3px;
+      padding-right: 28px; /* Counterbalances avatar for true horizontal centering */
+    }
+
+    .slogan-tamil-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0d763e;
+      position: relative;
+      display: inline-block;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .slogan-tamil-title .slogan-brush-underline {
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 100%;
+      height: 10px;
+      pointer-events: none;
+    }
+
+    .slogan-eng-sub {
+      margin-top: 5px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #1e293b;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* Enhanced & Polished 4-Metric Trust Features Bar (img-2 improvement) */
+    .trust-features-card {
+      background: linear-gradient(180deg, #ffffff 0%, #fafffc 100%);
+      border: 1.5px solid #e2e8f0;
+      border-radius: 22px;
+      padding: 18px 32px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      align-items: center;
+      gap: 20px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04), 0 2px 8px rgba(16, 185, 129, 0.04);
+      margin-top: 40px;
+      margin-bottom: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .trust-features-card:hover {
+      box-shadow: 0 14px 36px rgba(15, 23, 42, 0.07), 0 4px 12px rgba(16, 185, 129, 0.08);
+      border-color: #cbd5e1;
+    }
+
+    .trust-feat-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+      min-width: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .trust-feat-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .trust-feat-item:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 15%;
+      height: 70%;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(226, 232, 240, 0) 0%, #cbd5e1 50%, rgba(226, 232, 240, 0) 100%);
+    }
+
+    .trust-feat-icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: #f0fdf4;
+      border: 1.5px solid #dcfce7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #059669;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.12);
+      transition: all 0.2s ease;
+    }
+
+    .trust-feat-item:hover .trust-feat-icon-wrap {
+      background: #10b981;
+      color: #ffffff;
+      transform: scale(1.08);
+      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.28);
+    }
+
+    .trust-feat-icon-wrap svg {
+      width: 26px;
+      height: 26px;
+      stroke: currentColor;
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      transition: stroke 0.2s ease;
+    }
+
+    .trust-feat-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .trust-feat-title {
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.15;
+      white-space: nowrap;
+      letter-spacing: -0.01em;
+    }
+
+    .trust-feat-sub {
+      font-size: 0.78rem;
+      color: #64748b;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    /* Google Reviews Star Badge - Directly Below Trust Bar */
+    .google-reviews-badge-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      width: 100%;
+    }
+
+    .google-reviews-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 20px;
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 999px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+      text-decoration: none;
+      color: #0f172a;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .google-reviews-badge:hover {
+      transform: translateY(-2px);
+      border-color: #facc15;
+      box-shadow: 0 8px 22px rgba(250, 204, 21, 0.25);
+    }
+
+    .google-icon-svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    .google-stars-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .google-star-svg {
+      width: 17px;
+      height: 17px;
+      fill: #f59e0b; /* Golden Amber Star */
+    }
+
+    .google-rating-num {
+      font-weight: 900;
+      font-size: 0.95rem;
+      color: #0f172a;
+      margin-left: 3px;
+    }
+
+    .google-badge-sep {
+      width: 1px;
+      height: 16px;
+      background: #cbd5e1;
+    }
+
+    .google-read-review-txt {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0d763e;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: gap 0.2s ease;
+    }
+
+    .google-reviews-badge:hover .google-read-review-txt {
+      gap: 8px;
+      color: #059669;
+    }
+
+    .google-arrow-icon {
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+
+
+    /* Fixed Bottom Scroll-Driven Rig Track */
+    .fixed-scroll-rig-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 62px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(14px);
+      border-top: 2px solid #86efac;
+      box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.08);
+      z-index: 99;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .fixed-rig-road {
+      position: relative;
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+
+    .fixed-road-line {
+      position: absolute;
+      bottom: 8px;
+      left: 10px;
+      right: 10px;
+      height: 3px;
+      background: repeating-linear-gradient(90deg, #10b981 0, #10b981 18px, transparent 18px, transparent 36px);
+      opacity: 0.85;
+    }
+
+    .fixed-rig-truck {
+      position: absolute;
+      bottom: 4px;
+      left: 0;
+      width: 76px;
+      height: 66px;
+      will-change: transform;
+      transform: translate3d(0, 0, 0);
+      cursor: grab;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+      pointer-events: auto;
+    }
+
+    .fixed-rig-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 980px) {
+      .menu-toggle-btn {
+        display: flex !important; /* Shown ONLY on mobile and tablet screens */
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-header {
+        padding: 10px 14px;
+        border-radius: 0 0 20px 20px;
+      }
+      .brand-box {
+        gap: 10px;
+      }
+      .brand-logo-circle {
+        width: 40px;
+        height: 40px;
+      }
+      .brand-main-title {
+        font-size: clamp(0.80rem, 3.8vw, 1rem);
+        line-height: 1.12;
+        letter-spacing: 0.03em;
+      }
+      .brand-tamil-sub {
+        font-size: clamp(0.60rem, 2.6vw, 0.72rem);
+      }
+      .header-actions {
+        gap: 12px;
+      }
+      .rate-btn {
+        padding: 6px 13px;
+        font-size: 0.78rem;
+        gap: 5px;
+      }
+      .menu-toggle-btn {
+        width: 36px;
+        height: 36px;
+      }
+      .menu-toggle-btn span {
+        width: 18px;
+      }
+      .main-wrapper {
+        padding: 82px 18px 75px 18px; /* Adjusted for larger mobile header + clearance */
+      }
+
+      /* Mobile Top Badges: 1 Single Row */
+      .hero-top-row {
+        flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        gap: 6px !important;
+        margin-bottom: 12px;
+      }
+      .tag-specialists {
+        font-size: 0.62rem !important;
+        padding: 4px 8px !important;
+        gap: 4px !important;
+        flex: 1 1 auto;
+        justify-content: center;
+      }
+      .tag-specialists svg {
+        width: 10px !important;
+        height: 10px !important;
+      }
+      .tn-location-box {
+        font-size: 0.62rem !important;
+        padding: 4px 8px !important;
+        gap: 4px !important;
+        flex: 1 1 auto;
+        justify-content: center;
+      }
+      .tn-location-box .pin-icon {
+        width: 10px !important;
+      }
+
+      .main-title {
+        font-size: clamp(1.75rem, 6vw, 2.2rem);
+        line-height: 1.12;
+      }
+      .hero-tagline-sentence {
+        font-size: 0.82rem;
+        line-height: 1.45;
+        margin-bottom: 14px;
+      }
+
+      /* Smart Compact Buttons Container on Mobile */
+      .buttons-container {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+        margin-bottom: 12px;
+      }
+      .btn-calc-main .btn-txt-full,
+      .btn-phone-main .btn-txt-full {
+        display: none !important;
+      }
+      .btn-calc-main .btn-txt-short,
+      .btn-phone-main .btn-txt-short {
+        display: inline !important;
+      }
+      .btn-calc-main {
+        padding: 8px 6px !important;
+        font-size: 0.74rem !important;
+        font-weight: 700 !important;
+        border-radius: 999px !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        white-space: nowrap !important;
+      }
+      .btn-calc-main .btn-arrow {
+        font-size: 0.74rem !important;
+      }
+      .btn-phone-main {
+        padding: 8px 6px !important;
+        font-size: 0.74rem !important;
+        font-weight: 700 !important;
+        border-radius: 999px !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        white-space: nowrap !important;
+      }
+
+      /* Trust Badges Inline Mobile */
+      .trust-badges-inline-row {
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 6px;
+      }
+      .trust-badge-item {
+        font-size: 0.72rem;
+        gap: 5px;
+      }
+      .trust-check-icon {
+        width: 16px;
+        height: 16px;
+        font-size: 0.58rem;
+      }
+      .trust-pipe-sep {
+        height: 14px;
+      }
+
+      /* 4 Categories on Mobile: 1 Row */
+      .improved-category-panel {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 5px;
+      }
+      .cat-box-card {
+        padding: 8px 3px;
+        border-top: 3px solid #10b981 !important;
+        border-radius: 12px;
+        align-items: center;
+        text-align: center;
+        gap: 4px;
+      }
+      .cat-card-top {
+        justify-content: center;
+        width: 100%;
+      }
+      .cat-icon-circle {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+      }
+      .cat-arrow-btn {
+        display: none;
+      }
+      .cat-box-name {
+        font-size: 0.58rem;
+        line-height: 1.1;
+        word-break: break-word;
+        text-align: center;
+      }
+      .cat-box-sub {
+        display: none;
+      }
+      .slogan-highlight-block {
+        margin-top: 6px;
+        padding: 8px 10px;
+      }
+      .slogan-tamil-title {
+        font-size: 1.12rem;
+      }
+      .slogan-eng-sub {
+        font-size: 0.62rem;
+        letter-spacing: 0.1em;
+      }
+
+      /* 4-Metric Trust Card on Mobile: Strictly 1 SINGLE LINE as requested */
+      .trust-features-card {
+        grid-template-columns: repeat(4, 1fr) !important;
+        padding: 12px 6px !important;
+        gap: 4px !important;
+        border-radius: 16px !important;
+        margin-top: 16px !important;
+      }
+      .trust-feat-item {
+        gap: 5px !important;
+        align-items: center;
+      }
+      .trust-feat-item:not(:last-child)::after {
+        right: -2px;
+        top: 15%;
+        height: 70%;
+        display: block !important;
+      }
+      .trust-feat-icon-wrap {
+        width: 26px !important;
+        height: 26px !important;
+        border-radius: 8px !important;
+        flex-shrink: 0;
+      }
+      .trust-feat-icon-wrap svg {
+        width: 16px !important;
+        height: 16px !important;
+        stroke-width: 2.2;
+      }
+      .trust-feat-text {
+        gap: 1px;
+      }
+      .trust-feat-title {
+        font-size: 0.66rem !important;
+        line-height: 1.1;
+      }
+      .trust-feat-sub {
+        font-size: 0.46rem !important;
+        line-height: 1.1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .slogan-highlight-block {
+        margin-top: 6px;
+        padding: 8px 12px;
+        gap: 8px;
+      }
+      .slogan-valluvar-avatar {
+        width: 44px;
+        height: 44px;
+      }
+      .slogan-valluvar-avatar img {
+        transform: scale(1.12);
+      }
+      .slogan-text-group {
+        padding-right: 0 !important;
+        align-items: center !important;
+        text-align: center !important;
+      }
+      .slogan-tamil-title {
+        font-size: 1.02rem;
+      }
+      .slogan-eng-sub {
+        font-size: 0.56rem;
+        letter-spacing: 0.08em;
+      }
+
+      /* Google Reviews Badge Mobile */
+      .google-reviews-badge-container {
+        margin-top: 10px;
+      }
+      .google-reviews-badge {
+        padding: 6px 14px;
+        gap: 8px;
+      }
+      .google-icon-svg {
+        width: 16px;
+        height: 16px;
+      }
+      .google-star-svg {
+        width: 13px;
+        height: 13px;
+      }
+      .google-rating-num {
+        font-size: 0.82rem;
+      }
+      .google-badge-sep {
+        height: 12px;
+      }
+      .google-read-review-txt {
+        font-size: 0.72rem;
+      }
+
+
+
+      /* Mobile Eco Leaf Decor adjustments */
+      .bg-leaf-decor-left {
+        width: 180px;
+        height: 340px;
+        opacity: 0.45;
+      }
+      .bg-leaf-decor-right {
+        width: 200px;
+        height: 360px;
+        opacity: 0.45;
+      }
+
+      .fixed-scroll-rig-bar {
+        height: 50px;
+      }
+      .fixed-rig-truck {
+        width: 54px;
+        height: 46px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Logo Watermark, Sensor Rings & Eco Leaf Curves -->
+  <div class="global-bg-logo-layer" aria-hidden="true">
+    <!-- Left Eco Leaf Motif matching user uploaded image -->
+    <div class="bg-leaf-decor-left">
+      <svg class="bg-leaf-svg" viewBox="0 0 380 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Big organic curved soft leaf 1 with pointed eco tip -->
+        <path d="M-40 60 C80 100 240 220 190 420 C100 370 -10 300 -60 100 Z" fill="#86efac" opacity="0.45"/>
+        <!-- Accent curved inner soft leaf 2 -->
+        <path d="M-80 200 C40 240 160 360 90 520 C20 460 -40 380 -80 200 Z" fill="#34d399" opacity="0.35"/>
+        <!-- Floating eco circles/dew drops -->
+        <circle cx="210" cy="220" r="22" fill="#a7f3d0" opacity="0.6"/>
+        <circle cx="270" cy="320" r="14" fill="#86efac" opacity="0.5"/>
+        <circle cx="160" cy="460" r="30" fill="#bbf7d0" opacity="0.5"/>
+      </svg>
+    </div>
+
+    <!-- Right Eco Leaf Motif matching user uploaded image -->
+    <div class="bg-leaf-decor-right">
+      <svg class="bg-leaf-svg" viewBox="0 0 420 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Big organic curved soft leaf right -->
+        <path d="M460 40 C280 120 180 300 240 500 C340 440 440 340 480 80 Z" fill="#86efac" opacity="0.45"/>
+        <!-- Accent curved soft leaf right 2 -->
+        <path d="M490 220 C340 280 220 440 300 580 C390 520 460 420 500 240 Z" fill="#34d399" opacity="0.32"/>
+        <!-- Floating eco circles/dew drops matching user's image right side -->
+        <circle cx="210" cy="180" r="26" fill="#a7f3d0" opacity="0.55"/>
+        <circle cx="150" cy="310" r="16" fill="#86efac" opacity="0.5"/>
+        <circle cx="220" cy="450" r="38" fill="#bbf7d0" opacity="0.55"/>
+      </svg>
+    </div>
+
+    <!-- Sensor rings around center logo -->
+    <div class="global-sensor-ring ring-1"></div>
+    <div class="global-sensor-ring ring-2"></div>
+    <div class="global-sensor-ring ring-3"></div>
+
+    <!-- Center Logo Watermark (Kept completely clear of leaves) -->
+    <div class="global-bg-logo">
+      <img src="logo.png" alt="" onerror="this.style.display='none'">
+    </div>
+  </div>
+
+  <!-- Top Curved Menu Bar -->
+  <header class="top-header" id="topHeader" data-nav="navbar">
+    <div class="header-container">
+      <a href="#home" class="brand-box">
+        <div class="brand-logo-circle">
+          <img src="logo.png" alt="Anjaneya Logo" onerror="this.src='favicon.png'">
+        </div>
+        <div class="brand-text-col">
+          <div class="brand-main-title">
+            <span class="white-part">ANJANEYA</span> <span class="yellow-part">BOREWELLS</span>
+          </div>
+          <div class="brand-tamil-sub">ஆழமான நம்பிக்கை!</div>
+        </div>
+      </a>
+
+      <!-- Original Page Menu Items with SVGs (Desktop) -->
+      <nav class="desktop-nav-menu">
+        <a href="#home" class="nav-item-link">
+          <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+          Home
+        </a>
+        <a href="#features" class="nav-item-link">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Features
+        </a>
+        <a href="#services" class="nav-item-link">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Services
+        </a>
+        <a href="#gallery" class="nav-item-link">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+          Gallery
+        </a>
+        <a href="#faq" class="nav-item-link">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          FAQ
+        </a>
+        <a href="#contact" class="nav-item-link">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Contact
+        </a>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Rate Button with Calculator Icon -->
+        <a href="#calculator" class="rate-btn">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+          <span>Rate</span>
+        </a>
+        <!-- Hamburger Menu Button (Rendered ONLY on mobile/tablet via media query) -->
+        <button class="menu-toggle-btn" id="navToggleBtn" aria-label="Toggle Navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Enhanced Mobile Slide-Down Drawer -->
+    <div class="mobile-nav-drawer" id="mobileNavDrawer">
+      <a href="#home" class="mobile-drawer-link">
+        <div class="mobile-drawer-link-left">
+          <div class="mobile-drawer-icon-box">
+            <svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+          </div>
+          <span>Home</span>
+        </div>
+        <span class="mobile-drawer-arrow">›</span>
+      </a>
+
+      <a href="#features" class="mobile-drawer-link">
+        <div class="mobile-drawer-link-left">
+          <div class="mobile-drawer-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <span>Features</span>
+        </div>
+        <span class="mobile-drawer-arrow">›</span>
+      </a>
+
+      <a href="#services" class="mobile-drawer-link">
+        <div class="mobile-drawer-link-left">
+          <div class="mobile-drawer-icon-box">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          </div>
+          <span>Services</span>
+        </div>
+        <span class="mobile-drawer-arrow">›</span>
+      </a>
+
+      <a href="#gallery" class="mobile-drawer-link">
+        <div class="mobile-drawer-link-left">
+          <div class="mobile-drawer-icon-box">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21,15 16,10 5,21"/></svg>
+          </div>
+          <span>Gallery</span>
+        </div>
+        <span class="mobile-drawer-arrow">›</span>
+      </a>
+
+      <a href="#faq" class="mobile-drawer-link">
+        <div class="mobile-drawer-link-left">
+          <div class="mobile-drawer-icon-box">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <span>FAQ</span>
+        </div>
+        <span class="mobile-drawer-arrow">›</span>
+      </a>
+
+      <a href="#contact" class="mobile-drawer-link">
+        <div class="mobile-drawer-link-left">
+          <div class="mobile-drawer-icon-box">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <span>Contact</span>
+        </div>
+        <span class="mobile-drawer-arrow">›</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-wrapper">
+
+    <!-- Top Badges (1 Line on Desktop & Mobile) -->
+    <div class="hero-top-row">
+      <div class="tag-specialists">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        TRUSTED BOREWELL SPECIALISTS
+      </div>
+
+      <div class="tn-location-box">
+        <svg class="pin-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        <span class="loc-bold">NAMAKKAL</span>
+        <span class="loc-pipe">|</span>
+        <span class="loc-sub">Tamil Nadu</span>
+      </div>
+    </div>
+
+    <!-- Hero Main Row -->
+    <div class="hero-main-row">
+      
+      <!-- Left Column: Headline, Sentence, Action Buttons & Exact Piped Trust Badges -->
+      <div class="hero-left-col">
+        <h1 class="main-title">
+          Reliable <br>
+          <span class="drill-wrap">
+            Borewell Drilling
+            <!-- Yellow brush curve directly under "Borewell Drilling" -->
+            <svg class="swoosh-brush-drilling" viewBox="0 0 280 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 8C65 2 215 2 277 10" stroke="#facc15" stroke-width="4.8" stroke-linecap="round"/>
+            </svg>
+          </span> <br>
+          for a Brighter Tomorrow
+        </h1>
+
+        <!-- Subtitle sentence -->
+        <p class="hero-tagline-sentence">
+          Quality borewell solutions for homes, farms and businesses. Depth. Experience. Your Trust.
+        </p>
+
+        <!-- Action Buttons -->
+        <div class="buttons-container">
+          <a href="calculator.html" class="btn-calc-main">
+            <span class="btn-icon">🧮</span>
+            <span class="btn-txt-full">Calculate Cost Instantly</span>
+            <span class="btn-txt-short">Calculate Cost</span>
+            <span class="btn-arrow">→</span>
+          </a>
+
+          <a href="tel:+919659657777" class="btn-phone-main">
+            <span class="btn-icon">📞</span>
+            <span class="btn-txt-full">+91 965 965 7777</span>
+            <span class="btn-txt-short">965 965 7777</span>
+          </a>
+        </div>
+
+        <!-- Exact Trust Badges Row with Pipe Dividers -->
+        <div class="trust-badges-inline-row">
+          <div class="trust-badge-item">
+            <span class="trust-check-icon">✓</span>
+            <span>Transparent Pricing</span>
+          </div>
+          <span class="trust-pipe-sep"></span>
+          <div class="trust-badge-item">
+            <span class="trust-check-icon">✓</span>
+            <span>Experienced Team</span>
+          </div>
+          <span class="trust-pipe-sep"></span>
+          <div class="trust-badge-item">
+            <span class="trust-check-icon">✓</span>
+            <span>Timely Service</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: 4 Category Boxes + Slogan Block -->
+      <div class="hero-right-col">
+        
+        <!-- 4 Category Boxes with Arrow Button & Green Top Edge Accent -->
+        <div class="improved-category-panel">
+          
+          <div class="cat-box-card">
+            <div class="cat-card-top">
+              <div class="cat-icon-circle">🏠</div>
+              <div class="cat-arrow-btn">→</div>
+            </div>
+            <div class="cat-card-body">
+              <div class="cat-box-name">Residential Borewells</div>
+              <div class="cat-box-sub">Homes &amp; communities</div>
+            </div>
+          </div>
+
+          <div class="cat-box-card">
+            <div class="cat-card-top">
+              <div class="cat-icon-circle">🏭</div>
+              <div class="cat-arrow-btn">→</div>
+            </div>
+            <div class="cat-card-body">
+              <div class="cat-box-name">Commercial Borewells</div>
+              <div class="cat-box-sub">Apartments &amp; complexes</div>
+            </div>
+          </div>
+
+          <div class="cat-box-card">
+            <div class="cat-card-top">
+              <div class="cat-icon-circle">🌱</div>
+              <div class="cat-arrow-btn">→</div>
+            </div>
+            <div class="cat-card-body">
+              <div class="cat-box-name">Agriculture Borewells</div>
+              <div class="cat-box-sub">Support for a greener tomorrow</div>
+            </div>
+          </div>
+
+          <div class="cat-box-card">
+            <div class="cat-card-top">
+              <div class="cat-icon-circle">🏢</div>
+              <div class="cat-arrow-btn">→</div>
+            </div>
+            <div class="cat-card-body">
+              <div class="cat-box-name">Industrial Borewells</div>
+              <div class="cat-box-sub">High-depth drilling solutions</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Slogan Block below Category Boxes (Updated with Thiruvalluvar Portrait) -->
+        <div class="slogan-highlight-block">
+          <div class="slogan-valluvar-avatar">
+            <img src="valluvar.png" alt="திருவள்ளுவர்" onerror="this.src='favicon.png'">
+          </div>
+          <div class="slogan-text-group">
+            <div class="slogan-tamil-title">
+              "நீரின்றி அமையாது உலகு"
+              <!-- Yellow brush curve underline (thinned) -->
+              <svg class="slogan-brush-underline" viewBox="0 0 220 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 6C55 2 170 2 218 8" stroke="#facc15" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="slogan-eng-sub">
+              WATER BUILDS A BETTER TOMORROW
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- EXACT 4-METRIC TRUST FEATURES CARD (Properly Positioned) -->
+    <div class="trust-features-card">
+      
+      <!-- 1. 1000+ Happy Customers -->
+      <div class="trust-feat-item">
+        <div class="trust-feat-icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <div class="trust-feat-text">
+          <div class="trust-feat-title">1000+</div>
+          <div class="trust-feat-sub">Happy Customers</div>
+        </div>
+      </div>
+
+      <!-- 2. Trusted in Namakkal & Beyond -->
+      <div class="trust-feat-item">
+        <div class="trust-feat-icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          </svg>
+        </div>
+        <div class="trust-feat-text">
+          <div class="trust-feat-title">Trusted</div>
+          <div class="trust-feat-sub">in Namakkal &amp; Beyond</div>
+        </div>
+      </div>
+
+      <!-- 3. Sustainable Water Solutions -->
+      <div class="trust-feat-item">
+        <div class="trust-feat-icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+            <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+          </svg>
+        </div>
+        <div class="trust-feat-text">
+          <div class="trust-feat-title">Sustainable</div>
+          <div class="trust-feat-sub">Water Solutions</div>
+        </div>
+      </div>
+
+      <!-- 4. On-Time Service Support -->
+      <div class="trust-feat-item">
+        <div class="trust-feat-icon-wrap">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+        </div>
+        <div class="trust-feat-text">
+          <div class="trust-feat-title">On-Time</div>
+          <div class="trust-feat-sub">Service Support</div>
+        </div>
+      </div>
+
+    </div>
+    <!-- END .trust-features-card -->
+
+    <!-- Google Reviews Star Badge with Link to Reviews -->
+    <div class="google-reviews-badge-container">
+      <a href="https://www.google.com/search?q=Anjaneya+Borewells+Namakkal+reviews" target="_blank" rel="noopener noreferrer" class="google-reviews-badge" title="Read Authentic Google Customer Reviews for Anjaneya Borewells">
+        <!-- Google Multicolored G Icon -->
+        <svg class="google-icon-svg" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+
+        <!-- 5 Amber Stars -->
+        <div class="google-stars-row" aria-label="5 out of 5 stars">
+          <svg class="google-star-svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <svg class="google-star-svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <svg class="google-star-svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <svg class="google-star-svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <svg class="google-star-svg" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          <span class="google-rating-num">4.9</span>
+        </div>
+
+        <span class="google-badge-sep"></span>
+
+        <!-- Read Reviews Action -->
+        <span class="google-read-review-txt">
+          <span>Read Reviews (312+)</span>
+          <span class="google-arrow-icon">→</span>
+        </span>
+      </a>
+    </div>
+
+  <!-- Fixed Bottom Scroll-Driven Rig Track -->
+  <div class="fixed-scroll-rig-bar" id="fixedScrollRigBar">
+    <div class="fixed-rig-road" id="fixedRigRoad">
+      <div class="fixed-road-line"></div>
+      <div class="fixed-rig-truck" id="fixedRigTruck">
+        <img src="rig-illustration.png" alt="Anjaneya Drilling Rig" class="fixed-rig-img">
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Script -->
+  <script>
+    // 1. Mobile Menu Toggle with Animation
+    const toggleBtn = document.getElementById('navToggleBtn');
+    const mobileDrawer = document.getElementById('mobileNavDrawer');
+    if (toggleBtn && mobileDrawer) {
+      toggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        mobileDrawer.classList.toggle('active');
+        toggleBtn.classList.toggle('open');
+      });
+
+      document.addEventListener('click', function(e) {
+        if (!mobileDrawer.contains(e.target) && !toggleBtn.contains(e.target)) {
+          mobileDrawer.classList.remove('active');
+          toggleBtn.classList.remove('open');
+        }
+      });
+
+      const links = mobileDrawer.querySelectorAll('.mobile-drawer-link');
+      links.forEach(link => {
+        link.addEventListener('click', function() {
+          mobileDrawer.classList.remove('active');
+          toggleBtn.classList.remove('open');
+        });
+      });
+    }
+
+    // 2. Scroll-Driven Rig Movement
+    (function initScrollRig() {
+      const truck = document.getElementById('fixedRigTruck');
+      const road = document.getElementById('fixedRigRoad');
+      if (!truck || !road) return;
+
+      function updateTruckOnScroll() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+        const scrollHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight) - window.innerHeight;
+        
+        if (scrollHeight <= 0) return;
+        
+        const progress = Math.min(Math.max(scrollTop / scrollHeight, 0), 1);
+        const roadWidth = road.clientWidth || window.innerWidth;
+        const truckWidth = truck.clientWidth || 60;
+        const maxTravel = Math.max(1, roadWidth - truckWidth - 15);
+        
+        const translateX = progress * maxTravel;
+        truck.style.transform = 'translate3d(' + translateX + 'px, 0, 0)';
+      }
+
+      window.addEventListener('scroll', updateTruckOnScroll, { passive: true });
+      window.addEventListener('resize', updateTruckOnScroll, { passive: true });
+      updateTruckOnScroll();
+    })();
+  </script>
+
+</body>
+</html>
