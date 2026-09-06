@@ -3567,14 +3567,22 @@ function initScrollLorry() {
     function getMaxTravel() {
         const fixedRoad = fixedBar.querySelector('.fixed-rig-road') || fixedBar;
         const roadWidth = fixedRoad.clientWidth || window.innerWidth;
-        const truckWidth = fixedTruck.clientWidth || 75;
+        const truckWidth = fixedTruck.clientWidth || 76;
         const badge = fixedBar.querySelector('.fixed-road-badge');
         const badgeWidth = badge ? (badge.clientWidth + 16) : 90;
         return Math.max(1, roadWidth - truckWidth - badgeWidth);
     }
 
-    function applyTruckTransform(x, tilt) {
-        const transformStr = `translate3d(${x}px, 0, 0) rotate(${tilt}deg)`;
+    // Mathematical elevation profile identical to the SVG terrain line
+    function getTerrainElevation(pct) {
+        return -7.0 * Math.sin(pct * Math.PI * 3.0)
+               - 4.0 * Math.sin(pct * Math.PI * 7.0 + 0.5)
+               - 2.5 * Math.sin(pct * Math.PI * 15.0 + 1.0)
+               + 1.5 * Math.cos(pct * Math.PI * 25.0);
+    }
+
+    function applyTruckTransform(x, y, tilt) {
+        const transformStr = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${tilt.toFixed(1)}deg)`;
         fixedTruck.style.webkitTransform = transformStr;
         fixedTruck.style.transform = transformStr;
     }
@@ -3586,16 +3594,32 @@ function initScrollLorry() {
         
         // Progress strictly clamped between 0 and 1 (prevents iOS Safari rubber-band bounce negative values)
         const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
-        
-        // Subtle tilt depending on scroll speed/direction (dampened)
-        const scrollDelta = scrollTop - lastScrollY;
-        const tilt = Math.max(-4, Math.min(4, scrollDelta * 0.08));
-        lastScrollY = scrollTop;
-
         const maxTravel = getMaxTravel();
         const fixedX = progress * maxTravel;
 
-        applyTruckTransform(fixedX, tilt);
+        const fixedRoad = fixedBar.querySelector('.fixed-rig-road') || fixedBar;
+        const roadWidth = fixedRoad.clientWidth || window.innerWidth;
+        const truckWidth = fixedTruck.clientWidth || 76;
+
+        // Calculate center position along road for exact elevation matching
+        const centerPosPct = Math.min(Math.max((fixedX + truckWidth * 0.45) / roadWidth, 0), 1);
+
+        // Vertical displacement (negative = climbing uphill, positive = descending ditch)
+        const elevY = getTerrainElevation(centerPosPct);
+
+        // Slope calculation: evaluate slight lookahead to find tangent angle
+        const delta = 0.015;
+        const p1 = Math.max(0, centerPosPct - delta);
+        const p2 = Math.min(1, centerPosPct + delta);
+        const dy = getTerrainElevation(p2) - getTerrainElevation(p1);
+        const dx = (p2 - p1) * roadWidth;
+
+        // Natural vehicle pitch angle (degrees) clamped between -18 deg (uphill) and +18 deg (downhill)
+        const rawAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+        const tiltAngle = Math.max(-18, Math.min(18, rawAngle * 1.35));
+
+        lastScrollY = scrollTop;
+        applyTruckTransform(fixedX, elevY, tiltAngle);
         ticking = false;
     }
 
@@ -3625,8 +3649,22 @@ function initScrollLorry() {
 
         const progress = newScrollTop / maxScroll;
         const fixedX = progress * maxTravel;
-        const tilt = deltaX > 0 ? 2 : (deltaX < 0 ? -2 : 0);
-        applyTruckTransform(fixedX, tilt);
+
+        const fixedRoad = fixedBar.querySelector('.fixed-rig-road') || fixedBar;
+        const roadWidth = fixedRoad.clientWidth || window.innerWidth;
+        const truckWidth = fixedTruck.clientWidth || 76;
+        const centerPosPct = Math.min(Math.max((fixedX + truckWidth * 0.45) / roadWidth, 0), 1);
+        const elevY = getTerrainElevation(centerPosPct);
+
+        const delta = 0.015;
+        const p1 = Math.max(0, centerPosPct - delta);
+        const p2 = Math.min(1, centerPosPct + delta);
+        const dy = getTerrainElevation(p2) - getTerrainElevation(p1);
+        const dx = (p2 - p1) * roadWidth;
+        const rawAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+        const tiltAngle = Math.max(-18, Math.min(18, rawAngle * 1.35));
+
+        applyTruckTransform(fixedX, elevY, tiltAngle);
     }
 
     function onDragEnd() {

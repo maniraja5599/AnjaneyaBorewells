@@ -8992,7 +8992,7 @@ img {
     }
 }
 
-/* Fixed Bottom Scroll-Driven Drilling Lorry Rig Track */
+/* Fixed Bottom Scroll-Driven Drilling Lorry Rig Track - Realistic Natural Soil/Mudhills (Kaadu-Medu Mannu) */
 .fixed-scroll-rig-bar {
     position: fixed;
     bottom: 0;
@@ -9001,15 +9001,15 @@ img {
     width: 100%;
     max-width: 100vw;
     overflow: hidden;
-    height: 64px;
-    background: rgba(255, 255, 255, 0.96);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-top: 1.5px solid rgba(34, 197, 94, 0.35);
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+    height: 72px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(254, 249, 240, 0.98) 100%);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 2px solid #e7c89f;
+    box-shadow: 0 -6px 20px rgba(92, 53, 19, 0.08);
     z-index: 990;
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     pointer-events: auto;
     user-select: none;
     -webkit-user-select: none;
@@ -9022,34 +9022,58 @@ img {
     max-width: 1200px;
     margin: 0 auto;
     height: 100%;
-    display: flex;
-    align-items: center;
     overflow: hidden;
     cursor: pointer;
 }
 
-.fixed-road-line {
+/* Undulating Natural Earth/Soil Terrain */
+.fixed-road-terrain-svg {
     position: absolute;
-    bottom: 6px;
-    left: 10px;
-    right: 10px;
-    height: 2.5px;
-    background: repeating-linear-gradient(90deg, #10b981 0, #10b981 16px, transparent 16px, transparent 32px);
-    opacity: 0.75;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.terrain-fill {
+    fill: url(#soilTerrainGradient);
+    opacity: 0.95;
+}
+
+.terrain-track {
+    stroke: #854d0e;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    opacity: 0.85;
+    filter: drop-shadow(0 1px 2px rgba(113, 63, 18, 0.25));
+}
+
+.terrain-ground-base {
+    stroke: #a16207;
+    stroke-width: 1;
+    fill: none;
+    opacity: 0.35;
 }
 
 .fixed-rig-truck {
     position: absolute;
-    bottom: 2px;
+    bottom: 8px;
     left: 0;
-    width: 82px;
-    height: 76px;
+    width: 76px;
+    height: 66px;
     will-change: transform;
+    transform-origin: 50% 90%;
     transform: translate3d(0, 0, 0);
-    transition: transform 0.04s linear;
+    transition: transform 0.08s cubic-bezier(0.25, 1, 0.5, 1);
     pointer-events: auto;
     cursor: grab;
     touch-action: none;
+    z-index: 2;
+    filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.28));
 }
 
 .fixed-rig-truck:active {
@@ -9060,8 +9084,20 @@ img {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25));
-    animation: rigEngineBounce 0.4s infinite alternate ease-in-out;
+    transform-origin: 50% 95%;
+    animation: rigEngineVibe 0.55s ease-in-out infinite alternate;
+}
+
+@keyframes rigEngineVibe {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-0.8px) rotate(0.4deg);
+    }
+    100% {
+        transform: translateY(0.4px) rotate(-0.3deg);
+    }
 }
 
 .fixed-road-badge {
@@ -9072,24 +9108,28 @@ img {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: #f0fdf4;
-    border: 1px solid #86efac;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
     padding: 4px 12px;
     border-radius: 50px;
     font-size: 0.75rem;
     font-weight: 700;
-    color: #15803d;
+    color: #92400e;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    z-index: 3;
 }
 
 @media (max-width: 768px) {
     .fixed-scroll-rig-bar {
+        height: 62px;
+    }
+    .fixed-road-terrain-svg {
         height: 52px;
     }
     .fixed-rig-truck {
         width: 60px;
-        height: 56px;
-        bottom: 2px;
+        height: 52px;
+        bottom: 6px;
     }
     .fixed-road-badge {
         right: 8px;
@@ -13746,63 +13786,6 @@ label.gst-toggle-action-pill,
       font-weight: 800;
     }
 
-    /* Fixed Bottom Scroll-Driven Rig Track */
-    .fixed-scroll-rig-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 62px;
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(14px);
-      border-top: 2px solid #86efac;
-      box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.08);
-      z-index: 99;
-      display: flex;
-      align-items: center;
-      overflow: hidden;
-    }
-
-    .fixed-rig-road {
-      position: relative;
-      width: 100%;
-      max-width: 1240px;
-      margin: 0 auto;
-      height: 100%;
-      display: flex;
-      align-items: center;
-    }
-
-    .fixed-road-line {
-      position: absolute;
-      bottom: 8px;
-      left: 10px;
-      right: 10px;
-      height: 3px;
-      background: repeating-linear-gradient(90deg, #10b981 0, #10b981 18px, transparent 18px, transparent 36px);
-      opacity: 0.85;
-    }
-
-    .fixed-rig-truck {
-      position: absolute;
-      bottom: 4px;
-      left: 0;
-      width: 76px;
-      height: 66px;
-      will-change: transform;
-      transform: translate3d(0, 0, 0);
-      cursor: grab;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
-      pointer-events: auto;
-    }
-
-    .fixed-rig-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
     /* Mobile adjustments */
     @media (max-width: 980px) {
       .menu-toggle-btn {
@@ -14079,14 +14062,6 @@ label.gst-toggle-action-pill,
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-      }
-
-      .fixed-scroll-rig-bar {
-        height: 50px;
-      }
-      .fixed-rig-truck {
-        width: 54px;
-        height: 46px;
       }
     }
   
