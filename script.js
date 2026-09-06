@@ -4937,9 +4937,7 @@ class AdminCommandCenter {
     }
 
     init() {
-        if (this.openBtn) {
-            this.openBtn.addEventListener('click', () => this.open());
-        }
+        // Admin button directly opens admin.html in a new tab without opening popup on current page
         if (this.closeBtn) {
             this.closeBtn.addEventListener('click', () => this.close());
         }

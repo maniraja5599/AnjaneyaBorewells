@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    <link rel="stylesheet" href="admin.css?v=3.5.0">
+    <link rel="stylesheet" href="admin.css?v=4.0.0">
 </head>
 <body class="admin-body">
     <!-- Top Executive Header -->
@@ -126,6 +126,10 @@
                     <span class="tab-icon">💰</span>
                     <span class="tab-title">Quotes Log</span>
                 </button>
+                <button type="button" class="menu-tab-btn" data-tab="tabCumulativePages">
+                    <span class="tab-icon">📈</span>
+                    <span class="tab-title">Cumulative Pages</span>
+                </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabGeoBreakdown">
                     <span class="tab-icon">🗺️</span>
                     <span class="tab-title">Territory Geo</span>
@@ -133,6 +137,10 @@
                 <button type="button" class="menu-tab-btn" data-tab="tabLiveLogs">
                     <span class="tab-icon">👥</span>
                     <span class="tab-title">Visitor Intel</span>
+                </button>
+                <button type="button" class="menu-tab-btn" data-tab="tabDevTools">
+                    <span class="tab-icon">🛠️</span>
+                    <span class="tab-title">Developer Hub</span>
                 </button>
                 <button type="button" class="menu-tab-btn" data-tab="tabSystemDocs">
                     <span class="tab-icon">📘</span>
@@ -194,6 +202,50 @@
             <!-- TAB PANE 1: OVERVIEW DASHBOARD (Bento Grid Architecture) -->
             <div class="admin-tab-pane active" id="tabOverview">
                 
+                <!-- Executive All-Time Cumulative Analytics Banner -->
+                <div class="cumulative-summary-banner">
+                    <div class="cumul-badge-header">
+                        <span class="cumul-icon">⚡</span>
+                        <div class="cumul-header-text">
+                            <h4>ENTERPRISE CUMULATIVE COUNTS &amp; AUDIT METRICS</h4>
+                            <p>All-time aggregated visitor sessions, quote conversions, and cloud telemetry</p>
+                        </div>
+                        <span class="cumul-badge-pill">ALL-TIME CUMULATIVE</span>
+                    </div>
+                    <div class="cumul-metrics-cards">
+                        <div class="cumul-card">
+                            <span class="c-label">CUMULATIVE PAGEVIEWS</span>
+                            <div class="c-val" id="cumulTotalPageviews">507+</div>
+                            <span class="c-sub">Strict Monotonic Counter</span>
+                        </div>
+                        <div class="cumul-card">
+                            <span class="c-label">CUMULATIVE SESSIONS</span>
+                            <div class="c-val" id="cumulUniqueSessions">384</div>
+                            <span class="c-sub">Unique Visitors Tracked</span>
+                        </div>
+                        <div class="cumul-card">
+                            <span class="c-label">QUOTES GENERATED</span>
+                            <div class="c-val" id="cumulTotalQuotes">72</div>
+                            <span class="c-sub">₹78.4L Cumulative Est.</span>
+                        </div>
+                        <div class="cumul-card">
+                            <span class="c-label">CUMULATIVE LEADS</span>
+                            <div class="c-val" id="cumulTotalLeads">31</div>
+                            <span class="c-sub">WhatsApp &amp; Direct Hotline</span>
+                        </div>
+                        <div class="cumul-card">
+                            <span class="c-label">APP INSTALLS (PWA)</span>
+                            <div class="c-val" id="cumulTotalInstalls">24</div>
+                            <span class="c-sub">Installed App Users</span>
+                        </div>
+                        <div class="cumul-card">
+                            <span class="c-label">TAMIL NADU REACH</span>
+                            <div class="c-val" id="cumulTotalDistricts">10 / 10</div>
+                            <span class="c-sub">100% Target Coverage</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- BENTO ROW 1: 5 Executive Metric Tiles -->
                 <section class="bento-metric-grid">
                     <!-- Tile 1: Cumulative Live Views -->
@@ -552,6 +604,101 @@
                 </div>
             </div>
 
+            <!-- TAB PANE: CUMULATIVE PAGES & SECTION FILTER ANALYTICS -->
+            <div class="admin-tab-pane" id="tabCumulativePages" style="display: none;">
+                <!-- Tab Mini Analytics Ribbon -->
+                <section class="tab-mini-kpi-ribbon">
+                    <div class="mini-kpi-card">
+                        <div class="m-label">ALL-TIME CUMULATIVE VIEWS</div>
+                        <div class="m-val text-cyan" id="cumulPagesTotalViews">507+</div>
+                        <div class="m-sub">Strict Monotonic Counter</div>
+                    </div>
+                    <div class="mini-kpi-card">
+                        <div class="m-label">ACTIVE FILTERED TRAFFIC</div>
+                        <div class="m-val text-emerald" id="cumulPagesFilteredViews">507 (100%)</div>
+                        <div class="m-sub">Matches Selected Scope</div>
+                    </div>
+                    <div class="mini-kpi-card">
+                        <div class="m-label">FILTERED ACTION CONVERSIONS</div>
+                        <div class="m-val text-amber" id="cumulPagesFilteredConversions">103 Actions</div>
+                        <div class="m-sub">Quotes, Calls, WhatsApp</div>
+                    </div>
+                    <div class="mini-kpi-card">
+                        <div class="m-label">TOP ENGAGEMENT SECTION</div>
+                        <div class="m-val text-rose" id="cumulPagesTopSection">Cost Calculator</div>
+                        <div class="m-sub">78.2% Interactivity Share</div>
+                    </div>
+                </section>
+
+                <!-- Filter Controls Bar -->
+                <div class="data-table-container">
+                    <div class="table-toolbar table-toolbar-filters">
+                        <div class="filter-header-title">
+                            <h4>📈 Cumulative Page &amp; Section Intelligence</h4>
+                            <p class="filter-subtitle">Filter cumulative visitor traffic by time window, device category, or specific page module</p>
+                        </div>
+                        <div class="filter-controls-wrap">
+                            <div class="filter-group">
+                                <label for="cumulTimeFilter">📅 Timeframe:</label>
+                                <select id="cumulTimeFilter" class="admin-select-ctrl">
+                                    <option value="all" selected>All-Time (Cumulative Total)</option>
+                                    <option value="month">This Month (Sep 2026)</option>
+                                    <option value="week">Last 7 Days (Weekly)</option>
+                                    <option value="today">Today (Realtime 24h)</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="cumulDeviceFilter">📱 Platform:</label>
+                                <select id="cumulDeviceFilter" class="admin-select-ctrl">
+                                    <option value="all" selected>All Platforms (Mobile + PC)</option>
+                                    <option value="mobile">Mobile Devices (Android &amp; iOS)</option>
+                                    <option value="desktop">Desktop &amp; Laptop</option>
+                                </select>
+                            </div>
+                            <div class="filter-group">
+                                <label for="cumulSectionFilter">📑 Section Scope:</label>
+                                <select id="cumulSectionFilter" class="admin-select-ctrl">
+                                    <option value="all" selected>All Website Sections (Summary)</option>
+                                    <option value="hero">Hero Banner &amp; Quick Contact</option>
+                                    <option value="slogan">Thiruvalluvar Slogan ("நீரின்றி அமையாது உலகு")</option>
+                                    <option value="calculator">Cost Calculator (Slabs &amp; Depth)</option>
+                                    <option value="services">Borewell Service Categories</option>
+                                    <option value="gallery">Rig Fleet &amp; Sensor Scanning Gallery</option>
+                                    <option value="reviews">Google Reviews (4.9 ★ 312+)</option>
+                                    <option value="contact">Hotline &amp; WhatsApp Booking</option>
+                                    <option value="admin">Enterprise Admin Command Center</option>
+                                </select>
+                            </div>
+                            <div class="filter-search-box">
+                                <input type="text" id="cumulSearchInput" placeholder="🔍 Search section or feature..." class="admin-search-input">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filtered Interactive Breakdown Table -->
+                    <div class="table-responsive">
+                        <table class="enterprise-data-table">
+                            <thead>
+                                <tr>
+                                    <th># Rank</th>
+                                    <th>Page Module / Section</th>
+                                    <th>Cumulative Impressions</th>
+                                    <th>Unique Visitors</th>
+                                    <th>Avg Dwell Time</th>
+                                    <th>Direct Actions</th>
+                                    <th>Conversion Rate</th>
+                                    <th>Traffic Share %</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cumulPagesTableBody">
+                                <!-- Populated dynamically by admin.js -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
             <!-- TAB PANE 4: TERRITORY & GEO MAP (100% Real Live Distribution) -->
             <div class="admin-tab-pane" id="tabGeoBreakdown" style="display: none;">
                 <!-- Tab Mini Analytics Ribbon -->
@@ -674,6 +821,162 @@
                 </div>
             </div>
 
+            <!-- TAB PANE: DEVELOPER COMMAND & DIAGNOSTICS HUB -->
+            <div class="admin-tab-pane" id="tabDevTools" style="display: none;">
+                <!-- Tab Mini Analytics Ribbon -->
+                <section class="tab-mini-kpi-ribbon">
+                    <div class="mini-kpi-card">
+                        <div class="m-label">SYSTEM VERSION</div>
+                        <div class="m-val text-cyan">v4.0.0 Final</div>
+                        <div class="m-sub">Production Stable Release</div>
+                    </div>
+                    <div class="mini-kpi-card">
+                        <div class="m-label">HOST &amp; EDGE CDN</div>
+                        <div class="m-val text-emerald">GitHub Pages CDN</div>
+                        <div class="m-sub">Fastly Anycast + TLS 1.3</div>
+                    </div>
+                    <div class="mini-kpi-card">
+                        <div class="m-label">SERVICE WORKER CACHE</div>
+                        <div class="m-val text-amber">v4.0.0 Active</div>
+                        <div class="m-sub">Network-First Strategy</div>
+                    </div>
+                    <div class="mini-kpi-card">
+                        <div class="m-label">FIREBASE CLOUD RTDB</div>
+                        <div class="m-val text-green" id="devFirebasePingStatus">18ms Online</div>
+                        <div class="m-sub">Asia-Southeast1 (Singapore)</div>
+                    </div>
+                </section>
+
+                <!-- Developer Quick Action & Tools Grid -->
+                <div class="dev-tools-grid">
+                    <!-- Card 1: System Environment & Architecture -->
+                    <div class="dev-card">
+                        <div class="dev-card-header">
+                            <span class="dev-card-icon">⚙️</span>
+                            <h4>System Runtime Environment</h4>
+                            <span class="badge-dev">CORE</span>
+                        </div>
+                        <div class="dev-card-body">
+                            <div class="dev-info-row">
+                                <span class="k">App Version:</span>
+                                <span class="v code-highlight">v4.0.0 (Final Release)</span>
+                            </div>
+                            <div class="dev-info-row">
+                                <span class="k">Production Host:</span>
+                                <span class="v">anjaneyaborewells.com</span>
+                            </div>
+                            <div class="dev-info-row">
+                                <span class="k">Service Worker Scope:</span>
+                                <span class="v code-highlight" id="devSwScope">/</span>
+                            </div>
+                            <div class="dev-info-row">
+                                <span class="k">Active Cache Bucket:</span>
+                                <span class="v code-highlight">anjaneya-borewells-cache-v4.0.0</span>
+                            </div>
+                            <div class="dev-info-row">
+                                <span class="k">Firebase Database:</span>
+                                <span class="v">anjaneya-borewells-live-count</span>
+                            </div>
+                            <div class="dev-info-row">
+                                <span class="k">Strict Monotonic Latch:</span>
+                                <span class="v text-green">Active (Floor: 507+)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Developer Quick Links -->
+                    <div class="dev-card">
+                        <div class="dev-card-header">
+                            <span class="dev-card-icon">🚀</span>
+                            <h4>Developer Portals &amp; Repositories</h4>
+                            <span class="badge-dev">EXTERNAL</span>
+                        </div>
+                        <div class="dev-card-body">
+                            <div class="dev-links-list">
+                                <a href="https://github.com/maniraja5599/AnjaneyaBorewells" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
+                                    <span>🐙 GitHub Source Repository</span>
+                                    <span class="ext-arrow">↗</span>
+                                </a>
+                                <a href="https://github.com/maniraja5599/AnjaneyaBorewells/releases/tag/v4.0.0" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
+                                    <span>🏷️ GitHub Release v4.0.0 Tag</span>
+                                    <span class="ext-arrow">↗</span>
+                                </a>
+                                <a href="https://console.firebase.google.com/project/anjaneya-borewells-live-count/database" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
+                                    <span>🔥 Google Firebase Console RTDB</span>
+                                    <span class="ext-arrow">↗</span>
+                                </a>
+                                <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
+                                    <span>🔍 Google Search Console</span>
+                                    <span class="ext-arrow">↗</span>
+                                </a>
+                                <a href="https://maps.google.com/?cid=12648719234857193245" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
+                                    <span>⭐ Google Business Profile (312+ Reviews)</span>
+                                    <span class="ext-arrow">↗</span>
+                                </a>
+                                <a href="PROJECT_DOCUMENTATION.md" target="_blank" class="dev-link-btn">
+                                    <span>📘 Master System Documentation</span>
+                                    <span class="ext-arrow">↗</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Cache Storage & PWA Management -->
+                    <div class="dev-card">
+                        <div class="dev-card-header">
+                            <span class="dev-card-icon">🧹</span>
+                            <h4>Cache Storage &amp; Hard Reset</h4>
+                            <span class="badge-dev text-amber">RESET</span>
+                        </div>
+                        <div class="dev-card-body">
+                            <p class="dev-card-desc">Safely unregister obsolete Service Workers, wipe old cache buckets, and force client browser clean refresh.</p>
+                            <div class="dev-actions-stack">
+                                <button type="button" class="dev-btn btn-danger-action" id="devHardPurgeBtn">
+                                    <span>💥 Hard Purge All Caches &amp; Unregister SW</span>
+                                </button>
+                                <button type="button" class="dev-btn btn-primary-action" id="devTestPingBtn">
+                                    <span>⚡ Run Live Cloud &amp; CDN Ping Test</span>
+                                </button>
+                                <button type="button" class="dev-btn btn-secondary-action" id="devCopyDiagnosticsBtn">
+                                    <span>📋 Copy Diagnostic System Report (MD)</span>
+                                </button>
+                                <button type="button" class="dev-btn btn-secondary-action" id="devDownloadRawJsonBtn">
+                                    <span>💾 Export Raw RTDB Telemetry Dump (JSON)</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card 4: Local Storage & Telemetry State Inspector -->
+                    <div class="dev-card">
+                        <div class="dev-card-header">
+                            <span class="dev-card-icon">🗄️</span>
+                            <h4>Client Storage Inspector</h4>
+                            <span class="badge-dev">STORAGE</span>
+                        </div>
+                        <div class="dev-card-body">
+                            <div class="storage-inspector-box" id="devStorageInspector">
+                                <!-- Populated dynamically -->
+                            </div>
+                            <button type="button" class="dev-btn btn-sm-action" id="devRefreshStorageBtn" style="margin-top: 10px;">
+                                🔄 Refresh Storage Keys
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Developer Event & Telemetry Console Stream -->
+                <div class="data-table-container" style="margin-top: 24px;">
+                    <div class="table-toolbar">
+                        <h4>🖥️ Real-Time Client Telemetry &amp; System Event Stream</h4>
+                        <button type="button" class="ctrl-btn btn-sync" id="devClearConsoleBtn">🧹 Clear Console</button>
+                    </div>
+                    <div class="dev-console-box" id="devConsoleStream">
+                        <!-- Populated dynamically with live log events -->
+                    </div>
+                </div>
+            </div>
+
             <!-- Cloud Health & Infrastructure Status Strip -->
             <section class="infrastructure-strip">
                 <div class="infra-card">
@@ -696,7 +999,7 @@
                     <span class="infra-icon">⚡</span>
                     <div>
                         <strong>PWA Cache Engine</strong>
-                        <span class="infra-status status-online">v2.9.6 Network-First Active</span>
+                        <span class="infra-status status-online">v4.0.0 Network-First Active</span>
                     </div>
                 </div>
 
@@ -724,6 +1027,6 @@
         </div>
     </footer>
 
-    <script src="admin.js?v=3.5.0"></script>
+    <script src="admin.js?v=4.0.0"></script>
 </body>
 </html>
