@@ -46,7 +46,7 @@ class AnjaneyaBorewells {
                 } else {
                     const targetElement = document.querySelector(targetId);
                     if (targetElement) {
-                        const navEl = document.getElementById('navbar') || document.querySelector('.navbar');
+                        const navEl = document.getElementById('topHeader') || document.getElementById('navbar') || document.querySelector('.top-header') || document.querySelector('.navbar');
                         const navHeight = navEl ? navEl.offsetHeight : 70;
                         const elementTop = targetElement.getBoundingClientRect().top;
                         const offsetPosition = elementTop + window.pageYOffset - navHeight - 10;
