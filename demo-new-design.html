@@ -1090,22 +1090,23 @@
 
 
 
-    /* Fixed Bottom Scroll-Driven Rig Track */
+    /* Fixed Bottom Scroll-Driven Rig Track - Realistic Off-Road (Kaadu Medu) Terrain */
     .fixed-scroll-rig-bar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       width: 100%;
-      height: 62px;
-      background: rgba(255, 255, 255, 0.96);
+      height: 72px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(240, 253, 244, 0.98) 100%);
       backdrop-filter: blur(14px);
       border-top: 2px solid #86efac;
       box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.08);
       z-index: 99;
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       overflow: hidden;
+      user-select: none;
     }
 
     .fixed-rig-road {
@@ -1114,37 +1115,76 @@
       max-width: 1240px;
       margin: 0 auto;
       height: 100%;
-      display: flex;
-      align-items: center;
     }
 
-    .fixed-road-line {
+    /* Undulating Off-Road SVG Terrain */
+    .fixed-road-terrain-svg {
       position: absolute;
-      bottom: 8px;
-      left: 10px;
-      right: 10px;
-      height: 3px;
-      background: repeating-linear-gradient(90deg, #10b981 0, #10b981 18px, transparent 18px, transparent 36px);
-      opacity: 0.85;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .terrain-fill {
+      fill: url(#terrainGradient);
+      opacity: 0.9;
+    }
+
+    .terrain-track {
+      stroke: #059669;
+      stroke-width: 3.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 12 7;
+      fill: none;
+      filter: drop-shadow(0 1px 2px rgba(5, 150, 105, 0.3));
+    }
+
+    .terrain-ground-base {
+      stroke: #10b981;
+      stroke-width: 1.5;
+      fill: none;
+      opacity: 0.4;
     }
 
     .fixed-rig-truck {
       position: absolute;
-      bottom: 4px;
+      bottom: 8px;
       left: 0;
       width: 76px;
       height: 66px;
       will-change: transform;
+      transform-origin: 50% 90%;
       transform: translate3d(0, 0, 0);
       cursor: grab;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.25));
+      filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.28));
       pointer-events: auto;
+      z-index: 2;
+      transition: transform 0.1s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
+    /* Subtle Engine & Rough Suspension Bobbing Animation */
     .fixed-rig-img {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      transform-origin: 50% 95%;
+      animation: rigEngineVibe 0.55s ease-in-out infinite alternate;
+    }
+
+    @keyframes rigEngineVibe {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-0.8px) rotate(0.4deg);
+      }
+      100% {
+        transform: translateY(0.4px) rotate(-0.3deg);
+      }
     }
 
     /* Mobile adjustments */
@@ -1453,11 +1493,15 @@
       }
 
       .fixed-scroll-rig-bar {
-        height: 50px;
+        height: 62px;
+      }
+      .fixed-road-terrain-svg {
+        height: 52px;
       }
       .fixed-rig-truck {
-        width: 54px;
-        height: 46px;
+        width: 60px;
+        height: 52px;
+        bottom: 6px;
       }
     }
   </style>
@@ -1880,7 +1924,21 @@
   <!-- Fixed Bottom Scroll-Driven Rig Track -->
   <div class="fixed-scroll-rig-bar" id="fixedScrollRigBar">
     <div class="fixed-rig-road" id="fixedRigRoad">
-      <div class="fixed-road-line"></div>
+      <svg class="fixed-road-terrain-svg" viewBox="0 0 1000 60" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="terrainGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#10b981" stop-opacity="0.22"/>
+            <stop offset="40%" stop-color="#059669" stop-opacity="0.12"/>
+            <stop offset="100%" stop-color="#047857" stop-opacity="0.04"/>
+          </linearGradient>
+        </defs>
+        <!-- Mountainous / Bumpy Fill -->
+        <path class="terrain-fill" d="M 0,60 L 0,41.48 L 0.0,41.48 L 10.0,39.28 L 20.0,37.13 L 30.0,35.66 L 40.0,35.36 L 50.0,36.30 L 60.0,37.96 L 70.0,39.49 L 80.0,40.12 L 90.0,39.51 L 100.0,37.97 L 110.0,36.28 L 120.0,35.25 L 130.0,35.35 L 140.0,36.50 L 150.0,38.15 L 160.0,39.65 L 170.0,40.62 L 180.0,41.07 L 190.0,41.37 L 200.0,41.88 L 210.0,42.68 L 220.0,43.44 L 230.0,43.59 L 240.0,42.68 L 250.0,40.70 L 260.0,38.22 L 270.0,36.10 L 280.0,35.17 L 290.0,35.76 L 300.0,37.58 L 310.0,39.85 L 320.0,41.73 L 330.0,42.73 L 340.0,42.89 L 350.0,42.71 L 360.0,42.79 L 370.0,43.48 L 380.0,44.68 L 390.0,46.00 L 400.0,47.00 L 410.0,47.57 L 420.0,48.00 L 430.0,48.83 L 440.0,50.51 L 450.0,53.01 L 460.0,55.81 L 470.0,58.02 L 480.0,58.86 L 490.0,58.03 L 500.0,55.86 L 510.0,53.16 L 520.0,50.83 L 530.0,49.39 L 540.0,48.85 L 550.0,48.74 L 560.0,48.49 L 570.0,47.78 L 580.0,46.71 L 590.0,45.68 L 600.0,45.10 L 610.0,45.09 L 620.0,45.31 L 630.0,45.19 L 640.0,44.25 L 650.0,42.46 L 660.0,40.30 L 670.0,38.60 L 680.0,38.12 L 690.0,39.12 L 700.0,41.23 L 710.0,43.61 L 720.0,45.38 L 730.0,45.99 L 740.0,45.46 L 750.0,44.27 L 760.0,43.03 L 770.0,42.11 L 780.0,41.45 L 790.0,40.69 L 800.0,39.48 L 810.0,37.79 L 820.0,35.97 L 830.0,34.67 L 840.0,34.39 L 850.0,35.21 L 860.0,36.67 L 870.0,37.94 L 880.0,38.29 L 890.0,37.43 L 900.0,35.72 L 910.0,33.95 L 920.0,32.99 L 930.0,33.33 L 940.0,34.91 L 950.0,37.18 L 960.0,39.51 L 970.0,41.47 L 980.0,43.07 L 990.0,44.65 L 1000.0,46.52 L 1000,60 Z" />
+        <!-- Secondary Soil Contour -->
+        <path class="terrain-ground-base" d="M 0.0,41.48 L 10.0,39.28 L 20.0,37.13 L 30.0,35.66 L 40.0,35.36 L 50.0,36.30 L 60.0,37.96 L 70.0,39.49 L 80.0,40.12 L 90.0,39.51 L 100.0,37.97 L 110.0,36.28 L 120.0,35.25 L 130.0,35.35 L 140.0,36.50 L 150.0,38.15 L 160.0,39.65 L 170.0,40.62 L 180.0,41.07 L 190.0,41.37 L 200.0,41.88 L 210.0,42.68 L 220.0,43.44 L 230.0,43.59 L 240.0,42.68 L 250.0,40.70 L 260.0,38.22 L 270.0,36.10 L 280.0,35.17 L 290.0,35.76 L 300.0,37.58 L 310.0,39.85 L 320.0,41.73 L 330.0,42.73 L 340.0,42.89 L 350.0,42.71 L 360.0,42.79 L 370.0,43.48 L 380.0,44.68 L 390.0,46.00 L 400.0,47.00 L 410.0,47.57 L 420.0,48.00 L 430.0,48.83 L 440.0,50.51 L 450.0,53.01 L 460.0,55.81 L 470.0,58.02 L 480.0,58.86 L 490.0,58.03 L 500.0,55.86 L 510.0,53.16 L 520.0,50.83 L 530.0,49.39 L 540.0,48.85 L 550.0,48.74 L 560.0,48.49 L 570.0,47.78 L 580.0,46.71 L 590.0,45.68 L 600.0,45.10 L 610.0,45.09 L 620.0,45.31 L 630.0,45.19 L 640.0,44.25 L 650.0,42.46 L 660.0,40.30 L 670.0,38.60 L 680.0,38.12 L 690.0,39.12 L 700.0,41.23 L 710.0,43.61 L 720.0,45.38 L 730.0,45.99 L 740.0,45.46 L 750.0,44.27 L 760.0,43.03 L 770.0,42.11 L 780.0,41.45 L 790.0,40.69 L 800.0,39.48 L 810.0,37.79 L 820.0,35.97 L 830.0,34.67 L 840.0,34.39 L 850.0,35.21 L 860.0,36.67 L 870.0,37.94 L 880.0,38.29 L 890.0,37.43 L 900.0,35.72 L 910.0,33.95 L 920.0,32.99 L 930.0,33.33 L 940.0,34.91 L 950.0,37.18 L 960.0,39.51 L 970.0,41.47 L 980.0,43.07 L 990.0,44.65 L 1000.0,46.52" transform="translate(0, 3)" />
+        <!-- Off-Road Dirt Track -->
+        <path class="terrain-track" d="M 0.0,41.48 L 10.0,39.28 L 20.0,37.13 L 30.0,35.66 L 40.0,35.36 L 50.0,36.30 L 60.0,37.96 L 70.0,39.49 L 80.0,40.12 L 90.0,39.51 L 100.0,37.97 L 110.0,36.28 L 120.0,35.25 L 130.0,35.35 L 140.0,36.50 L 150.0,38.15 L 160.0,39.65 L 170.0,40.62 L 180.0,41.07 L 190.0,41.37 L 200.0,41.88 L 210.0,42.68 L 220.0,43.44 L 230.0,43.59 L 240.0,42.68 L 250.0,40.70 L 260.0,38.22 L 270.0,36.10 L 280.0,35.17 L 290.0,35.76 L 300.0,37.58 L 310.0,39.85 L 320.0,41.73 L 330.0,42.73 L 340.0,42.89 L 350.0,42.71 L 360.0,42.79 L 370.0,43.48 L 380.0,44.68 L 390.0,46.00 L 400.0,47.00 L 410.0,47.57 L 420.0,48.00 L 430.0,48.83 L 440.0,50.51 L 450.0,53.01 L 460.0,55.81 L 470.0,58.02 L 480.0,58.86 L 490.0,58.03 L 500.0,55.86 L 510.0,53.16 L 520.0,50.83 L 530.0,49.39 L 540.0,48.85 L 550.0,48.74 L 560.0,48.49 L 570.0,47.78 L 580.0,46.71 L 590.0,45.68 L 600.0,45.10 L 610.0,45.09 L 620.0,45.31 L 630.0,45.19 L 640.0,44.25 L 650.0,42.46 L 660.0,40.30 L 670.0,38.60 L 680.0,38.12 L 690.0,39.12 L 700.0,41.23 L 710.0,43.61 L 720.0,45.38 L 730.0,45.99 L 740.0,45.46 L 750.0,44.27 L 760.0,43.03 L 770.0,42.11 L 780.0,41.45 L 790.0,40.69 L 800.0,39.48 L 810.0,37.79 L 820.0,35.97 L 830.0,34.67 L 840.0,34.39 L 850.0,35.21 L 860.0,36.67 L 870.0,37.94 L 880.0,38.29 L 890.0,37.43 L 900.0,35.72 L 910.0,33.95 L 920.0,32.99 L 930.0,33.33 L 940.0,34.91 L 950.0,37.18 L 960.0,39.51 L 970.0,41.47 L 980.0,43.07 L 990.0,44.65 L 1000.0,46.52" />
+      </svg>
       <div class="fixed-rig-truck" id="fixedRigTruck">
         <img src="rig-illustration.png" alt="Anjaneya Drilling Rig" class="fixed-rig-img">
       </div>
@@ -1915,11 +1973,19 @@
       });
     }
 
-    // 2. Scroll-Driven Rig Movement
+    // 2. Scroll-Driven Rig Movement with Kaadu-Medu Off-Road Hills & Realistic Tilt
     (function initScrollRig() {
       const truck = document.getElementById('fixedRigTruck');
       const road = document.getElementById('fixedRigRoad');
       if (!truck || !road) return;
+
+      // Mathematical elevation profile identical to the SVG terrain line
+      function getTerrainElevation(pct) {
+        return -7.0 * Math.sin(pct * Math.PI * 3.0)
+               - 4.0 * Math.sin(pct * Math.PI * 7.0 + 0.5)
+               - 2.5 * Math.sin(pct * Math.PI * 15.0 + 1.0)
+               + 1.5 * Math.cos(pct * Math.PI * 25.0);
+      }
 
       function updateTruckOnScroll() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
@@ -1929,11 +1995,29 @@
         
         const progress = Math.min(Math.max(scrollTop / scrollHeight, 0), 1);
         const roadWidth = road.clientWidth || window.innerWidth;
-        const truckWidth = truck.clientWidth || 60;
-        const maxTravel = Math.max(1, roadWidth - truckWidth - 15);
+        const truckWidth = truck.clientWidth || 76;
+        const maxTravel = Math.max(1, roadWidth - truckWidth - 12);
         
         const translateX = progress * maxTravel;
-        truck.style.transform = 'translate3d(' + translateX + 'px, 0, 0)';
+        
+        // Calculate center position along road for exact elevation matching
+        const centerPosPct = Math.min(Math.max((translateX + truckWidth * 0.45) / roadWidth, 0), 1);
+        
+        // Vertical displacement (negative = climbing uphill, positive = descending ditch)
+        const elevY = getTerrainElevation(centerPosPct);
+        
+        // Slope calculation: evaluate slight lookahead to find tangent angle
+        const delta = 0.015;
+        const p1 = Math.max(0, centerPosPct - delta);
+        const p2 = Math.min(1, centerPosPct + delta);
+        const dy = getTerrainElevation(p2) - getTerrainElevation(p1);
+        const dx = (p2 - p1) * roadWidth;
+        
+        // Natural vehicle pitch angle (degrees) clamped between -18 deg (uphill) and +18 deg (downhill)
+        const rawAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+        const tiltAngle = Math.max(-18, Math.min(18, rawAngle * 1.35));
+        
+        truck.style.transform = 'translate3d(' + translateX.toFixed(1) + 'px, ' + elevY.toFixed(1) + 'px, 0) rotate(' + tiltAngle.toFixed(1) + 'deg)';
       }
 
       window.addEventListener('scroll', updateTruckOnScroll, { passive: true });
