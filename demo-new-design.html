@@ -1186,45 +1186,44 @@
       }
     }
 
-    /* Live Location Badge */
-    .fixed-road-badge {
+    /* Welcoming Village People Standing at the Road Destination (End) */
+    .road-welcoming-people {
       position: absolute;
-      right: 15px;
-      top: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(255, 253, 245, 0.95);
-      border: 1.5px solid #ecd8be;
-      padding: 4px 12px;
-      border-radius: 50px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: #854d0e;
-      box-shadow: 0 2px 8px rgba(92, 53, 19, 0.12);
+      right: 12px;
+      bottom: 24px;
+      height: 52px;
+      width: auto;
       z-index: 3;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      pointer-events: auto;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-end;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.28));
+      transition: transform 0.25s ease;
     }
 
-    .pulse-dot {
-      width: 8px;
-      height: 8px;
-      background: #16a34a;
-      border-radius: 50%;
-      box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
-      animation: pulseDot 2s infinite;
+    .road-welcoming-people:hover {
+      transform: scale(1.08);
     }
 
-    @keyframes pulseDot {
+    .welcoming-people-img {
+      height: 100%;
+      width: auto;
+      display: block;
+      object-fit: contain;
+      animation: peopleWave 1.4s ease-in-out infinite alternate;
+      transform-origin: 50% 100%;
+    }
+
+    @keyframes peopleWave {
       0% {
-        box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.7);
+        transform: translateY(0) rotate(0deg);
       }
-      70% {
-        box-shadow: 0 0 0 6px rgba(22, 163, 74, 0);
+      50% {
+        transform: translateY(-1.5px) rotate(-0.5deg);
       }
       100% {
-        box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+        transform: translateY(0.5px) rotate(0.5deg);
       }
     }
 
@@ -1544,11 +1543,10 @@
         height: 46px;
         bottom: 0px;
       }
-      .fixed-road-badge {
+      .road-welcoming-people {
         right: 8px;
-        top: 10px;
-        font-size: 0.64rem;
-        padding: 2px 8px;
+        bottom: 20px;
+        height: 44px;
       }
     }
   </style>
@@ -1975,9 +1973,8 @@
       <div class="fixed-rig-truck" id="fixedRigTruck">
         <img src="rig-illustration.png" alt="Anjaneya Drilling Rig" class="fixed-rig-img">
       </div>
-      <div class="fixed-road-badge">
-        <span class="pulse-dot"></span>
-        <span class="badge-text-live" id="fixedRoadBadgeText">Namakkal & Tamil Nadu</span>
+      <div class="road-welcoming-people" id="roadWelcomingPeople" title="Welcome Anjaneya Rig!">
+        <img src="welcoming-people.png" alt="Happy Villagers Welcoming Rig" class="welcoming-people-img" draggable="false">
       </div>
     </div>
   </div>
@@ -2058,9 +2055,11 @@
       function getMaxTravel() {
         const roadWidth = road.clientWidth || window.innerWidth;
         const truckWidth = truck.clientWidth || 66;
-        const badge = road.querySelector('.fixed-road-badge');
-        const badgeWidth = badge ? (badge.clientWidth + 16) : 100;
-        return Math.max(1, roadWidth - truckWidth - badgeWidth);
+        const people = road.querySelector('.road-welcoming-people');
+        const peopleWidth = people ? people.clientWidth : 55;
+        // Lorry drives all the way to the end, parking right in front of the welcoming people
+        const rightOffset = people ? (peopleWidth + 6) : 20;
+        return Math.max(1, roadWidth - truckWidth - rightOffset);
       }
 
       function applyTruckTransform(x, y, tilt) {
@@ -2162,9 +2161,9 @@
         updateTruck();
       }
 
-      // Click on road to travel
+      // Click on road or welcoming people to travel
       road.addEventListener('click', (e) => {
-        if (e.target.closest('#fixedRigTruck') || e.target.closest('.fixed-road-badge')) return;
+        if (e.target.closest('#fixedRigTruck')) return;
         const rect = road.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
         const roadWidth = road.clientWidth || window.innerWidth;
