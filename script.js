@@ -4439,11 +4439,11 @@ function initPageViewsCounter() {
 }
 
 // =========================================================================
-// Automated Version & Cache Invalidation Manager (v2.9.6)
+// Automated Version & Cache Invalidation Manager (v4.0.0 Final Release)
 // =========================================================================
 class CacheAndVersionManager {
-    static CURRENT_VERSION = 'v2.9.6';
-    static CACHE_KEY = 'anjaneya-borewells-cache-v2.9.6';
+    static CURRENT_VERSION = 'v4.0.0';
+    static CACHE_KEY = 'anjaneya-borewells-cache-v4.0.0';
 
     static init() {
         this.checkAndMigrateStorage();
