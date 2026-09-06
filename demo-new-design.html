@@ -763,46 +763,83 @@
       line-height: 1.35;
     }
 
-    /* Slogan Section - New Pill Banner with Valluvar, Leaves & Organic Green Wave */
+    /* Slogan Section - Centered Text with Valluvar Avatar matching img-1 */
     .slogan-highlight-block {
       display: flex;
+      flex-direction: row;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      gap: 18px;
+      padding: 12px 24px;
+      background: #ffffff;
+      border: 1.5px solid #dcfce7;
+      border-radius: 20px;
+      box-shadow: 0 4px 18px rgba(16, 185, 129, 0.08);
       position: relative;
-      margin-top: 28px;
-      width: 100%;
-      background: transparent;
-      border: none;
-      box-shadow: none;
-      padding: 0;
+      overflow: visible;
+      margin-top: 36px; /* Desktop: innum nalla keela இறக்கியாச்சு */
     }
 
-    .slogan-banner-wrapper {
-      width: 100%;
-      max-width: 610px;
+    .slogan-valluvar-avatar {
+      width: 58px;
+      height: 58px;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
       position: relative;
-      border-radius: 999px;
-      background: #ffffff;
-      border: 1.5px solid #86efac;
-      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.12), 0 2px 6px rgba(0, 0, 0, 0.04);
-      overflow: hidden;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
     }
 
-    .slogan-banner-wrapper:hover {
-      transform: translateY(-2px) scale(1.008);
-      border-color: #4ade80;
-      box-shadow: 0 12px 30px rgba(16, 185, 129, 0.18), 0 4px 10px rgba(0, 0, 0, 0.06);
-    }
-
-    .slogan-pill-banner-img {
+    .slogan-valluvar-avatar img {
       width: 100%;
-      height: auto;
-      display: block;
+      height: 100%;
       object-fit: contain;
+      filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.18));
+      transform: scale(1.18);
+      transition: transform 0.2s ease;
+    }
+
+    .slogan-highlight-block:hover .slogan-valluvar-avatar img {
+      transform: scale(1.24);
+    }
+
+    /* Text Centered within its space as requested in img-1 */
+    .slogan-text-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      flex: 1;
+      gap: 3px;
+      padding-right: 28px; /* Counterbalances avatar for true horizontal centering */
+    }
+
+    .slogan-tamil-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0d763e;
+      position: relative;
+      display: inline-block;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .slogan-tamil-title .slogan-brush-underline {
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 100%;
+      height: 10px;
+      pointer-events: none;
+    }
+
+    .slogan-eng-sub {
+      margin-top: 5px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #1e293b;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
     }
 
     /* Enhanced & Polished 4-Metric Trust Features Bar (img-2 improvement) */
@@ -1222,15 +1259,84 @@
         display: none;
       }
       .slogan-highlight-block {
-        margin-top: 10px;
-        padding: 0;
-        background: transparent;
-        border: none;
-        box-shadow: none;
+        margin-top: 6px;
+        padding: 8px 10px;
       }
-      .slogan-banner-wrapper {
-        max-width: 100%;
-        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.12);
+      .slogan-tamil-title {
+        font-size: 1.12rem;
+      }
+      .slogan-eng-sub {
+        font-size: 0.62rem;
+        letter-spacing: 0.1em;
+      }
+
+      /* 4-Metric Trust Card on Mobile: Strictly 1 SINGLE LINE as requested */
+      .trust-features-card {
+        grid-template-columns: repeat(4, 1fr) !important;
+        padding: 12px 6px !important;
+        gap: 4px !important;
+        border-radius: 16px !important;
+        margin-top: 16px !important;
+      }
+      .trust-feat-item {
+        gap: 5px !important;
+        align-items: center;
+      }
+      .trust-feat-item:not(:last-child)::after {
+        right: -2px;
+        top: 15%;
+        height: 70%;
+        display: block !important;
+      }
+      .trust-feat-icon-wrap {
+        width: 26px !important;
+        height: 26px !important;
+        border-radius: 8px !important;
+        flex-shrink: 0;
+      }
+      .trust-feat-icon-wrap svg {
+        width: 16px !important;
+        height: 16px !important;
+        stroke-width: 2.2;
+      }
+      .trust-feat-text {
+        gap: 1px;
+      }
+      .trust-feat-title {
+        font-size: 0.66rem !important;
+        line-height: 1.1;
+      }
+      .trust-feat-sub {
+        font-size: 0.46rem !important;
+        line-height: 1.1;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .slogan-highlight-block {
+        margin-top: 6px;
+        padding: 8px 12px;
+        gap: 8px;
+      }
+      .slogan-valluvar-avatar {
+        width: 44px;
+        height: 44px;
+      }
+      .slogan-valluvar-avatar img {
+        transform: scale(1.12);
+      }
+      .slogan-text-group {
+        padding-right: 0 !important;
+        align-items: center !important;
+        text-align: center !important;
+      }
+      .slogan-tamil-title {
+        font-size: 1.02rem;
+      }
+      .slogan-eng-sub {
+        font-size: 0.56rem;
+        letter-spacing: 0.08em;
       }
 
       /* Google Reviews Badge Mobile */
@@ -1548,13 +1654,22 @@
 
         </div>
 
-        <!-- Slogan Block below Category Boxes (Updated with New Organic Valluvar Pill Banner) -->
+        <!-- Slogan Block below Category Boxes (Updated with Thiruvalluvar Portrait) -->
         <div class="slogan-highlight-block">
-          <div class="slogan-banner-wrapper">
-            <picture>
-              <source srcset="slogan-valluvar-banner.webp" type="image/webp">
-              <img src="slogan-valluvar-banner@2x.png" alt="&quot;நீரின்றி அமையாது உலகு&quot; - WATER BUILDS A BETTER TOMORROW - திருவள்ளுவர்" class="slogan-pill-banner-img" loading="eager">
-            </picture>
+          <div class="slogan-valluvar-avatar">
+            <img src="valluvar.png" alt="திருவள்ளுவர்" onerror="this.src='favicon.png'">
+          </div>
+          <div class="slogan-text-group">
+            <div class="slogan-tamil-title">
+              "நீரின்றி அமையாது உலகு"
+              <!-- Yellow brush curve underline (thinned) -->
+              <svg class="slogan-brush-underline" viewBox="0 0 220 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 6C55 2 170 2 218 8" stroke="#facc15" stroke-width="2.2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="slogan-eng-sub">
+              WATER BUILDS A BETTER TOMORROW
+            </div>
           </div>
         </div>
 
