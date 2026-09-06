@@ -2632,35 +2632,34 @@ section, [id] {
 /* Universal Ambient Animated Logo Watermark & Sensor Radar Rings for Entire Website */
 .global-bg-logo-layer {
     position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 480px !important;
-    height: 480px !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
     pointer-events: none !important;
     z-index: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    overflow: visible !important;
+    overflow: hidden !important;
     margin: 0 !important;
+    padding: 0 !important;
 }
 
 .global-bg-logo {
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 320px !important;
-    height: 320px !important;
+    width: min(340px, 72vw) !important;
+    height: min(340px, 72vw) !important;
     border-radius: 50% !important;
     overflow: hidden !important;
-    opacity: 0.07 !important;
-    filter: drop-shadow(0 0 45px rgba(16, 185, 129, 0.35)) !important;
+    opacity: 0.08 !important;
+    filter: drop-shadow(0 0 35px rgba(16, 185, 129, 0.35)) !important;
     animation: globalLogoPulse 8s ease-in-out infinite alternate !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    will-change: transform, opacity !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
 }
 
 .global-watermark-img {
@@ -2674,78 +2673,58 @@ section, [id] {
     position: absolute !important;
     top: 50% !important;
     left: 50% !important;
-    transform: translate(-50%, -50%) !important;
+    width: min(340px, 72vw) !important;
+    height: min(340px, 72vw) !important;
     border-radius: 50% !important;
-    border: 1.5px solid rgba(16, 185, 129, 0.22) !important;
+    border: 1.5px solid rgba(16, 185, 129, 0.32) !important;
     pointer-events: none !important;
-    animation: globalSensorWave 6s infinite cubic-bezier(0.215, 0.61, 0.355, 1) !important;
     will-change: transform, opacity !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+    animation: globalSensorWave 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite !important;
+    animation-fill-mode: both !important;
+    box-sizing: border-box !important;
 }
 
 .global-sensor-ring.ring-1 {
-    width: 340px !important;
-    height: 340px !important;
     animation-delay: 0s !important;
+    border-color: rgba(16, 185, 129, 0.38) !important;
 }
 
 .global-sensor-ring.ring-2 {
-    width: 460px !important;
-    height: 460px !important;
     animation-delay: 2s !important;
-    border-color: rgba(2, 132, 199, 0.18) !important;
+    border-color: rgba(2, 132, 199, 0.32) !important;
 }
 
 .global-sensor-ring.ring-3 {
-    width: 580px !important;
-    height: 580px !important;
     animation-delay: 4s !important;
-    border-color: rgba(16, 185, 129, 0.12) !important;
-}
-
-.global-bg-logo {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 320px !important;
-    height: 320px !important;
-    border-radius: 50% !important;
-    overflow: hidden !important;
-    opacity: 0.07 !important;
-    filter: drop-shadow(0 0 45px rgba(16, 185, 129, 0.35)) !important;
-    animation: globalLogoPulse 8s ease-in-out infinite alternate !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    will-change: transform, opacity !important;
+    border-color: rgba(16, 185, 129, 0.26) !important;
 }
 
 @keyframes globalLogoPulse {
     0% {
-        transform: translate(-50%, -50%) scale(0.95) rotate(0deg);
+        transform: translate3d(-50%, -50%, 0) scale(0.96);
         opacity: 0.065;
-    }
-    50% {
-        transform: translate(-50%, -50%) scale(1.04) rotate(1.5deg);
-        opacity: 0.095;
     }
     100% {
-        transform: translate(-50%, -50%) scale(0.95) rotate(0deg);
-        opacity: 0.065;
+        transform: translate3d(-50%, -50%, 0) scale(1.04);
+        opacity: 0.095;
     }
 }
 
 @keyframes globalSensorWave {
     0% {
-        transform: translate(-50%, -50%) scale(0.7);
-        opacity: 0.65;
+        transform: translate3d(-50%, -50%, 0) scale(0.65);
+        opacity: 0;
     }
-    50% {
-        transform: translate(-50%, -50%) scale(1.1);
-        opacity: 0.35;
+    18% {
+        opacity: 0.52;
+    }
+    55% {
+        opacity: 0.24;
     }
     100% {
-        transform: translate(-50%, -50%) scale(1.45);
+        transform: translate3d(-50%, -50%, 0) scale(2.45);
         opacity: 0;
     }
 }
@@ -4642,7 +4621,7 @@ label.gst-toggle-action-pill,
 .calculator-results {
     background: linear-gradient(180deg, #ffffff 0%, #fafffa 40%, #f8fbf9 100%) !important;
     backdrop-filter: blur(16px) !important;
-    border: 1.5px solid rgba(22, 163, 74, 0.28) !important;
+    border: 2px solid #16a34a !important;
     border-radius: 14px !important;
     overflow: hidden !important;
     box-shadow: 0 8px 30px rgba(21, 128, 61, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04) !important;
@@ -6364,30 +6343,17 @@ img {
         }
     }
 
-    .global-bg-logo-layer {
-        width: 340px !important;
-        height: 340px !important;
-    }
-
     .global-bg-logo {
-        width: 230px !important;
-        height: 230px !important;
+        width: min(250px, 68vw) !important;
+        height: min(250px, 68vw) !important;
         opacity: 0.075 !important;
     }
 
-    .global-sensor-ring.ring-1 {
-        width: 240px !important;
-        height: 240px !important;
-    }
-
-    .global-sensor-ring.ring-2 {
-        width: 330px !important;
-        height: 330px !important;
-    }
-
+    .global-sensor-ring.ring-1,
+    .global-sensor-ring.ring-2,
     .global-sensor-ring.ring-3 {
-        width: 420px !important;
-        height: 420px !important;
+        width: min(250px, 68vw) !important;
+        height: min(250px, 68vw) !important;
     }
 
     .hero {
@@ -12891,51 +12857,7 @@ label.gst-toggle-action-pill,
       display: block;
     }
 
-    .global-sensor-ring {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      border: 1.5px solid rgba(16, 185, 129, 0.15);
-      pointer-events: none;
-      z-index: 2;
-    }
 
-    .global-sensor-ring.ring-1 {
-      width: 600px;
-      height: 600px;
-      border-color: rgba(16, 185, 129, 0.12);
-    }
-
-    .global-sensor-ring.ring-2 {
-      width: 900px;
-      height: 900px;
-      border-color: rgba(16, 185, 129, 0.08);
-      border-style: dashed;
-    }
-
-    .global-sensor-ring.ring-3 {
-      width: 1200px;
-      height: 1200px;
-      border-color: rgba(16, 185, 129, 0.04);
-    }
-
-    .global-bg-logo {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: min(540px, 85vw);
-      opacity: 0.045;
-      filter: grayscale(35%) contrast(90%);
-    }
-
-    .global-bg-logo img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
 
     /* Top Curved Menu Bar - ALWAYS FIXED TO PAGE TOP */
     .top-header {

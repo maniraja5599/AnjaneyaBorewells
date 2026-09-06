@@ -2164,7 +2164,12 @@ class CostCalculator {
 
         // Try Method A: html2canvas
         if (typeof html2canvas !== 'undefined') {
+            const originalPaddingBottom = resultsContainer.style.paddingBottom;
+            const originalBorder = resultsContainer.style.border;
             if (resultsActions) resultsActions.style.display = 'none';
+            resultsContainer.style.paddingBottom = '14px';
+            resultsContainer.style.border = '2px solid #16a34a';
+
             try {
                 const canvas = await html2canvas(resultsContainer, {
                     backgroundColor: '#ffffff',
@@ -2174,10 +2179,26 @@ class CostCalculator {
                     logging: false,
                     ignoreElements: (el) => el.classList && el.classList.contains('results-actions')
                 });
+
+                // Ensure a crisp thin green border line around the exported image canvas
+                const ctx = canvas.getContext('2d');
+                ctx.save();
+                ctx.strokeStyle = '#16a34a';
+                ctx.lineWidth = 4; // 2px equivalent at 2x scale
+                ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+                ctx.restore();
+
+                resultsContainer.style.paddingBottom = originalPaddingBottom;
+                resultsContainer.style.border = originalBorder;
+                if (resultsActions) resultsActions.style.display = 'grid';
+
                 await deliverCanvas(canvas);
                 return;
             } catch (h2cError) {
                 console.warn('html2canvas render error, using high-res native canvas fallback:', h2cError);
+                resultsContainer.style.paddingBottom = originalPaddingBottom;
+                resultsContainer.style.border = originalBorder;
+                if (resultsActions) resultsActions.style.display = 'grid';
             }
         }
 
@@ -2221,10 +2242,10 @@ class CostCalculator {
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, width, finalHeight);
 
-        // Subtle Luxury Border
-        ctx.strokeStyle = '#15803d';
-        ctx.lineWidth = 6;
-        ctx.strokeRect(3, 3, width - 6, finalHeight - 6);
+        // Thin Clean Green Border
+        ctx.strokeStyle = '#16a34a';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(2, 2, width - 4, finalHeight - 4);
 
         // Watermark Inner Emblem & Text (soft royal blue tint placed gracefully behind calculation)
         ctx.save();
