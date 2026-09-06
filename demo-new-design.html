@@ -1146,12 +1146,12 @@
 
     .fixed-rig-truck {
       position: absolute;
-      bottom: 24px;
+      bottom: 0px;
       left: 0;
       width: 66px;
       height: 56px;
       will-change: transform;
-      transform-origin: 50% 90%;
+      transform-origin: 50% 95%;
       transform: translate3d(0, 0, 0);
       cursor: grab;
       filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.32));
@@ -1542,7 +1542,7 @@
       .fixed-rig-truck {
         width: 54px;
         height: 46px;
-        bottom: 20px;
+        bottom: 0px;
       }
       .fixed-road-badge {
         right: 8px;
@@ -2017,18 +2017,18 @@
       const bar = document.getElementById('fixedScrollRigBar');
       if (!truck || !road) return;
 
-      // Mathematical cubic spline elevation profile matching scenic-rural-track.png hills (101-point sampled)
+      // High-precision true foreground grass surface elevation profile (101-point sampled)
       const ELEV_RATIOS = [
-        0.3494, 0.3581, 0.3675, 0.3783, 0.3913, 0.4072, 0.425, 0.4424, 0.4575, 0.4679,
-        0.4716, 0.4687, 0.4603, 0.4477, 0.4321, 0.4149, 0.3972, 0.3804, 0.3652, 0.352,
-        0.3412, 0.3329, 0.3275, 0.3252, 0.3262, 0.3307, 0.3385, 0.3494, 0.3632, 0.3798,
-        0.399, 0.4202, 0.4418, 0.4619, 0.4786, 0.49, 0.4941, 0.49, 0.4788, 0.4619,
-        0.4407, 0.4166, 0.3911, 0.3656, 0.3412, 0.3186, 0.2983, 0.281, 0.2673, 0.2578,
-        0.2531, 0.2536, 0.259, 0.2685, 0.2814, 0.297, 0.3147, 0.3338, 0.3537, 0.3735,
-        0.3929, 0.4116, 0.4291, 0.4453, 0.4597, 0.472, 0.482, 0.4892, 0.4934, 0.4942,
-        0.4914, 0.4852, 0.4759, 0.4641, 0.4499, 0.434, 0.4167, 0.3983, 0.3793, 0.3606,
-        0.343, 0.3275, 0.3147, 0.3058, 0.3014, 0.3026, 0.3094, 0.3215, 0.3386, 0.3604,
-        0.3866, 0.4167, 0.4494, 0.4804, 0.5054, 0.5201, 0.5199, 0.5015, 0.4675, 0.4231, 0.3735
+        0.2547, 0.2676, 0.2792, 0.2953, 0.273, 0.2198, 0.2339, 0.2631, 0.2909, 0.315,
+        0.3349, 0.3466, 0.352, 0.3664, 0.3872, 0.405, 0.423, 0.432, 0.4129, 0.3985,
+        0.3718, 0.3359, 0.304, 0.2742, 0.2513, 0.2214, 0.1872, 0.169, 0.1587, 0.1568,
+        0.16, 0.1719, 0.1904, 0.2095, 0.234, 0.2593, 0.2834, 0.3026, 0.312, 0.3132,
+        0.3135, 0.3114, 0.2874, 0.2695, 0.2331, 0.2044, 0.1791, 0.1558, 0.1347, 0.1166,
+        0.1002, 0.0866, 0.0754, 0.0668, 0.0609, 0.0602, 0.0602, 0.0609, 0.0668, 0.0759,
+        0.0903, 0.1084, 0.137, 0.1701, 0.1829, 0.208, 0.2377, 0.2671, 0.2944, 0.3181,
+        0.337, 0.3474, 0.3513, 0.3577, 0.3416, 0.316, 0.2859, 0.2574, 0.2279, 0.2003,
+        0.1749, 0.1551, 0.1389, 0.1329, 0.1319, 0.1271, 0.1376, 0.1691, 0.1745, 0.1861,
+        0.2073, 0.2295, 0.2511, 0.2724, 0.2928, 0.3123, 0.3339, 0.3456, 0.3444, 0.3331, 0.3202
       ];
 
       function getTerrainRatio(pct) {
@@ -2089,13 +2089,12 @@
         const fixedX = minX + progress * Math.max(1, maxTravel - minX);
         const centerPosPct = Math.min(Math.max((fixedX + truckWidth * 0.45) / roadWidth, 0), 1);
 
-        // Calculate surface elevation relative to baseline
+        // Ground contact: height of grass surface from bottom of road in pixels
         const curRatio = getTerrainRatio(centerPosPct);
-        const baselineRatio = ELEV_RATIOS[0]; // ~0.3494
-        const elevY = -(curRatio - baselineRatio) * roadHeight;
+        const elevY = -(curRatio * roadHeight - 2);
 
         // Vehicle pitch slope
-        const delta = 0.018;
+        const delta = 0.02;
         const r1 = getTerrainRatio(Math.max(0, centerPosPct - delta));
         const r2 = getTerrainRatio(Math.min(1, centerPosPct + delta));
         const dy = (r2 - r1) * roadHeight;
@@ -2103,7 +2102,7 @@
 
         // Nose tilts UP when climbing (negative degrees in CSS rotate)
         const rawAngle = -Math.atan2(dy, dx) * (180 / Math.PI);
-        const tiltAngle = Math.max(-17, Math.min(17, rawAngle * 1.3));
+        const tiltAngle = Math.max(-15, Math.min(15, rawAngle * 1.15));
 
         applyTruckTransform(fixedX, elevY, tiltAngle);
         ticking = false;
@@ -2143,15 +2142,15 @@
         const fixedX = minX + progress * effectiveTravel;
         const centerPosPct = Math.min(Math.max((fixedX + truckWidth * 0.45) / roadWidth, 0), 1);
         const curRatio = getTerrainRatio(centerPosPct);
-        const elevY = -(curRatio - ELEV_RATIOS[0]) * roadHeight;
+        const elevY = -(curRatio * roadHeight - 2);
 
-        const delta = 0.018;
+        const delta = 0.02;
         const r1 = getTerrainRatio(Math.max(0, centerPosPct - delta));
         const r2 = getTerrainRatio(Math.min(1, centerPosPct + delta));
         const dy = (r2 - r1) * roadHeight;
         const dx = (2 * delta) * roadWidth;
         const rawAngle = -Math.atan2(dy, dx) * (180 / Math.PI);
-        const tiltAngle = Math.max(-17, Math.min(17, rawAngle * 1.3));
+        const tiltAngle = Math.max(-15, Math.min(15, rawAngle * 1.15));
 
         applyTruckTransform(fixedX, elevY, tiltAngle);
       }
