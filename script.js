@@ -3536,11 +3536,35 @@ function initPagePreloader() {
     }
 }
 
+// High-precision true foreground grass surface elevation profile (101-point sampled)
+const ELEV_RATIOS = [
+    0.2547, 0.2676, 0.2792, 0.2953, 0.273, 0.2198, 0.2339, 0.2631, 0.2909, 0.315,
+    0.3349, 0.3466, 0.352, 0.3664, 0.3872, 0.405, 0.423, 0.432, 0.4129, 0.3985,
+    0.3718, 0.3359, 0.304, 0.2742, 0.2513, 0.2214, 0.1872, 0.169, 0.1587, 0.1568,
+    0.16, 0.1719, 0.1904, 0.2095, 0.234, 0.2593, 0.2834, 0.3026, 0.312, 0.3132,
+    0.3135, 0.3114, 0.2874, 0.2695, 0.2331, 0.2044, 0.1791, 0.1558, 0.1347, 0.1166,
+    0.1002, 0.0866, 0.0754, 0.0668, 0.0609, 0.0602, 0.0602, 0.0609, 0.0668, 0.0759,
+    0.0903, 0.1084, 0.137, 0.1701, 0.1829, 0.208, 0.2377, 0.2671, 0.2944, 0.3181,
+    0.337, 0.3474, 0.3513, 0.3577, 0.3416, 0.316, 0.2859, 0.2574, 0.2279, 0.2003,
+    0.1749, 0.1551, 0.1389, 0.1329, 0.1319, 0.1271, 0.1376, 0.1691, 0.1745, 0.1861,
+    0.2073, 0.2295, 0.2511, 0.2724, 0.2928, 0.3123, 0.3339, 0.3456, 0.3444, 0.3331, 0.3202
+];
+
+function getTerrainRatio(pct) {
+    const p = Math.min(Math.max(pct, 0), 1);
+    const idx = p * (ELEV_RATIOS.length - 1);
+    const i0 = Math.floor(idx);
+    const i1 = Math.min(i0 + 1, ELEV_RATIOS.length - 1);
+    const frac = idx - i0;
+    return ELEV_RATIOS[i0] * (1 - frac) + ELEV_RATIOS[i1] * frac;
+}
+
 // Interactive Driving Rig Truck on Page Scroll & Direct Drag (Fixed Bottom Bar - Safari & Mobile Compatible)
 function initScrollLorry() {
     const fixedTruck = document.getElementById('fixedRigTruck');
     const fixedBar = document.getElementById('fixedScrollRigBar');
-    if (!fixedTruck || !fixedBar) return;
+    const fixedRoad = fixedBar ? (fixedBar.querySelector('.fixed-rig-road') || fixedBar) : null;
+    if (!fixedTruck || !fixedBar || !fixedRoad) return;
 
     let ticking = false;
     let isDragging = false;
@@ -3551,8 +3575,6 @@ function initScrollLorry() {
         if (document.scrollingElement) return document.scrollingElement.scrollTop;
         return window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || window.scrollY || 0;
     }
-
-    let lastScrollY = getScrollPosition();
 
     function getMaxScroll() {
         const scrollHeight = Math.max(
@@ -3565,20 +3587,11 @@ function initScrollLorry() {
     }
 
     function getMaxTravel() {
-        const fixedRoad = fixedBar.querySelector('.fixed-rig-road') || fixedBar;
         const roadWidth = fixedRoad.clientWidth || window.innerWidth;
-        const truckWidth = fixedTruck.clientWidth || 76;
+        const truckWidth = fixedTruck.clientWidth || 66;
         const badge = fixedBar.querySelector('.fixed-road-badge');
-        const badgeWidth = badge ? (badge.clientWidth + 16) : 90;
+        const badgeWidth = badge ? (badge.clientWidth + 16) : 100;
         return Math.max(1, roadWidth - truckWidth - badgeWidth);
-    }
-
-    // Mathematical elevation profile identical to the SVG terrain line
-    function getTerrainElevation(pct) {
-        return -7.0 * Math.sin(pct * Math.PI * 3.0)
-               - 4.0 * Math.sin(pct * Math.PI * 7.0 + 0.5)
-               - 2.5 * Math.sin(pct * Math.PI * 15.0 + 1.0)
-               + 1.5 * Math.cos(pct * Math.PI * 25.0);
     }
 
     function applyTruckTransform(x, y, tilt) {
@@ -3591,34 +3604,32 @@ function initScrollLorry() {
         if (isDragging) return;
         const scrollTop = getScrollPosition();
         const maxScroll = getMaxScroll();
-        
-        // Progress strictly clamped between 0 and 1 (prevents iOS Safari rubber-band bounce negative values)
         const progress = Math.min(Math.max(scrollTop / maxScroll, 0), 1);
-        const maxTravel = getMaxTravel();
-        const fixedX = progress * maxTravel;
 
-        const fixedRoad = fixedBar.querySelector('.fixed-rig-road') || fixedBar;
         const roadWidth = fixedRoad.clientWidth || window.innerWidth;
-        const truckWidth = fixedTruck.clientWidth || 76;
+        const roadHeight = fixedRoad.clientHeight || 82;
+        const truckWidth = fixedTruck.clientWidth || 66;
+        const maxTravel = getMaxTravel();
+        const minX = roadWidth <= 768 ? 6 : 14;
 
-        // Calculate center position along road for exact elevation matching
+        const fixedX = minX + progress * Math.max(1, maxTravel - minX);
         const centerPosPct = Math.min(Math.max((fixedX + truckWidth * 0.45) / roadWidth, 0), 1);
 
-        // Vertical displacement (negative = climbing uphill, positive = descending ditch)
-        const elevY = getTerrainElevation(centerPosPct);
+        // Ground contact: height of grass surface from bottom of road in pixels
+        const curRatio = getTerrainRatio(centerPosPct);
+        const elevY = -(curRatio * roadHeight - 2);
 
-        // Slope calculation: evaluate slight lookahead to find tangent angle
-        const delta = 0.015;
-        const p1 = Math.max(0, centerPosPct - delta);
-        const p2 = Math.min(1, centerPosPct + delta);
-        const dy = getTerrainElevation(p2) - getTerrainElevation(p1);
-        const dx = (p2 - p1) * roadWidth;
+        // Vehicle pitch slope
+        const delta = 0.02;
+        const r1 = getTerrainRatio(Math.max(0, centerPosPct - delta));
+        const r2 = getTerrainRatio(Math.min(1, centerPosPct + delta));
+        const dy = (r2 - r1) * roadHeight;
+        const dx = (2 * delta) * roadWidth;
 
-        // Natural vehicle pitch angle (degrees) clamped between -18 deg (uphill) and +18 deg (downhill)
-        const rawAngle = Math.atan2(dy, dx) * (180 / Math.PI);
-        const tiltAngle = Math.max(-18, Math.min(18, rawAngle * 1.35));
+        // Nose tilts UP when climbing (negative degrees in CSS rotate)
+        const rawAngle = -Math.atan2(dy, dx) * (180 / Math.PI);
+        const tiltAngle = Math.max(-15, Math.min(15, rawAngle * 1.15));
 
-        lastScrollY = scrollTop;
         applyTruckTransform(fixedX, elevY, tiltAngle);
         ticking = false;
     }
@@ -3635,10 +3646,13 @@ function initScrollLorry() {
         if (!isDragging) return;
         const currentX = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
         const deltaX = currentX - startX;
+        const roadWidth = fixedRoad.clientWidth || window.innerWidth;
+        const minX = roadWidth <= 768 ? 6 : 14;
         const maxTravel = getMaxTravel();
+        const effectiveTravel = Math.max(1, maxTravel - minX);
         const maxScroll = getMaxScroll();
 
-        const scrollDelta = (deltaX / maxTravel) * maxScroll;
+        const scrollDelta = (deltaX / effectiveTravel) * maxScroll;
         const newScrollTop = Math.max(0, Math.min(maxScroll, startScrollTop + scrollDelta));
 
         if (document.scrollingElement) {
@@ -3648,21 +3662,21 @@ function initScrollLorry() {
         }
 
         const progress = newScrollTop / maxScroll;
-        const fixedX = progress * maxTravel;
+        const roadHeight = fixedRoad.clientHeight || 82;
+        const truckWidth = fixedTruck.clientWidth || 66;
 
-        const fixedRoad = fixedBar.querySelector('.fixed-rig-road') || fixedBar;
-        const roadWidth = fixedRoad.clientWidth || window.innerWidth;
-        const truckWidth = fixedTruck.clientWidth || 76;
+        const fixedX = minX + progress * effectiveTravel;
         const centerPosPct = Math.min(Math.max((fixedX + truckWidth * 0.45) / roadWidth, 0), 1);
-        const elevY = getTerrainElevation(centerPosPct);
+        const curRatio = getTerrainRatio(centerPosPct);
+        const elevY = -(curRatio * roadHeight - 2);
 
-        const delta = 0.015;
-        const p1 = Math.max(0, centerPosPct - delta);
-        const p2 = Math.min(1, centerPosPct + delta);
-        const dy = getTerrainElevation(p2) - getTerrainElevation(p1);
-        const dx = (p2 - p1) * roadWidth;
-        const rawAngle = Math.atan2(dy, dx) * (180 / Math.PI);
-        const tiltAngle = Math.max(-18, Math.min(18, rawAngle * 1.35));
+        const delta = 0.02;
+        const r1 = getTerrainRatio(Math.max(0, centerPosPct - delta));
+        const r2 = getTerrainRatio(Math.min(1, centerPosPct + delta));
+        const dy = (r2 - r1) * roadHeight;
+        const dx = (2 * delta) * roadWidth;
+        const rawAngle = -Math.atan2(dy, dx) * (180 / Math.PI);
+        const tiltAngle = Math.max(-15, Math.min(15, rawAngle * 1.15));
 
         applyTruckTransform(fixedX, elevY, tiltAngle);
     }
@@ -3675,13 +3689,14 @@ function initScrollLorry() {
     }
 
     // Tap/click on road line to jump/scroll to position
-    const road = fixedBar.querySelector('.fixed-rig-road') || fixedBar;
-    road.addEventListener('click', (e) => {
+    fixedRoad.addEventListener('click', (e) => {
         if (e.target.closest('#fixedRigTruck') || e.target.closest('.fixed-road-badge')) return;
-        const rect = road.getBoundingClientRect();
+        const rect = fixedRoad.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
+        const roadWidth = fixedRoad.clientWidth || window.innerWidth;
+        const minX = roadWidth <= 768 ? 6 : 14;
         const maxTravel = getMaxTravel();
-        const progress = Math.min(Math.max(clickX / maxTravel, 0), 1);
+        const progress = Math.min(Math.max((clickX - minX) / Math.max(1, maxTravel - minX), 0), 1);
         const maxScroll = getMaxScroll();
         window.scrollTo({
             top: progress * maxScroll,
