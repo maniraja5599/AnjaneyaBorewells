@@ -9142,23 +9142,45 @@ img {
     }
 }
 
-.fixed-road-badge {
+/* Welcoming Village People Standing at the Road Destination (End) */
+.road-welcoming-people {
     position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: #fffbeb;
-    border: 1px solid #fde68a;
-    padding: 4px 12px;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #92400e;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    right: 12px;
+    bottom: 24px;
+    height: 52px;
+    width: auto;
     z-index: 3;
+    pointer-events: auto;
+    cursor: pointer;
+    display: flex;
+    align-items: flex-end;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.28));
+    transition: transform 0.25s ease;
+}
+
+.road-welcoming-people:hover {
+    transform: scale(1.08);
+}
+
+.welcoming-people-img {
+    height: 100%;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    animation: peopleWave 1.4s ease-in-out infinite alternate;
+    transform-origin: 50% 100%;
+}
+
+@keyframes peopleWave {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-1.5px) rotate(-0.5deg);
+    }
+    100% {
+        transform: translateY(0.5px) rotate(0.5deg);
+    }
 }
 
 @media (max-width: 768px) {
@@ -9176,11 +9198,10 @@ img {
         height: 46px;
         bottom: 0px;
     }
-    .fixed-road-badge {
+    .road-welcoming-people {
         right: 8px;
-        top: 10px;
-        font-size: 0.64rem;
-        padding: 2px 8px;
+        bottom: 20px;
+        height: 44px;
     }
 }
 

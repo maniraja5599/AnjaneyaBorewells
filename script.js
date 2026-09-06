@@ -3589,9 +3589,11 @@ function initScrollLorry() {
     function getMaxTravel() {
         const roadWidth = fixedRoad.clientWidth || window.innerWidth;
         const truckWidth = fixedTruck.clientWidth || 66;
-        const badge = fixedBar.querySelector('.fixed-road-badge');
-        const badgeWidth = badge ? (badge.clientWidth + 16) : 100;
-        return Math.max(1, roadWidth - truckWidth - badgeWidth);
+        const people = fixedRoad.querySelector('.road-welcoming-people');
+        const peopleWidth = people ? people.clientWidth : 55;
+        // Lorry drives all the way to the end, parking right in front of the welcoming people
+        const rightOffset = people ? (peopleWidth + 6) : 20;
+        return Math.max(1, roadWidth - truckWidth - rightOffset);
     }
 
     function applyTruckTransform(x, y, tilt) {
@@ -3690,7 +3692,7 @@ function initScrollLorry() {
 
     // Tap/click on road line to jump/scroll to position
     fixedRoad.addEventListener('click', (e) => {
-        if (e.target.closest('#fixedRigTruck') || e.target.closest('.fixed-road-badge')) return;
+        if (e.target.closest('#fixedRigTruck') || e.target.closest('.road-welcoming-people')) return;
         const rect = fixedRoad.getBoundingClientRect();
         const clickX = e.clientX - rect.left;
         const roadWidth = fixedRoad.clientWidth || window.innerWidth;
