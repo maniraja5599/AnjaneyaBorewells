@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    <link rel="stylesheet" href="admin.css?v=4.0.0">
+    <link rel="stylesheet" href="admin.css?v=4.1.0">
 </head>
 <body class="admin-body">
     <!-- Top Executive Header -->
@@ -219,9 +219,24 @@
                             <span class="c-sub">Strict Monotonic Counter</span>
                         </div>
                         <div class="cumul-card">
-                            <span class="c-label">CUMULATIVE SESSIONS</span>
-                            <div class="c-val" id="cumulUniqueSessions">384</div>
-                            <span class="c-sub">Unique Visitors Tracked</span>
+                            <span class="c-label">LIVE ONLINE NOW</span>
+                            <div class="c-val text-green" id="cumulActiveOnline">1 Online</div>
+                            <span class="c-sub">Real-Time Heartbeat</span>
+                        </div>
+                        <div class="cumul-card">
+                            <span class="c-label">TODAY'S VISITORS</span>
+                            <div class="c-val text-cyan" id="cumulTodayVisitors">28 Today</div>
+                            <span class="c-sub">Daily Unique Traffic</span>
+                        </div>
+                        <div class="cumul-card">
+                            <span class="c-label">THIS MONTH</span>
+                            <div class="c-val text-emerald" id="cumulMonthVisitors">142 Views</div>
+                            <span class="c-sub">Monthly Traffic Volume</span>
+                        </div>
+                        <div class="cumul-card">
+                            <span class="c-label">THIS YEAR (2026)</span>
+                            <div class="c-val text-purple" id="cumulYearVisitors">507 Sessions</div>
+                            <span class="c-sub">Annual Visitor Total</span>
                         </div>
                         <div class="cumul-card">
                             <span class="c-label">QUOTES GENERATED</span>
@@ -232,11 +247,6 @@
                             <span class="c-label">CUMULATIVE LEADS</span>
                             <div class="c-val" id="cumulTotalLeads">31</div>
                             <span class="c-sub">WhatsApp &amp; Direct Hotline</span>
-                        </div>
-                        <div class="cumul-card">
-                            <span class="c-label">APP INSTALLS (PWA)</span>
-                            <div class="c-val" id="cumulTotalInstalls">24</div>
-                            <span class="c-sub">Installed App Users</span>
                         </div>
                         <div class="cumul-card">
                             <span class="c-label">TAMIL NADU REACH</span>
@@ -345,26 +355,33 @@
                         <div class="m-sub">15s Live Cloud Heartbeat</div>
                     </div>
                     <div class="mini-kpi-card">
+                        <div class="m-label">TODAY'S ONLINE VISITORS</div>
+                        <div class="m-val text-cyan" id="activeUsersTodayCount">28 Today</div>
+                        <div class="m-sub">Daily Unique Traffic</div>
+                    </div>
+                    <div class="mini-kpi-card">
                         <div class="m-label">PRIMARY ACTIVE DEVICE</div>
-                        <div class="m-val text-cyan" id="activeUsersTopDevice">Mobile (Android/iOS)</div>
+                        <div class="m-val text-amber" id="activeUsersTopDevice">Mobile (Android/iOS)</div>
                         <div class="m-sub">Live Hardware Fingerprint</div>
                     </div>
                     <div class="mini-kpi-card">
                         <div class="m-label">ACTIVE SECTION FOCUS</div>
-                        <div class="m-val text-amber" id="activeUsersTopSection">Cost Calculator</div>
+                        <div class="m-val text-emerald" id="activeUsersTopSection">Cost Calculator</div>
                         <div class="m-sub">Current Engagement Area</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">CLOUD HEARTBEAT ENGINE</div>
-                        <div class="m-val text-emerald">Google Firebase RTDB</div>
-                        <div class="m-sub">Real-Time Sync (Singapore)</div>
                     </div>
                 </section>
 
                 <div class="data-table-container">
                     <div class="table-toolbar">
-                        <h4>🟢 Live Active Visitors Currently Browsing Website</h4>
-                        <span class="toolbar-stat-pill" id="activeUsersPill">Real-Time Heartbeat Radar</span>
+                        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                            <h4>🟢 Live Active Visitors Currently Browsing Website</h4>
+                            <span class="toolbar-stat-pill" id="activeUsersPill">Real-Time Heartbeat Radar</span>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <button type="button" class="ctrl-btn btn-sync" id="gotoVisitorHistoryBtn" style="background: rgba(56, 189, 248, 0.14); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; padding: 6px 14px; border-radius: 6px; font-size: 0.80rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="View all historical visits and use advanced filters">
+                                <span>📜 View Full Visitor History &amp; Filters ➔</span>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="table-scroll-wrap">
@@ -390,29 +407,163 @@
 
             <!-- TAB PANE 3: VISITOR & IP LOGS -->
             <div class="admin-tab-pane" id="tabLiveLogs" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon -->
+                <!-- Tab Mini Analytics Ribbon: Today, Month, Year, Online & All-Time Counters -->
                 <section class="tab-mini-kpi-ribbon">
                     <div class="mini-kpi-card">
-                        <div class="m-label">TOTAL LOGGED SESSIONS</div>
-                        <div class="m-val text-cyan" id="liveLogsTotalCount">240+ Sessions</div>
-                        <div class="m-sub">Monotonic Non-Decreasing</div>
+                        <div class="m-label">CURRENT ONLINE NOW</div>
+                        <div class="m-val text-green" id="liveLogsActiveCount">1 Online</div>
+                        <div class="m-sub">15s Live Radar Pulse</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">TAMIL NADU LOCAL TRAFFIC</div>
-                        <div class="m-val text-emerald">94.2% Verified</div>
-                        <div class="m-sub">Geo-Targeted Rig Inquiries</div>
+                        <div class="m-label">TODAY'S VISITORS</div>
+                        <div class="m-val text-cyan" id="liveLogsTodayCount">28 Today</div>
+                        <div class="m-sub">Visitors Today (IST)</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">WHATSAPP &amp; CALL LEADS</div>
-                        <div class="m-val text-rose" id="liveLogsLeadsCount">42 Hotline Leads</div>
-                        <div class="m-sub">Direct Customer Referrals</div>
+                        <div class="m-label">THIS MONTH</div>
+                        <div class="m-val text-emerald" id="liveLogsMonthCount">142 Views</div>
+                        <div class="m-sub">Monthly Traffic Volume</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">CURRENT ACTIVE SESSIONS</div>
-                        <div class="m-val text-green" id="liveLogsActiveCount">2 Online</div>
-                        <div class="m-sub">30s Heartbeat Radar</div>
+                        <div class="m-label">THIS YEAR (2026)</div>
+                        <div class="m-val text-purple" id="liveLogsYearCount">507 Sessions</div>
+                        <div class="m-sub">Annual Cumulative Visitors</div>
+                    </div>
+                    <div class="mini-kpi-card">
+                        <div class="m-label">ALL-TIME CUMULATIVE</div>
+                        <div class="m-val text-amber" id="liveLogsTotalCount">507+ Total</div>
+                        <div class="m-sub">Strict Monotonic Counter</div>
                     </div>
                 </section>
+
+                <!-- Comprehensive Visitor Intelligence Filter Suite -->
+                <div class="visitor-filter-panel" id="visitorFilterConsole">
+                    <div class="v-filter-header">
+                        <div class="v-filter-title-group">
+                            <h4>⚡ Visitor Intelligence &amp; Session Audit Filters</h4>
+                            <p>Filter real-time and historical sessions by date range, online status, device category, or district</p>
+                        </div>
+                        <div class="v-preset-buttons-wrap">
+                            <button type="button" class="v-preset-btn active" data-range="all">All Time (முழு வரலாறு)</button>
+                            <button type="button" class="v-preset-btn" data-range="today">📅 Today</button>
+                            <button type="button" class="v-preset-btn" data-range="yesterday">Yesterday</button>
+                            <button type="button" class="v-preset-btn" data-range="last7">Last 7 Days</button>
+                            <button type="button" class="v-preset-btn" data-range="month">🗓️ This Month</button>
+                            <button type="button" class="v-preset-btn" data-range="year">📆 This Year</button>
+                        </div>
+                    </div>
+
+                    <div class="v-filter-row">
+                        <!-- Time Window Preset -->
+                        <div class="v-filter-group">
+                            <label for="visitorDatePresetSelect">Time Window</label>
+                            <select id="visitorDatePresetSelect" class="v-filter-select">
+                                <option value="all" selected>All Time (முழு வரலாறு)</option>
+                                <option value="today">📅 Today (இன்று)</option>
+                                <option value="yesterday">Yesterday (நேற்று)</option>
+                                <option value="last7">Last 7 Days (கடந்த 7 நாட்கள்)</option>
+                                <option value="month">🗓️ This Month (இந்த மாதம்)</option>
+                                <option value="year">📆 This Year (இந்த ஆண்டு)</option>
+                                <option value="custom">Custom Date Range...</option>
+                            </select>
+                        </div>
+
+                        <!-- Custom Date Range (hidden by default) -->
+                        <div class="v-filter-group" id="visitorCustomDateFromWrap" style="display: none;">
+                            <label for="visitorDateFrom">From Date</label>
+                            <input type="date" id="visitorDateFrom" class="v-filter-date">
+                        </div>
+                        <div class="v-filter-group" id="visitorCustomDateToWrap" style="display: none;">
+                            <label for="visitorDateTo">To Date</label>
+                            <input type="date" id="visitorDateTo" class="v-filter-date">
+                        </div>
+
+                        <!-- Online Status Filter -->
+                        <div class="v-filter-group">
+                            <label for="visitorStatusFilter">Online Status</label>
+                            <select id="visitorStatusFilter" class="v-filter-select">
+                                <option value="all" selected>All Sessions (அனைத்தும்)</option>
+                                <option value="online">🟢 Currently Online Only (ஆன்லைன் மட்டும்)</option>
+                                <option value="offline">⚪ Past / Offline Sessions</option>
+                            </select>
+                        </div>
+
+                        <!-- Device Filter -->
+                        <div class="v-filter-group">
+                            <label for="visitorDeviceFilter">Device Category</label>
+                            <select id="visitorDeviceFilter" class="v-filter-select">
+                                <option value="all" selected>All Devices (அனைத்து சாதனங்கள்)</option>
+                                <option value="mobile">📱 Mobile (Android &amp; iOS)</option>
+                                <option value="desktop">💻 Desktop / PC</option>
+                                <option value="pwa">📲 PWA Mobile App</option>
+                            </select>
+                        </div>
+
+                        <!-- District / Location Filter -->
+                        <div class="v-filter-group">
+                            <label for="visitorDistrictFilter">District / Region</label>
+                            <select id="visitorDistrictFilter" class="v-filter-select">
+                                <option value="all" selected>All Locations (அனைத்து இடங்கள்)</option>
+                                <option value="namakkal">Namakkal (HQ Hub)</option>
+                                <option value="salem">Salem</option>
+                                <option value="erode">Erode</option>
+                                <option value="karur">Karur</option>
+                                <option value="trichy">Tiruchirappalli</option>
+                                <option value="othertn">Other Tamil Nadu</option>
+                                <option value="global">Outside TN / Global NRI</option>
+                            </select>
+                        </div>
+
+                        <!-- Action / Intent Filter -->
+                        <div class="v-filter-group">
+                            <label for="visitorActionFilter">Visitor Action / Intent</label>
+                            <select id="visitorActionFilter" class="v-filter-select">
+                                <option value="all" selected>All Actions (அனைத்து செயல்பாடுகள்)</option>
+                                <option value="quote">💰 Quote Generated / Calculated</option>
+                                <option value="lead">📞 WhatsApp / Call Leads</option>
+                                <option value="pdf">📄 PDF / Image Export</option>
+                                <option value="engaged">🔍 Deep Page Engagements</option>
+                            </select>
+                        </div>
+
+                        <!-- Show Records (Page Size) -->
+                        <div class="v-filter-group">
+                            <label for="visitorPageSizeSelect">Display Records</label>
+                            <select id="visitorPageSizeSelect" class="v-filter-select">
+                                <option value="15">Show 15 per view</option>
+                                <option value="30">Show 30 per view</option>
+                                <option value="50">Show 50 per view</option>
+                                <option value="100">Show 100 per view</option>
+                                <option value="all" selected>All History (முழு வரலாறு)</option>
+                            </select>
+                        </div>
+
+                        <!-- Filter Action Buttons -->
+                        <div class="v-filter-actions">
+                            <button type="button" class="btn-v-apply" id="visitorApplyFilterBtn">
+                                <span>⚡ Apply Filters</span>
+                            </button>
+                            <button type="button" class="btn-v-reset" id="visitorResetFilterBtn" title="Reset all filters">
+                                <span>🔄 Reset</span>
+                            </button>
+                            <button type="button" class="btn-v-loadall" id="visitorLoadAllBtn" title="Load entire visitor history without limits">
+                                <span>📥 Load Full History</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Active Filter Summary & Export Strip -->
+                    <div class="v-filter-summary-strip">
+                        <div class="v-summary-left">
+                            <span class="v-summary-pill" id="visitorFilterSummaryPill">Showing All-Time Visitor History</span>
+                        </div>
+                        <div class="v-summary-right">
+                            <button type="button" class="btn-v-export" id="visitorExportCsvBtn" title="Export current filtered sessions as CSV">
+                                <span>📊 Export Filtered CSV</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="data-table-container">
                     <div class="table-toolbar">
@@ -993,6 +1144,6 @@
         </div>
     </footer>
 
-    <script src="admin.js?v=4.0.0"></script>
+    <script src="admin.js?v=4.1.0"></script>
 </body>
 </html>
