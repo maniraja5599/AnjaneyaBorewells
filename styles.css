@@ -4660,18 +4660,17 @@ label.gst-toggle-action-pill,
 .results-header-flex {
     display: flex !important;
     align-items: center !important;
-    justify-content: space-between !important;
-    gap: 8px !important;
-    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
 }
 
 .results-header-brand-wrap {
     display: flex !important;
     align-items: center !important;
-    gap: 9px !important;
+    gap: 10px !important;
     min-width: 0 !important;
+    width: 100% !important;
     flex: 1 !important;
-    overflow: hidden !important;
 }
 
 .results-header-logo-circle {
@@ -4701,13 +4700,14 @@ label.gst-toggle-action-pill,
     flex-direction: column !important;
     justify-content: center !important;
     min-width: 0 !important;
+    flex: 1 !important;
 }
 
 .results-brand-name {
     font-family: 'Montserrat', 'Plus Jakarta Sans', sans-serif !important;
-    font-size: clamp(0.86rem, 3.6vw, 1.08rem) !important;
+    font-size: clamp(0.82rem, 3.8vw, 1.05rem) !important;
     font-weight: 900 !important;
-    letter-spacing: 0.05em !important;
+    letter-spacing: 0.04em !important;
     line-height: 1.15 !important;
     white-space: nowrap !important;
     text-transform: uppercase !important;
@@ -4726,15 +4726,30 @@ label.gst-toggle-action-pill,
     font-weight: 900 !important;
 }
 
+/* Second sub-row with tagline and smaller date badge */
+.results-sub-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    margin-top: 2px !important;
+    flex-wrap: wrap !important;
+}
+
 .results-tamil-sub {
     font-family: 'Mukta Malar', 'Plus Jakarta Sans', sans-serif !important;
-    font-size: clamp(0.62rem, 2.3vw, 0.72rem) !important;
+    font-size: clamp(0.58rem, 2.3vw, 0.68rem) !important;
     font-weight: 700 !important;
     color: #86efac !important;
     letter-spacing: 0.02em !important;
     white-space: nowrap !important;
     line-height: 1.1 !important;
-    margin-top: 1px !important;
+}
+
+.results-sub-divider {
+    color: rgba(255, 255, 255, 0.35) !important;
+    font-size: 0.58rem !important;
+    line-height: 1 !important;
+    user-select: none !important;
 }
 
 .results-est-pill {
@@ -4752,16 +4767,19 @@ label.gst-toggle-action-pill,
 }
 
 .calculator-date-badge {
-    background: rgba(255, 255, 255, 0.16) !important;
-    border: 1px solid rgba(255, 255, 255, 0.3) !important;
-    color: #ffffff !important;
-    font-size: clamp(0.60rem, 2.3vw, 0.70rem) !important;
-    font-weight: 700 !important;
-    padding: 2.5px 7px !important;
-    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.22) !important;
+    color: #e2e8f0 !important;
+    font-size: clamp(0.52rem, 2.0vw, 0.60rem) !important;
+    font-weight: 600 !important;
+    padding: 1px 6px !important;
+    border-radius: 6px !important;
     white-space: nowrap !important;
     font-family: var(--font-mono) !important;
-    flex-shrink: 0 !important;
+    line-height: 1.2 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 2px !important;
 }
 
 @media (max-width: 400px) {
@@ -4770,7 +4788,6 @@ label.gst-toggle-action-pill,
     }
     .results-header-brand-wrap {
         gap: 7px !important;
-        justify-content: flex-start !important;
     }
     .results-header-logo-circle {
         width: 32px !important;
@@ -4778,15 +4795,19 @@ label.gst-toggle-action-pill,
         min-width: 32px !important;
     }
     .results-brand-name {
-        font-size: 0.82rem !important;
+        font-size: 0.80rem !important;
+        letter-spacing: 0.02em !important;
+    }
+    .results-sub-row {
+        gap: 4px !important;
+        margin-top: 1px !important;
     }
     .results-tamil-sub {
-        font-size: 0.60rem !important;
+        font-size: 0.56rem !important;
     }
     .calculator-date-badge {
-        display: inline-block !important;
-        font-size: 0.58rem !important;
-        padding: 1.5px 5px !important;
+        font-size: 0.50rem !important;
+        padding: 1px 4px !important;
     }
 }
 
