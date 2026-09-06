@@ -2260,14 +2260,14 @@ class CostCalculator {
 
         // Navbar-Style Header Gradient (Matching website menu bar)
         const grad = ctx.createLinearGradient(0, 0, width, 125);
-        grad.addColorStop(0, '#0b5930');
-        grad.addColorStop(0.5, '#064020');
-        grad.addColorStop(1, '#032b15');
+        grad.addColorStop(0, '#062312');
+        grad.addColorStop(0.55, '#0d5229');
+        grad.addColorStop(1, '#17b800');
         ctx.fillStyle = grad;
         ctx.fillRect(6, 6, width - 12, 118);
 
         // Gold Accent Border below Header
-        ctx.strokeStyle = '#facc15';
+        ctx.strokeStyle = '#ffd31c';
         ctx.lineWidth = 2.5;
         ctx.beginPath();
         ctx.moveTo(6, 124);
@@ -2308,16 +2308,16 @@ class CostCalculator {
         ctx.fillText('ESTD 1990', logoX, logoY + 18);
         ctx.restore();
 
-        // Header Title: ANJANEYA (white) + BOREWELLS (gold yellow #fbbf24)
+        // Header Title: ANJANEYA (white) + BOREWELLS (gold yellow #facc15)
         ctx.save();
         ctx.textAlign = 'left';
         ctx.textBaseline = 'alphabetic';
-        ctx.font = 'bold 26px system-ui, -apple-system, sans-serif';
+        ctx.font = '900 27px Montserrat, "Plus Jakarta Sans", system-ui, sans-serif';
         const brandStartX = 125;
         ctx.fillStyle = '#ffffff';
         ctx.fillText('ANJANEYA ', brandStartX, 52);
         const anjWidth = ctx.measureText('ANJANEYA ').width;
-        ctx.fillStyle = '#fbbf24';
+        ctx.fillStyle = '#facc15';
         ctx.fillText('BOREWELLS', brandStartX + anjWidth, 52);
 
         // Header Tagline & Date
@@ -2518,10 +2518,10 @@ class CostCalculator {
         ctx.textAlign = 'right';
         ctx.fillText(`Rs.${(results.totalCost || 0).toLocaleString('en-IN')}`, width - 46, y + 40);
 
-        // Warning / Price Notice Banner (User request 1)
+        // Gentle Subtle Notice Banner (Low highlight)
         const noticeY = y + 74;
-        ctx.fillStyle = '#fffbeb';
-        ctx.strokeStyle = '#fcd34d';
+        ctx.fillStyle = '#f8fafc';
+        ctx.strokeStyle = '#e2e8f0';
         ctx.lineWidth = 1.2;
         ctx.beginPath();
         if (ctx.roundRect) ctx.roundRect(28, noticeY, width - 56, 46, 8);
@@ -2529,15 +2529,15 @@ class CostCalculator {
         ctx.fill();
         ctx.stroke();
 
-        ctx.font = '16px system-ui';
+        ctx.font = '14px system-ui';
         ctx.textAlign = 'left';
         ctx.fillText('⚠️', 42, noticeY + 28);
 
-        ctx.fillStyle = '#92400e';
+        ctx.fillStyle = '#475569';
         ctx.font = 'bold 10.8px system-ui, -apple-system, sans-serif';
         ctx.fillText('இன்றைய நேரடி விலை மாறுபடலாம்: பாறை கடினம் & டீசல் விலைக்கு ஏற்ப இறுதி கட்டணம் மாறுபடலாம்.', 66, noticeY + 20);
 
-        ctx.fillStyle = '#b45309';
+        ctx.fillStyle = '#94a3b8';
         ctx.font = '10px system-ui, -apple-system, sans-serif';
         ctx.fillText('Indicative estimate only. Actual rates depend on site strata & prevailing operational fuel costs.', 66, noticeY + 36);
 
