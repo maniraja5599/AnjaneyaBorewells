@@ -2676,39 +2676,43 @@ section, [id] {
     width: min(340px, 72vw) !important;
     height: min(340px, 72vw) !important;
     border-radius: 50% !important;
-    border: 1.5px solid rgba(16, 185, 129, 0.32) !important;
+    border: 1px solid rgba(16, 185, 129, 0.16) !important;
     pointer-events: none !important;
+    transform: translate3d(-50%, -50%, 0);
     will-change: transform, opacity !important;
+    transform-origin: center center !important;
     backface-visibility: hidden !important;
     -webkit-backface-visibility: hidden !important;
-    animation: globalSensorWave 6s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite !important;
+    perspective: 1000px !important;
+    -webkit-perspective: 1000px !important;
+    animation: globalSensorWave 12s cubic-bezier(0.2, 0.6, 0.35, 1) infinite !important;
     animation-fill-mode: both !important;
     box-sizing: border-box !important;
 }
 
 .global-sensor-ring.ring-1 {
     animation-delay: 0s !important;
-    border-color: rgba(16, 185, 129, 0.38) !important;
+    border-color: rgba(16, 185, 129, 0.20) !important;
 }
 
 .global-sensor-ring.ring-2 {
-    animation-delay: 2s !important;
-    border-color: rgba(2, 132, 199, 0.32) !important;
+    animation-delay: 4s !important;
+    border-color: rgba(2, 132, 199, 0.16) !important;
 }
 
 .global-sensor-ring.ring-3 {
-    animation-delay: 4s !important;
-    border-color: rgba(16, 185, 129, 0.26) !important;
+    animation-delay: 8s !important;
+    border-color: rgba(16, 185, 129, 0.12) !important;
 }
 
 @keyframes globalLogoPulse {
     0% {
-        transform: translate3d(-50%, -50%, 0) scale(0.96);
-        opacity: 0.065;
+        transform: translate3d(-50%, -50%, 0) scale(0.97);
+        opacity: 0.055;
     }
     100% {
-        transform: translate3d(-50%, -50%, 0) scale(1.04);
-        opacity: 0.095;
+        transform: translate3d(-50%, -50%, 0) scale(1.03);
+        opacity: 0.075;
     }
 }
 
@@ -2717,14 +2721,14 @@ section, [id] {
         transform: translate3d(-50%, -50%, 0) scale(0.65);
         opacity: 0;
     }
-    18% {
-        opacity: 0.52;
+    20% {
+        opacity: 0.22;
     }
-    55% {
-        opacity: 0.24;
+    60% {
+        opacity: 0.10;
     }
     100% {
-        transform: translate3d(-50%, -50%, 0) scale(2.45);
+        transform: translate3d(-50%, -50%, 0) scale(2.40);
         opacity: 0;
     }
 }
