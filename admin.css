@@ -2268,3 +2268,187 @@ body.admin-body {
 .console-entry.warn .c-tag { color: #facc15; }
 .console-entry.danger .c-tag { color: #f87171; }
 
+/* ==========================================================================
+   QUOTES LOG TAB: DATE FILTER & CUMULATIVE COUNTS SUITE
+   ========================================================================== */
+.quotes-filter-panel {
+    background: rgba(13, 20, 36, 0.75);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.q-filter-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.q-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 130px;
+    flex: 1;
+}
+
+.q-filter-group label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--text-muted, #94a3b8);
+    text-transform: uppercase;
+}
+
+.q-filter-select,
+.q-filter-date {
+    background: rgba(8, 14, 28, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #f1f5f9;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 8px 12px;
+    outline: none;
+    transition: all 0.2s ease;
+    width: 100%;
+    font-family: inherit;
+}
+
+.q-filter-select:focus,
+.q-filter-date:focus {
+    border-color: #38bdf8;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+}
+
+.q-filter-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.btn-q-filter {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 0.80rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn-q-apply {
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    border: 1px solid #38bdf8;
+    color: #ffffff;
+    box-shadow: 0 2px 10px rgba(2, 132, 199, 0.35);
+}
+
+.btn-q-apply:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.5);
+}
+
+.btn-q-reset {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #94a3b8;
+}
+
+.btn-q-reset:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+.quotes-count-summary-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(4, 9, 20, 0.65);
+    border: 1px solid rgba(56, 189, 248, 0.18);
+    border-radius: 8px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.q-count-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: #e2e8f0;
+}
+
+.q-badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #38bdf8;
+    box-shadow: 0 0 8px #38bdf8;
+    animation: pulseDot 1.8s infinite;
+}
+
+.q-count-breakdown {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.q-chip {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.74rem;
+    font-weight: 700;
+}
+
+.chip-saved {
+    background: rgba(6, 182, 212, 0.12);
+    border: 1px solid rgba(6, 182, 212, 0.35);
+    color: #38bdf8;
+}
+
+.chip-wa {
+    background: rgba(34, 197, 94, 0.12);
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    color: #4ade80;
+}
+
+.chip-val {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    color: #fbbf24;
+}
+
+@media (max-width: 768px) {
+    .q-filter-row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .q-filter-group {
+        min-width: 100%;
+    }
+    .q-filter-actions {
+        width: 100%;
+        justify-content: stretch;
+    }
+    .btn-q-filter {
+        flex: 1;
+        text-align: center;
+    }
+    .quotes-count-summary-strip {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+}
+

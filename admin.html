@@ -246,94 +246,7 @@
                     </div>
                 </div>
 
-                <!-- BENTO ROW 1: 5 Executive Metric Tiles -->
-                <section class="bento-metric-grid">
-                    <!-- Tile 1: Cumulative Live Views -->
-                    <div class="bento-tile tile-cyan">
-                        <div class="tile-header">
-                            <div class="tile-title-group">
-                                <span class="tile-icon">🌐</span>
-                                <span class="tile-label">WEBSITE VISITORS</span>
-                            </div>
-                            <span class="tile-badge badge-cyan">MONOTONIC</span>
-                        </div>
-                        <div class="tile-body">
-                            <div class="tile-value" id="bentoTotalViews">236+</div>
-                            <div class="tile-sparkline-box">
-                                <div class="sparkline-trend-icon">📈 +18.2%</div>
-                            </div>
-                        </div>
-                        <div class="tile-footer">Firebase RTDB Live Counter</div>
-                    </div>
 
-                    <!-- Tile 2: Live Active Presence -->
-                    <div class="bento-tile tile-green">
-                        <div class="tile-header">
-                            <div class="tile-title-group">
-                                <span class="tile-icon">🟢</span>
-                                <span class="tile-label">ACTIVE RIG PRESENCE</span>
-                            </div>
-                            <span class="tile-badge badge-green live-pulse-badge">ONLINE</span>
-                        </div>
-                        <div class="tile-body">
-                            <div class="tile-value" id="bentoActiveUsers">2 Online</div>
-                            <div class="sonar-radar-box">
-                                <div class="sonar-ring r1"></div>
-                                <div class="sonar-ring r2"></div>
-                                <div class="sonar-center"></div>
-                            </div>
-                        </div>
-                        <div class="tile-footer">30s Real-Time Heartbeat Radar</div>
-                    </div>
-
-                    <!-- Tile 3: Avg Engagement Duration -->
-                    <div class="bento-tile tile-purple">
-                        <div class="tile-header">
-                            <div class="tile-title-group">
-                                <span class="tile-icon">⏱️</span>
-                                <span class="tile-label">AVG SESSION TIME</span>
-                            </div>
-                            <span class="tile-badge badge-purple">ENGAGED</span>
-                        </div>
-                        <div class="tile-body">
-                            <div class="tile-value" id="bentoAvgDuration">2m 45s</div>
-                            <span class="tile-subtext">Depth Explorer</span>
-                        </div>
-                        <div class="tile-footer">Calculator &amp; Services Flow</div>
-                    </div>
-
-                    <!-- Tile 4: Quotations Computed -->
-                    <div class="bento-tile tile-amber">
-                        <div class="tile-header">
-                            <div class="tile-title-group">
-                                <span class="tile-icon">💰</span>
-                                <span class="tile-label">QUOTATIONS GENERATED</span>
-                            </div>
-                            <span class="tile-badge badge-amber">64% RATE</span>
-                        </div>
-                        <div class="tile-body">
-                            <div class="tile-value" id="bentoEstimatesCount">72 Quotes</div>
-                            <span class="tile-subtext">Avg ₹1.08L</span>
-                        </div>
-                        <div class="tile-footer">PVC 7" &amp; 10" Configurations</div>
-                    </div>
-
-                    <!-- Tile 5: Direct Inquiries -->
-                    <div class="bento-tile tile-rose">
-                        <div class="tile-header">
-                            <div class="tile-title-group">
-                                <span class="tile-icon">📞</span>
-                                <span class="tile-label">HOTLINE &amp; WHATSAPP</span>
-                            </div>
-                            <span class="tile-badge badge-rose">28% CONV</span>
-                        </div>
-                        <div class="tile-body">
-                            <div class="tile-value" id="bentoLeadsCount">31 Inquiries</div>
-                            <span class="tile-subtext">Direct Rig</span>
-                        </div>
-                        <div class="tile-footer">+91 965 965 7777 &amp; WhatsApp</div>
-                    </div>
-                </section>
 
                 <!-- BENTO ROW 2: Hero Deck (24h Demand Wave + Hardware Ecosystem) -->
                 <section class="bento-hero-grid">
@@ -344,10 +257,10 @@
                                 <span class="card-icon">📈</span>
                                 <div>
                                     <h3>Date-Wise Viewers &amp; Traffic Trends</h3>
-                                    <p>Real daily visitor traffic curve based on verified telemetry sessions</p>
+                                    <p>Real daily visitor bars with cumulative trendline and hover tooltip inspection</p>
                                 </div>
                             </div>
-                            <span class="badge-pill-neon">Real-Time Traffic</span>
+                            <span class="badge-pill-neon">Daily Bars + Cumulative Curve</span>
                         </div>
                         <div class="card-canvas-container">
                             <canvas id="trafficTrendsChart"></canvas>
@@ -547,7 +460,7 @@
 
             <!-- TAB PANE 4: BOREWELL QUOTES LOG -->
             <div class="admin-tab-pane" id="tabEstimatesLog" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon -->
+                <!-- Tab Mini Analytics Ribbon (Updated with Saved Count & WhatsApp Count) -->
                 <section class="tab-mini-kpi-ribbon">
                     <div class="mini-kpi-card">
                         <div class="m-label">TOTAL QUOTES COMPUTED</div>
@@ -555,25 +468,78 @@
                         <div class="m-sub">Interactive Calculator Flow</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">TOTAL PIPELINE VALUE</div>
-                        <div class="m-val text-emerald">₹78.4 Lakhs</div>
-                        <div class="m-sub">Approximate Estimated Value</div>
+                        <div class="m-label">SAVED QUOTES (PDF)</div>
+                        <div class="m-val text-cyan" id="quotesSavedCount">48 Saved</div>
+                        <div class="m-sub">Downloaded / Saved Offline</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">AVERAGE DRILLING DEPTH</div>
-                        <div class="m-val text-cyan">850 ft</div>
-                        <div class="m-sub">Ranging 400 - 1500 ft</div>
+                        <div class="m-label">WHATSAPP LEADS &amp; INQUIRIES</div>
+                        <div class="m-val text-green" id="quotesWhatsAppCount">24 Leads</div>
+                        <div class="m-sub">Direct WhatsApp Submissions</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">PREFERRED CASING PIPE</div>
-                        <div class="m-val text-purple">7" PVC (78%)</div>
-                        <div class="m-sub">10" Commercial Casing (22%)</div>
+                        <div class="m-label">ESTIMATED PIPELINE VALUE</div>
+                        <div class="m-val text-emerald" id="quotesPipelineValue">₹78.4 Lakhs</div>
+                        <div class="m-sub">Cumulative Quoted Value</div>
                     </div>
                 </section>
 
+                <!-- Dedicated Date Filter & Range Filtering Suite for Quotes -->
+                <div class="quotes-filter-panel">
+                    <div class="q-filter-row">
+                        <div class="q-filter-group">
+                            <label for="quotesDatePresetSelect">📅 Date Preset</label>
+                            <select id="quotesDatePresetSelect" class="q-filter-select">
+                                <option value="all">All-Time Cumulative</option>
+                                <option value="today">Today</option>
+                                <option value="yesterday">Yesterday</option>
+                                <option value="week">Last 7 Days</option>
+                                <option value="month">This Month</option>
+                                <option value="custom">Custom Date Range...</option>
+                            </select>
+                        </div>
+                        <div class="q-filter-group" id="quotesDateFromGroup">
+                            <label for="quotesDateFrom">From Date</label>
+                            <input type="date" id="quotesDateFrom" class="q-filter-date">
+                        </div>
+                        <div class="q-filter-group" id="quotesDateToGroup">
+                            <label for="quotesDateTo">To Date</label>
+                            <input type="date" id="quotesDateTo" class="q-filter-date">
+                        </div>
+                        <div class="q-filter-group">
+                            <label for="quotesTypeFilter">⚡ Action / Type</label>
+                            <select id="quotesTypeFilter" class="q-filter-select">
+                                <option value="all">All (Saved + WhatsApp)</option>
+                                <option value="saved">📥 Saved / PDF Download</option>
+                                <option value="whatsapp">💬 WhatsApp Lead</option>
+                            </select>
+                        </div>
+                        <div class="q-filter-actions">
+                            <button type="button" id="quotesApplyFilterBtn" class="btn-q-filter btn-q-apply">🔍 Apply Filter</button>
+                            <button type="button" id="quotesResetFilterBtn" class="btn-q-filter btn-q-reset">↺ Reset</button>
+                        </div>
+                    </div>
+
+                    <!-- Filter Status & Overall Count Banner -->
+                    <div class="quotes-count-summary-strip">
+                        <div class="q-count-badge">
+                            <span class="q-badge-dot"></span>
+                            <span id="quotesFilterStatusText">Showing <strong>72</strong> of <strong>72</strong> Total Quotes (All-Time Overall Count)</span>
+                        </div>
+                        <div class="q-count-breakdown">
+                            <span class="q-chip chip-saved" id="quotesChipSaved">📥 <strong>48</strong> Saved</span>
+                            <span class="q-chip chip-wa" id="quotesChipWa">💬 <strong>24</strong> WhatsApp</span>
+                            <span class="q-chip chip-val" id="quotesChipVal">💎 <strong>₹78.4L</strong> Pipeline</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="data-table-container">
                     <div class="table-toolbar">
-                        <h4>💰 Instant Borewell Cost Quotations Generated</h4>
+                        <div class="search-input-box" style="flex: 1; max-width: 450px;">
+                            <span class="search-ico">🔍</span>
+                            <input type="text" id="quotesSearchInput" placeholder="Filter quotes by Mobile, Depth, Casing, Cost, or District...">
+                        </div>
                         <span class="toolbar-stat-pill" id="quotesCountPill">Showing Real-Time Depth Logs</span>
                     </div>
 
