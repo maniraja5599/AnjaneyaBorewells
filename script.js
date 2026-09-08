@@ -3814,7 +3814,7 @@ function getVisitorHardwareInfo() {
 
 class VisitorAnalyticsManager {
     constructor() {
-        this.baseCounterOffset = 209; // Strict monotonic floor baseline (209+)
+        this.baseCounterOffset = 1034; // Strict monotonic floor baseline (1,034+)
         this.firebaseUrl = 'https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app/pageviews.json';
         this.sessionId = 'sess_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
         this.footerCountEl = document.getElementById('footerPageViewsCount');
@@ -4086,33 +4086,46 @@ class VisitorAnalyticsManager {
     }
 
     async syncLivePageViews() {
-        const ABSOLUTE_MIN_VIEWS = 507;
+        const ABSOLUTE_MIN_VIEWS = 1034;
+        
+        // Read stored local highwater mark
+        let localKnownViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || ABSOLUTE_MIN_VIEWS;
+        if (localKnownViews < ABSOLUTE_MIN_VIEWS) localKnownViews = ABSOLUTE_MIN_VIEWS;
         
         try {
             const res = await fetch(this.firebaseUrl, { cache: 'no-store' });
+            let activeCurrentTotal = localKnownViews;
+
             if (res.ok) {
                 const cloudVal = await res.json();
                 let cloudCount = (typeof cloudVal === 'number' && cloudVal >= ABSOLUTE_MIN_VIEWS) ? cloudVal : ABSOLUTE_MIN_VIEWS;
-                let activeCurrentTotal = Math.max(ABSOLUTE_MIN_VIEWS, cloudCount);
-
-                if (!sessionStorage.getItem('ab_session_viewed_v30')) {
-                    activeCurrentTotal += 1;
-                    sessionStorage.setItem('ab_session_viewed_v30', 'true');
-                    
-                    fetch(this.firebaseUrl, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(activeCurrentTotal)
-                    }).catch(() => {});
-                }
-
-                this.updateViewsDisplay(activeCurrentTotal);
-            } else {
-                this.updateViewsDisplay(ABSOLUTE_MIN_VIEWS);
+                activeCurrentTotal = Math.max(ABSOLUTE_MIN_VIEWS, cloudCount, localKnownViews);
             }
+
+            // Deduplicated session check: only genuine new visits increment
+            const isSessionCounted = sessionStorage.getItem('ab_session_viewed_v4') || localStorage.getItem(`ab_visit_${this.sessionId}`);
+            if (!isSessionCounted) {
+                activeCurrentTotal += 1;
+                sessionStorage.setItem('ab_session_viewed_v4', 'true');
+                try {
+                    localStorage.setItem(`ab_visit_${this.sessionId}`, 'true');
+                } catch (e) {}
+                
+                // Write back atomically updated highwater mark to cloud
+                fetch(this.firebaseUrl, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(activeCurrentTotal)
+                }).catch(() => {});
+            }
+
+            // Always store highest known views to prevent any decrease or glitch
+            localStorage.setItem('ab_total_pageviews', activeCurrentTotal.toString());
+            this.updateViewsDisplay(activeCurrentTotal);
         } catch (err) {
             console.warn('Real-time page views sync note:', err);
-            this.updateViewsDisplay(ABSOLUTE_MIN_VIEWS);
+            const fallbackTotal = Math.max(ABSOLUTE_MIN_VIEWS, localKnownViews);
+            this.updateViewsDisplay(fallbackTotal);
         }
     }
 
@@ -5255,10 +5268,9 @@ class AdminCommandCenter {
                 } catch (e) {}
             }
 
-            let rawFbViews = (typeof fbData.pageviews === 'number' && fbData.pageviews >= 105 && fbData.pageviews < 2000) ? fbData.pageviews : 0;
-            let rawLocalViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 0;
-            if (rawLocalViews > 2000) rawLocalViews = 105;
-            const totalViews = Math.max(105, rawFbViews, rawLocalViews);
+            let rawFbViews = (typeof fbData.pageviews === 'number' && fbData.pageviews >= 1034) ? fbData.pageviews : 1034;
+            let rawLocalViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 1034;
+            const totalViews = Math.max(1034, rawFbViews, rawLocalViews);
 
             // Calculate real active online from Firebase presence
             let activeCount = 1;
@@ -5678,10 +5690,9 @@ class AdminCommandCenter {
     }
 
     downloadFullReport(format = 'csv') {
-        let localViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 105;
-        if (localViews > 2000) localViews = 105;
-        let snapViews = (this.latestTotalViews && this.latestTotalViews < 2000) ? this.latestTotalViews : 105;
-        const totalViews = Math.max(105, snapViews, localViews);
+        let localViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 1034;
+        let snapViews = this.latestTotalViews ? this.latestTotalViews : 1034;
+        const totalViews = Math.max(1034, snapViews, localViews);
         const fbData = this.latestFbData || {};
         const now = new Date();
         const dateStr = now.toISOString().split('T')[0];

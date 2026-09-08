@@ -19,7 +19,7 @@ class StandaloneAdminCommandCenter {
         this.autoRefreshTimer = null;
         this.charts = {};
         this.latestFbData = null;
-        this.latestTotalViews = 507; // Strict monotonic non-decreasing floor
+        this.latestTotalViews = 1034; // Strict monotonic non-decreasing floor (1,034+)
         this.latestActiveCount = 1;
         this.latestPing = 24;
         this.isGlobalIpRevealed = false;
@@ -729,8 +729,9 @@ class StandaloneAdminCommandCenter {
             this.latestFbData = fbData;
             
             // Strictly monotonic non-decreasing live pageviews
-            const rawViews = typeof fbData.pageviews === 'number' ? fbData.pageviews : 507;
-            this.latestTotalViews = Math.max(507, rawViews);
+            const rawViews = typeof fbData.pageviews === 'number' ? fbData.pageviews : 1034;
+            const localViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 1034;
+            this.latestTotalViews = Math.max(1034, rawViews, localViews);
 
             // Active users online
             let activeCount = 1;
