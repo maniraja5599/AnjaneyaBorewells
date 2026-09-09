@@ -531,10 +531,10 @@
                             <label for="visitorPageSizeSelect">Display Records</label>
                             <select id="visitorPageSizeSelect" class="v-filter-select">
                                 <option value="15">Show 15 per view</option>
-                                <option value="30">Show 30 per view</option>
+                                <option value="30" selected>Show 30 per view</option>
                                 <option value="50">Show 50 per view</option>
                                 <option value="100">Show 100 per view</option>
-                                <option value="all" selected>All History (முழு வரலாறு)</option>
+                                <option value="all">All History (முழு வரலாறு)</option>
                             </select>
                         </div>
 
@@ -598,13 +598,15 @@
                                 </tr>
                             </thead>
                             <tbody id="telemetryTableBody">
-                                <!-- Populated dynamically by admin.js with infinite scroll -->
+                                <!-- Populated dynamically by admin.js -->
                             </tbody>
                         </table>
-                        <div class="scroll-lazy-loader" id="telemetryLazyLoader" style="display: none;">
-                            <span class="loader-spinner">🔄</span>
-                            <span>Loading more real-time session logs...</span>
-                        </div>
+                    </div>
+                    <div class="table-load-more-bar" id="telemetryLoadMoreBar" style="display: none;">
+                        <button type="button" class="btn-table-load-more" id="telemetryLoadMoreBtn">
+                            <span class="btn-icon">📥</span>
+                            <span class="btn-text" id="telemetryLoadMoreBtnText">Load More Sessions (மேலும் அமர்வுகளைக் காட்டு)</span>
+                        </button>
                     </div>
                 </div>
             </div>

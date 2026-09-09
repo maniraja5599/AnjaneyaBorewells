@@ -3956,6 +3956,29 @@ class VisitorAnalyticsManager {
                             body: JSON.stringify(activeUserRecord)
                         }).catch(() => {});
 
+                        // Also update lastActive and duration on historical visitor_sessions & recent_logs so audit duration stays 100% accurate
+                        fetch(`${baseUrl}/visitor_sessions/${this.sessionId}/lastActive.json`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(now)
+                        }).catch(() => {});
+                        fetch(`${baseUrl}/visitor_sessions/${this.sessionId}/durationSec.json`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(durSec)
+                        }).catch(() => {});
+
+                        fetch(`${baseUrl}/recent_logs/${this.sessionId}/lastActive.json`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(now)
+                        }).catch(() => {});
+                        fetch(`${baseUrl}/recent_logs/${this.sessionId}/durationSec.json`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(durSec)
+                        }).catch(() => {});
+
                         const presRes = await fetch(`${baseUrl}/active_presence.json`, { cache: 'no-store' });
                         if (presRes.ok) {
                             const cloudSessions = await presRes.json() || {};
@@ -4000,6 +4023,8 @@ class VisitorAnalyticsManager {
         // Clean up on tab close
         const cleanupPresence = () => {
             try {
+                const now = Date.now();
+                const durSec = Math.max(12, Math.floor((now - (this.sessionStartTime || now)) / 1000));
                 let sessions = JSON.parse(localStorage.getItem('ab_active_presence') || '{}');
                 delete sessions[this.sessionId];
                 localStorage.setItem('ab_active_presence', JSON.stringify(sessions));
@@ -4007,6 +4032,10 @@ class VisitorAnalyticsManager {
                     const baseUrl = this.firebaseUrl.replace('/pageviews.json', '');
                     fetch(`${baseUrl}/active_presence/${this.sessionId}.json`, { method: 'DELETE', keepalive: true }).catch(() => {});
                     fetch(`${baseUrl}/active_sessions/${this.sessionId}.json`, { method: 'DELETE', keepalive: true }).catch(() => {});
+                    fetch(`${baseUrl}/visitor_sessions/${this.sessionId}/lastActive.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(now), keepalive: true }).catch(() => {});
+                    fetch(`${baseUrl}/visitor_sessions/${this.sessionId}/durationSec.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(durSec), keepalive: true }).catch(() => {});
+                    fetch(`${baseUrl}/recent_logs/${this.sessionId}/lastActive.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(now), keepalive: true }).catch(() => {});
+                    fetch(`${baseUrl}/recent_logs/${this.sessionId}/durationSec.json`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(durSec), keepalive: true }).catch(() => {});
                 }
             } catch (err) {}
         };
