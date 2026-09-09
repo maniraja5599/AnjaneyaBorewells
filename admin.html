@@ -225,7 +225,7 @@
                         </div>
                         <div class="cumul-card">
                             <span class="c-label">TODAY'S VISITORS</span>
-                            <div class="c-val text-cyan" id="cumulTodayVisitors">28 Today</div>
+                            <div class="c-val text-cyan" id="cumulTodayVisitors">-- Today</div>
                             <span class="c-sub">Daily Unique Traffic</span>
                         </div>
                         <div class="cumul-card">
@@ -347,27 +347,32 @@
 
             <!-- TAB PANE 2: LIVE ACTIVE USERS (Dedicated Realtime Online Radar) -->
             <div class="admin-tab-pane" id="tabActiveUsers" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon -->
+                <!-- Tab Mini Analytics Ribbon: Online, Today, Yesterday, 1 Month & All-Time Total -->
                 <section class="tab-mini-kpi-ribbon">
                     <div class="mini-kpi-card">
                         <div class="m-label">CURRENT ACTIVE ON SITE</div>
-                        <div class="m-val text-green" id="activeUsersCountLive">1 Online Now</div>
-                        <div class="m-sub">15s Live Cloud Heartbeat</div>
+                        <div class="m-val text-green" id="activeUsersCountLive">0 Online Now</div>
+                        <div class="m-sub">15s Live Radar Pulse</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">TODAY'S ONLINE VISITORS</div>
-                        <div class="m-val text-cyan" id="activeUsersTodayCount">28 Today</div>
-                        <div class="m-sub">Daily Unique Traffic</div>
+                        <div class="m-label">TODAY'S VISITORS</div>
+                        <div class="m-val text-cyan" id="activeUsersTodayCount">-- Today</div>
+                        <div class="m-sub">Visitors Today (IST)</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">PRIMARY ACTIVE DEVICE</div>
-                        <div class="m-val text-amber" id="activeUsersTopDevice">Mobile (Android/iOS)</div>
-                        <div class="m-sub">Live Hardware Fingerprint</div>
+                        <div class="m-label">YESTERDAY'S VISITORS</div>
+                        <div class="m-val text-amber" id="activeUsersYesterdayCount">-- Yesterday</div>
+                        <div class="m-sub">Previous Day Traffic</div>
                     </div>
                     <div class="mini-kpi-card">
-                        <div class="m-label">ACTIVE SECTION FOCUS</div>
-                        <div class="m-val text-emerald" id="activeUsersTopSection">Cost Calculator</div>
-                        <div class="m-sub">Current Engagement Area</div>
+                        <div class="m-label">THIS MONTH (1 MONTH)</div>
+                        <div class="m-val text-emerald" id="activeUsersMonthCount">-- Views</div>
+                        <div class="m-sub">Monthly Traffic Volume</div>
+                    </div>
+                    <div class="mini-kpi-card">
+                        <div class="m-label">ALL-TIME TOTAL</div>
+                        <div class="m-val text-purple" id="activeUsersTotalCount">-- Total</div>
+                        <div class="m-sub">Strict Monotonic Counter</div>
                     </div>
                 </section>
 
@@ -376,6 +381,8 @@
                         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                             <h4>🟢 Live Active Visitors Currently Browsing Website</h4>
                             <span class="toolbar-stat-pill" id="activeUsersPill">Real-Time Heartbeat Radar</span>
+                            <span class="toolbar-stat-pill" style="border-color: rgba(245, 158, 11, 0.35); color: #fbbf24;" id="activeUsersTopDevice">📱 Mobile</span>
+                            <span class="toolbar-stat-pill" style="border-color: rgba(52, 211, 153, 0.35); color: #34d399;" id="activeUsersTopSection">🎯 Calculator</span>
                         </div>
                         <div style="display: flex; gap: 8px; align-items: center;">
                             <button type="button" class="ctrl-btn btn-sync" id="gotoVisitorHistoryBtn" style="background: rgba(56, 189, 248, 0.14); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; padding: 6px 14px; border-radius: 6px; font-size: 0.80rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="View all historical visits and use advanced filters">
@@ -416,7 +423,7 @@
                     </div>
                     <div class="mini-kpi-card">
                         <div class="m-label">TODAY'S VISITORS</div>
-                        <div class="m-val text-cyan" id="liveLogsTodayCount">28 Today</div>
+                        <div class="m-val text-cyan" id="liveLogsTodayCount">-- Today</div>
                         <div class="m-sub">Visitors Today (IST)</div>
                     </div>
                     <div class="mini-kpi-card">
