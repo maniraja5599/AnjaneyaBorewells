@@ -1,9 +1,9 @@
-const CACHE_NAME = 'anjaneya-borewells-cache-v4.0.0';
+const CACHE_NAME = 'anjaneya-borewells-cache-v4.3.0';
 const ASSETS = [
   './',
   './index.html',
-  './styles.css?v=4.0.0',
-  './script.js?v=4.0.0',
+  './styles.css?v=4.2.8',
+  './script.js?v=4.3.0',
   './site-config.json',
   './manifest.json',
   './valluvar.png',
