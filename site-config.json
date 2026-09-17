@@ -166,6 +166,8 @@
   "analytics": {
     "baselineViews": 50,
     "firebaseUrl": "https://anjaneya-borewells-live-count-default-rtdb.asia-southeast1.firebasedatabase.app/pageviews.json",
-    "engine": "firebase_realtime_db"
+    "engine": "firebase_realtime_db",
+    "ga4MeasurementId": "G-MZCG8MXW6P",
+    "googleAnalyticsEngine": "google_analytics_4"
   }
 }

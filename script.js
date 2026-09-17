@@ -13,6 +13,26 @@
     } catch (e) {}
 })();
 
+// ============================================================================
+// ANJANEYA ENTERPRISE ANALYTICS (GA4 + Firebase Dual Smart Tracker)
+// ============================================================================
+window.AnjaneyaAnalytics = {
+    trackEvent: function(eventName, eventParams = {}) {
+        try {
+            // 1. Send to Google Analytics 4 (gtag)
+            if (typeof window.gtag === 'function') {
+                window.gtag('event', eventName, eventParams);
+            }
+            // 2. Also log in dev console for verification
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                console.log(`[GA4 Event: ${eventName}]`, eventParams);
+            }
+        } catch (err) {
+            console.warn('[Analytics Error]', err);
+        }
+    }
+};
+
 class AnjaneyaBorewells {
     constructor() {
         this.init();
@@ -192,6 +212,51 @@ class AnjaneyaBorewells {
         document.getElementById('whatsappCallbackBtn')?.addEventListener('click', () => {
             this.calculator.sendWhatsAppQuote();
         });
+
+        // GA4: Auto-track any Phone Call (tel:) Click across website
+        document.querySelectorAll('a[href^="tel:"]').forEach(telLink => {
+            telLink.addEventListener('click', () => {
+                const phoneNum = telLink.getAttribute('href').replace('tel:', '').trim();
+                window.AnjaneyaAnalytics?.trackEvent('phone_call_clicked', {
+                    event_category: 'Contact',
+                    event_label: phoneNum,
+                    phone_number: phoneNum,
+                    link_text: telLink.textContent.trim().slice(0, 40)
+                });
+            });
+        });
+
+        // GA4: Auto-track Floating WhatsApp / WhatsApp Links
+        document.querySelectorAll('a[href*="wa.me"], a[href*="whatsapp.com"]').forEach(waLink => {
+            waLink.addEventListener('click', () => {
+                window.AnjaneyaAnalytics?.trackEvent('whatsapp_chat_opened', {
+                    event_category: 'Contact',
+                    event_label: 'Direct WhatsApp Chat Link',
+                    link_href: waLink.getAttribute('href')
+                });
+            });
+        });
+
+        // GA4: Section Visibility & Engagement Tracking (IntersectionObserver)
+        if ('IntersectionObserver' in window) {
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !entry.target._gaTracked) {
+                        entry.target._gaTracked = true;
+                        const sectionId = entry.target.id || entry.target.className;
+                        window.AnjaneyaAnalytics?.trackEvent('section_view', {
+                            event_category: 'Engagement',
+                            section_name: sectionId
+                        });
+                    }
+                });
+            }, { threshold: 0.35 });
+
+            ['calculator', 'services', 'reviews', 'gallery', 'rates', 'contact'].forEach(id => {
+                const secEl = document.getElementById(id);
+                if (secEl) sectionObserver.observe(secEl);
+            });
+        }
     }
 
     setupTotalDepthSync() {
@@ -1429,6 +1494,23 @@ class CostCalculator {
         this.currentQuoteResults = results;
         this.displayResults(results);
         this.updateLiveCalculator(results);
+
+        // GA4 Analytics: Track quote computation (Debounced 1.5s to avoid tracking every keystroke)
+        if (results && results.totalCost > 0) {
+            clearTimeout(this._gaQuoteDebounceTimer);
+            this._gaQuoteDebounceTimer = setTimeout(() => {
+                window.AnjaneyaAnalytics?.trackEvent('borewell_quote_calculated', {
+                    event_category: 'Calculator',
+                    depth_ft: inputs.totalDepth || 0,
+                    drilling_type: inputs.drillingType || 'new',
+                    casing_7_ft: inputs.pvc7Length || 0,
+                    casing_10_ft: inputs.pvc10Length || 0,
+                    total_estimate: results.totalCost || 0,
+                    value: results.totalCost || 0,
+                    currency: 'INR'
+                });
+            }, 1500);
+        }
     }
 
     isGstEnabled() {
@@ -2066,6 +2148,16 @@ class CostCalculator {
         // Save with professional filename
         const timestamp = new Date().toISOString().split('T')[0];
         doc.save(`Anjaneya-Borewells-Quotation-${timestamp}-${quoteNum}.pdf`);
+
+        // Track GA4 Conversion: Ratecard / Quotation PDF Downloaded
+        window.AnjaneyaAnalytics?.trackEvent('ratecard_pdf_downloaded', {
+            event_category: 'Downloads',
+            event_label: 'Borewell Quotation PDF',
+            file_name: `Anjaneya-Borewells-Quotation-${timestamp}-${quoteNum}.pdf`,
+            depth_ft: results.totalDepth || (this.getInputs ? this.getInputs().totalDepth : 0),
+            value: results.totalCost || 0,
+            currency: 'INR'
+        });
 
         // Restore button state
         setTimeout(() => {
@@ -2782,6 +2874,17 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
                 }).catch(err => console.warn('Firebase RTDB Lead sync:', err));
             } catch(e) {}
 
+            // 3. Track GA4 High-Value Conversion
+            window.AnjaneyaAnalytics?.trackEvent('whatsapp_lead_sent', {
+                event_category: 'Leads',
+                event_label: 'Customer Direct WhatsApp',
+                lead_type: 'direct_customer',
+                depth_ft: inputs.totalDepth || 0,
+                drilling_type: inputs.drillingType || 'new',
+                value: res.totalCost || 0,
+                currency: 'INR'
+            });
+
             closeModal();
             window.open(targetUrl, '_blank');
         };
@@ -2849,6 +2952,17 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
                     body: JSON.stringify(officeLeadData)
                 }).catch(err => console.warn('Firebase RTDB Office Lead sync:', err));
             } catch(e) {}
+
+            // 3. Track GA4 High-Value Conversion
+            window.AnjaneyaAnalytics?.trackEvent('whatsapp_lead_sent', {
+                event_category: 'Leads',
+                event_label: 'Office Hotline WhatsApp',
+                lead_type: 'office_hotline',
+                depth_ft: inputs.totalDepth || 0,
+                drilling_type: inputs.drillingType || 'new',
+                value: res.totalCost || 0,
+                currency: 'INR'
+            });
 
             closeModal();
             window.open(targetUrl, '_blank');
