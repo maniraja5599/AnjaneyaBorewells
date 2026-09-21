@@ -4231,6 +4231,9 @@ class VisitorAnalyticsManager {
     async syncLivePageViews() {
         const ABSOLUTE_MIN_VIEWS = 1034;
         
+        // Prevent automated bots, crawlers, and headless drivers from inflating page views
+        const isBot = navigator.webdriver || /bot|crawler|spider|crawling|googlebot|bingbot|lighthouse/i.test(navigator.userAgent || '');
+        
         // Read stored local highwater mark
         let localKnownViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || ABSOLUTE_MIN_VIEWS;
         if (localKnownViews < ABSOLUTE_MIN_VIEWS) localKnownViews = ABSOLUTE_MIN_VIEWS;
@@ -4242,14 +4245,21 @@ class VisitorAnalyticsManager {
             if (res.ok) {
                 const cloudVal = await res.json();
                 let cloudCount = (typeof cloudVal === 'number' && cloudVal >= ABSOLUTE_MIN_VIEWS) ? cloudVal : ABSOLUTE_MIN_VIEWS;
-                activeCurrentTotal = Math.max(ABSOLUTE_MIN_VIEWS, cloudCount, localKnownViews);
+                
+                // If local storage has an unrealistically inflated count (e.g. from previous 14,000+ spike), reset it to match Firebase!
+                if (localKnownViews > cloudCount + 50 || localKnownViews > 3000) {
+                    localKnownViews = cloudCount;
+                    try { localStorage.setItem('ab_total_pageviews', cloudCount.toString()); } catch (e) {}
+                }
+                
+                activeCurrentTotal = Math.max(ABSOLUTE_MIN_VIEWS, cloudCount);
             }
 
-            // Deduplicated session check: only genuine new visits increment
-            const isSessionCounted = sessionStorage.getItem('ab_session_viewed_v4') || localStorage.getItem(`ab_visit_${this.sessionId}`);
-            if (!isSessionCounted) {
-                activeCurrentTotal += 1;
-                sessionStorage.setItem('ab_session_viewed_v4', 'true');
+            // Deduplicated session check: only genuine new human visits increment
+            const isSessionCounted = sessionStorage.getItem('ab_session_viewed_v5') || localStorage.getItem(`ab_visit_${this.sessionId}`);
+            if (!isBot && !isSessionCounted) {
+                activeCurrentTotal = parseInt(activeCurrentTotal, 10) + 1;
+                sessionStorage.setItem('ab_session_viewed_v5', 'true');
                 try {
                     localStorage.setItem(`ab_visit_${this.sessionId}`, 'true');
                 } catch (e) {}
@@ -5412,8 +5422,12 @@ class AdminCommandCenter {
             }
 
             let rawFbViews = (typeof fbData.pageviews === 'number' && fbData.pageviews >= 1034) ? fbData.pageviews : 1034;
-            let rawLocalViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 1034;
-            const totalViews = Math.max(1034, rawFbViews, rawLocalViews);
+            let rawLocalViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || rawFbViews;
+            if (rawLocalViews > rawFbViews + 50 || rawLocalViews > 3000) {
+                rawLocalViews = rawFbViews;
+                try { localStorage.setItem('ab_total_pageviews', rawFbViews.toString()); } catch (e) {}
+            }
+            const totalViews = Math.max(1034, rawFbViews);
 
             // Calculate real active online from Firebase presence
             let activeCount = 1;
@@ -5833,9 +5847,10 @@ class AdminCommandCenter {
     }
 
     downloadFullReport(format = 'csv') {
-        let localViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || 1034;
         let snapViews = this.latestTotalViews ? this.latestTotalViews : 1034;
-        const totalViews = Math.max(1034, snapViews, localViews);
+        let localViews = parseInt(localStorage.getItem('ab_total_pageviews'), 10) || snapViews;
+        if (localViews > snapViews + 50 || localViews > 3000) localViews = snapViews;
+        const totalViews = Math.max(1034, snapViews);
         const fbData = this.latestFbData || {};
         const now = new Date();
         const dateStr = now.toISOString().split('T')[0];
