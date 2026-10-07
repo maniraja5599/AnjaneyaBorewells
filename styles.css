@@ -13628,6 +13628,20 @@ label.gst-toggle-action-pill,
       box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
     }
 
+    .btn-phone-main .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #ef4444;
+    }
+
+    .btn-phone-main .btn-icon svg {
+      width: 1.1em;
+      height: 1.1em;
+      fill: #ef4444 !important;
+      flex-shrink: 0;
+    }
+
     /* Exact Trust Badges Row with Pipe Dividers */
     .trust-badges-inline-row {
       display: flex;
