@@ -13308,25 +13308,27 @@ label.gst-toggle-action-pill,
     }
 
     .btn-phone-main {
-      background: #ffffff;
-      color: #0f172a;
+      background: #000000;
+      color: #ffffff;
       font-size: 1.02rem;
       font-weight: 800;
       padding: 13px 26px;
       border-radius: 999px;
-      border: 1.5px solid #cbd5e1;
+      border: 1.5px solid #000000;
       display: inline-flex;
       align-items: center;
       gap: 10px;
       text-decoration: none;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
       transition: all 0.2s;
     }
 
     .btn-phone-main:hover {
+      background: #111827;
       border-color: #10b981;
-      color: #0d763e;
+      color: #ffffff;
       transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
     }
 
     /* Exact Trust Badges Row with Pipe Dividers */
