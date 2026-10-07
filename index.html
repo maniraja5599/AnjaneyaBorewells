@@ -18,7 +18,7 @@
     </script>
     
     <!-- Primary Stylesheet (Loaded immediately at top of head) -->
-    <link rel="stylesheet" href="styles.css?v=4.3.1">
+    <link rel="stylesheet" href="styles.css?v=4.3.2">
     
     <!-- Critical CSS: Prevent Flash of Unstyled Content (FOUC) & Giant SVG Icons -->
     <style>
@@ -2859,14 +2859,42 @@
         </div>
     </div>
 
-    <!-- Fixed Bottom Scroll-Driven Rig Track - Realistic Village Landscape & Hills -->
+    <!-- Fixed Bottom Scroll-Driven Rig Track - Realistic Village Landscape & Hills (Day & Night Cycle) -->
     <div class="fixed-scroll-rig-bar" id="fixedScrollRigBar">
+        <div class="rig-bar-shimmer-top" aria-hidden="true"></div>
+        <div class="rig-road-progress-strip" id="rigRoadProgressStrip" aria-hidden="true"></div>
+        <!-- Day & Night Sky Layer (Sun, Moon & Twinkling Stars) -->
+        <div class="rig-sky-celestial" aria-hidden="true">
+            <div class="rig-sky-sun"></div>
+            <div class="rig-sky-moon"></div>
+            <span class="rig-star s1"></span>
+            <span class="rig-star s2"></span>
+            <span class="rig-star s3"></span>
+            <span class="rig-star s4"></span>
+            <span class="rig-star s5"></span>
+            <span class="rig-star s6"></span>
+            <span class="rig-star s7"></span>
+        </div>
         <div class="fixed-rig-road" id="fixedRigRoad">
             <img src="scenic-rural-track.png" class="scenic-track-img" alt="Borewell Terrain Track" draggable="false">
+            <div class="rig-night-overlay" aria-hidden="true"></div>
             <div class="fixed-rig-truck" id="fixedRigTruck">
-                <img src="rig-illustration.png" alt="Anjaneya Drilling Rig" class="fixed-rig-img">
+                <div class="rig-exhaust-puff puff-1" aria-hidden="true"></div>
+                <div class="rig-exhaust-puff puff-2" aria-hidden="true"></div>
+                <div class="rig-vibe-wrap">
+                    <img src="rig-illustration.png" alt="Anjaneya Drilling Rig" class="fixed-rig-img">
+                    <!-- Exact Bumper-Locked Headlight Bulbs & Night Beams -->
+                    <div class="rig-bumper-lights" aria-hidden="true">
+                        <span class="rig-hl-bulb hl-left"></span>
+                        <span class="rig-hl-bulb hl-right"></span>
+                        <span class="rig-hl-beam beam-left"></span>
+                        <span class="rig-hl-beam beam-right"></span>
+                        <span class="rig-ground-light"></span>
+                    </div>
+                </div>
             </div>
             <div class="road-welcoming-people" id="roadWelcomingPeople" title="Welcome Anjaneya Rig!">
+                <span class="aarti-night-glow" aria-hidden="true"></span>
                 <img src="welcoming-people.png" alt="Happy Villagers Welcoming Rig" class="welcoming-people-img" draggable="false">
             </div>
         </div>
@@ -2903,6 +2931,6 @@
     })();
     </script>
 
-    <script src="script.js?v=4.3.0"></script>
+    <script src="script.js?v=4.3.2"></script>
 </body>
 </html>
