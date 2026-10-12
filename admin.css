@@ -199,11 +199,11 @@ body.admin-body {
 .navbar-container {
     max-width: 1600px;
     margin: 0 auto;
-    padding: 12px 24px;
+    padding: 8px 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 14px;
 }
 
 /* Brand Section */
@@ -300,15 +300,15 @@ body.admin-body {
 .capsule-pill {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
+    gap: 6px;
     background: rgba(13, 20, 38, 0.55);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
-    padding: 6px 14px;
+    padding: 4px 11px;
     border-radius: 9999px;
-    font-size: 0.75rem;
+    font-size: 0.70rem;
     font-weight: 600;
     color: var(--text-secondary);
     transition: all 0.25s ease;
@@ -363,10 +363,10 @@ body.admin-body {
 .ctrl-btn {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    padding: 8px 15px;
+    gap: 6px;
+    padding: 5px 12px;
     border-radius: var(--radius-sm);
-    font-size: 0.80rem;
+    font-size: 0.74rem;
     font-weight: 700;
     font-family: inherit;
     cursor: pointer;
@@ -502,7 +502,7 @@ body.admin-body {
     background: transparent;
     border: none;
     position: sticky;
-    top: 72px;
+    top: 52px;
     z-index: 900;
 }
 
@@ -512,11 +512,11 @@ body.admin-body {
     -webkit-backdrop-filter: blur(32px) saturate(210%);
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 9999px;
-    padding: 6px 10px;
+    padding: 4px 8px;
     display: flex;
     align-items: center;
-    gap: 6px;
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 25px rgba(6, 182, 212, 0.10);
+    gap: 4px;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 0 20px rgba(6, 182, 212, 0.08);
     max-width: 100%;
     overflow-x: auto;
 }
@@ -524,14 +524,14 @@ body.admin-body {
 .menu-tab-btn {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    padding: 8px 16px;
+    gap: 6px;
+    padding: 6px 13px;
     background: transparent;
     border: 1px solid transparent;
     border-radius: 9999px;
     color: var(--text-secondary);
     font-family: inherit;
-    font-size: 0.80rem;
+    font-size: 0.76rem;
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
@@ -558,7 +558,7 @@ body.admin-body {
 .bento-metric-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
+    gap: 10px;
     width: 100%;
 }
 
@@ -567,22 +567,22 @@ body.admin-body {
     backdrop-filter: blur(24px) saturate(190%);
     -webkit-backdrop-filter: blur(24px) saturate(190%);
     border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 16px;
-    padding: 16px 18px;
+    border-radius: 12px;
+    padding: 11px 13px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 124px;
+    min-height: 98px;
     transition: all 0.25s ease;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.24);
     position: relative;
     overflow: hidden;
 }
 
 .bento-tile:hover {
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     border-color: rgba(56, 189, 248, 0.45);
-    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.55), 0 0 20px rgba(56, 189, 248, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.50), 0 0 16px rgba(56, 189, 248, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .tile-header {
@@ -599,20 +599,20 @@ body.admin-body {
 }
 
 .tile-icon {
-    font-size: 0.95rem;
+    font-size: 0.90rem;
 }
 
 .tile-label {
-    font-size: 0.60rem;
+    font-size: 0.58rem;
     font-weight: 800;
     letter-spacing: 0.05em;
     color: var(--text-muted);
 }
 
 .tile-badge {
-    font-size: 0.52rem;
+    font-size: 0.50rem;
     font-weight: 800;
-    padding: 2px 6px;
+    padding: 2px 5px;
     border-radius: 9999px;
 }
 
@@ -620,12 +620,12 @@ body.admin-body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    margin: 6px 0;
+    gap: 6px;
+    margin: 4px 0;
 }
 
 .tile-value {
-    font-size: 1.55rem;
+    font-size: 1.30rem;
     font-weight: 900;
     font-family: var(--font-mono);
     color: #ffffff;
@@ -713,10 +713,10 @@ body.admin-body {
 .tab-mini-kpi-ribbon {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 14px;
+    gap: 8px;
     width: 100%;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
 
 @media (max-width: 1200px) {
@@ -728,7 +728,7 @@ body.admin-body {
 @media (max-width: 768px) {
     .tab-mini-kpi-ribbon {
         grid-template-columns: repeat(2, 1fr) !important;
-        gap: 8px !important;
+        gap: 6px !important;
     }
     .tab-mini-kpi-ribbon .mini-kpi-card:nth-child(5) {
         grid-column: span 2 !important;
@@ -746,33 +746,34 @@ body.admin-body {
 }
 
 .mini-kpi-card {
-    background: rgba(13, 20, 36, 0.78);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(10, 20, 44, 0.50);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 14px;
-    padding: 14px 16px;
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 10px;
+    padding: 9px 12px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
     transition: all 0.2s ease;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.20);
 }
 
 .mini-kpi-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(255, 255, 255, 0.18);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    border-color: rgba(56, 189, 248, 0.40);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.30);
 }
 
 .m-label {
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     font-weight: 800;
     letter-spacing: 0.06em;
     color: var(--text-muted);
 }
 
 .m-val {
-    font-size: 1.22rem;
+    font-size: 1.15rem;
     font-weight: 900;
     font-family: var(--font-mono);
     color: #ffffff;
@@ -820,14 +821,14 @@ body.admin-body {
 .bento-hero-grid {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
 }
 
 .bento-secondary-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
 }
 
@@ -836,18 +837,62 @@ body.admin-body {
     backdrop-filter: blur(26px) saturate(190%);
     -webkit-backdrop-filter: blur(26px) saturate(190%);
     border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: 18px;
-    padding: 22px;
+    border-radius: 14px;
+    padding: 14px 16px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    gap: 10px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.25);
     transition: all 0.25s ease;
 }
 
 .bento-card:hover {
     border-color: rgba(56, 189, 248, 0.45);
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55), 0 0 25px rgba(6, 182, 212, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    box-shadow: 0 14px 36px rgba(0, 0, 0, 0.50), 0 0 20px rgba(6, 182, 212, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Date-Wise Traffic Micro Pills */
+.traffic-mini-pills {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.traffic-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(12px);
+    transition: all 0.2s ease;
+}
+
+.traffic-stat-pill strong {
+    font-weight: 800;
+    font-family: var(--font-mono);
+}
+
+.traffic-stat-pill.pill-cyan {
+    background: rgba(6, 182, 212, 0.12);
+    color: #38bdf8;
+    border: 1px solid rgba(6, 182, 212, 0.35);
+}
+
+.traffic-stat-pill.pill-emerald {
+    background: rgba(16, 185, 129, 0.12);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.traffic-stat-pill.pill-purple {
+    background: rgba(139, 92, 246, 0.12);
+    color: #c084fc;
+    border: 1px solid rgba(139, 92, 246, 0.35);
 }
 
 .card-top-bar {
@@ -929,8 +974,8 @@ body.admin-body {
 .card-canvas-container {
     position: relative;
     width: 100%;
-    min-height: 240px;
-    max-height: 290px;
+    min-height: 200px;
+    max-height: 240px;
 }
 
 /* Micro Intel Table */
@@ -942,13 +987,13 @@ body.admin-body {
 .micro-intel-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.78rem;
+    font-size: 0.74rem;
 }
 
 .micro-intel-table th {
     text-align: left;
-    padding: 8px 10px;
-    font-size: 0.65rem;
+    padding: 6px 10px;
+    font-size: 0.62rem;
     font-weight: 700;
     color: var(--text-muted);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
@@ -956,7 +1001,7 @@ body.admin-body {
 }
 
 .micro-intel-table td {
-    padding: 10px;
+    padding: 7px 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     color: var(--text-primary);
 }
@@ -985,7 +1030,7 @@ body.admin-body {
     max-width: 1600px;
     width: 100%;
     margin: 0 auto;
-    padding: 24px;
+    padding: 14px 18px;
     flex: 1;
     position: relative;
     z-index: 10;
@@ -1182,20 +1227,20 @@ body.admin-body {
 .dashboard-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 14px;
 }
 
 .admin-tab-pane {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 14px;
 }
 
 /* 6 KPI Feature Cards */
 .kpi-feature-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 16px;
+    gap: 12px;
 }
 
 .kpi-card {
@@ -1203,12 +1248,12 @@ body.admin-body {
     backdrop-filter: blur(24px) saturate(190%);
     -webkit-backdrop-filter: blur(24px) saturate(190%);
     border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: var(--radius-lg);
-    padding: 20px;
+    border-radius: 12px;
+    padding: 14px 16px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    box-shadow: 0 14px 38px -10px rgba(0, 0, 0, 0.50), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    gap: 8px;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.24);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1543,19 +1588,20 @@ body.admin-body {
     -webkit-backdrop-filter: blur(20px);
     color: #cbd5e1;
     font-weight: 700;
-    padding: 13px 16px;
+    padding: 8px 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     white-space: nowrap;
     text-transform: uppercase;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     letter-spacing: 0.04em;
 }
 
 .enterprise-table td {
-    padding: 13px 16px;
+    padding: 7px 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
     color: #e2e8f0;
     white-space: nowrap;
+    font-size: 0.76rem;
     transition: background 0.2s ease, color 0.2s ease;
 }
 
@@ -2302,12 +2348,19 @@ body.admin-body {
     }
 
     .bento-card {
-        padding: 14px !important;
+        padding: 12px 14px !important;
+        border-radius: 12px !important;
+        gap: 8px !important;
+    }
+
+    .traffic-mini-pills {
+        margin-top: 4px !important;
+        width: 100% !important;
     }
 
     .card-canvas-container {
-        min-height: 220px !important;
-        max-height: 260px !important;
+        min-height: 180px !important;
+        max-height: 220px !important;
     }
 
     /* Tab 3: Visitor Intel Filter Suite Mobile Ergonomics */
@@ -2456,10 +2509,10 @@ body.admin-body {
     backdrop-filter: blur(28px) saturate(200%);
     -webkit-backdrop-filter: blur(28px) saturate(200%);
     border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: var(--radius-xl);
-    padding: 24px 28px;
-    margin-bottom: 24px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.50), inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 0 35px rgba(16, 185, 129, 0.12);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.28), 0 0 25px rgba(16, 185, 129, 0.10);
     position: relative;
     overflow: hidden;
 }
@@ -2467,20 +2520,20 @@ body.admin-body {
 .cumul-badge-header {
     display: flex;
     align-items: center;
-    gap: 14px;
-    margin-bottom: 20px;
+    gap: 10px;
+    margin-bottom: 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    padding-bottom: 16px;
+    padding-bottom: 8px;
 }
 
 .cumul-icon {
-    font-size: 1.8rem;
-    filter: drop-shadow(0 0 12px rgba(16, 185, 129, 0.4));
+    font-size: 1.3rem;
+    filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));
 }
 
 .cumul-header-text h4 {
     color: #f8fafc;
-    font-size: 0.98rem;
+    font-size: 0.86rem;
     font-weight: 800;
     letter-spacing: 0.04em;
     margin: 0;
@@ -2489,8 +2542,8 @@ body.admin-body {
 
 .cumul-header-text p {
     color: #94a3b8;
-    font-size: 0.78rem;
-    margin: 3px 0 0 0;
+    font-size: 0.70rem;
+    margin: 2px 0 0 0;
 }
 
 .cumul-badge-pill {
@@ -2498,19 +2551,19 @@ body.admin-body {
     background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(6, 182, 212, 0.2));
     border: 1px solid rgba(74, 222, 128, 0.45);
     color: #4ade80;
-    font-size: 0.70rem;
+    font-size: 0.62rem;
     font-weight: 800;
     letter-spacing: 0.05em;
-    padding: 5px 12px;
+    padding: 3px 8px;
     border-radius: 9999px;
     text-transform: uppercase;
-    box-shadow: 0 0 14px rgba(34, 197, 94, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .cumul-metrics-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 8px;
 }
 
 .cumul-card {
@@ -2518,24 +2571,24 @@ body.admin-body {
     backdrop-filter: blur(20px) saturate(190%);
     -webkit-backdrop-filter: blur(20px) saturate(190%);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: var(--radius-md);
-    padding: 16px 18px;
+    border-radius: 10px;
+    padding: 9px 12px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.40), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.20);
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cumul-card:hover {
     border-color: rgba(56, 189, 248, 0.45);
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%), rgba(18, 35, 75, 0.65);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(56, 189, 248, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.50), 0 0 16px rgba(56, 189, 248, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.30);
 }
 
 .cumul-card .c-label {
     color: #cbd5e1;
-    font-size: 0.68rem;
+    font-size: 0.60rem;
     font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -2543,16 +2596,16 @@ body.admin-body {
 
 .cumul-card .c-val {
     color: #f8fafc;
-    font-size: 1.55rem;
+    font-size: 1.25rem;
     font-weight: 900;
     font-family: var(--font-mono);
-    margin: 6px 0 3px 0;
+    margin: 3px 0 1px 0;
     letter-spacing: -0.02em;
 }
 
 .cumul-card .c-sub {
     color: #8494ab;
-    font-size: 0.70rem;
+    font-size: 0.62rem;
     font-weight: 500;
 }
 
@@ -2909,38 +2962,38 @@ body.admin-body {
     backdrop-filter: blur(28px) saturate(200%);
     -webkit-backdrop-filter: blur(28px) saturate(200%);
     border: 1px solid rgba(255, 255, 255, 0.16);
-    border-radius: var(--radius-lg);
-    padding: 18px 22px;
-    margin-bottom: 16px;
-    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.24);
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 8px;
     transition: all 0.25s ease;
 }
 
 .quotes-filter-panel:hover {
     border-color: rgba(56, 189, 248, 0.45);
-    box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.55), 0 0 20px rgba(56, 189, 248, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.55), 0 0 20px rgba(56, 189, 248, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .q-filter-row {
     display: flex;
     align-items: flex-end;
-    gap: 14px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
 .q-filter-group {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    min-width: 135px;
+    gap: 4px;
+    min-width: 120px;
     flex: 1;
 }
 
 .q-filter-group label {
-    font-size: 0.68rem;
+    font-size: 0.62rem;
     font-weight: 700;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -2952,11 +3005,11 @@ body.admin-body {
     background: rgba(8, 14, 28, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(12px);
-    border-radius: 10px;
+    border-radius: 8px;
     color: #f1f5f9;
-    font-size: 0.84rem;
+    font-size: 0.78rem;
     font-weight: 600;
-    padding: 9px 13px;
+    padding: 6px 10px;
     outline: none;
     transition: all 0.2s ease;
     width: 100%;
@@ -3106,48 +3159,48 @@ body.admin-body {
    VISITOR LOGS TAB: INTELLIGENCE FILTER CONSOLE & FULL AUDIT CONTROLS
    ========================================================================== */
 .visitor-filter-panel {
-    background: rgba(13, 20, 38, 0.65);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%), rgba(10, 20, 44, 0.50);
     backdrop-filter: blur(28px) saturate(200%);
     -webkit-backdrop-filter: blur(28px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: var(--radius-lg);
-    padding: 18px 22px;
-    margin-top: 12px;
-    margin-bottom: 16px;
-    box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.24);
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 8px;
     transition: all 0.25s ease;
 }
 
 .visitor-filter-panel:hover {
-    border-color: rgba(56, 189, 248, 0.3);
+    border-color: rgba(56, 189, 248, 0.40);
 }
 
 .v-filter-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 10px;
     flex-wrap: wrap;
-    padding-bottom: 14px;
+    padding-bottom: 8px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .v-filter-title-group h4 {
-    font-size: 0.98rem;
+    font-size: 0.86rem;
     font-weight: 800;
     color: #f8fafc;
-    margin: 0 0 3px 0;
+    margin: 0 0 2px 0;
     letter-spacing: 0.02em;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .v-filter-title-group p {
-    font-size: 0.74rem;
+    font-size: 0.68rem;
     color: #94a3b8;
     margin: 0;
 }
@@ -3155,7 +3208,7 @@ body.admin-body {
 .v-preset-buttons-wrap {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     flex-wrap: wrap;
 }
 
@@ -3165,9 +3218,9 @@ body.admin-body {
     border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
     color: #cbd5e1;
-    padding: 6px 14px;
+    padding: 4px 10px;
     border-radius: 9999px;
-    font-size: 0.75rem;
+    font-size: 0.70rem;
     font-weight: 700;
     font-family: inherit;
     cursor: pointer;
@@ -3192,20 +3245,20 @@ body.admin-body {
 .v-filter-row {
     display: flex;
     align-items: flex-end;
-    gap: 12px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
 .v-filter-group {
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    min-width: 140px;
+    gap: 4px;
+    min-width: 120px;
     flex: 1;
 }
 
 .v-filter-group label {
-    font-size: 0.68rem;
+    font-size: 0.62rem;
     font-weight: 700;
     letter-spacing: 0.05em;
     color: var(--text-secondary);
@@ -3217,11 +3270,11 @@ body.admin-body {
     background: rgba(8, 14, 28, 0.85);
     border: 1px solid rgba(255, 255, 255, 0.12);
     backdrop-filter: blur(12px);
-    border-radius: 10px;
+    border-radius: 8px;
     color: #f8fafc;
-    font-size: 0.82rem;
+    font-size: 0.78rem;
     font-weight: 600;
-    padding: 9px 13px;
+    padding: 6px 10px;
     outline: none;
     transition: all 0.2s ease;
     width: 100%;

@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    <link rel="stylesheet" href="admin.css?v=5.2.0">
+    <link rel="stylesheet" href="admin.css?v=5.3.0">
 </head>
 <body class="admin-body">
     <!-- Liquid Glass Aurora Ambient Engine -->
@@ -276,10 +276,14 @@
                                 <span class="card-icon">📈</span>
                                 <div>
                                     <h3>Date-Wise Viewers &amp; Traffic Trends</h3>
-                                    <p>Real daily visitor bars with cumulative trendline and hover tooltip inspection</p>
+                                    <p>Real daily visitor sessions &amp; cumulative growth curve</p>
                                 </div>
                             </div>
-                            <span class="badge-pill-neon">Daily Bars + Cumulative Curve</span>
+                            <div class="traffic-mini-pills">
+                                <span class="traffic-stat-pill pill-cyan">Today: <strong id="trafficStatToday">--</strong></span>
+                                <span class="traffic-stat-pill pill-emerald">Peak Day: <strong id="trafficStatPeak">--</strong></span>
+                                <span class="traffic-stat-pill pill-purple">All-Time: <strong id="trafficStatTotal">--</strong></span>
+                            </div>
                         </div>
                         <div class="card-canvas-container">
                             <canvas id="trafficTrendsChart"></canvas>
@@ -1197,6 +1201,6 @@
         </div>
     </footer>
 
-    <script src="admin.js?v=5.2.0"></script>
+    <script src="admin.js?v=5.3.0"></script>
 </body>
 </html>

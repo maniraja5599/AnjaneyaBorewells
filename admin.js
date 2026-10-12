@@ -1182,13 +1182,26 @@ class StandaloneAdminCommandCenter {
                 return runningSum;
             });
 
-            const barGradient = ctx.createLinearGradient(0, 0, 0, 260);
-            barGradient.addColorStop(0, 'rgba(6, 182, 212, 0.85)');
-            barGradient.addColorStop(1, 'rgba(6, 182, 212, 0.25)');
+            // Update micro-stat pills in Date-Wise Viewers card
+            const todayCount = dailyMap[todayIso] || 0;
+            const peakCount = Math.max(...finalDailyCounts, 0);
+            const totalCount = finalCumulCounts[finalCumulCounts.length - 1] || 0;
 
-            const lineGradient = ctx.createLinearGradient(0, 0, 0, 260);
-            lineGradient.addColorStop(0, 'rgba(16, 185, 129, 0.35)');
-            lineGradient.addColorStop(1, 'rgba(16, 185, 129, 0.02)');
+            const elToday = document.getElementById('trafficStatToday');
+            if (elToday) elToday.textContent = todayCount > 0 ? `${todayCount} Users` : '0 Users';
+            const elPeak = document.getElementById('trafficStatPeak');
+            if (elPeak) elPeak.textContent = `${peakCount} Max`;
+            const elTotal = document.getElementById('trafficStatTotal');
+            if (elTotal) elTotal.textContent = `${totalCount.toLocaleString()} Total`;
+
+            const barGradient = ctx.createLinearGradient(0, 0, 0, 220);
+            barGradient.addColorStop(0, 'rgba(6, 182, 212, 0.95)');
+            barGradient.addColorStop(0.5, 'rgba(14, 165, 233, 0.65)');
+            barGradient.addColorStop(1, 'rgba(2, 132, 199, 0.15)');
+
+            const lineGradient = ctx.createLinearGradient(0, 0, 0, 220);
+            lineGradient.addColorStop(0, 'rgba(16, 185, 129, 0.28)');
+            lineGradient.addColorStop(1, 'rgba(16, 185, 129, 0.01)');
 
             this.charts.traffic = new Chart(ctx, {
                 type: 'bar',
@@ -1197,30 +1210,31 @@ class StandaloneAdminCommandCenter {
                     datasets: [
                         {
                             type: 'bar',
-                            label: 'Daily Real Visitors',
+                            label: 'Daily Visitors',
                             data: finalDailyCounts,
                             backgroundColor: barGradient,
-                            borderColor: '#06b6d4',
-                            borderWidth: 1.5,
-                            borderRadius: 6,
-                            maxBarThickness: 38,
+                            borderColor: 'rgba(56, 189, 248, 0.85)',
+                            borderWidth: 1.2,
+                            borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
+                            maxBarThickness: 22,
                             order: 2,
                             yAxisID: 'y'
                         },
                         {
                             type: 'line',
-                            label: 'Cumulative Total Views',
+                            label: 'Cumulative Growth',
                             data: finalCumulCounts,
                             borderColor: '#10b981',
-                            borderWidth: 3,
-                            pointBackgroundColor: '#10b981',
-                            pointBorderColor: '#ffffff',
-                            pointHoverRadius: 7,
-                            pointRadius: 5,
+                            borderWidth: 2.5,
+                            pointBackgroundColor: '#070d1e',
+                            pointBorderColor: '#10b981',
+                            pointBorderWidth: 2,
+                            pointHoverRadius: 6,
+                            pointRadius: 3.5,
                             pointHoverBackgroundColor: '#34d399',
                             backgroundColor: lineGradient,
                             fill: true,
-                            tension: 0.35,
+                            tension: 0.38,
                             order: 1,
                             yAxisID: 'y1'
                         }
@@ -1240,53 +1254,55 @@ class StandaloneAdminCommandCenter {
                             align: 'end',
                             labels: {
                                 color: '#94a3b8',
-                                font: { size: 11, weight: '600', family: 'var(--font-sans, system-ui)' },
-                                boxWidth: 12,
-                                boxHeight: 12,
+                                font: { size: 10, weight: '600', family: 'var(--font-sans, system-ui)' },
+                                boxWidth: 8,
+                                boxHeight: 8,
                                 usePointStyle: true,
-                                padding: 14
+                                padding: 10
                             }
                         },
                         tooltip: {
                             backgroundColor: 'rgba(9, 14, 26, 0.95)',
                             titleColor: '#38bdf8',
-                            titleFont: { size: 12, weight: '700' },
+                            titleFont: { size: 11, weight: '700' },
                             bodyColor: '#f8fafc',
                             bodyFont: { size: 11 },
-                            borderColor: 'rgba(56, 189, 248, 0.3)',
+                            borderColor: 'rgba(56, 189, 248, 0.35)',
                             borderWidth: 1,
-                            padding: 12,
+                            padding: 10,
                             cornerRadius: 8,
+                            boxPadding: 4,
                             callbacks: {
                                 label: function(context) {
                                     if (context.dataset.yAxisID === 'y1') {
-                                        return ` 📈 Cumulative Total: ${context.parsed.y} views`;
+                                        return ` 📈 Cumulative: ${context.parsed.y} views`;
                                     }
-                                    return ` 📊 Daily Visitors: ${context.parsed.y} sessions`;
+                                    return ` 📊 Daily: ${context.parsed.y} sessions`;
                                 }
                             }
                         }
                     },
                     scales: {
                         x: { 
-                            grid: { color: 'rgba(255, 255, 255, 0.04)' }, 
-                            ticks: { color: '#94a3b8', font: { size: 11, weight: '600' } } 
+                            grid: { color: 'rgba(255, 255, 255, 0.03)' }, 
+                            ticks: { 
+                                color: '#94a3b8', 
+                                font: { size: 10, weight: '600' },
+                                maxRotation: 0,
+                                autoSkip: true,
+                                maxTicksLimit: 8
+                            } 
                         },
                         y: { 
                             type: 'linear',
                             display: true,
                             position: 'left',
-                            grid: { color: 'rgba(255, 255, 255, 0.04)' }, 
+                            grid: { color: 'rgba(255, 255, 255, 0.03)' }, 
                             ticks: { 
-                                color: '#06b6d4',
-                                font: { size: 10, weight: '600' }
+                                color: '#38bdf8',
+                                font: { size: 9, weight: '600' },
+                                precision: 0
                             }, 
-                            title: {
-                                display: true,
-                                text: 'Daily Visitors',
-                                color: '#06b6d4',
-                                font: { size: 10, weight: '700' }
-                            },
                             beginAtZero: true 
                         },
                         y1: {
@@ -1296,13 +1312,8 @@ class StandaloneAdminCommandCenter {
                             grid: { drawOnChartArea: false },
                             ticks: { 
                                 color: '#10b981',
-                                font: { size: 10, weight: '600' }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Cumulative Total',
-                                color: '#10b981',
-                                font: { size: 10, weight: '700' }
+                                font: { size: 9, weight: '600' },
+                                precision: 0
                             },
                             beginAtZero: true
                         }
