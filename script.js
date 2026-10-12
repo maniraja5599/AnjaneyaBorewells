@@ -2839,6 +2839,10 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
                 casingStr = 'Standard Casing';
             }
 
+            const detectedIp = localStorage.getItem('ab_user_detected_ip') || (window.AnjaneyaAnalytics && window.AnjaneyaAnalytics.userIp) || '';
+            const detectedIsp = localStorage.getItem('ab_user_detected_isp') || (window.AnjaneyaAnalytics && window.AnjaneyaAnalytics.userIsp) || '';
+            const detectedCity = localStorage.getItem('ab_user_detected_city') || 'Namakkal';
+
             const leadData = {
                 id: 'lead_' + Date.now(),
                 phone: `+91 ${rawPhone.substring(0, 5)} ${rawPhone.substring(5)}`,
@@ -2855,6 +2859,9 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
                 action: '🟢 Direct WhatsApp Sent',
                 timestamp: now.toISOString(),
                 time: formattedTime,
+                ip: detectedIp,
+                isp: detectedIsp,
+                city: detectedCity,
                 isRealLead: true
             };
 
@@ -2918,6 +2925,10 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
                 casingStr = 'Standard Casing';
             }
 
+            const detectedIp = localStorage.getItem('ab_user_detected_ip') || (window.AnjaneyaAnalytics && window.AnjaneyaAnalytics.userIp) || '';
+            const detectedIsp = localStorage.getItem('ab_user_detected_isp') || (window.AnjaneyaAnalytics && window.AnjaneyaAnalytics.userIsp) || '';
+            const detectedCity = localStorage.getItem('ab_user_detected_city') || 'Namakkal';
+
             const officeLeadData = {
                 id: 'lead_office_' + Date.now(),
                 phone: '+91 96596 57777 (Hotline Desk)',
@@ -2934,6 +2945,9 @@ ${inputs.pvc7Length > 0 ? `• 7" PVC Casing: ${inputs.pvc7Length} ft\n` : ''}${
                 action: '🏢 Sent to Office Hotline',
                 timestamp: now.toISOString(),
                 time: formattedTime,
+                ip: detectedIp,
+                isp: detectedIsp,
+                city: detectedCity,
                 isRealLead: true
             };
 
@@ -4337,6 +4351,11 @@ class VisitorAnalyticsManager {
         localStorage.setItem('ab_user_detected_loc', locString);
         localStorage.setItem('ab_user_detected_city', city);
         localStorage.setItem('ab_user_detected_region', region);
+        localStorage.setItem('ab_user_detected_ip', ip);
+        localStorage.setItem('ab_user_detected_isp', isp);
+        this.userIp = ip;
+        this.userIsp = isp;
+        this.userCity = city;
 
         const hw = getVisitorHardwareInfo();
         const sessionPayload = {

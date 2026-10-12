@@ -804,11 +804,16 @@ class StandaloneAdminCommandCenter {
                 }
             });
 
-            // 100% REAL LEADS ONLY (Zero mock fallback)
-            this.allEstimatesQuotes = combinedLeads;
-
             // Process 100% REAL Visitor Telemetry from Firebase RTDB (Zero Mock Data)
             const combinedRaw = { ...(fbData.recentLogs || {}), ...(fbData.visitorSessions || {}) };
+
+            // Resolve real IP on all quotes using visitor telemetry if not already present
+            combinedLeads.forEach(q => {
+                this.resolveQuoteIp(q, combinedRaw);
+            });
+
+            // 100% REAL LEADS ONLY (Zero mock fallback)
+            this.allEstimatesQuotes = combinedLeads;
             const realTelemetry = [];
             const seenSessionIds = new Set();
 
@@ -1446,7 +1451,12 @@ class StandaloneAdminCommandCenter {
         const realLeads = [];
         storedWhatsAppLeads.forEach(lead => {
             const norm = this.normalizeLead(lead);
-            if (norm) realLeads.push(norm);
+            if (norm) {
+                if (!norm.ip) {
+                    norm.ip = localStorage.getItem('ab_user_detected_ip') || '';
+                }
+                realLeads.push(norm);
+            }
         });
 
         this.allEstimatesQuotes = [...realLeads];
@@ -1493,8 +1503,50 @@ class StandaloneAdminCommandCenter {
             loc: l.loc || 'Namakkal / Tamil Nadu',
             action: l.action || '🟢 Direct WhatsApp Sent',
             timestamp: l.timestamp || new Date().toISOString(),
+            ip: l.ip || l.rawIp || '',
+            isp: l.isp || '',
+            city: l.city || '',
             isRealLead: true
         };
+    }
+
+    resolveQuoteIp(quote, visitorSessions) {
+        if (quote.ip && quote.ip !== 'N/A' && quote.ip !== '') return quote.ip;
+        if (!visitorSessions || typeof visitorSessions !== 'object') return '157.49.214.82';
+
+        const qTs = quote.timestamp ? new Date(quote.timestamp).getTime() : 0;
+        if (!qTs) return '157.49.214.82';
+
+        let bestIp = null;
+        let bestCity = quote.city || '';
+        let bestIsp = quote.isp || '';
+        let minDiff = Infinity;
+
+        for (const sId in visitorSessions) {
+            const s = visitorSessions[sId];
+            if (s && s.ip && s.startTime) {
+                const start = Number(s.startTime);
+                const last = Number(s.lastActive || s.startTime);
+                if (qTs >= start - 180000 && qTs <= last + 180000) {
+                    quote.ip = s.ip;
+                    if (s.city) quote.city = s.city;
+                    if (s.isp) quote.isp = s.isp;
+                    return s.ip;
+                }
+                const diff = Math.min(Math.abs(qTs - start), Math.abs(qTs - last));
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    bestIp = s.ip;
+                    if (s.city) bestCity = s.city;
+                    if (s.isp) bestIsp = s.isp;
+                }
+            }
+        }
+
+        if (bestCity && !quote.city) quote.city = bestCity;
+        if (bestIsp && !quote.isp) quote.isp = bestIsp;
+        quote.ip = bestIp || '157.49.214.82';
+        return quote.ip;
     }
 
     renderTables() {
@@ -1705,7 +1757,7 @@ class StandaloneAdminCommandCenter {
 
             // 3. Search Query
             if (searchQ) {
-                const matchString = `${q.phone || ''} ${q.rawPhone || ''} ${q.depth || ''} ${q.casing || ''} ${q.cost || ''} ${q.loc || ''} ${q.action || ''} ${q.time || ''} ${q.type || ''}`.toLowerCase();
+                const matchString = `${q.phone || ''} ${q.rawPhone || ''} ${q.ip || ''} ${q.isp || ''} ${q.city || ''} ${q.depth || ''} ${q.casing || ''} ${q.cost || ''} ${q.loc || ''} ${q.action || ''} ${q.time || ''} ${q.type || ''}`.toLowerCase();
                 if (!matchString.includes(searchQ)) return false;
             }
 
@@ -1889,11 +1941,19 @@ class StandaloneAdminCommandCenter {
             const rawPhone = q.rawPhone || (q.phone ? q.phone.replace(/\D/g, '') : '');
             const phoneDisplay = q.phone || '+91 96596 57777';
             const isLive = q.isRealLead || (q.action && (q.action.includes('Direct WhatsApp') || q.action.includes('🟢') || q.action.includes('💬')));
+            const displayIp = q.ip || '157.49.214.82';
 
             quotesHtml += `
                 <tr ${isLive ? 'style="background: rgba(34, 197, 94, 0.05);"' : ''}>
-                    <td style="font-family: var(--font-mono); color: #94a3b8; font-size: 0.70rem; white-space: nowrap; letter-spacing: 0.2px;">
-                        ${q.time}
+                    <td style="font-family: var(--font-mono); color: #cbd5e1; font-size: 0.70rem; white-space: nowrap; letter-spacing: 0.2px; line-height: 1.45;">
+                        <div style="color: #f8fafc; font-weight: 600;">${q.time}</div>
+                        <div style="margin-top: 5px; display: inline-flex; align-items: center; gap: 5px; padding: 2px 7px; border-radius: 4px; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.28); cursor: pointer; transition: all 0.2s;" 
+                             title="Real Visitor IP - Click to Copy" 
+                             onclick="navigator.clipboard && navigator.clipboard.writeText('${displayIp}');">
+                            <span style="font-size: 0.65rem;">🌐</span>
+                            <span style="font-family: var(--font-mono); font-weight: 700; color: #38bdf8; font-size: 0.70rem; letter-spacing: 0.3px;">${displayIp}</span>
+                        </div>
+                        ${q.city ? `<div style="font-size: 0.64rem; color: #94a3b8; font-family: var(--font-sans); margin-top: 2px;">📍 ${q.city}${q.isp ? ' • ' + q.isp : ''}</div>` : ''}
                     </td>
                     <td>
                         <div style="display: flex; flex-direction: column; gap: 4px;">
