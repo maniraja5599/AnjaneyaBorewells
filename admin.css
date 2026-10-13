@@ -109,17 +109,23 @@ body.admin-body {
     z-index: 1000;
     background: #ffffff;
     border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    height: 48px;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-container {
     max-width: 1600px;
+    width: 100%;
     margin: 0 auto;
-    padding: 8px 20px;
+    padding: 0 16px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 14px;
+    gap: 10px;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 /* Brand Section */
@@ -130,33 +136,34 @@ body.admin-body {
 .brand-link {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 9px;
     text-decoration: none;
     color: inherit;
 }
 
 .brand-logo-wrap {
     position: relative;
-    width: 44px;
-    height: 44px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 
 .brand-logo-img {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     object-fit: cover;
     z-index: 2;
     border: 1.5px solid rgba(16, 185, 129, 0.45);
-    box-shadow: 0 0 16px rgba(16, 185, 129, 0.35);
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.25);
 }
 
 .brand-radar-ring {
     position: absolute;
-    inset: -3px;
+    inset: -2px;
     border-radius: 50%;
     border: 1px dashed rgba(16, 185, 129, 0.55);
     animation: spinSlow 20s linear infinite;
@@ -170,59 +177,73 @@ body.admin-body {
 .brand-titles {
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .brand-main-row {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    line-height: 1.1;
 }
 
 .brand-name {
-    font-size: 1.05rem;
+    font-size: 0.90rem;
     font-weight: 800;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
     color: var(--text-primary);
+    line-height: 1.1;
+    white-space: nowrap;
 }
 
 .badge-enterprise {
     background: #ecfdf5;
     color: #059669;
-    font-size: 0.65rem;
+    font-size: 0.58rem;
     font-weight: 800;
-    padding: 2px 7px;
-    border-radius: 6px;
-    letter-spacing: 0.05em;
+    padding: 1px 5px;
+    border-radius: 4px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     border: 1px solid #a7f3d0;
+    line-height: 1.1;
+    white-space: nowrap;
 }
 
 .brand-sub {
-    font-size: 0.72rem;
+    font-size: 0.65rem;
     color: var(--text-muted);
     font-weight: 500;
+    line-height: 1.1;
+    white-space: nowrap;
 }
 
 /* Status Capsules */
 .status-capsules-group {
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+    gap: 6px;
+    flex-wrap: nowrap !important;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .capsule-pill {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     background: #f8fafc;
     border: 1px solid var(--border-color);
-    padding: 4px 11px;
+    padding: 0 8px;
+    height: 26px;
     border-radius: 9999px;
-    font-size: 0.70rem;
+    font-size: 0.67rem;
     font-weight: 600;
     color: var(--text-secondary);
+    white-space: nowrap !important;
+    flex-shrink: 0;
     transition: all 0.2s ease;
+    box-sizing: border-box;
 }
 
 .capsule-pill:hover {
@@ -238,11 +259,11 @@ body.admin-body {
 }
 
 .beacon-pulse {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     background-color: #10b981;
     border-radius: 50%;
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+    box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
     animation: beaconPulse 1.8s infinite;
 }
 
@@ -267,16 +288,18 @@ body.admin-body {
 .action-buttons-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
+    flex-shrink: 0;
 }
 
 .ctrl-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 5px 12px;
-    border-radius: var(--radius-sm);
-    font-size: 0.74rem;
+    gap: 5px;
+    padding: 0 10px;
+    height: 28px;
+    border-radius: 6px;
+    font-size: 0.70rem;
     font-weight: 700;
     font-family: inherit;
     cursor: pointer;
@@ -286,6 +309,22 @@ body.admin-body {
     background: #ffffff;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
     color: var(--text-secondary);
+    white-space: nowrap !important;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.ctrl-btn .btn-icon {
+    font-size: 0.78rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+}
+
+.ctrl-btn .btn-label {
+    white-space: nowrap !important;
+    font-size: 0.70rem;
+    line-height: 1;
 }
 
 .ctrl-btn:hover {
@@ -293,7 +332,7 @@ body.admin-body {
     border-color: #cbd5e1;
     background: #f8fafc;
     color: var(--text-primary);
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .btn-sync {
@@ -351,24 +390,41 @@ body.admin-body {
     color: #be123c;
 }
 
+/* Screen Adapters for Navbar Density */
+@media (max-width: 1250px) {
+    .brand-sub {
+        display: none !important;
+    }
+    .capsule-clock {
+        display: none !important;
+    }
+}
+
+@media (max-width: 1050px) {
+    .capsule-ping {
+        display: none !important;
+    }
+}
+
 /* Export Dropdown */
 .dropdown-wrapper {
     position: relative;
+    display: inline-flex;
 }
 
 .dropdown-menu {
     position: absolute;
-    top: calc(100% + 8px);
+    top: calc(100% + 4px);
     right: 0;
-    width: 290px;
+    width: 270px;
     background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    padding: 8px;
+    padding: 6px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 4px;
     z-index: 1100;
     animation: glassSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -409,13 +465,13 @@ body.admin-body {
    ========================================================================== */
 .admin-top-menubar {
     width: 100%;
-    padding: 10px 20px;
+    padding: 5px 16px;
     display: flex;
     justify-content: center;
     background: #ffffff;
     border-bottom: 1px solid var(--border-color);
     position: sticky;
-    top: 52px;
+    top: 48px;
     z-index: 900;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
@@ -424,10 +480,10 @@ body.admin-body {
     background: #f8fafc;
     border: 1px solid var(--border-color);
     border-radius: 9999px;
-    padding: 4px 6px;
+    padding: 3px 5px;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
     max-width: 100%;
     overflow-x: auto;
@@ -436,14 +492,14 @@ body.admin-body {
 .menu-tab-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
+    gap: 5px;
+    padding: 4px 11px;
     background: transparent;
     border: 1px solid transparent;
     border-radius: 9999px;
     color: var(--text-secondary);
     font-family: inherit;
-    font-size: 0.76rem;
+    font-size: 0.72rem;
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
@@ -2161,14 +2217,14 @@ body.admin-body {
     }
 
     .navbar-container {
-        padding: 8px 12px !important;
+        padding: 6px 10px !important;
         display: grid !important;
         grid-template-columns: 1fr auto !important;
         grid-template-areas: 
             "brand actions"
             "status status" !important;
         align-items: center !important;
-        gap: 6px !important;
+        gap: 4px !important;
     }
 
     .brand-group {
@@ -2181,25 +2237,25 @@ body.admin-body {
     }
 
     .brand-name {
-        font-size: 0.88rem !important;
+        font-size: 0.86rem !important;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
     .badge-enterprise {
-        font-size: 0.58rem !important;
-        padding: 2px 5px !important;
+        font-size: 0.56rem !important;
+        padding: 1px 4px !important;
     }
 
     .brand-logo-wrap {
-        width: 34px !important;
-        height: 34px !important;
+        width: 28px !important;
+        height: 28px !important;
     }
 
     .brand-logo-img {
-        width: 32px !important;
-        height: 32px !important;
+        width: 26px !important;
+        height: 26px !important;
     }
 
     /* Action Buttons Group - Sleek Touch Icons */
@@ -2208,19 +2264,21 @@ body.admin-body {
         display: flex !important;
         align-items: center !important;
         justify-content: flex-end !important;
-        gap: 6px !important;
+        gap: 4px !important;
         width: auto !important;
     }
 
     .action-buttons-group .ctrl-btn {
-        padding: 7px 10px !important;
-        font-size: 0.80rem !important;
-        min-height: 36px !important;
-        min-width: 36px !important;
+        padding: 0 !important;
+        font-size: 0.75rem !important;
+        height: 28px !important;
+        min-height: 28px !important;
+        width: 28px !important;
+        min-width: 28px !important;
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
-        border-radius: 10px !important;
+        border-radius: 6px !important;
         background: #ffffff !important;
         border: 1px solid var(--border-color) !important;
         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04) !important;
