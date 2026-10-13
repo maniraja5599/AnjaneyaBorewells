@@ -998,9 +998,9 @@ class StandaloneAdminCommandCenter {
         if (activeList.length === 0) {
             this.activeUsersTableBody.innerHTML = `
                 <tr>
-                    <td colspan="7" style="text-align:center; padding: 48px 16px; color:#94a3b8;">
+                    <td colspan="7" style="text-align:center; padding: 48px 16px; color:#64748b;">
                         <span style="font-size:2rem; display:block; margin-bottom:8px;">📡</span>
-                        <strong style="font-size:1rem; color:#f8fafc;">Live Radar Scanning...</strong>
+                        <strong style="font-size:1rem; color:#0f172a;">Live Radar Scanning...</strong>
                         <div style="font-size:0.85rem; color:#64748b; margin-top:6px;">
                             When visitors browse the website, their real-time device, active section &amp; location appear here instantly.
                         </div>
@@ -1015,32 +1015,32 @@ class StandaloneAdminCommandCenter {
             html += `
                 <tr>
                     <td>
-                        <span class="badge-status badge-verified" style="display:inline-block; font-size:0.75rem; background:#15803d; color:#ffffff; padding:2px 8px; border-radius:4px; font-weight:700;">
+                        <span class="badge-status badge-verified" style="display:inline-block; font-size:0.75rem; background:#16a34a; color:#ffffff; padding:2px 8px; border-radius:4px; font-weight:700;">
                             🟢 ACTIVE NOW
                         </span>
                     </td>
                     <td>
-                        <strong style="color:#ffffff;">${u.device || '📱 Mobile'}</strong>
-                        <div style="font-size:0.75rem; color:#94a3b8;">${u.os || 'Android'} • ${u.browser || 'Chrome'}</div>
+                        <strong style="color:#0f172a;">${u.device || '📱 Mobile'}</strong>
+                        <div style="font-size:0.75rem; color:#64748b;">${u.os || 'Android'} • ${u.browser || 'Chrome'}</div>
                     </td>
                     <td>
-                        <span style="color:#38bdf8; font-weight:600;">📍 ${u.location || 'Tamil Nadu, IN'}</span>
+                        <span style="color:#0284c7; font-weight:600;">📍 ${u.location || 'Tamil Nadu, IN'}</span>
                     </td>
                     <td>
-                        <span style="background:rgba(56, 189, 248, 0.15); color:#38bdf8; border:1px solid rgba(56, 189, 248, 0.4); padding:3px 8px; border-radius:6px; font-size:0.78rem; font-weight:600;">
+                        <span style="background:#eff6ff; color:#0284c7; border:1px solid #bae6fd; padding:3px 8px; border-radius:6px; font-size:0.78rem; font-weight:600;">
                             ${u.currentSection || '🎯 Cost Calculator'}
                         </span>
                     </td>
                     <td>
-                        <span style="background:rgba(168, 85, 247, 0.15); color:#c084fc; border:1px solid rgba(168, 85, 247, 0.4); padding:2px 8px; border-radius:6px; font-size:0.75rem;">
+                        <span style="background:#f5f3ff; color:#7c3aed; border:1px solid #ddd6fe; padding:2px 8px; border-radius:6px; font-size:0.75rem; font-weight:600;">
                             ${u.channel || '🌐 Direct Website'}
                         </span>
                     </td>
                     <td>
-                        <span style="color:#a7f3d0; font-family:var(--font-mono); font-weight:600;">${u.duration || 'Just now'}</span>
+                        <span style="color:#059669; font-family:var(--font-mono); font-weight:700;">${u.duration || 'Just now'}</span>
                     </td>
                     <td>
-                        <span style="color:#cbd5e1; font-size:0.8rem;">${u.connectedAt || 'Today'} IST</span>
+                        <span style="color:#475569; font-size:0.8rem; font-weight:500;">${u.connectedAt || 'Today'} IST</span>
                     </td>
                 </tr>
             `;
@@ -1368,7 +1368,7 @@ class StandaloneAdminCommandCenter {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'bottom', labels: { color: '#94a3b8', boxWidth: 10, font: { size: 11 } } },
+                        legend: { position: 'bottom', labels: { color: '#64748b', boxWidth: 10, font: { size: 11 } } },
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
@@ -1422,8 +1422,8 @@ class StandaloneAdminCommandCenter {
                         }
                     },
                     scales: {
-                        x: { grid: { display: false }, ticks: { color: '#94a3b8', font: { size: 10 } } },
-                        y: { grid: { color: 'rgba(255, 255, 255, 0.04)' }, ticks: { color: '#94a3b8' } }
+                        x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10 } } },
+                        y: { grid: { color: '#e2e8f0' }, ticks: { color: '#64748b' } }
                     }
                 }
             });
@@ -1442,7 +1442,7 @@ class StandaloneAdminCommandCenter {
         if (sessions.length === 0) {
             this.microIntelTableBody.innerHTML = `
                 <tr>
-                    <td colspan="4" style="text-align: center; color: #94a3b8; padding: 24px 12px;">
+                    <td colspan="4" style="text-align: center; color: #64748b; padding: 24px 12px;">
                         Scanning live telemetry sessions...
                     </td>
                 </tr>
@@ -1452,13 +1452,13 @@ class StandaloneAdminCommandCenter {
 
         this.microIntelTableBody.innerHTML = sessions.map(s => `
             <tr>
-                <td style="font-family: var(--font-mono); font-size: 0.70rem; color: #cbd5e1; white-space: nowrap;">
-                    <span style="color: #f8fafc; font-weight: 600;">${s.dateStr || ''}</span>
-                    <span style="color: #94a3b8; font-size: 0.68rem; margin-left: 4px;">${s.timeStr || ''}</span>
+                <td style="font-family: var(--font-mono); font-size: 0.70rem; color: #475569; white-space: nowrap;">
+                    <span style="color: #0f172a; font-weight: 600;">${s.dateStr || ''}</span>
+                    <span style="color: #64748b; font-size: 0.68rem; margin-left: 4px;">${s.timeStr || ''}</span>
                 </td>
                 <td><span class="badge-source ${s.sourceBadge || 'badge-source-direct'}">${s.source}</span></td>
-                <td style="font-weight: 600; color: #34d399;">📍 ${s.dist}, TN</td>
-                <td style="color: #6ee7b7; font-weight: 600;">${s.action}</td>
+                <td style="font-weight: 600; color: #0284c7;">📍 ${s.dist}, TN</td>
+                <td style="color: #059669; font-weight: 600;">${s.action}</td>
             </tr>
         `).join('');
     }
@@ -1848,9 +1848,9 @@ class StandaloneAdminCommandCenter {
         if (total === 0) {
             this.telemetryTableBody.innerHTML = `
                 <tr>
-                    <td colspan="10" style="text-align: center; padding: 48px 16px; color: #94a3b8;">
+                    <td colspan="10" style="text-align: center; padding: 48px 16px; color: #64748b;">
                         <span style="font-size: 2rem; display: block; margin-bottom: 8px;">📡</span>
-                        <strong style="font-size: 1rem; color: #f8fafc;">Scanning Live Visitor Sessions...</strong>
+                        <strong style="font-size: 1rem; color: #0f172a;">Scanning Live Visitor Sessions...</strong>
                         <div style="font-size: 0.85rem; color: #64748b; margin-top: 6px;">
                             Connecting to cloud telemetry node to retrieve real visitor IP and device logs.
                         </div>
@@ -1878,29 +1878,29 @@ class StandaloneAdminCommandCenter {
             const statusClass = s.status === 'Direct Lead' ? 'badge-verified' : (s.status === 'Quote Sent' ? 'badge-quote' : 'badge-active');
             html += `
                 <tr>
-                    <td style="font-family: var(--font-mono); color: #cbd5e1; font-size: 0.72rem; white-space: nowrap; line-height: 1.35;">
-                        <div style="color: #f8fafc; font-weight: 600;">${s.dateStr || ''}</div>
-                        <div style="color: #94a3b8; font-size: 0.68rem;">${s.timeStr || ''} IST</div>
+                    <td style="font-family: var(--font-mono); color: #475569; font-size: 0.72rem; white-space: nowrap; line-height: 1.35;">
+                        <div style="color: #0f172a; font-weight: 600;">${s.dateStr || ''}</div>
+                        <div style="color: #64748b; font-size: 0.68rem;">${s.timeStr || ''} IST</div>
                     </td>
                     <td class="ip-cell-action" 
                         data-masked="${s.ip}" 
                         data-raw="${s.rawIp}" 
                         data-state="${this.isGlobalIpRevealed ? 'raw' : 'masked'}"
                         title="Click to reveal Full IP / Copy to clipboard"
-                        style="font-family: var(--font-mono); font-weight: 600; color: #f8fafc; cursor: pointer; user-select: text;">
-                        <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 6px; border-radius: 4px; background: rgba(255, 255, 255, 0.03); transition: all 0.2s;">
-                            <span class="ip-text" style="color: ${this.isGlobalIpRevealed ? '#4ade80' : '#f8fafc'};">${this.isGlobalIpRevealed ? s.rawIp : s.ip}</span>
-                            <span class="ip-toggle-btn" style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; border-radius: 4px; padding: 1px 5px; font-size: 0.65rem; cursor: pointer;" title="Toggle Full IP">${this.isGlobalIpRevealed ? '🔓' : '👁️'}</span>
+                        style="font-family: var(--font-mono); font-weight: 600; color: #0f172a; cursor: pointer; user-select: text;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 6px; border-radius: 4px; background: #f1f5f9; border: 1px solid #e2e8f0; transition: all 0.2s;">
+                            <span class="ip-text" style="color: ${this.isGlobalIpRevealed ? '#059669' : '#0f172a'}; font-weight: 700;">${this.isGlobalIpRevealed ? s.rawIp : s.ip}</span>
+                            <span class="ip-toggle-btn" style="background: #eff6ff; border: 1px solid #bae6fd; color: #0284c7; border-radius: 4px; padding: 1px 5px; font-size: 0.65rem; cursor: pointer;" title="Toggle Full IP">${this.isGlobalIpRevealed ? '🔓' : '👁️'}</span>
                         </div>
-                        ${s.isp ? `<div style="font-size: 0.65rem; color: #94a3b8; font-weight: 400; font-family: var(--font-sans); margin-top: 2px;">${s.isp}</div>` : ''}
+                        ${s.isp ? `<div style="font-size: 0.65rem; color: #64748b; font-weight: 500; font-family: var(--font-sans); margin-top: 2px;">${s.isp}</div>` : ''}
                     </td>
-                    <td><strong style="color: #34d399;">${s.dist}</strong></td>
-                    <td style="color: #cbd5e1;">${s.state}</td>
+                    <td><strong style="color: #0284c7;">${s.dist}</strong></td>
+                    <td style="color: #475569;">${s.state}</td>
                     <td><span class="badge-source ${s.sourceBadge}">${s.source}</span></td>
-                    <td>${s.device}</td>
-                    <td style="color: #94a3b8;">${s.browser}</td>
-                    <td style="font-family: var(--font-mono); color: #38bdf8;">${s.duration}</td>
-                    <td>${s.action}</td>
+                    <td style="color: #0f172a;">${s.device}</td>
+                    <td style="color: #64748b;">${s.browser}</td>
+                    <td style="font-family: var(--font-mono); color: #0284c7; font-weight: 600;">${s.duration}</td>
+                    <td style="color: #334155;">${s.action}</td>
                     <td><span class="badge-status ${statusClass}">${s.status}</span></td>
                 </tr>
             `;
@@ -1935,9 +1935,9 @@ class StandaloneAdminCommandCenter {
         if (total === 0) {
             this.estimatesTableBody.innerHTML = `
                 <tr>
-                    <td colspan="9" style="text-align:center; padding: 48px 16px; color:#94a3b8;">
+                    <td colspan="9" style="text-align:center; padding: 48px 16px; color:#64748b;">
                         <span style="font-size:2rem; display:block; margin-bottom:8px;">💰</span>
-                        <strong style="font-size:1rem; color:#f8fafc;">No Customer Quotes Found</strong>
+                        <strong style="font-size:1rem; color:#0f172a;">No Customer Quotes Found</strong>
                         <div style="font-size:0.85rem; color:#64748b; margin-top:6px;">
                             No quotation records match the selected date range or filter criteria. Click "Reset" to view all records.
                         </div>
@@ -1966,20 +1966,20 @@ class StandaloneAdminCommandCenter {
             const displayIp = q.ip || '157.49.214.82';
 
             quotesHtml += `
-                <tr ${isLive ? 'style="background: rgba(34, 197, 94, 0.05);"' : ''}>
-                    <td style="font-family: var(--font-mono); color: #cbd5e1; font-size: 0.70rem; white-space: nowrap; letter-spacing: 0.2px; line-height: 1.45;">
-                        <div style="color: #f8fafc; font-weight: 600;">${q.time}</div>
-                        <div style="margin-top: 5px; display: inline-flex; align-items: center; gap: 5px; padding: 2px 7px; border-radius: 4px; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.28); cursor: pointer; transition: all 0.2s;" 
+                <tr ${isLive ? 'style="background: #f0fdf4;"' : ''}>
+                    <td style="font-family: var(--font-mono); color: #475569; font-size: 0.70rem; white-space: nowrap; letter-spacing: 0.2px; line-height: 1.45;">
+                        <div style="color: #0f172a; font-weight: 600;">${q.time}</div>
+                        <div style="margin-top: 5px; display: inline-flex; align-items: center; gap: 5px; padding: 2px 7px; border-radius: 4px; background: #eff6ff; border: 1px solid #bae6fd; cursor: pointer; transition: all 0.2s;" 
                              title="Real Visitor IP - Click to Copy" 
                              onclick="navigator.clipboard && navigator.clipboard.writeText('${displayIp}');">
                             <span style="font-size: 0.65rem;">🌐</span>
-                            <span style="font-family: var(--font-mono); font-weight: 700; color: #38bdf8; font-size: 0.70rem; letter-spacing: 0.3px;">${displayIp}</span>
+                            <span style="font-family: var(--font-mono); font-weight: 700; color: #0284c7; font-size: 0.70rem; letter-spacing: 0.3px;">${displayIp}</span>
                         </div>
-                        ${q.city ? `<div style="font-size: 0.64rem; color: #94a3b8; font-family: var(--font-sans); margin-top: 2px;">📍 ${q.city}${q.isp ? ' • ' + q.isp : ''}</div>` : ''}
+                        ${q.city ? `<div style="font-size: 0.64rem; color: #64748b; font-family: var(--font-sans); margin-top: 2px;">📍 ${q.city}${q.isp ? ' • ' + q.isp : ''}</div>` : ''}
                     </td>
                     <td>
                         <div style="display: flex; flex-direction: column; gap: 4px;">
-                            <strong style="color: #4ade80; font-family: var(--font-mono); font-size: 0.90rem; letter-spacing: 0.5px;">${phoneDisplay}</strong>
+                            <strong style="color: #059669; font-family: var(--font-mono); font-size: 0.90rem; letter-spacing: 0.5px;">${phoneDisplay}</strong>
                             <div style="display: flex; gap: 4px; align-items: center;">
                                 ${rawPhone ? `<a href="https://wa.me/${rawPhone.startsWith('91') ? rawPhone : '91' + rawPhone}" target="_blank" class="badge-status badge-verified" style="text-decoration:none; padding: 2px 6px; font-size: 0.68rem; cursor:pointer;" title="Open WhatsApp Chat">💬 WhatsApp</a>` : ''}
                                 ${rawPhone ? `<a href="tel:${rawPhone.startsWith('91') ? '+' + rawPhone : '+91' + rawPhone}" class="badge-status badge-quote" style="text-decoration:none; padding: 2px 6px; font-size: 0.68rem; cursor:pointer;" title="Call Customer">📞 Call</a>` : ''}
@@ -1987,24 +1987,24 @@ class StandaloneAdminCommandCenter {
                         </div>
                     </td>
                     <td>
-                        <strong style="color: #38bdf8; font-family: var(--font-mono); font-size: 0.90rem;">${q.depth}</strong>
-                        <small style="color: ${q.isRepair ? '#f59e0b' : '#94a3b8'}; display: block; font-size: 0.70rem; font-weight: ${q.isRepair ? '700' : '500'};">(${q.type || 'New Borewell'})</small>
+                        <strong style="color: #0284c7; font-family: var(--font-mono); font-size: 0.90rem;">${q.depth}</strong>
+                        <small style="color: ${q.isRepair ? '#b45309' : '#64748b'}; display: block; font-size: 0.70rem; font-weight: ${q.isRepair ? '700' : '500'};">(${q.type || 'New Borewell'})</small>
                     </td>
                     <td>
-                        <strong style="color: #a7f3d0; font-family: var(--font-mono); font-size: 0.84rem;">${q.baseRate || '₹90/ft'}</strong>
+                        <strong style="color: #0f172a; font-family: var(--font-mono); font-size: 0.84rem;">${q.baseRate || '₹90/ft'}</strong>
                     </td>
                     <td>
                         ${q.isRepair 
-                            ? `<strong style="color: #f59e0b; font-family: var(--font-mono); font-size: 0.84rem; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.3); padding: 2px 6px; border-radius: 4px; display: inline-block;">${q.oldBore}</strong>`
-                            : `<span style="color: #64748b; font-size: 0.80rem;">-</span>`
+                            ? `<strong style="color: #b45309; font-family: var(--font-mono); font-size: 0.84rem; background: #fef3c7; border: 1px solid #fde68a; padding: 2px 6px; border-radius: 4px; display: inline-block;">${q.oldBore}</strong>`
+                            : `<span style="color: #94a3b8; font-size: 0.80rem;">-</span>`
                         }
                     </td>
-                    <td style="font-size: 0.82rem; color: #e2e8f0;">${q.casing}</td>
+                    <td style="font-size: 0.82rem; color: #334155;">${q.casing}</td>
                     <td>
-                        <strong style="color: #10b981; font-family: var(--font-mono); font-size: 0.92rem;">${q.cost}</strong>
-                        <small style="color: #10b981; font-size: 0.68rem; display: block;">(Approximate)</small>
+                        <strong style="color: #059669; font-family: var(--font-mono); font-size: 0.92rem;">${q.cost}</strong>
+                        <small style="color: #059669; font-size: 0.68rem; display: block;">(Approximate)</small>
                     </td>
-                    <td style="font-size: 0.82rem; color: #f1f5f9;">📍 ${q.loc}</td>
+                    <td style="font-size: 0.82rem; color: #0f172a; font-weight: 600;">📍 ${q.loc}</td>
                     <td><span class="badge-status ${isLive ? 'badge-verified' : 'badge-quote'}">${q.action}</span></td>
                 </tr>
             `;
@@ -2254,7 +2254,7 @@ class StandaloneAdminCommandCenter {
                             <div class="geo-item-bar">
                                 <div class="geo-item-fill-country" style="width: ${Math.min(100, Math.max(6, pct * 2.2))}%;"></div>
                             </div>
-                            <span class="geo-item-pct" style="color: #c4b5fd;">${pct}% (${c.count})</span>
+                            <span class="geo-item-pct" style="color: #7c3aed; font-weight: 700;">${pct}% (${c.count})</span>
                         </div>
                     </div>
                 `;
@@ -2292,20 +2292,20 @@ class StandaloneAdminCommandCenter {
         if (box.dataset.loaded === 'true') return;
 
         try {
-            box.innerHTML = '<div style="text-align:center; padding: 20px; color:#38bdf8;">⏳ Loading System Architecture Manual...</div>';
+            box.innerHTML = '<div style="text-align:center; padding: 20px; color:#0284c7; font-weight:600;">⏳ Loading System Architecture Manual...</div>';
             const res = await fetch('PROJECT_DOCUMENTATION.md?_t=' + Date.now(), { cache: 'no-store' });
             if (!res.ok) throw new Error('File not found');
             const mdText = await res.text();
             
             // Format markdown text with clean HTML formatting
             let html = mdText
-                .replace(/^# (.*$)/gim, '<h2 style="font-size:1.35rem; color:#10b981; margin:16px 0 8px 0; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:6px;">$1</h2>')
-                .replace(/^## (.*$)/gim, '<h3 style="font-size:1.1rem; color:#38bdf8; margin:14px 0 6px 0;">$1</h3>')
-                .replace(/^### (.*$)/gim, '<h4 style="font-size:0.95rem; color:#f8fafc; margin:10px 0 4px 0;">$1</h4>')
-                .replace(/\*\*(.*?)\*\*/gim, '<strong style="color:#ffffff;">$1</strong>')
+                .replace(/^# (.*$)/gim, '<h2 style="font-size:1.35rem; color:#059669; margin:16px 0 8px 0; border-bottom:1px solid #e2e8f0; padding-bottom:6px;">$1</h2>')
+                .replace(/^## (.*$)/gim, '<h3 style="font-size:1.1rem; color:#0284c7; margin:14px 0 6px 0;">$1</h3>')
+                .replace(/^### (.*$)/gim, '<h4 style="font-size:0.95rem; color:#0f172a; margin:10px 0 4px 0;">$1</h4>')
+                .replace(/\*\*(.*?)\*\*/gim, '<strong style="color:#0f172a;">$1</strong>')
                 .replace(/\*(.*?)\*/gim, '<em>$1</em>')
-                .replace(/```([\s\S]*?)```/gim, '<pre style="background:#070d1e; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); font-family:monospace; font-size:0.78rem; overflow-x:auto; margin:10px 0; color:#cbd5e1;"><code>$1</code></pre>')
-                .replace(/^\- (.*$)/gim, '<li style="margin-left:18px; margin-bottom:4px;">$1</li>')
+                .replace(/```([\s\S]*?)```/gim, '<pre style="background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #e2e8f0; font-family:monospace; font-size:0.78rem; overflow-x:auto; margin:10px 0; color:#334155;"><code>$1</code></pre>')
+                .replace(/^\- (.*$)/gim, '<li style="margin-left:18px; margin-bottom:4px; color:#334155;">$1</li>')
                 .replace(/\n\n/gim, '<br><br>');
 
             box.innerHTML = html;
@@ -2484,7 +2484,7 @@ class StandaloneAdminCommandCenter {
                 actions: 'Brand Trust Impression & Low Bounce Rate',
                 convRate: '98.5% View',
                 status: 'Brand Anchor',
-                statusColor: '#facc15'
+                statusColor: '#b45309'
             },
             {
                 id: 'services',
@@ -2497,7 +2497,7 @@ class StandaloneAdminCommandCenter {
                 actions: '19 Category Enquiries / Agri Consultations',
                 convRate: '5.5%',
                 status: 'Core Offering',
-                statusColor: '#38bdf8'
+                statusColor: '#0284c7'
             },
             {
                 id: 'reviews',
@@ -2510,7 +2510,7 @@ class StandaloneAdminCommandCenter {
                 actions: '46 Google Maps Profile Visits',
                 convRate: '16.8%',
                 status: 'Trust Builder',
-                statusColor: '#4ade80'
+                statusColor: '#059669'
             },
             {
                 id: 'gallery',
@@ -2523,7 +2523,7 @@ class StandaloneAdminCommandCenter {
                 actions: '84 Image Zooms & Rig Inspection clicks',
                 convRate: '34.2%',
                 status: 'Engagement',
-                statusColor: '#c084fc'
+                statusColor: '#7c3aed'
             },
             {
                 id: 'contact',
@@ -2536,7 +2536,7 @@ class StandaloneAdminCommandCenter {
                 actions: '31 Direct Hotline Inquiries',
                 convRate: '14.5%',
                 status: 'Direct Lead',
-                statusColor: '#f43f5e'
+                statusColor: '#e11d48'
             },
             {
                 id: 'admin',
@@ -2549,7 +2549,7 @@ class StandaloneAdminCommandCenter {
                 actions: 'SuperAdmin Audit & Realtime Exports',
                 convRate: '100% Auth',
                 status: 'Executive',
-                statusColor: '#94a3b8'
+                statusColor: '#475569'
             }
         ];
 
@@ -2594,33 +2594,33 @@ class StandaloneAdminCommandCenter {
 
             html += `
                 <tr>
-                    <td style="font-family:'JetBrains Mono',monospace; font-weight:700; color:#94a3b8;">
+                    <td style="font-family:'JetBrains Mono',monospace; font-weight:700; color:#64748b;">
                         #0${idx + 1}
                     </td>
                     <td>
                         <div style="display:flex; align-items:center; gap:10px;">
                             <span style="font-size:1.4rem;">${m.icon}</span>
                             <div>
-                                <strong style="color:#f8fafc; font-size:0.88rem;">${m.name}</strong>
-                                <div style="font-size:0.75rem; color:#94a3b8;">${m.desc}</div>
+                                <strong style="color:#0f172a; font-size:0.88rem;">${m.name}</strong>
+                                <div style="font-size:0.75rem; color:#64748b;">${m.desc}</div>
                             </div>
                         </div>
                     </td>
-                    <td style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#38bdf8; font-size:0.95rem;">
+                    <td style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#0284c7; font-size:0.95rem;">
                         ${hits.toLocaleString('en-IN')}
                     </td>
-                    <td style="font-family:'JetBrains Mono',monospace; color:#cbd5e1;">
+                    <td style="font-family:'JetBrains Mono',monospace; color:#334155;">
                         ${uniques.toLocaleString('en-IN')}
                     </td>
-                    <td style="color:#a7f3d0; font-family:'JetBrains Mono',monospace;">
+                    <td style="color:#059669; font-family:'JetBrains Mono',monospace; font-weight:600;">
                         ${m.avgDwell}
                     </td>
                     <td>
-                        <span style="background:rgba(56, 189, 248, 0.12); color:#38bdf8; border:1px solid rgba(56, 189, 248, 0.3); padding:3px 8px; border-radius:6px; font-size:0.75rem; font-weight:600;">
+                        <span style="background:#eff6ff; color:#0284c7; border:1px solid #bae6fd; padding:3px 8px; border-radius:6px; font-size:0.75rem; font-weight:600;">
                             ${m.actions}
                         </span>
                     </td>
-                    <td style="color:#4ade80; font-weight:700; font-family:'JetBrains Mono',monospace;">
+                    <td style="color:#059669; font-weight:700; font-family:'JetBrains Mono',monospace;">
                         ${m.convRate}
                     </td>
                     <td>
@@ -2632,7 +2632,7 @@ class StandaloneAdminCommandCenter {
                         </div>
                     </td>
                     <td>
-                        <span style="background:rgba(255,255,255,0.08); color:${m.statusColor}; border:1px solid ${m.statusColor}44; padding:3px 8px; border-radius:6px; font-size:0.72rem; font-weight:700; text-transform:uppercase;">
+                        <span style="background:#f8fafc; color:${m.statusColor}; border:1px solid #e2e8f0; padding:3px 8px; border-radius:6px; font-size:0.72rem; font-weight:700; text-transform:uppercase;">
                             ${m.status}
                         </span>
                     </td>
@@ -2641,7 +2641,7 @@ class StandaloneAdminCommandCenter {
         });
 
         if (!filtered.length) {
-            html = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#94a3b8;">No matching sections found for the selected filter criteria.</td></tr>`;
+            html = `<tr><td colspan="9" style="text-align:center; padding:30px; color:#64748b;">No matching sections found for the selected filter criteria.</td></tr>`;
         }
 
         this.cumulPagesTableBody.innerHTML = html;

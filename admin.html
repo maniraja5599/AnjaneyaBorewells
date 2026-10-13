@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    <link rel="stylesheet" href="admin.css?v=6.0.0">
+    <link rel="stylesheet" href="admin.css?v=6.0.1">
 </head>
 <body class="admin-body">
     <!-- Liquid Glass Aurora Ambient Engine -->
@@ -408,11 +408,11 @@
                         <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
                             <h4>🟢 Live Active Visitors Currently Browsing Website</h4>
                             <span class="toolbar-stat-pill" id="activeUsersPill">Real-Time Heartbeat Radar</span>
-                            <span class="toolbar-stat-pill" style="border-color: rgba(245, 158, 11, 0.35); color: #fbbf24;" id="activeUsersTopDevice">📱 Mobile</span>
-                            <span class="toolbar-stat-pill" style="border-color: rgba(52, 211, 153, 0.35); color: #34d399;" id="activeUsersTopSection">🎯 Calculator</span>
+                            <span class="toolbar-stat-pill" style="border-color: #fde68a; background: #fffbeb; color: #b45309;" id="activeUsersTopDevice">📱 Mobile</span>
+                            <span class="toolbar-stat-pill" style="border-color: #a7f3d0; background: #ecfdf5; color: #059669;" id="activeUsersTopSection">🎯 Calculator</span>
                         </div>
                         <div style="display: flex; gap: 8px; align-items: center;">
-                            <button type="button" class="ctrl-btn btn-sync" id="gotoVisitorHistoryBtn" style="background: rgba(56, 189, 248, 0.14); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; padding: 6px 14px; border-radius: 6px; font-size: 0.80rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="View all historical visits and use advanced filters">
+                            <button type="button" class="ctrl-btn btn-sync" id="gotoVisitorHistoryBtn" style="background: #eff6ff; border: 1px solid #bae6fd; color: #0284c7; padding: 6px 14px; border-radius: 6px; font-size: 0.80rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="View all historical visits and use advanced filters">
                                 <span>📜 View Full Visitor History &amp; Filters ➔</span>
                             </button>
                         </div>
@@ -610,7 +610,7 @@
                             <input type="text" id="telemetrySearchInput" placeholder="Filter by IP, District, Device, Browser, Channel, or Action...">
                         </div>
                         <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                            <button type="button" id="toggleAllIpsBtn" style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;" title="Reveal all unmasked client IP addresses">
+                            <button type="button" id="toggleAllIpsBtn" style="background: #eff6ff; border: 1px solid #bae6fd; color: #0284c7; padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;" title="Reveal all unmasked client IP addresses">
                                 <span class="eye-ico">👁️</span> <span>Reveal All IPs</span>
                             </button>
                             <div class="toolbar-stat-pill" id="telemetryCountPill">
@@ -902,7 +902,7 @@
                                     <span style="font-size: 1.2rem;">🚜</span>
                                     <span>Tamil Nadu Operational Districts</span>
                                 </h4>
-                                <small style="color: #94a3b8; font-size: 0.78rem;">Live district drilling demand, rig deployment priority &amp; traffic ranking</small>
+                                <small style="color: #64748b; font-size: 0.78rem;">Live district drilling demand, rig deployment priority &amp; traffic ranking</small>
                             </div>
                             <span class="geo-live-pill">🟢 Live Cloud Telemetry</span>
                         </div>
@@ -921,9 +921,9 @@
                                         <span style="font-size: 1.15rem;">🏛️</span>
                                         <span>Indian States &amp; Metro Hubs</span>
                                     </h4>
-                                    <small style="color: #94a3b8; font-size: 0.78rem;">Interstate farmer &amp; commercial borewell inquiries</small>
+                                    <small style="color: #64748b; font-size: 0.78rem;">Interstate farmer &amp; commercial borewell inquiries</small>
                                 </div>
-                                <span class="geo-live-pill" style="background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.35); color: #fbbf24;">All-India Telemetry</span>
+                                <span class="geo-live-pill" style="background: #fffbeb; border-color: #fde68a; color: #b45309;">All-India Telemetry</span>
                             </div>
                             <div class="geo-structured-list" id="geoStatesList">
                                 <!-- Populated dynamically from Firebase /states.json -->
@@ -938,9 +938,9 @@
                                         <span style="font-size: 1.15rem;">🌍</span>
                                         <span>Global &amp; NRI Demand Radar</span>
                                     </h4>
-                                    <small style="color: #94a3b8; font-size: 0.78rem;">International NRI inquiries for ancestral farmland drilling</small>
+                                    <small style="color: #64748b; font-size: 0.78rem;">International NRI inquiries for ancestral farmland drilling</small>
                                 </div>
-                                <span class="geo-live-pill" style="background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.35); color: #c4b5fd;">International Feed</span>
+                                <span class="geo-live-pill" style="background: #f5f3ff; border-color: #ddd6fe; color: #7c3aed;">International Feed</span>
                             </div>
                             <div class="geo-structured-list" id="geoCountriesList">
                                 <!-- Populated dynamically from Firebase /countries.json -->
@@ -1245,6 +1245,6 @@
         </div>
     </footer>
 
-    <script src="admin.js?v=6.0.0"></script>
+    <script src="admin.js?v=6.0.1"></script>
 </body>
 </html>
