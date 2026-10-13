@@ -248,6 +248,15 @@ class StandaloneAdminCommandCenter {
                     }
                 });
 
+                // Sync mobile bottom navigation bar
+                document.querySelectorAll('.m-bottom-tab').forEach(mb => {
+                    if (mb.getAttribute('data-tab-switch') === target) {
+                        mb.classList.add('active');
+                    } else {
+                        mb.classList.remove('active');
+                    }
+                });
+
                 if (target === 'tabOverview') {
                     Object.values(this.charts).forEach(c => c && c.resize && c.resize());
                 } else if (target === 'tabSystemDocs') {
@@ -1194,14 +1203,16 @@ class StandaloneAdminCommandCenter {
             const elTotal = document.getElementById('trafficStatTotal');
             if (elTotal) elTotal.textContent = `${totalCount.toLocaleString()} Total`;
 
+            const elHeroBigVal = document.getElementById('heroChartTotalVal');
+            if (elHeroBigVal) elHeroBigVal.textContent = `${totalCount.toLocaleString()} Views`;
+
             const barGradient = ctx.createLinearGradient(0, 0, 0, 220);
-            barGradient.addColorStop(0, 'rgba(6, 182, 212, 0.95)');
-            barGradient.addColorStop(0.5, 'rgba(14, 165, 233, 0.65)');
-            barGradient.addColorStop(1, 'rgba(2, 132, 199, 0.15)');
+            barGradient.addColorStop(0, '#f59e0b');
+            barGradient.addColorStop(1, '#d97706');
 
             const lineGradient = ctx.createLinearGradient(0, 0, 0, 220);
-            lineGradient.addColorStop(0, 'rgba(16, 185, 129, 0.28)');
-            lineGradient.addColorStop(1, 'rgba(16, 185, 129, 0.01)');
+            lineGradient.addColorStop(0, 'rgba(16, 185, 129, 0.20)');
+            lineGradient.addColorStop(1, 'rgba(16, 185, 129, 0.0)');
 
             this.charts.traffic = new Chart(ctx, {
                 type: 'bar',
@@ -1213,10 +1224,10 @@ class StandaloneAdminCommandCenter {
                             label: 'Daily Visitors',
                             data: finalDailyCounts,
                             backgroundColor: barGradient,
-                            borderColor: 'rgba(56, 189, 248, 0.85)',
-                            borderWidth: 1.2,
+                            borderColor: '#d97706',
+                            borderWidth: 1,
                             borderRadius: { topLeft: 6, topRight: 6, bottomLeft: 0, bottomRight: 0 },
-                            maxBarThickness: 22,
+                            maxBarThickness: 24,
                             order: 2,
                             yAxisID: 'y'
                         },
@@ -1226,12 +1237,12 @@ class StandaloneAdminCommandCenter {
                             data: finalCumulCounts,
                             borderColor: '#10b981',
                             borderWidth: 2.5,
-                            pointBackgroundColor: '#070d1e',
+                            pointBackgroundColor: '#ffffff',
                             pointBorderColor: '#10b981',
                             pointBorderWidth: 2,
                             pointHoverRadius: 6,
                             pointRadius: 3.5,
-                            pointHoverBackgroundColor: '#34d399',
+                            pointHoverBackgroundColor: '#10b981',
                             backgroundColor: lineGradient,
                             fill: true,
                             tension: 0.38,
@@ -1253,7 +1264,7 @@ class StandaloneAdminCommandCenter {
                             position: 'top',
                             align: 'end',
                             labels: {
-                                color: '#94a3b8',
+                                color: '#64748b',
                                 font: { size: 10, weight: '600', family: 'var(--font-sans, system-ui)' },
                                 boxWidth: 8,
                                 boxHeight: 8,
@@ -1262,12 +1273,12 @@ class StandaloneAdminCommandCenter {
                             }
                         },
                         tooltip: {
-                            backgroundColor: 'rgba(9, 14, 26, 0.95)',
-                            titleColor: '#38bdf8',
+                            backgroundColor: '#0f172a',
+                            titleColor: '#fde68a',
                             titleFont: { size: 11, weight: '700' },
-                            bodyColor: '#f8fafc',
+                            bodyColor: '#ffffff',
                             bodyFont: { size: 11 },
-                            borderColor: 'rgba(56, 189, 248, 0.35)',
+                            borderColor: '#334155',
                             borderWidth: 1,
                             padding: 10,
                             cornerRadius: 8,
@@ -1284,9 +1295,9 @@ class StandaloneAdminCommandCenter {
                     },
                     scales: {
                         x: { 
-                            grid: { color: 'rgba(255, 255, 255, 0.03)' }, 
+                            grid: { color: '#f1f5f9' }, 
                             ticks: { 
-                                color: '#94a3b8', 
+                                color: '#64748b', 
                                 font: { size: 10, weight: '600' },
                                 maxRotation: 0,
                                 autoSkip: true,
@@ -1297,10 +1308,10 @@ class StandaloneAdminCommandCenter {
                             type: 'linear',
                             display: true,
                             position: 'left',
-                            grid: { color: 'rgba(255, 255, 255, 0.03)' }, 
+                            grid: { color: '#f1f5f9' }, 
                             ticks: { 
-                                color: '#38bdf8',
-                                font: { size: 9, weight: '600' },
+                                color: '#b45309',
+                                font: { size: 9, weight: '700' },
                                 precision: 0
                             }, 
                             beginAtZero: true 
@@ -1311,8 +1322,8 @@ class StandaloneAdminCommandCenter {
                             position: 'right',
                             grid: { drawOnChartArea: false },
                             ticks: { 
-                                color: '#10b981',
-                                font: { size: 9, weight: '600' },
+                                color: '#059669',
+                                font: { size: 9, weight: '700' },
                                 precision: 0
                             },
                             beginAtZero: true

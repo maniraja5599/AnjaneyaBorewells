@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enterprise Command Center HQ | Anjaneya Borewells Executive Telemetry</title>
     <meta name="robots" content="noindex, nofollow">
-    <meta name="theme-color" content="#060a14">
+    <meta name="theme-color" content="#fbfbf9">
     
     <!-- Favicon Suite -->
     <link rel="icon" type="image/png" href="favicon-32x32.png">
@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    <link rel="stylesheet" href="admin.css?v=5.3.0">
+    <link rel="stylesheet" href="admin.css?v=6.0.0">
 </head>
 <body class="admin-body">
     <!-- Liquid Glass Aurora Ambient Engine -->
@@ -265,7 +265,17 @@
                     </div>
                 </div>
 
-
+                <!-- Clean Status Strip (Matching SaaS Reference) -->
+                <div class="system-status-banner">
+                    <div class="status-banner-left">
+                        <span class="status-beacon-blue">●</span>
+                        <span class="status-banner-text"><strong>Real-Time Cloud Telemetry:</strong> Firebase Asia-Southeast1 active • Live visitor heartbeat &amp; rig quote audits</span>
+                    </div>
+                    <div class="status-banner-actions">
+                        <button type="button" class="btn-banner-pill pill-amber" data-tab-switch="tabActiveUsers">Live Radar ↗</button>
+                        <button type="button" class="btn-banner-pill pill-blue" data-tab-switch="tabEstimatesLog">Quotes Audit</button>
+                    </div>
+                </div>
 
                 <!-- BENTO ROW 2: Hero Deck (24h Demand Wave + Hardware Ecosystem) -->
                 <section class="bento-hero-grid">
@@ -279,6 +289,10 @@
                                     <p>Real daily visitor sessions &amp; cumulative growth curve</p>
                                 </div>
                             </div>
+                            <span class="badge-pill-emerald">Live Telemetry</span>
+                        </div>
+                        <div class="hero-chart-big-metric-wrap">
+                            <div class="hero-chart-big-metric" id="heroChartTotalVal">1,034 Views</div>
                             <div class="traffic-mini-pills">
                                 <span class="traffic-stat-pill pill-cyan">Today: <strong id="trafficStatToday">--</strong></span>
                                 <span class="traffic-stat-pill pill-emerald">Peak Day: <strong id="trafficStatPeak">--</strong></span>
@@ -1189,6 +1203,36 @@
         </div>
     </main>
 
+    <!-- Floating Bottom Navigation for Mobile (SaaS Luxury Style matching reference) -->
+    <nav class="admin-mobile-bottom-nav" id="adminMobileBottomNav">
+        <div class="mobile-bottom-nav-inner">
+            <button type="button" class="m-bottom-tab active" data-tab-switch="tabOverview">
+                <div class="m-tab-icon-wrap"><span class="m-tab-icon">📊</span></div>
+                <span class="m-tab-label">Overview</span>
+            </button>
+            <button type="button" class="m-bottom-tab" data-tab-switch="tabActiveUsers">
+                <div class="m-tab-icon-wrap"><span class="m-tab-icon">🟢</span></div>
+                <span class="m-tab-label">Live</span>
+            </button>
+            <button type="button" class="m-bottom-tab" data-tab-switch="tabEstimatesLog">
+                <div class="m-tab-icon-wrap"><span class="m-tab-icon">💰</span></div>
+                <span class="m-tab-label">Quotes</span>
+            </button>
+            <button type="button" class="m-bottom-tab" data-tab-switch="tabGeoBreakdown">
+                <div class="m-tab-icon-wrap"><span class="m-tab-icon">🗺️</span></div>
+                <span class="m-tab-label">Geo</span>
+            </button>
+            <button type="button" class="m-bottom-tab" data-tab-switch="tabLiveLogs">
+                <div class="m-tab-icon-wrap"><span class="m-tab-icon">👥</span></div>
+                <span class="m-tab-label">Visitors</span>
+            </button>
+            <a href="index.html" class="m-bottom-tab" title="Open Public Website">
+                <div class="m-tab-icon-wrap"><span class="m-tab-icon">🌐</span></div>
+                <span class="m-tab-label">App</span>
+            </a>
+        </div>
+    </nav>
+
     <!-- Executive Master Footer -->
     <footer class="admin-footer">
         <div class="footer-inner">
@@ -1201,6 +1245,6 @@
         </div>
     </footer>
 
-    <script src="admin.js?v=5.3.0"></script>
+    <script src="admin.js?v=6.0.0"></script>
 </body>
 </html>
