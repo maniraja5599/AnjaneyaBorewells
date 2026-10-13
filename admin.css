@@ -2206,51 +2206,61 @@ body.admin-body {
     }
 
     .admin-workspace {
-        padding: 8px 10px 24px 10px !important;
+        padding: 8px 8px 84px 8px !important;
     }
 
-    /* Top Executive Header - Clean Mobile Header */
+    /* Top Executive Header - Clean Single-Row Mobile Header (Zero Overlap) */
     .admin-navbar {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1000 !important;
+        height: 48px !important;
+        background: #ffffff !important;
+        border-bottom: 1px solid var(--border-color) !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
     }
 
     .navbar-container {
-        padding: 6px 10px !important;
-        display: grid !important;
-        grid-template-columns: 1fr auto !important;
-        grid-template-areas: 
-            "brand actions"
-            "status status" !important;
+        height: 100% !important;
+        padding: 0 10px !important;
+        display: flex !important;
         align-items: center !important;
-        gap: 4px !important;
+        justify-content: space-between !important;
+        gap: 6px !important;
+        box-sizing: border-box !important;
     }
 
     .brand-group {
-        grid-area: brand;
-        min-width: 0;
+        display: flex !important;
+        align-items: center !important;
+        min-width: 0 !important;
+        flex-shrink: 1 !important;
     }
 
-    .brand-titles .brand-sub {
+    .brand-link {
+        display: flex !important;
+        align-items: center !important;
+        gap: 7px !important;
+    }
+
+    .brand-titles .brand-sub,
+    .badge-enterprise {
         display: none !important;
     }
 
     .brand-name {
-        font-size: 0.86rem !important;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .badge-enterprise {
-        font-size: 0.56rem !important;
-        padding: 1px 4px !important;
+        font-size: 0.84rem !important;
+        font-weight: 800 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        color: var(--text-primary) !important;
     }
 
     .brand-logo-wrap {
         width: 28px !important;
         height: 28px !important;
+        flex-shrink: 0 !important;
     }
 
     .brand-logo-img {
@@ -2258,22 +2268,26 @@ body.admin-body {
         height: 26px !important;
     }
 
-    /* Action Buttons Group - Sleek Touch Icons */
+    /* Hide heavy text status capsules in mobile top header to eliminate clutter & overlap */
+    .status-capsules-group {
+        display: none !important;
+    }
+
+    /* Action Buttons Group - Sleek 28px Touch Icons */
     .action-buttons-group {
-        grid-area: actions;
         display: flex !important;
         align-items: center !important;
         justify-content: flex-end !important;
         gap: 4px !important;
-        width: auto !important;
+        flex-shrink: 0 !important;
     }
 
     .action-buttons-group .ctrl-btn {
         padding: 0 !important;
         font-size: 0.75rem !important;
         height: 28px !important;
-        min-height: 28px !important;
         width: 28px !important;
+        min-height: 28px !important;
         min-width: 28px !important;
         display: inline-flex !important;
         align-items: center !important;
@@ -2289,56 +2303,35 @@ body.admin-body {
         display: none !important;
     }
 
-    /* Live Status Telemetry Capsules - Single-Line Swipe Strip */
-    .status-capsules-group {
-        grid-area: status;
-        width: 100% !important;
-        display: flex !important;
-        flex-wrap: nowrap !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
-        scrollbar-width: none !important;
-        padding: 2px 0 4px 0 !important;
-        gap: 6px !important;
+    .action-buttons-group .btn-website {
+        display: none !important;
     }
 
-    .status-capsules-group::-webkit-scrollbar {
-        display: none;
-    }
-
-    .capsule-pill {
-        flex-shrink: 0 !important;
-        padding: 4px 10px !important;
-        font-size: 0.68rem !important;
-        background: #f8fafc !important;
-        border: 1px solid var(--border-color) !important;
-        box-shadow: none !important;
-        color: var(--text-secondary) !important;
-    }
-
-    /* Floating Pill Navigation Bar - Smooth Horizontal Touch Carousel */
+    /* Floating Pill Navigation Bar - Smooth Horizontal Touch Carousel (Sits directly under 48px header) */
     .admin-top-menubar {
-        padding: 6px 10px !important;
+        padding: 5px 8px !important;
         position: sticky !important;
-        top: 86px !important;
+        top: 48px !important;
         z-index: 950 !important;
         background: #ffffff !important;
         border-bottom: 1px solid var(--border-color) !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+        width: 100% !important;
     }
 
     .menubar-pill-container {
-        padding: 3px 5px !important;
+        padding: 2px 4px !important;
         gap: 4px !important;
         overflow-x: auto !important;
         -webkit-overflow-scrolling: touch !important;
         scrollbar-width: none !important;
         white-space: nowrap !important;
-        scroll-snap-type: x mandatory !important;
         max-width: 100% !important;
         background: #f8fafc !important;
         border: 1px solid var(--border-color) !important;
         border-radius: 9999px !important;
+        display: flex !important;
+        flex-wrap: nowrap !important;
     }
 
     .menubar-pill-container::-webkit-scrollbar {
@@ -2347,9 +2340,10 @@ body.admin-body {
 
     .menu-tab-btn {
         flex-shrink: 0 !important;
-        scroll-snap-align: start !important;
-        padding: 6px 14px !important;
-        font-size: 0.76rem !important;
+        padding: 4px 11px !important;
+        font-size: 0.72rem !important;
+        gap: 4px !important;
+        border-radius: 9999px !important;
     }
 
     /* Show swipe cues on mobile */
@@ -2482,9 +2476,34 @@ body.admin-body {
     }
 
     /* Tab 4: Quotes Filter Bar Mobile */
-    .quotes-filter-row {
-        grid-template-columns: 1fr 1fr !important;
+    .quotes-filter-panel {
+        padding: 10px 12px !important;
+    }
+
+    .quotes-filter-row,
+    .q-filter-row {
+        display: flex !important;
+        flex-direction: column !important;
         gap: 8px !important;
+        width: 100% !important;
+    }
+
+    .q-filter-group {
+        width: 100% !important;
+        min-width: 100% !important;
+    }
+
+    .q-filter-actions {
+        display: flex !important;
+        gap: 6px !important;
+        width: 100% !important;
+    }
+
+    .btn-q-filter {
+        flex: 1 !important;
+        justify-content: center !important;
+        padding: 8px 10px !important;
+        font-size: 0.76rem !important;
     }
 
     .quotes-count-summary-strip {
@@ -2500,6 +2519,21 @@ body.admin-body {
         width: 100% !important;
     }
 
+    /* Universal Table Toolbars on Mobile */
+    .table-toolbar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 8px !important;
+    }
+
+    .search-input-box {
+        width: 100% !important;
+    }
+
+    .search-input-box input {
+        width: 100% !important;
+    }
+
     /* Tab 5: Cumulative Pages Controls */
     .filter-controls-wrap {
         display: grid !important;
@@ -2510,6 +2544,26 @@ body.admin-body {
     /* Tab 6: Territory Geo Map */
     .geo-split-grid {
         grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    .geo-panel-stack {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+
+    /* Tab 7 & 8: Hardware & Dev Hub Grid */
+    .hardware-grid,
+    .dev-tools-grid {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+
+    .dev-console-box {
+        height: 160px !important;
+        font-size: 0.70rem !important;
+        padding: 8px 10px !important;
     }
 
     /* Auth Card Mobile */
