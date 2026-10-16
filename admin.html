@@ -18,9 +18,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    <link rel="stylesheet" href="admin.css?v=6.0.3">
+    <link rel="stylesheet" href="admin.css?v=6.0.4">
 </head>
 <body class="admin-body">
+    <!-- Top Syncing Progress Bar -->
+    <div class="admin-global-progress" id="adminGlobalProgress"></div>
+
     <!-- Liquid Glass Aurora Ambient Engine -->
     <div class="ambient-glow-canvas" aria-hidden="true">
         <div class="ambient-orb orb-cyan"></div>
@@ -33,8 +36,13 @@
     <!-- Top Executive Header -->
     <header class="admin-navbar">
         <div class="navbar-container">
-            <!-- Brand Info -->
+            <!-- Brand & Sidebar Toggle Group -->
             <div class="brand-group">
+                <button type="button" class="admin-sidebar-toggle-btn" id="adminSidebarToggleBtn" title="Open Navigation Menu" aria-label="Toggle Navigation Menu">
+                    <span class="hamburger-icon">☰</span>
+                    <span class="hamburger-label">Menu</span>
+                </button>
+
                 <a href="index.html" class="brand-link" title="Return to Public Website">
                     <div class="brand-logo-wrap">
                         <img src="logo.png" alt="Anjaneya Borewells Logo" class="brand-logo-img">
@@ -43,18 +51,18 @@
                     <div class="brand-titles">
                         <div class="brand-main-row">
                             <span class="brand-name">ANJANEYA BOREWELLS</span>
-                            <span class="badge-enterprise">ENTERPRISE HQ</span>
+                            <span class="badge-enterprise">HQ</span>
                         </div>
-                        <span class="brand-sub">Executive Telemetry &amp; Rig Operations Command Center</span>
+                        <span class="brand-sub">Executive Telemetry Command Center</span>
                     </div>
                 </a>
             </div>
 
-            <!-- Live Status Telemetry Capsules -->
+            <!-- Live Status Telemetry Capsules (Compact) -->
             <div class="status-capsules-group">
-                <div class="capsule-pill capsule-sync" title="Continuous Realtime Cloud Connection">
+                <div class="capsule-pill capsule-sync" id="adminSyncStatusPill" title="Continuous Realtime Cloud Connection">
                     <span class="beacon-pulse"></span>
-                    <span class="capsule-text">AUTO-SYNC (60s)</span>
+                    <span class="capsule-text" id="adminSyncStatusText">LIVE CLOUD</span>
                 </div>
                 
                 <div class="capsule-pill capsule-ping" title="Google Firebase Asia-Southeast1 Latency">
@@ -66,24 +74,19 @@
                     <span class="clock-icon">🕒</span>
                     <span class="capsule-text" id="adminClockVal">12:00:00 PM IST</span>
                 </div>
-
-                <div class="capsule-pill capsule-admin" id="superAdminBadge" style="display: none;">
-                    <span class="shield-icon">🛡️</span>
-                    <span class="capsule-text">SuperAdmin: <strong>Mani Raja</strong></span>
-                </div>
             </div>
 
-            <!-- Action Controls Group -->
+            <!-- Action Controls Group (Clean, Compact, No Clutter) -->
             <div class="action-buttons-group">
                 <button type="button" class="ctrl-btn btn-sync" id="adminRefreshBtn" style="display: none;" title="Fetch latest data from Firebase">
                     <span class="btn-icon">🔄</span>
-                    <span class="btn-label">Sync Data</span>
+                    <span class="btn-label">Sync</span>
                 </button>
 
                 <div class="dropdown-wrapper" id="adminExportWrapper" style="display: none;">
                     <button type="button" class="ctrl-btn btn-export" id="adminExportToggleBtn" title="Export Analytics & Telemetry">
                         <span class="btn-icon">📥</span>
-                        <span class="btn-label">Audit Reports ▾</span>
+                        <span class="btn-label">Export ▾</span>
                     </button>
                     <div class="dropdown-menu" id="adminExportDropdownMenu" style="display: none;">
                         <button type="button" class="dropdown-item" id="exportCsvBtn">
@@ -103,24 +106,49 @@
                     </div>
                 </div>
 
-                <button type="button" class="ctrl-btn btn-cache" id="adminPurgeBtn" style="display: none;" title="Clear ServiceWorker & Browser Cache">
-                    <span class="btn-icon">🧹</span>
-                    <span class="btn-label">Clear Cache</span>
-                </button>
-
-                <a href="index.html" class="ctrl-btn btn-website" title="Open Public Website">
-                    <span class="btn-icon">🌐</span>
-                    <span class="btn-label">Live Site</span>
-                </a>
-
-                <button type="button" class="ctrl-btn btn-logout" id="adminLogoutBtn" style="display: none;" title="Securely Sign Out">
-                    <span class="btn-icon">🔒</span>
-                    <span class="btn-label">Sign Out</span>
-                </button>
+                <!-- Unified Admin Profile & Tools Dropdown -->
+                <div class="dropdown-wrapper" id="superAdminBadge" style="display: none;">
+                    <button type="button" class="ctrl-btn btn-profile" id="adminProfileToggleBtn" title="Admin Profile & System Settings">
+                        <span class="profile-avatar-mini">MR</span>
+                        <span class="btn-label">Mani Raja ▾</span>
+                    </button>
+                    <div class="dropdown-menu profile-dropdown-menu" id="adminProfileDropdownMenu" style="display: none;">
+                        <div class="profile-dropdown-header">
+                            <div class="pd-avatar">MR</div>
+                            <div class="pd-details">
+                                <strong class="pd-name">Mani Raja</strong>
+                                <span class="pd-badge">SuperAdmin • Enterprise HQ</span>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="index.html" class="dropdown-item">
+                            <span class="item-icon">🌐</span>
+                            <div>
+                                <strong>Open Public Website</strong>
+                                <small>View live visitor experience</small>
+                            </div>
+                        </a>
+                        <button type="button" class="dropdown-item" id="adminPurgeBtn">
+                            <span class="item-icon">🧹</span>
+                            <div>
+                                <strong>Clear Cache &amp; Storage</strong>
+                                <small>Force refresh ServiceWorker assets</small>
+                            </div>
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button type="button" class="dropdown-item item-danger" id="adminLogoutBtn">
+                            <span class="item-icon">🔒</span>
+                            <div>
+                                <strong>Sign Out Executive HQ</strong>
+                                <small>End administrative session</small>
+                            </div>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Floating Pill Navigation Bar -->
+        <!-- Floating Pill Navigation Bar (Desktop Segmented Navigation) -->
         <nav class="admin-top-menubar" id="adminTopMenuBar" style="display: none;">
             <div class="menubar-pill-container">
                 <button type="button" class="menu-tab-btn active" data-tab="tabOverview">
@@ -159,19 +187,133 @@
         </nav>
     </header>
 
+    <!-- Slide-Out Sidebar Navigation Drawer & Overlay -->
+    <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
+    <aside class="admin-sidebar-drawer" id="adminSidebarDrawer" aria-label="HQ Navigation Drawer">
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <img src="logo.png" alt="Anjaneya Borewells Logo" class="sidebar-logo">
+                <div class="sidebar-brand-text">
+                    <div class="sidebar-title">ANJANEYA BOREWELLS</div>
+                    <div class="sidebar-subtitle">Enterprise Command HQ</div>
+                </div>
+            </div>
+            <button type="button" class="sidebar-close-btn" id="adminSidebarCloseBtn" title="Close Menu" aria-label="Close Navigation Menu">✕</button>
+        </div>
+
+        <div class="sidebar-body">
+            <!-- Navigation Group 1: Core Operations -->
+            <div class="sidebar-section-title">REALTIME OPERATIONS</div>
+            <nav class="sidebar-nav-list">
+                <button type="button" class="sidebar-nav-item active" data-tab="tabOverview">
+                    <span class="nav-icon">📊</span>
+                    <div class="nav-details">
+                        <span class="nav-label">Command Overview</span>
+                        <span class="nav-desc">Bento metrics, charts &amp; KPIs</span>
+                    </div>
+                    <span class="nav-badge">Live</span>
+                </button>
+                <button type="button" class="sidebar-nav-item" data-tab="tabActiveUsers">
+                    <span class="nav-icon">🟢</span>
+                    <div class="nav-details">
+                        <span class="nav-label">Live Active Users</span>
+                        <span class="nav-desc">Active sessions &amp; heartbeats</span>
+                    </div>
+                    <span class="nav-badge live-count" id="sidebarLiveUsersBadge">0</span>
+                </button>
+                <button type="button" class="sidebar-nav-item" data-tab="tabLiveLogs">
+                    <span class="nav-icon">👥</span>
+                    <div class="nav-details">
+                        <span class="nav-label">Visitor Intelligence</span>
+                        <span class="nav-desc">IP telemetry, device &amp; actions</span>
+                    </div>
+                </button>
+            </nav>
+
+            <!-- Navigation Group 2: Business & Conversions -->
+            <div class="sidebar-section-title">BUSINESS &amp; PIPELINE</div>
+            <nav class="sidebar-nav-list">
+                <button type="button" class="sidebar-nav-item" data-tab="tabEstimatesLog">
+                    <span class="nav-icon">💰</span>
+                    <div class="nav-details">
+                        <span class="nav-label">Quotes &amp; Estimation Log</span>
+                        <span class="nav-desc">Leads, pipelines &amp; WhatsApp audits</span>
+                    </div>
+                    <span class="nav-badge quotes-badge" id="sidebarQuotesBadge">0</span>
+                </button>
+                <button type="button" class="sidebar-nav-item" data-tab="tabCumulativePages">
+                    <span class="nav-icon">📈</span>
+                    <div class="nav-details">
+                        <span class="nav-label">Cumulative Page Analytics</span>
+                        <span class="nav-desc">Pageviews, bounce &amp; conversions</span>
+                    </div>
+                </button>
+                <button type="button" class="sidebar-nav-item" data-tab="tabGeoBreakdown">
+                    <span class="nav-icon">🗺️</span>
+                    <div class="nav-details">
+                        <span class="nav-label">Territory Geo Heatmap</span>
+                        <span class="nav-desc">District &amp; state telemetry</span>
+                    </div>
+                </button>
+            </nav>
+
+            <!-- Navigation Group 3: Engineering & Architecture -->
+            <div class="sidebar-section-title">SYSTEM &amp; MANUALS</div>
+            <nav class="sidebar-nav-list">
+                <button type="button" class="sidebar-nav-item" data-tab="tabDevTools">
+                    <span class="nav-icon">🛠️</span>
+                    <div class="nav-details">
+                        <span class="nav-label">Developer Hub</span>
+                        <span class="nav-desc">RTDB latency, cache inspector</span>
+                    </div>
+                </button>
+                <button type="button" class="sidebar-nav-item" data-tab="tabSystemDocs">
+                    <span class="nav-icon">📘</span>
+                    <div class="nav-details">
+                        <span class="nav-label">System Architecture Docs</span>
+                        <span class="nav-desc">API contracts &amp; specs</span>
+                    </div>
+                </button>
+            </nav>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-admin-profile">
+                <div class="profile-avatar">MR</div>
+                <div class="profile-info">
+                    <span class="profile-name">Mani Raja</span>
+                    <span class="profile-role">SuperAdmin • Enterprise HQ</span>
+                </div>
+            </div>
+            <div class="sidebar-footer-actions">
+                <a href="index.html" class="sidebar-action-btn" title="Open Public Website">
+                    <span>🌐 Live Site</span>
+                </a>
+                <button type="button" class="sidebar-action-btn btn-danger" id="sidebarLogoutBtn" title="Sign Out">
+                    <span>🔒 Logout</span>
+                </button>
+            </div>
+        </div>
+    </aside>
+
     <!-- Main Workspace Container -->
     <main class="admin-workspace">
         
         <!-- STEP 1: Secure Authentication Gateway -->
         <section class="auth-gateway" id="adminAuthSection">
             <div class="auth-card-box">
+                <div class="auth-beacon-badge">
+                    <span class="auth-beacon-dot"></span>
+                    <span>ENTERPRISE COMMAND GATEWAY • DIRECT FIREBASE RTDB</span>
+                </div>
+
                 <div class="auth-shield-wrap">
                     <div class="shield-glow"></div>
-                    <div class="shield-glyph">🛡️</div>
+                    <img src="logo.png" alt="Anjaneya Borewells" class="auth-logo-img">
                 </div>
 
                 <h2>Command Center Authentication</h2>
-                <p class="auth-subtitle">Enter authorized administrative credentials to access enterprise IP intelligence, real-time telemetry, and customer estimation audits.</p>
+                <p class="auth-subtitle">Authorized administrator verification required to access real-time visitor intelligence, lead telemetry, and customer estimation audits.</p>
 
                 <form class="auth-form" id="adminAuthForm" onsubmit="return false;">
                     <div class="form-group">
@@ -183,24 +325,29 @@
                     </div>
 
                     <div class="form-group" id="adminOtpGroup" style="display: none;">
-                        <label for="adminAuthOtp">Security PIN / OTP Code</label>
+                        <label for="adminAuthOtp">Security PIN / Access Key</label>
                         <div class="input-container">
                             <span class="input-icon">🔑</span>
                             <input type="password" id="adminAuthOtp" class="form-input" placeholder="••••" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code">
                         </div>
-                        <span class="form-hint">Enter your 4-digit security PIN</span>
+                        <span class="form-hint">Enter your 4-digit security PIN to unlock telemetry</span>
                     </div>
 
                     <div class="auth-error-box" id="adminAuthError" style="display: none;"></div>
 
                     <button type="submit" class="btn-auth-submit" id="adminAuthSubmitBtn">
-                        <span>Verify SuperAdmin &amp; Launch HQ</span>
+                        <span class="btn-text">Verify SuperAdmin &amp; Launch HQ</span>
                         <span class="arrow-icon">➔</span>
                     </button>
+
+                    <div class="auth-loading-spinner" id="authLoadingSpinner" style="display: none;">
+                        <div class="spinner-ring"></div>
+                        <span>Authenticating SuperAdmin &amp; Connecting Firebase...</span>
+                    </div>
                 </form>
 
                 <div class="auth-footer-badge">
-                    <span>🔒 256-Bit TLS Encrypted • Direct Google Firebase Cloud Sync</span>
+                    <span>🔒 256-Bit TLS Encrypted • Zero Third-Party Tracker • Authorized Access Only</span>
                 </div>
             </div>
         </section>
@@ -1245,6 +1392,6 @@
         </div>
     </footer>
 
-    <script src="admin.js?v=6.0.3"></script>
+    <script src="admin.js?v=6.0.4"></script>
 </body>
 </html>

@@ -66,6 +66,23 @@ class StandaloneAdminCommandCenter {
         this.purgeBtn = document.getElementById('adminPurgeBtn');
         this.logoutBtn = document.getElementById('adminLogoutBtn');
 
+        // Sidebar Drawer Elements
+        this.sidebarDrawer = document.getElementById('adminSidebarDrawer');
+        this.sidebarOverlay = document.getElementById('adminSidebarOverlay');
+        this.sidebarToggleBtn = document.getElementById('adminSidebarToggleBtn');
+        this.sidebarCloseBtn = document.getElementById('adminSidebarCloseBtn');
+        this.sidebarLogoutBtn = document.getElementById('sidebarLogoutBtn');
+        this.sidebarLiveUsersBadge = document.getElementById('sidebarLiveUsersBadge');
+        this.sidebarQuotesBadge = document.getElementById('sidebarQuotesBadge');
+
+        // Profile Dropdown Elements
+        this.profileToggleBtn = document.getElementById('adminProfileToggleBtn');
+        this.profileDropdownMenu = document.getElementById('adminProfileDropdownMenu');
+
+        // Global Progress Bar & Auth Spinner
+        this.globalProgressBar = document.getElementById('adminGlobalProgress');
+        this.authLoadingSpinner = document.getElementById('authLoadingSpinner');
+
         // Bento Metrics Elements
         this.bentoTotalViews = document.getElementById('bentoTotalViews');
         this.bentoActiveUsers = document.getElementById('bentoActiveUsers');
@@ -206,6 +223,18 @@ class StandaloneAdminCommandCenter {
         this.devClearConsoleBtn = document.getElementById('devClearConsoleBtn');
     }
 
+    openSidebar() {
+        if (this.sidebarDrawer) this.sidebarDrawer.classList.add('open');
+        if (this.sidebarOverlay) this.sidebarOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeSidebar() {
+        if (this.sidebarDrawer) this.sidebarDrawer.classList.remove('open');
+        if (this.sidebarOverlay) this.sidebarOverlay.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
     startLiveClock() {
         const update = () => {
             const now = new Date();
@@ -231,6 +260,29 @@ class StandaloneAdminCommandCenter {
             });
         }
 
+        // Sidebar Navigation Drawer Listeners
+        if (this.sidebarToggleBtn) {
+            this.sidebarToggleBtn.addEventListener('click', () => this.openSidebar());
+        }
+        if (this.sidebarCloseBtn) {
+            this.sidebarCloseBtn.addEventListener('click', () => this.closeSidebar());
+        }
+        if (this.sidebarOverlay) {
+            this.sidebarOverlay.addEventListener('click', () => this.closeSidebar());
+        }
+        if (this.sidebarLogoutBtn) {
+            this.sidebarLogoutBtn.addEventListener('click', () => this.handleLogout());
+        }
+
+        document.querySelectorAll('.sidebar-nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const target = item.getAttribute('data-tab');
+                const matchingTab = document.querySelector(`.menu-tab-btn[data-tab="${target}"]`);
+                if (matchingTab) matchingTab.click();
+                this.closeSidebar();
+            });
+        });
+
         // Top Navigation Menu Tabs
         this.menuTabBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -254,6 +306,15 @@ class StandaloneAdminCommandCenter {
                         mb.classList.add('active');
                     } else {
                         mb.classList.remove('active');
+                    }
+                });
+
+                // Sync sidebar drawer navigation items
+                document.querySelectorAll('.sidebar-nav-item').forEach(sb => {
+                    if (sb.getAttribute('data-tab') === target) {
+                        sb.classList.add('active');
+                    } else {
+                        sb.classList.remove('active');
                     }
                 });
 
@@ -496,17 +557,38 @@ class StandaloneAdminCommandCenter {
         }
 
         // Export Dropdown
+        // Export Dropdown
         if (this.exportToggleBtn && this.exportDropdownMenu) {
             this.exportToggleBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const isHidden = this.exportDropdownMenu.style.display === 'none';
                 this.exportDropdownMenu.style.display = isHidden ? 'flex' : 'none';
+                if (this.profileDropdownMenu) this.profileDropdownMenu.style.display = 'none';
             });
+        }
 
-            document.addEventListener('click', () => {
+        // Profile Dropdown
+        if (this.profileToggleBtn && this.profileDropdownMenu) {
+            this.profileToggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isHidden = this.profileDropdownMenu.style.display === 'none';
+                this.profileDropdownMenu.style.display = isHidden ? 'flex' : 'none';
                 if (this.exportDropdownMenu) this.exportDropdownMenu.style.display = 'none';
             });
         }
+
+        document.addEventListener('click', () => {
+            if (this.exportDropdownMenu) this.exportDropdownMenu.style.display = 'none';
+            if (this.profileDropdownMenu) this.profileDropdownMenu.style.display = 'none';
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                this.closeSidebar();
+                if (this.exportDropdownMenu) this.exportDropdownMenu.style.display = 'none';
+                if (this.profileDropdownMenu) this.profileDropdownMenu.style.display = 'none';
+            }
+        });
 
         if (this.exportCsvBtn) {
             this.exportCsvBtn.addEventListener('click', () => this.exportAuditReport('csv'));
@@ -617,7 +699,7 @@ class StandaloneAdminCommandCenter {
         // Show PIN input on first pass
         if (this.authOtpGroup && this.authOtpGroup.style.display === 'none') {
             this.authOtpGroup.style.display = 'block';
-            this.authSubmitBtn.innerHTML = '<span>Authenticate &amp; Open Command Center</span> <span class="arrow-icon">➔</span>';
+            this.authSubmitBtn.innerHTML = '<span class="btn-text">Authenticate &amp; Open Command Center</span> <span class="arrow-icon">➔</span>';
             this.authOtpInput?.focus();
             return;
         }
@@ -628,12 +710,27 @@ class StandaloneAdminCommandCenter {
             return;
         }
 
-        // Successful authentication
-        this.isAuthorized = true;
-        sessionStorage.setItem('ab_enterprise_superadmin_auth', 'true');
-        sessionStorage.setItem('ab_superadmin_email', email);
+        // Show smooth verifying state
+        if (this.authLoadingSpinner) this.authLoadingSpinner.style.display = 'flex';
+        if (this.authSubmitBtn) {
+            this.authSubmitBtn.disabled = true;
+            this.authSubmitBtn.style.opacity = '0.6';
+        }
 
-        this.unlockDashboard();
+        setTimeout(() => {
+            // Successful authentication
+            this.isAuthorized = true;
+            sessionStorage.setItem('ab_enterprise_superadmin_auth', 'true');
+            sessionStorage.setItem('ab_superadmin_email', email);
+
+            if (this.authLoadingSpinner) this.authLoadingSpinner.style.display = 'none';
+            if (this.authSubmitBtn) {
+                this.authSubmitBtn.disabled = false;
+                this.authSubmitBtn.style.opacity = '1';
+            }
+
+            this.unlockDashboard();
+        }, 300);
     }
 
     checkExistingSession() {
@@ -716,6 +813,7 @@ class StandaloneAdminCommandCenter {
 
     async pollAndRenderTelemetry() {
         const startTime = Date.now();
+        if (this.globalProgressBar) this.globalProgressBar.classList.add('active');
         try {
             const [
                 pageviewsRes, presRes, locRes, stateRes, countryRes,
@@ -956,8 +1054,20 @@ class StandaloneAdminCommandCenter {
             try { this.renderTables(); } catch (e) { console.warn('renderTables note:', e); }
             try { this.renderGeo(); } catch (e) { console.warn('renderGeo note:', e); }
             try { this.renderCumulativePages(); } catch (e) { console.warn('renderCumulativePages note:', e); }
+
+            // Update sidebar drawer badges
+            if (this.sidebarLiveUsersBadge && this.bentoActiveUsers) {
+                this.sidebarLiveUsersBadge.textContent = this.bentoActiveUsers.textContent || '0';
+            }
+            if (this.sidebarQuotesBadge && this.quotesTotalCount) {
+                this.sidebarQuotesBadge.textContent = this.quotesTotalCount.textContent || '0';
+            }
         } catch (err) {
             console.warn('Admin Telemetry Fetch Note:', err);
+        } finally {
+            if (this.globalProgressBar) {
+                setTimeout(() => this.globalProgressBar.classList.remove('active'), 350);
+            }
         }
     }
 
