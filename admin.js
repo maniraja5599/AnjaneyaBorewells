@@ -476,7 +476,7 @@ class StandaloneAdminCommandCenter {
 
                 if (textSpan) {
                     textSpan.textContent = targetIp;
-                    textSpan.style.color = isMasked ? '#4ade80' : '#f8fafc';
+                    textSpan.style.color = isMasked ? '#059669' : '#09090b';
                 }
                 if (toggleBtn) {
                     toggleBtn.textContent = isMasked ? '🔓' : '👁️';
@@ -487,13 +487,11 @@ class StandaloneAdminCommandCenter {
                 if (isMasked && navigator.clipboard && ipCell.getAttribute('data-raw')) {
                     navigator.clipboard.writeText(ipCell.getAttribute('data-raw')).then(() => {
                         if (toggleBtn) {
-                            toggleBtn.textContent = '✅ Copied';
-                            toggleBtn.style.background = 'rgba(34, 197, 94, 0.25)';
-                            toggleBtn.style.color = '#4ade80';
+                            toggleBtn.textContent = 'Copied!';
+                            toggleBtn.style.color = '#059669';
                             setTimeout(() => {
                                 toggleBtn.textContent = '🔓';
-                                toggleBtn.style.background = 'rgba(56, 189, 248, 0.15)';
-                                toggleBtn.style.color = '#38bdf8';
+                                toggleBtn.style.color = '#71717a';
                             }, 1200);
                         }
                     }).catch(() => {});
@@ -1123,34 +1121,33 @@ class StandaloneAdminCommandCenter {
         let html = '';
         activeList.forEach((u) => {
             html += `
-                <tr>
-                    <td>
-                        <span class="badge-status badge-verified" style="display:inline-block; font-size:0.75rem; background:#16a34a; color:#ffffff; padding:2px 8px; border-radius:4px; font-weight:700;">
-                            🟢 ACTIVE NOW
+                <tr class="hover:bg-zinc-50/80 transition-colors">
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Active Now
                         </span>
                     </td>
-                    <td>
-                        <strong style="color:#0f172a;">${u.device || '📱 Mobile'}</strong>
-                        <div style="font-size:0.75rem; color:#64748b;">${u.os || 'Android'} • ${u.browser || 'Chrome'}</div>
+                    <td class="px-4 py-3">
+                        <strong class="text-zinc-900 font-medium block">${u.device || 'Mobile'}</strong>
+                        <div class="text-[11px] text-zinc-400 font-sans">${u.os || 'Android'} • ${u.browser || 'Chrome'}</div>
                     </td>
-                    <td>
-                        <span style="color:#0284c7; font-weight:600;">📍 ${u.location || 'Tamil Nadu, IN'}</span>
+                    <td class="px-4 py-3">
+                        <span class="text-zinc-800 font-medium">${u.location || 'Tamil Nadu, IN'}</span>
                     </td>
-                    <td>
-                        <span style="background:#eff6ff; color:#0284c7; border:1px solid #bae6fd; padding:3px 8px; border-radius:6px; font-size:0.78rem; font-weight:600;">
-                            ${u.currentSection || '🎯 Cost Calculator'}
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-zinc-100 text-zinc-800 border border-zinc-200">
+                            ${u.currentSection || 'Cost Calculator'}
                         </span>
                     </td>
-                    <td>
-                        <span style="background:#f5f3ff; color:#7c3aed; border:1px solid #ddd6fe; padding:2px 8px; border-radius:6px; font-size:0.75rem; font-weight:600;">
-                            ${u.channel || '🌐 Direct Website'}
-                        </span>
+                    <td class="px-4 py-3">
+                        <span class="text-zinc-600">${u.channel || 'Direct'}</span>
                     </td>
-                    <td>
-                        <span style="color:#059669; font-family:var(--font-mono); font-weight:700;">${u.duration || 'Just now'}</span>
+                    <td class="px-4 py-3 font-mono text-zinc-700 font-medium">
+                        ${u.duration || 'Just now'}
                     </td>
-                    <td>
-                        <span style="color:#475569; font-size:0.8rem; font-weight:500;">${u.connectedAt || 'Today'} IST</span>
+                    <td class="px-4 py-3 text-zinc-500 text-xs">
+                        ${u.connectedAt || 'Today'} IST
                     </td>
                 </tr>
             `;
@@ -1987,31 +1984,30 @@ class StandaloneAdminCommandCenter {
         nextBatch.forEach(s => {
             const statusClass = s.status === 'Direct Lead' ? 'badge-verified' : (s.status === 'Quote Sent' ? 'badge-quote' : 'badge-active');
             html += `
-                <tr>
-                    <td style="font-family: var(--font-mono); color: #475569; font-size: 0.72rem; white-space: nowrap; line-height: 1.35;">
-                        <div style="color: #0f172a; font-weight: 600;">${s.dateStr || ''}</div>
-                        <div style="color: #64748b; font-size: 0.68rem;">${s.timeStr || ''} IST</div>
+                <tr class="hover:bg-zinc-50/80 transition-colors">
+                    <td class="px-4 py-3 font-mono text-zinc-500 text-xs whitespace-nowrap">
+                        <div class="text-zinc-900 font-semibold">${s.dateStr || ''}</div>
+                        <div class="text-zinc-400 text-[11px]">${s.timeStr || ''} IST</div>
                     </td>
-                    <td class="ip-cell-action" 
+                    <td class="px-4 py-3 font-mono text-xs ip-cell-action cursor-pointer select-text" 
                         data-masked="${s.ip}" 
                         data-raw="${s.rawIp}" 
                         data-state="${this.isGlobalIpRevealed ? 'raw' : 'masked'}"
-                        title="Click to reveal Full IP / Copy to clipboard"
-                        style="font-family: var(--font-mono); font-weight: 600; color: #0f172a; cursor: pointer; user-select: text;">
-                        <div style="display: inline-flex; align-items: center; gap: 6px; padding: 2px 6px; border-radius: 4px; background: #f1f5f9; border: 1px solid #e2e8f0; transition: all 0.2s;">
-                            <span class="ip-text" style="color: ${this.isGlobalIpRevealed ? '#059669' : '#0f172a'}; font-weight: 700;">${this.isGlobalIpRevealed ? s.rawIp : s.ip}</span>
-                            <span class="ip-toggle-btn" style="background: #eff6ff; border: 1px solid #bae6fd; color: #0284c7; border-radius: 4px; padding: 1px 5px; font-size: 0.65rem; cursor: pointer;" title="Toggle Full IP">${this.isGlobalIpRevealed ? '🔓' : '👁️'}</span>
+                        title="Click to reveal Full IP / Copy to clipboard">
+                        <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-zinc-100/80 border border-zinc-200/80 hover:bg-zinc-200/60 transition-all">
+                            <span class="ip-text font-semibold ${this.isGlobalIpRevealed ? 'text-emerald-700' : 'text-zinc-900'}">${this.isGlobalIpRevealed ? s.rawIp : s.ip}</span>
+                            <span class="ip-toggle-btn text-[10px] text-zinc-500 hover:text-zinc-900 p-0.5" title="Toggle Full IP">${this.isGlobalIpRevealed ? '🔓' : '👁️'}</span>
                         </div>
-                        ${s.isp ? `<div style="font-size: 0.65rem; color: #64748b; font-weight: 500; font-family: var(--font-sans); margin-top: 2px;">${s.isp}</div>` : ''}
+                        ${s.isp ? `<div class="text-[10px] text-zinc-400 font-sans mt-0.5 truncate max-w-[180px]">${s.isp}</div>` : ''}
                     </td>
-                    <td><strong style="color: #0284c7;">${s.dist}</strong></td>
-                    <td style="color: #475569;">${s.state}</td>
-                    <td><span class="badge-source ${s.sourceBadge}">${s.source}</span></td>
-                    <td style="color: #0f172a;">${s.device}</td>
-                    <td style="color: #64748b;">${s.browser}</td>
-                    <td style="font-family: var(--font-mono); color: #0284c7; font-weight: 600;">${s.duration}</td>
-                    <td style="color: #334155;">${s.action}</td>
-                    <td><span class="badge-status ${statusClass}">${s.status}</span></td>
+                    <td class="px-4 py-3 font-medium text-zinc-900">${s.dist}</td>
+                    <td class="px-4 py-3 text-zinc-600">${s.state}</td>
+                    <td class="px-4 py-3"><span class="badge-source ${s.sourceBadge}">${s.source}</span></td>
+                    <td class="px-4 py-3 text-zinc-700">${s.device}</td>
+                    <td class="px-4 py-3 text-zinc-500">${s.browser}</td>
+                    <td class="px-4 py-3 font-mono text-zinc-700 font-medium">${s.duration}</td>
+                    <td class="px-4 py-3 text-zinc-700 max-w-[200px] truncate" title="${s.action}">${s.action}</td>
+                    <td class="px-4 py-3"><span class="badge-status ${statusClass}">${s.status}</span></td>
                 </tr>
             `;
         });
@@ -2076,46 +2072,48 @@ class StandaloneAdminCommandCenter {
             const displayIp = q.ip || '157.49.214.82';
 
             quotesHtml += `
-                <tr ${isLive ? 'style="background: #f0fdf4;"' : ''}>
-                    <td style="font-family: var(--font-mono); color: #475569; font-size: 0.70rem; white-space: nowrap; letter-spacing: 0.2px; line-height: 1.45;">
-                        <div style="color: #0f172a; font-weight: 600;">${q.time}</div>
-                        <div style="margin-top: 5px; display: inline-flex; align-items: center; gap: 5px; padding: 2px 7px; border-radius: 4px; background: #eff6ff; border: 1px solid #bae6fd; cursor: pointer; transition: all 0.2s;" 
+                <tr class="hover:bg-zinc-50/80 transition-colors ${isLive ? 'bg-emerald-50/30' : ''}">
+                    <td class="px-4 py-3 font-mono text-xs text-zinc-600 whitespace-nowrap">
+                        <div class="font-semibold text-zinc-900">${q.time}</div>
+                        <div class="mt-1 inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-blue-50 border border-blue-200/60 text-blue-700 font-mono text-[11px] font-semibold cursor-pointer hover:bg-blue-100 transition-colors" 
                              title="Real Visitor IP - Click to Copy" 
                              onclick="navigator.clipboard && navigator.clipboard.writeText('${displayIp}');">
-                            <span style="font-size: 0.65rem;">🌐</span>
-                            <span style="font-family: var(--font-mono); font-weight: 700; color: #0284c7; font-size: 0.70rem; letter-spacing: 0.3px;">${displayIp}</span>
+                            <span class="text-[10px]">🌐</span>
+                            <span>${displayIp}</span>
                         </div>
-                        ${q.city ? `<div style="font-size: 0.64rem; color: #64748b; font-family: var(--font-sans); margin-top: 2px;">📍 ${q.city}${q.isp ? ' • ' + q.isp : ''}</div>` : ''}
+                        ${q.city ? `<div class="text-[11px] text-zinc-400 font-sans mt-0.5">📍 ${q.city}${q.isp ? ' • ' + q.isp : ''}</div>` : ''}
                     </td>
-                    <td>
-                        <div style="display: flex; flex-direction: column; gap: 4px;">
-                            <strong style="color: #059669; font-family: var(--font-mono); font-size: 0.90rem; letter-spacing: 0.5px;">${phoneDisplay}</strong>
-                            <div style="display: flex; gap: 4px; align-items: center;">
-                                ${rawPhone ? `<a href="https://wa.me/${rawPhone.startsWith('91') ? rawPhone : '91' + rawPhone}" target="_blank" class="badge-status badge-verified" style="text-decoration:none; padding: 2px 6px; font-size: 0.68rem; cursor:pointer;" title="Open WhatsApp Chat">💬 WhatsApp</a>` : ''}
-                                ${rawPhone ? `<a href="tel:${rawPhone.startsWith('91') ? '+' + rawPhone : '+91' + rawPhone}" class="badge-status badge-quote" style="text-decoration:none; padding: 2px 6px; font-size: 0.68rem; cursor:pointer;" title="Call Customer">📞 Call</a>` : ''}
+                    <td class="px-4 py-3">
+                        <div class="flex flex-col gap-1">
+                            <strong class="font-mono text-xs font-semibold text-emerald-700 tracking-wider">${phoneDisplay}</strong>
+                            <div class="flex items-center gap-1.5">
+                                ${rawPhone ? `<a href="https://wa.me/${rawPhone.startsWith('91') ? rawPhone : '91' + rawPhone}" target="_blank" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20 hover:bg-emerald-100 transition-colors" title="Open WhatsApp Chat">💬 WhatsApp</a>` : ''}
+                                ${rawPhone ? `<a href="tel:${rawPhone.startsWith('91') ? '+' + rawPhone : '+91' + rawPhone}" class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium bg-zinc-100 text-zinc-700 ring-1 ring-inset ring-zinc-300 hover:bg-zinc-200 transition-colors" title="Call Customer">📞 Call</a>` : ''}
                             </div>
                         </div>
                     </td>
-                    <td>
-                        <strong style="color: #0284c7; font-family: var(--font-mono); font-size: 0.90rem;">${q.depth}</strong>
-                        <small style="color: ${q.isRepair ? '#b45309' : '#64748b'}; display: block; font-size: 0.70rem; font-weight: ${q.isRepair ? '700' : '500'};">(${q.type || 'New Borewell'})</small>
+                    <td class="px-4 py-3">
+                        <strong class="font-mono text-xs font-semibold text-blue-600">${q.depth}</strong>
+                        <span class="block text-[11px] ${q.isRepair ? 'text-amber-700 font-semibold' : 'text-zinc-500'}">(${q.type || 'New Borewell'})</span>
                     </td>
-                    <td>
-                        <strong style="color: #0f172a; font-family: var(--font-mono); font-size: 0.84rem;">${q.baseRate || '₹90/ft'}</strong>
+                    <td class="px-4 py-3">
+                        <strong class="font-mono text-xs text-zinc-900 font-medium">${q.baseRate || '₹90/ft'}</strong>
                     </td>
-                    <td>
+                    <td class="px-4 py-3">
                         ${q.isRepair 
-                            ? `<strong style="color: #b45309; font-family: var(--font-mono); font-size: 0.84rem; background: #fef3c7; border: 1px solid #fde68a; padding: 2px 6px; border-radius: 4px; display: inline-block;">${q.oldBore}</strong>`
-                            : `<span style="color: #94a3b8; font-size: 0.80rem;">-</span>`
+                            ? `<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-mono font-semibold bg-amber-50 text-amber-800 border border-amber-200">${q.oldBore}</span>`
+                            : `<span class="text-zinc-400 text-xs">-</span>`
                         }
                     </td>
-                    <td style="font-size: 0.82rem; color: #334155;">${q.casing}</td>
-                    <td>
-                        <strong style="color: #059669; font-family: var(--font-mono); font-size: 0.92rem;">${q.cost}</strong>
-                        <small style="color: #059669; font-size: 0.68rem; display: block;">(Approximate)</small>
+                    <td class="px-4 py-3 text-xs text-zinc-700">${q.casing}</td>
+                    <td class="px-4 py-3">
+                        <strong class="font-mono text-xs font-semibold text-emerald-700">${q.cost}</strong>
+                        <span class="block text-[10px] text-zinc-400">Approximate</span>
                     </td>
-                    <td style="font-size: 0.82rem; color: #0f172a; font-weight: 600;">📍 ${q.loc}</td>
-                    <td><span class="badge-status ${isLive ? 'badge-verified' : 'badge-quote'}">${q.action}</span></td>
+                    <td class="px-4 py-3 text-xs font-medium text-zinc-900 whitespace-nowrap">📍 ${q.loc}</td>
+                    <td class="px-4 py-3 whitespace-nowrap">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${isLive ? 'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20' : 'bg-zinc-100 text-zinc-700 ring-1 ring-inset ring-zinc-300'}">${q.action}</span>
+                    </td>
                 </tr>
             `;
         });
@@ -2703,46 +2701,46 @@ class StandaloneAdminCommandCenter {
             const sharePct = ((hits / effectiveTotal) * 100).toFixed(1);
 
             html += `
-                <tr>
-                    <td style="font-family:'JetBrains Mono',monospace; font-weight:700; color:#64748b;">
+                <tr class="hover:bg-zinc-50/80 transition-colors">
+                    <td class="px-4 py-3 font-mono font-semibold text-zinc-500 text-xs">
                         #0${idx + 1}
                     </td>
-                    <td>
-                        <div style="display:flex; align-items:center; gap:10px;">
-                            <span style="font-size:1.4rem;">${m.icon}</span>
+                    <td class="px-4 py-3">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-xl">${m.icon}</span>
                             <div>
-                                <strong style="color:#0f172a; font-size:0.88rem;">${m.name}</strong>
-                                <div style="font-size:0.75rem; color:#64748b;">${m.desc}</div>
+                                <strong class="font-semibold text-zinc-900 text-xs">${m.name}</strong>
+                                <div class="text-[11px] text-zinc-400">${m.desc}</div>
                             </div>
                         </div>
                     </td>
-                    <td style="font-family:'JetBrains Mono',monospace; font-weight:800; color:#0284c7; font-size:0.95rem;">
+                    <td class="px-4 py-3 font-mono font-semibold text-blue-600 text-xs">
                         ${hits.toLocaleString('en-IN')}
                     </td>
-                    <td style="font-family:'JetBrains Mono',monospace; color:#334155;">
+                    <td class="px-4 py-3 font-mono text-zinc-700 text-xs">
                         ${uniques.toLocaleString('en-IN')}
                     </td>
-                    <td style="color:#059669; font-family:'JetBrains Mono',monospace; font-weight:600;">
+                    <td class="px-4 py-3 font-mono font-semibold text-emerald-700 text-xs">
                         ${m.avgDwell}
                     </td>
-                    <td>
-                        <span style="background:#eff6ff; color:#0284c7; border:1px solid #bae6fd; padding:3px 8px; border-radius:6px; font-size:0.75rem; font-weight:600;">
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-blue-50 text-blue-700 ring-1 ring-inset ring-blue-600/20">
                             ${m.actions}
                         </span>
                     </td>
-                    <td style="color:#059669; font-weight:700; font-family:'JetBrains Mono',monospace;">
+                    <td class="px-4 py-3 font-mono font-semibold text-emerald-700 text-xs">
                         ${m.convRate}
                     </td>
-                    <td>
-                        <div class="share-bar-cell">
-                            <div class="share-track">
-                                <div class="share-fill" style="width: ${Math.min(100, Math.max(10, sharePct))}%;"></div>
+                    <td class="px-4 py-3">
+                        <div class="flex items-center gap-2">
+                            <div class="w-16 h-1.5 bg-zinc-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-blue-600 rounded-full" style="width: ${Math.min(100, Math.max(10, sharePct))}%;"></div>
                             </div>
-                            <span class="share-pct">${sharePct}%</span>
+                            <span class="font-mono text-[11px] text-zinc-500">${sharePct}%</span>
                         </div>
                     </td>
-                    <td>
-                        <span style="background:#f8fafc; color:${m.statusColor}; border:1px solid #e2e8f0; padding:3px 8px; border-radius:6px; font-size:0.72rem; font-weight:700; text-transform:uppercase;">
+                    <td class="px-4 py-3">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-zinc-100 text-zinc-800 ring-1 ring-inset ring-zinc-300">
                             ${m.status}
                         </span>
                     </td>

@@ -1,1397 +1,1256 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-zinc-50/60 font-sans antialiased text-zinc-900">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enterprise Command Center HQ | Anjaneya Borewells Executive Telemetry</title>
     <meta name="robots" content="noindex, nofollow">
-    <meta name="theme-color" content="#fbfbf9">
+    <meta name="theme-color" content="#FAFAFA">
     
     <!-- Favicon Suite -->
     <link rel="icon" type="image/png" href="favicon-32x32.png">
     <link rel="shortcut icon" href="favicon.ico">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
-    <!-- Typography & Chart.js -->
+    <!-- Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
-    <link rel="stylesheet" href="admin.css?v=6.0.4">
+    <!-- Tailwind CSS with Shadcn / Modern SaaS Configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            200: '#c7d2fe',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    },
+                    boxShadow: {
+                        'subtle': '0 1px 2px 0 rgba(0, 0, 0, 0.03)',
+                        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.02)',
+                        'elevated': '0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.03)'
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="admin.css?v=6.0.5">
 </head>
-<body class="admin-body">
+<body class="min-h-full flex flex-col bg-zinc-50/60 text-zinc-900 selection:bg-zinc-900 selection:text-white">
+
     <!-- Top Syncing Progress Bar -->
     <div class="admin-global-progress" id="adminGlobalProgress"></div>
 
-    <!-- Liquid Glass Aurora Ambient Engine -->
-    <div class="ambient-glow-canvas" aria-hidden="true">
-        <div class="ambient-orb orb-cyan"></div>
-        <div class="ambient-orb orb-emerald"></div>
-        <div class="ambient-orb orb-purple"></div>
-        <div class="ambient-orb orb-amber"></div>
-        <div class="ambient-mesh-grid"></div>
-    </div>
-
-    <!-- Top Executive Header -->
-    <header class="admin-navbar">
-        <div class="navbar-container">
-            <!-- Brand & Sidebar Toggle Group -->
-            <div class="brand-group">
-                <button type="button" class="admin-sidebar-toggle-btn" id="adminSidebarToggleBtn" title="Open Navigation Menu" aria-label="Toggle Navigation Menu">
-                    <span class="hamburger-icon">☰</span>
-                    <span class="hamburger-label">Menu</span>
+    <!-- Top Executive Header (Clean 64px Fixed/Sticky Navigation with Backdrop Blur) -->
+    <header class="sticky top-0 z-40 w-full border-b border-zinc-200/80 bg-white/80 backdrop-blur-md transition-all">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            
+            <!-- Left: Brand & Mobile Sidebar Toggle -->
+            <div class="flex items-center gap-3">
+                <button type="button" 
+                        class="lg:hidden p-2 -ml-2 text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors" 
+                        id="adminSidebarToggleBtn" 
+                        title="Open Navigation Menu" 
+                        aria-label="Toggle Navigation Menu">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
                 </button>
 
-                <a href="index.html" class="brand-link" title="Return to Public Website">
-                    <div class="brand-logo-wrap">
-                        <img src="logo.png" alt="Anjaneya Borewells Logo" class="brand-logo-img">
-                        <div class="brand-radar-ring"></div>
+                <a href="index.html" class="flex items-center gap-3 group focus:outline-none" title="Return to Public Website">
+                    <div class="relative flex items-center justify-center w-8 h-8 rounded-lg overflow-hidden border border-zinc-200 bg-white shadow-xs group-hover:border-zinc-300 transition-colors">
+                        <img src="logo.png" alt="Anjaneya Logo" class="w-7 h-7 object-cover rounded-full">
                     </div>
-                    <div class="brand-titles">
-                        <div class="brand-main-row">
-                            <span class="brand-name">ANJANEYA BOREWELLS</span>
-                            <span class="badge-enterprise">HQ</span>
-                        </div>
-                        <span class="brand-sub">Executive Telemetry Command Center</span>
+                    <div class="flex items-center gap-2">
+                        <span class="text-sm font-semibold tracking-tight text-zinc-900 group-hover:text-indigo-600 transition-colors">Anjaneya Borewells</span>
+                        <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-semibold bg-zinc-100 text-zinc-600 border border-zinc-200 tracking-wide uppercase">HQ</span>
                     </div>
                 </a>
             </div>
 
-            <!-- Live Status Telemetry Capsules (Compact) -->
-            <div class="status-capsules-group">
-                <div class="capsule-pill capsule-sync" id="adminSyncStatusPill" title="Continuous Realtime Cloud Connection">
-                    <span class="beacon-pulse"></span>
-                    <span class="capsule-text" id="adminSyncStatusText">LIVE CLOUD</span>
-                </div>
+            <!-- Center / Secondary Horizontal Linear Sub-Navigation (Desktop Tabs) -->
+            <nav class="hidden md:flex items-center space-x-1 border border-zinc-200/80 bg-zinc-50/80 p-1 rounded-xl shadow-xs" id="adminTopMenuBar" style="display: none;">
+                <button type="button" class="menu-tab-btn active px-3 py-1.5 text-xs font-semibold rounded-lg transition-all" data-tab="tabOverview">
+                    <span>📊</span>
+                    <span>Overview</span>
+                </button>
+                <button type="button" class="menu-tab-btn px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-lg transition-all" data-tab="tabActiveUsers">
+                    <span>🟢</span>
+                    <span>Live Users</span>
+                </button>
+                <button type="button" class="menu-tab-btn px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-lg transition-all" data-tab="tabLiveLogs">
+                    <span>👥</span>
+                    <span>Visitor Intel</span>
+                </button>
+                <button type="button" class="menu-tab-btn px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-lg transition-all" data-tab="tabEstimatesLog">
+                    <span>💰</span>
+                    <span>Quotes Log</span>
+                </button>
+                <button type="button" class="menu-tab-btn px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-lg transition-all" data-tab="tabCumulativePages">
+                    <span>📈</span>
+                    <span>Pages</span>
+                </button>
+                <button type="button" class="menu-tab-btn px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-lg transition-all" data-tab="tabGeoBreakdown">
+                    <span>🗺️</span>
+                    <span>Territory</span>
+                </button>
+                <button type="button" class="menu-tab-btn px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-lg transition-all" data-tab="tabDevTools">
+                    <span>🛠️</span>
+                    <span>Dev Hub</span>
+                </button>
+                <button type="button" class="menu-tab-btn px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-lg transition-all" data-tab="tabSystemDocs">
+                    <span>📘</span>
+                    <span>Docs</span>
+                </button>
+            </nav>
+
+            <!-- Right: Minimal System Status & User Actions -->
+            <div class="flex items-center gap-2.5">
                 
-                <div class="capsule-pill capsule-ping" title="Google Firebase Asia-Southeast1 Latency">
-                    <span class="ping-icon">⚡</span>
-                    <span class="capsule-text" id="adminPingVal">24ms Latency</span>
+                <!-- Live Telemetry Pulse & Latency -->
+                <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60" id="adminSyncStatusPill" title="Continuous Realtime Firebase Sync">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span id="adminSyncStatusText" class="font-medium tracking-tight">Live</span>
+                    <span class="text-emerald-300">|</span>
+                    <span class="font-mono text-[11px] text-emerald-800" id="adminPingVal">24ms</span>
                 </div>
 
-                <div class="capsule-pill capsule-clock" title="Indian Standard Time">
-                    <span class="clock-icon">🕒</span>
-                    <span class="capsule-text" id="adminClockVal">12:00:00 PM IST</span>
+                <!-- Clock IST (Desktop Only) -->
+                <div class="hidden xl:inline-flex items-center text-xs font-mono text-zinc-500 bg-zinc-100/70 border border-zinc-200 px-2.5 py-1 rounded-lg" id="adminClockVal">
+                    12:00:00 PM IST
                 </div>
-            </div>
 
-            <!-- Action Controls Group (Clean, Compact, No Clutter) -->
-            <div class="action-buttons-group">
-                <button type="button" class="ctrl-btn btn-sync" id="adminRefreshBtn" style="display: none;" title="Fetch latest data from Firebase">
-                    <span class="btn-icon">🔄</span>
-                    <span class="btn-label">Sync</span>
+                <!-- Manual Refresh / Sync Button -->
+                <button type="button" 
+                        class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 shadow-subtle transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/10" 
+                        id="adminRefreshBtn" 
+                        style="display: none;" 
+                        title="Fetch latest data from Firebase">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
                 </button>
 
-                <div class="dropdown-wrapper" id="adminExportWrapper" style="display: none;">
-                    <button type="button" class="ctrl-btn btn-export" id="adminExportToggleBtn" title="Export Analytics & Telemetry">
-                        <span class="btn-icon">📥</span>
-                        <span class="btn-label">Export ▾</span>
+                <!-- Export Reports Dropdown -->
+                <div class="relative inline-flex" id="adminExportWrapper" style="display: none;">
+                    <button type="button" 
+                            class="inline-flex items-center gap-1.5 px-3 h-8 text-xs font-medium text-zinc-700 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-50 hover:text-zinc-900 shadow-subtle transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/10" 
+                            id="adminExportToggleBtn" 
+                            title="Export Analytics & Telemetry">
+                        <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                        </svg>
+                        <span>Export</span>
+                        <svg class="w-3 h-3 text-zinc-400 -mr-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
                     </button>
-                    <div class="dropdown-menu" id="adminExportDropdownMenu" style="display: none;">
-                        <button type="button" class="dropdown-item" id="exportCsvBtn">
-                            <span class="item-icon">📊</span>
+                    <div class="dropdown-menu absolute right-0 top-full mt-1.5 w-60 p-1.5 bg-white border border-zinc-200 rounded-xl shadow-elevated z-50 transition-all" id="adminExportDropdownMenu" style="display: none;">
+                        <button type="button" class="w-full flex items-start gap-2.5 p-2 rounded-lg text-left hover:bg-zinc-50 transition-colors" id="exportCsvBtn">
+                            <span class="text-base">📊</span>
                             <div>
-                                <strong>Download CSV Audit Report</strong>
-                                <small>Excel &amp; Google Sheets (UTF-8 BOM)</small>
+                                <strong class="text-xs font-semibold text-zinc-800 block">Download CSV Audit</strong>
+                                <small class="text-[11px] text-zinc-400 block">Excel &amp; Sheets UTF-8 format</small>
                             </div>
                         </button>
-                        <button type="button" class="dropdown-item" id="exportJsonBtn">
-                            <span class="item-icon">💾</span>
+                        <button type="button" class="w-full flex items-start gap-2.5 p-2 rounded-lg text-left hover:bg-zinc-50 transition-colors" id="exportJsonBtn">
+                            <span class="text-base">💾</span>
                             <div>
-                                <strong>Export JSON Database Snapshot</strong>
-                                <small>Full Firebase RTDB Tables Dump</small>
+                                <strong class="text-xs font-semibold text-zinc-800 block">Database Snapshot</strong>
+                                <small class="text-[11px] text-zinc-400 block">Full Firebase RTDB JSON dump</small>
                             </div>
                         </button>
                     </div>
                 </div>
 
-                <!-- Unified Admin Profile & Tools Dropdown -->
-                <div class="dropdown-wrapper" id="superAdminBadge" style="display: none;">
-                    <button type="button" class="ctrl-btn btn-profile" id="adminProfileToggleBtn" title="Admin Profile & System Settings">
-                        <span class="profile-avatar-mini">MR</span>
-                        <span class="btn-label">Mani Raja ▾</span>
+                <!-- User Profile Dropdown (Shadcn Popover Menu) -->
+                <div class="relative inline-flex" id="superAdminBadge" style="display: none;">
+                    <button type="button" 
+                            class="inline-flex items-center gap-2 pl-1.5 pr-2.5 h-8 rounded-lg border border-zinc-200/80 bg-white hover:bg-zinc-50 shadow-subtle transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/10" 
+                            id="adminProfileToggleBtn" 
+                            title="Admin Profile & Settings">
+                        <span class="w-5 h-5 rounded-full bg-zinc-900 text-white text-[10px] font-bold flex items-center justify-center">MR</span>
+                        <span class="text-xs font-medium text-zinc-800 hidden sm:inline-block">Mani Raja</span>
+                        <svg class="w-3 h-3 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
                     </button>
-                    <div class="dropdown-menu profile-dropdown-menu" id="adminProfileDropdownMenu" style="display: none;">
-                        <div class="profile-dropdown-header">
-                            <div class="pd-avatar">MR</div>
-                            <div class="pd-details">
-                                <strong class="pd-name">Mani Raja</strong>
-                                <span class="pd-badge">SuperAdmin • Enterprise HQ</span>
+                    <div class="dropdown-menu profile-dropdown-menu absolute right-0 top-full mt-1.5 w-60 p-1.5 bg-white border border-zinc-200 rounded-xl shadow-elevated z-50" id="adminProfileDropdownMenu" style="display: none;">
+                        <div class="px-2.5 py-2 border-b border-zinc-100 flex items-center gap-2.5 mb-1">
+                            <div class="w-8 h-8 rounded-full bg-zinc-900 text-white text-xs font-bold flex items-center justify-center">MR</div>
+                            <div>
+                                <strong class="text-xs font-semibold text-zinc-900 block">Mani Raja</strong>
+                                <span class="text-[11px] text-emerald-600 font-medium block">SuperAdmin • Enterprise HQ</span>
                             </div>
                         </div>
-                        <div class="dropdown-divider"></div>
-                        <a href="index.html" class="dropdown-item">
-                            <span class="item-icon">🌐</span>
-                            <div>
-                                <strong>Open Public Website</strong>
-                                <small>View live visitor experience</small>
-                            </div>
+                        <a href="index.html" class="flex items-center gap-2.5 px-2.5 py-1.5 text-xs text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors">
+                            <span class="text-sm">🌐</span>
+                            <span>Public Website</span>
                         </a>
-                        <button type="button" class="dropdown-item" id="adminPurgeBtn">
-                            <span class="item-icon">🧹</span>
-                            <div>
-                                <strong>Clear Cache &amp; Storage</strong>
-                                <small>Force refresh ServiceWorker assets</small>
-                            </div>
+                        <button type="button" class="w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50 rounded-lg transition-colors text-left" id="adminPurgeBtn">
+                            <span class="text-sm">🧹</span>
+                            <span>Clear Cache &amp; Storage</span>
                         </button>
-                        <div class="dropdown-divider"></div>
-                        <button type="button" class="dropdown-item item-danger" id="adminLogoutBtn">
-                            <span class="item-icon">🔒</span>
-                            <div>
-                                <strong>Sign Out Executive HQ</strong>
-                                <small>End administrative session</small>
-                            </div>
+                        <div class="h-px bg-zinc-100 my-1"></div>
+                        <button type="button" class="w-full flex items-center gap-2.5 px-2.5 py-1.5 text-xs text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left font-medium" id="adminLogoutBtn">
+                            <span class="text-sm">🔒</span>
+                            <span>Sign Out HQ</span>
                         </button>
                     </div>
                 </div>
+
             </div>
         </div>
-
-        <!-- Floating Pill Navigation Bar (Desktop Segmented Navigation) -->
-        <nav class="admin-top-menubar" id="adminTopMenuBar" style="display: none;">
-            <div class="menubar-pill-container">
-                <button type="button" class="menu-tab-btn active" data-tab="tabOverview">
-                    <span class="tab-icon">📊</span>
-                    <span class="tab-title">Overview</span>
-                </button>
-                <button type="button" class="menu-tab-btn" data-tab="tabActiveUsers">
-                    <span class="tab-icon">🟢</span>
-                    <span class="tab-title">Live Active Users</span>
-                </button>
-                <button type="button" class="menu-tab-btn" data-tab="tabEstimatesLog">
-                    <span class="tab-icon">💰</span>
-                    <span class="tab-title">Quotes Log</span>
-                </button>
-                <button type="button" class="menu-tab-btn" data-tab="tabCumulativePages">
-                    <span class="tab-icon">📈</span>
-                    <span class="tab-title">Cumulative Pages</span>
-                </button>
-                <button type="button" class="menu-tab-btn" data-tab="tabGeoBreakdown">
-                    <span class="tab-icon">🗺️</span>
-                    <span class="tab-title">Territory Geo</span>
-                </button>
-                <button type="button" class="menu-tab-btn" data-tab="tabLiveLogs">
-                    <span class="tab-icon">👥</span>
-                    <span class="tab-title">Visitor Intel</span>
-                </button>
-                <button type="button" class="menu-tab-btn" data-tab="tabDevTools">
-                    <span class="tab-icon">🛠️</span>
-                    <span class="tab-title">Developer Hub</span>
-                </button>
-                <button type="button" class="menu-tab-btn" data-tab="tabSystemDocs">
-                    <span class="tab-icon">📘</span>
-                    <span class="tab-title">System Docs</span>
-                </button>
-            </div>
-        </nav>
     </header>
 
-    <!-- Slide-Out Sidebar Navigation Drawer & Overlay -->
-    <div class="admin-sidebar-overlay" id="adminSidebarOverlay"></div>
-    <aside class="admin-sidebar-drawer" id="adminSidebarDrawer" aria-label="HQ Navigation Drawer">
-        <div class="sidebar-header">
-            <div class="sidebar-brand">
-                <img src="logo.png" alt="Anjaneya Borewells Logo" class="sidebar-logo">
-                <div class="sidebar-brand-text">
-                    <div class="sidebar-title">ANJANEYA BOREWELLS</div>
-                    <div class="sidebar-subtitle">Enterprise Command HQ</div>
+    <!-- Slide-Out Sidebar Navigation Drawer & Overlay (Shadcn Sheet Pattern) -->
+    <div class="admin-sidebar-overlay fixed inset-0 bg-zinc-900/40 backdrop-blur-xs z-50 transition-opacity" id="adminSidebarOverlay"></div>
+    <aside class="admin-sidebar-drawer fixed top-0 left-0 bottom-0 w-72 max-w-[85vw] bg-white border-r border-zinc-200 shadow-2xl z-50 flex flex-col transition-transform" id="adminSidebarDrawer" aria-label="HQ Navigation Drawer">
+        
+        <!-- Sidebar Header -->
+        <div class="p-4 border-b border-zinc-200/80 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="logo.png" alt="Anjaneya Logo" class="w-7 h-7 rounded-lg border border-zinc-200 object-cover">
+                <div>
+                    <h3 class="text-xs font-semibold text-zinc-900 tracking-tight">Anjaneya Borewells</h3>
+                    <p class="text-[11px] text-zinc-400">Enterprise Command HQ</p>
                 </div>
             </div>
-            <button type="button" class="sidebar-close-btn" id="adminSidebarCloseBtn" title="Close Menu" aria-label="Close Navigation Menu">✕</button>
+            <button type="button" class="p-1.5 text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 rounded-lg transition-colors" id="adminSidebarCloseBtn" aria-label="Close Navigation Menu">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
         </div>
 
-        <div class="sidebar-body">
-            <!-- Navigation Group 1: Core Operations -->
-            <div class="sidebar-section-title">REALTIME OPERATIONS</div>
-            <nav class="sidebar-nav-list">
-                <button type="button" class="sidebar-nav-item active" data-tab="tabOverview">
-                    <span class="nav-icon">📊</span>
-                    <div class="nav-details">
-                        <span class="nav-label">Command Overview</span>
-                        <span class="nav-desc">Bento metrics, charts &amp; KPIs</span>
-                    </div>
-                    <span class="nav-badge">Live</span>
-                </button>
-                <button type="button" class="sidebar-nav-item" data-tab="tabActiveUsers">
-                    <span class="nav-icon">🟢</span>
-                    <div class="nav-details">
-                        <span class="nav-label">Live Active Users</span>
-                        <span class="nav-desc">Active sessions &amp; heartbeats</span>
-                    </div>
-                    <span class="nav-badge live-count" id="sidebarLiveUsersBadge">0</span>
-                </button>
-                <button type="button" class="sidebar-nav-item" data-tab="tabLiveLogs">
-                    <span class="nav-icon">👥</span>
-                    <div class="nav-details">
-                        <span class="nav-label">Visitor Intelligence</span>
-                        <span class="nav-desc">IP telemetry, device &amp; actions</span>
-                    </div>
-                </button>
-            </nav>
-
-            <!-- Navigation Group 2: Business & Conversions -->
-            <div class="sidebar-section-title">BUSINESS &amp; PIPELINE</div>
-            <nav class="sidebar-nav-list">
-                <button type="button" class="sidebar-nav-item" data-tab="tabEstimatesLog">
-                    <span class="nav-icon">💰</span>
-                    <div class="nav-details">
-                        <span class="nav-label">Quotes &amp; Estimation Log</span>
-                        <span class="nav-desc">Leads, pipelines &amp; WhatsApp audits</span>
-                    </div>
-                    <span class="nav-badge quotes-badge" id="sidebarQuotesBadge">0</span>
-                </button>
-                <button type="button" class="sidebar-nav-item" data-tab="tabCumulativePages">
-                    <span class="nav-icon">📈</span>
-                    <div class="nav-details">
-                        <span class="nav-label">Cumulative Page Analytics</span>
-                        <span class="nav-desc">Pageviews, bounce &amp; conversions</span>
-                    </div>
-                </button>
-                <button type="button" class="sidebar-nav-item" data-tab="tabGeoBreakdown">
-                    <span class="nav-icon">🗺️</span>
-                    <div class="nav-details">
-                        <span class="nav-label">Territory Geo Heatmap</span>
-                        <span class="nav-desc">District &amp; state telemetry</span>
-                    </div>
-                </button>
-            </nav>
-
-            <!-- Navigation Group 3: Engineering & Architecture -->
-            <div class="sidebar-section-title">SYSTEM &amp; MANUALS</div>
-            <nav class="sidebar-nav-list">
-                <button type="button" class="sidebar-nav-item" data-tab="tabDevTools">
-                    <span class="nav-icon">🛠️</span>
-                    <div class="nav-details">
-                        <span class="nav-label">Developer Hub</span>
-                        <span class="nav-desc">RTDB latency, cache inspector</span>
-                    </div>
-                </button>
-                <button type="button" class="sidebar-nav-item" data-tab="tabSystemDocs">
-                    <span class="nav-icon">📘</span>
-                    <div class="nav-details">
-                        <span class="nav-label">System Architecture Docs</span>
-                        <span class="nav-desc">API contracts &amp; specs</span>
-                    </div>
-                </button>
-            </nav>
-        </div>
-
-        <div class="sidebar-footer">
-            <div class="sidebar-admin-profile">
-                <div class="profile-avatar">MR</div>
-                <div class="profile-info">
-                    <span class="profile-name">Mani Raja</span>
-                    <span class="profile-role">SuperAdmin • Enterprise HQ</span>
+        <!-- Sidebar Navigation Groups -->
+        <div class="flex-1 overflow-y-auto p-3 space-y-4">
+            
+            <!-- Group 1 -->
+            <div>
+                <p class="px-2 mb-1.5 text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">Realtime Operations</p>
+                <div class="space-y-0.5">
+                    <button type="button" class="sidebar-nav-item active w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium transition-colors" data-tab="tabOverview">
+                        <span class="flex items-center gap-2.5">
+                            <span>📊</span>
+                            <span>Command Overview</span>
+                        </span>
+                        <span class="text-[10px] font-semibold bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded-full border border-emerald-200/60">Live</span>
+                    </button>
+                    <button type="button" class="sidebar-nav-item w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 transition-colors" data-tab="tabActiveUsers">
+                        <span class="flex items-center gap-2.5">
+                            <span>🟢</span>
+                            <span>Live Active Users</span>
+                        </span>
+                        <span class="text-[10px] font-semibold bg-zinc-100 text-zinc-700 px-1.5 py-0.5 rounded-full" id="sidebarLiveUsersBadge">0</span>
+                    </button>
+                    <button type="button" class="sidebar-nav-item w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 transition-colors" data-tab="tabLiveLogs">
+                        <span class="flex items-center gap-2.5">
+                            <span>👥</span>
+                            <span>Visitor Intelligence</span>
+                        </span>
+                    </button>
                 </div>
             </div>
-            <div class="sidebar-footer-actions">
-                <a href="index.html" class="sidebar-action-btn" title="Open Public Website">
-                    <span>🌐 Live Site</span>
-                </a>
-                <button type="button" class="sidebar-action-btn btn-danger" id="sidebarLogoutBtn" title="Sign Out">
-                    <span>🔒 Logout</span>
-                </button>
+
+            <!-- Group 2 -->
+            <div>
+                <p class="px-2 mb-1.5 text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">Business &amp; Pipeline</p>
+                <div class="space-y-0.5">
+                    <button type="button" class="sidebar-nav-item w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 transition-colors" data-tab="tabEstimatesLog">
+                        <span class="flex items-center gap-2.5">
+                            <span>💰</span>
+                            <span>Quotes &amp; Cost Log</span>
+                        </span>
+                        <span class="text-[10px] font-semibold bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded-full" id="sidebarQuotesBadge">0</span>
+                    </button>
+                    <button type="button" class="sidebar-nav-item w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 transition-colors" data-tab="tabCumulativePages">
+                        <span class="flex items-center gap-2.5">
+                            <span>📈</span>
+                            <span>Page Analytics</span>
+                        </span>
+                    </button>
+                    <button type="button" class="sidebar-nav-item w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 transition-colors" data-tab="tabGeoBreakdown">
+                        <span class="flex items-center gap-2.5">
+                            <span>🗺️</span>
+                            <span>Territory Heatmap</span>
+                        </span>
+                    </button>
+                </div>
             </div>
+
+            <!-- Group 3 -->
+            <div>
+                <p class="px-2 mb-1.5 text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">System &amp; Architecture</p>
+                <div class="space-y-0.5">
+                    <button type="button" class="sidebar-nav-item w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 transition-colors" data-tab="tabDevTools">
+                        <span class="flex items-center gap-2.5">
+                            <span>🛠️</span>
+                            <span>Developer Hub</span>
+                        </span>
+                    </button>
+                    <button type="button" class="sidebar-nav-item w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 transition-colors" data-tab="tabSystemDocs">
+                        <span class="flex items-center gap-2.5">
+                            <span>📘</span>
+                            <span>Architecture Docs</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
         </div>
+
+        <!-- Sidebar Footer -->
+        <div class="p-3 border-t border-zinc-200/80 bg-zinc-50/50 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <div class="w-7 h-7 rounded-full bg-zinc-900 text-white text-[11px] font-bold flex items-center justify-center">MR</div>
+                <div>
+                    <span class="text-xs font-semibold text-zinc-800 block">Mani Raja</span>
+                    <span class="text-[10px] text-zinc-500 block">SuperAdmin</span>
+                </div>
+            </div>
+            <button type="button" class="p-1.5 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors" id="sidebarLogoutBtn" title="Sign Out">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                </svg>
+            </button>
+        </div>
+
     </aside>
 
     <!-- Main Workspace Container -->
-    <main class="admin-workspace">
+    <main class="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6" id="adminWorkspace">
         
-        <!-- STEP 1: Secure Authentication Gateway -->
-        <section class="auth-gateway" id="adminAuthSection">
-            <div class="auth-card-box">
-                <div class="auth-beacon-badge">
-                    <span class="auth-beacon-dot"></span>
-                    <span>ENTERPRISE COMMAND GATEWAY • DIRECT FIREBASE RTDB</span>
+        <!-- STEP 1: Secure Authentication Gateway (Vercel/Supabase Clean Card Style) -->
+        <section class="auth-gateway flex items-center justify-center py-16" id="adminAuthSection">
+            <div class="w-full max-w-md bg-white border border-zinc-200/80 rounded-2xl p-8 shadow-elevated">
+                
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-zinc-900 text-white mb-3 shadow-sm">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-lg font-bold tracking-tight text-zinc-900">Command Center Authentication</h2>
+                    <p class="text-xs text-zinc-500 mt-1">Authorized SuperAdmin credentials required to unlock live telemetry.</p>
                 </div>
 
-                <div class="auth-shield-wrap">
-                    <div class="shield-glow"></div>
-                    <img src="logo.png" alt="Anjaneya Borewells" class="auth-logo-img">
-                </div>
-
-                <h2>Command Center Authentication</h2>
-                <p class="auth-subtitle">Authorized administrator verification required to access real-time visitor intelligence, lead telemetry, and customer estimation audits.</p>
-
-                <form class="auth-form" id="adminAuthForm" onsubmit="return false;">
-                    <div class="form-group">
-                        <label for="adminAuthEmail">SuperAdmin Email Address</label>
-                        <div class="input-container">
-                            <span class="input-icon">✉️</span>
-                            <input type="email" id="adminAuthEmail" class="form-input" placeholder="Enter authorized administrator email..." required autocomplete="email">
+                <form class="space-y-4" id="adminAuthForm" onsubmit="return false;">
+                    <div>
+                        <label for="adminAuthEmail" class="block text-xs font-medium text-zinc-700 mb-1.5">SuperAdmin Email</label>
+                        <div class="relative">
+                            <input type="email" 
+                                   id="adminAuthEmail" 
+                                   class="w-full px-3 py-2 text-sm bg-zinc-50/50 border border-zinc-200 rounded-lg text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-900 transition-all" 
+                                   placeholder="superadmin@anjaneyaborewells.com" 
+                                   required 
+                                   autocomplete="email">
                         </div>
                     </div>
 
-                    <div class="form-group" id="adminOtpGroup" style="display: none;">
-                        <label for="adminAuthOtp">Security PIN / Access Key</label>
-                        <div class="input-container">
-                            <span class="input-icon">🔑</span>
-                            <input type="password" id="adminAuthOtp" class="form-input" placeholder="••••" maxlength="4" inputmode="numeric" pattern="[0-9]*" autocomplete="one-time-code">
-                        </div>
-                        <span class="form-hint">Enter your 4-digit security PIN to unlock telemetry</span>
+                    <div id="adminOtpGroup" style="display: none;">
+                        <label for="adminAuthOtp" class="block text-xs font-medium text-zinc-700 mb-1.5">Security PIN / Access Key</label>
+                        <input type="password" 
+                               id="adminAuthOtp" 
+                               class="w-full px-3 py-2 text-sm font-mono tracking-widest bg-zinc-50/50 border border-zinc-200 rounded-lg text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-900 transition-all text-center" 
+                               placeholder="••••" 
+                               maxlength="4" 
+                               inputmode="numeric" 
+                               pattern="[0-9]*" 
+                               autocomplete="one-time-code">
+                        <span class="block text-[11px] text-zinc-400 mt-1">Enter your 4-digit security PIN to unlock telemetry</span>
                     </div>
 
-                    <div class="auth-error-box" id="adminAuthError" style="display: none;"></div>
+                    <div class="p-3 text-xs text-red-700 bg-red-50 border border-red-200/60 rounded-lg" id="adminAuthError" style="display: none;"></div>
 
-                    <button type="submit" class="btn-auth-submit" id="adminAuthSubmitBtn">
+                    <button type="submit" 
+                            class="w-full h-10 bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs rounded-lg shadow-subtle transition-all flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-zinc-900/20" 
+                            id="adminAuthSubmitBtn">
                         <span class="btn-text">Verify SuperAdmin &amp; Launch HQ</span>
-                        <span class="arrow-icon">➔</span>
+                        <span>➔</span>
                     </button>
 
-                    <div class="auth-loading-spinner" id="authLoadingSpinner" style="display: none;">
-                        <div class="spinner-ring"></div>
-                        <span>Authenticating SuperAdmin &amp; Connecting Firebase...</span>
+                    <div class="auth-loading-spinner flex items-center justify-center gap-2 p-2.5 text-xs text-emerald-700 bg-emerald-50 border border-emerald-200/60 rounded-lg" id="authLoadingSpinner" style="display: none;">
+                        <div class="w-3.5 h-3.5 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin"></div>
+                        <span class="font-medium">Connecting Firebase Node...</span>
                     </div>
                 </form>
 
-                <div class="auth-footer-badge">
-                    <span>🔒 256-Bit TLS Encrypted • Zero Third-Party Tracker • Authorized Access Only</span>
+                <div class="mt-6 pt-4 border-t border-zinc-100 text-center">
+                    <span class="text-[11px] text-zinc-400 inline-flex items-center gap-1.5">
+                        <span>🔒</span> 256-Bit TLS Direct Cloud Connection
+                    </span>
                 </div>
             </div>
         </section>
 
         <!-- STEP 2: Full Enterprise Dashboard (Visible After Auth) -->
-        <div class="dashboard-wrapper" id="adminDashboardSection" style="display: none;">
+        <div class="dashboard-wrapper flex flex-col gap-6" id="adminDashboardSection" style="display: none;">
 
-            <!-- TAB PANE 1: OVERVIEW DASHBOARD (Bento Grid Architecture) -->
-            <div class="admin-tab-pane active" id="tabOverview">
+            <!-- ================================================================= -->
+            <!-- TAB PANE 1: OVERVIEW DASHBOARD -->
+            <!-- ================================================================= -->
+            <div class="admin-tab-pane active flex flex-col gap-6" id="tabOverview">
                 
-                <!-- Executive All-Time Cumulative Analytics Banner -->
-                <div class="cumulative-summary-banner">
-                    <div class="cumul-badge-header">
-                        <span class="cumul-icon">⚡</span>
-                        <div class="cumul-header-text">
-                            <h4>ENTERPRISE CUMULATIVE COUNTS &amp; AUDIT METRICS</h4>
-                            <p>All-time aggregated visitor sessions, quote conversions, and cloud telemetry</p>
+                <!-- REQUIREMENT 2: Modern 5-Column Responsive Metric / KPI Bento Grid -->
+                <section>
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Executive Telemetry Overview</h3>
+                            <p class="text-xs text-zinc-500">Live aggregated visitor sessions, quote conversions, and cloud telemetry</p>
                         </div>
-                        <span class="cumul-badge-pill">ALL-TIME CUMULATIVE</span>
-                    </div>
-                    <div class="cumul-metrics-cards">
-                        <div class="cumul-card">
-                            <span class="c-label">CUMULATIVE PAGEVIEWS</span>
-                            <div class="c-val" id="cumulTotalPageviews">1,034+</div>
-                            <span class="c-sub">Strict Monotonic Counter</span>
-                        </div>
-                        <div class="cumul-card">
-                            <span class="c-label">LIVE ONLINE NOW</span>
-                            <div class="c-val text-green" id="cumulActiveOnline">1 Online</div>
-                            <span class="c-sub">Real-Time Heartbeat</span>
-                        </div>
-                        <div class="cumul-card">
-                            <span class="c-label">TODAY'S VISITORS</span>
-                            <div class="c-val text-cyan" id="cumulTodayVisitors">-- Today</div>
-                            <span class="c-sub">Daily Unique Traffic</span>
-                        </div>
-                        <div class="cumul-card">
-                            <span class="c-label">THIS MONTH</span>
-                            <div class="c-val text-emerald" id="cumulMonthVisitors">142 Views</div>
-                            <span class="c-sub">Monthly Traffic Volume</span>
-                        </div>
-                        <div class="cumul-card">
-                            <span class="c-label">THIS YEAR (2026)</span>
-                            <div class="c-val text-purple" id="cumulYearVisitors">1,034 Sessions</div>
-                            <span class="c-sub">Annual Visitor Total</span>
-                        </div>
-                        <div class="cumul-card">
-                            <span class="c-label">QUOTES GENERATED</span>
-                            <div class="c-val" id="cumulTotalQuotes">72</div>
-                            <span class="c-sub">₹78.4L Cumulative Est.</span>
-                        </div>
-                        <div class="cumul-card">
-                            <span class="c-label">CUMULATIVE LEADS</span>
-                            <div class="c-val" id="cumulTotalLeads">31</div>
-                            <span class="c-sub">WhatsApp &amp; Direct Hotline</span>
-                        </div>
-                        <div class="cumul-card">
-                            <span class="c-label">TAMIL NADU REACH</span>
-                            <div class="c-val" id="cumulTotalDistricts">10 / 10</div>
-                            <span class="c-sub">100% Target Coverage</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Clean Status Strip (Matching SaaS Reference) -->
-                <div class="system-status-banner">
-                    <div class="status-banner-left">
-                        <span class="status-beacon-blue">●</span>
-                        <span class="status-banner-text"><strong>Real-Time Cloud Telemetry:</strong> Firebase Asia-Southeast1 active • Live visitor heartbeat &amp; rig quote audits</span>
-                    </div>
-                    <div class="status-banner-actions">
-                        <button type="button" class="btn-banner-pill pill-amber" data-tab-switch="tabActiveUsers">Live Radar ↗</button>
-                        <button type="button" class="btn-banner-pill pill-blue" data-tab-switch="tabEstimatesLog">Quotes Audit</button>
-                    </div>
-                </div>
-
-                <!-- BENTO ROW 2: Hero Deck (24h Demand Wave + Hardware Ecosystem) -->
-                <section class="bento-hero-grid">
-                    <!-- Bento Hero Left: 24h Demand Wave -->
-                    <div class="bento-card card-hero-wave">
-                        <div class="card-top-bar">
-                            <div class="card-heading">
-                                <span class="card-icon">📈</span>
-                                <div>
-                                    <h3>Date-Wise Viewers &amp; Traffic Trends</h3>
-                                    <p>Real daily visitor sessions &amp; cumulative growth curve</p>
-                                </div>
-                            </div>
-                            <span class="badge-pill-emerald">Live Telemetry</span>
-                        </div>
-                        <div class="hero-chart-big-metric-wrap">
-                            <div class="hero-chart-big-metric" id="heroChartTotalVal">1,034 Views</div>
-                            <div class="traffic-mini-pills">
-                                <span class="traffic-stat-pill pill-cyan">Today: <strong id="trafficStatToday">--</strong></span>
-                                <span class="traffic-stat-pill pill-emerald">Peak Day: <strong id="trafficStatPeak">--</strong></span>
-                                <span class="traffic-stat-pill pill-purple">All-Time: <strong id="trafficStatTotal">--</strong></span>
-                            </div>
-                        </div>
-                        <div class="card-canvas-container">
-                            <canvas id="trafficTrendsChart"></canvas>
-                        </div>
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-zinc-100 text-zinc-700 border border-zinc-200">
+                            <span>⚡</span> Monotonic Telemetry
+                        </span>
                     </div>
 
-                    <!-- Bento Hero Right: Hardware Ecosystem & OS Status -->
-                    <div class="bento-card card-hero-hardware">
-                        <div class="card-top-bar">
-                            <div class="card-heading">
-                                <span class="card-icon">📱</span>
-                                <div>
-                                    <h3>Hardware &amp; OS Status</h3>
-                                    <p>Mobile vs Desktop breakdown</p>
-                                </div>
+                    <!-- Modern 5-Column Responsive Grid (grid-cols-2 lg:grid-cols-5 gap-3.5) -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
+                        
+                        <!-- Card 1: Pageviews -->
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle hover:border-zinc-300 hover:shadow-card transition-all flex flex-col justify-between">
+                            <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Total Pageviews</span>
+                            <div class="text-2xl font-bold tracking-tight text-zinc-900 font-mono mt-1 mb-1">
+                                <span id="cumulTotalPageviews">1,034+</span>
+                                <span id="bentoTotalViews" class="hidden">1,034+</span>
                             </div>
-                            <span class="badge-pill-purple">Hardware Share</span>
+                            <span class="text-xs text-zinc-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                Strict Monotonic Counter
+                            </span>
                         </div>
-                        <div class="card-canvas-container">
-                            <canvas id="devicesChartOverview"></canvas>
+
+                        <!-- Card 2: Live Online -->
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle hover:border-zinc-300 hover:shadow-card transition-all flex flex-col justify-between">
+                            <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Live Online Now</span>
+                            <div class="text-2xl font-bold tracking-tight text-emerald-600 font-mono mt-1 mb-1">
+                                <span id="cumulActiveOnline">1 Online</span>
+                                <span id="bentoActiveUsers" class="hidden">1 Online</span>
+                            </div>
+                            <span class="text-xs text-zinc-400 flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                15s Heartbeat Pulse
+                            </span>
+                        </div>
+
+                        <!-- Card 3: Today's Visitors -->
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle hover:border-zinc-300 hover:shadow-card transition-all flex flex-col justify-between">
+                            <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Today's Visitors</span>
+                            <div class="text-2xl font-bold tracking-tight text-zinc-900 font-mono mt-1 mb-1">
+                                <span id="cumulTodayVisitors">-- Today</span>
+                                <span id="bentoAvgDuration" class="hidden">2m 45s</span>
+                            </div>
+                            <span class="text-xs text-zinc-400">Daily unique traffic</span>
+                        </div>
+
+                        <!-- Card 4: Quotes Generated -->
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle hover:border-zinc-300 hover:shadow-card transition-all flex flex-col justify-between">
+                            <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Quotes Generated</span>
+                            <div class="text-2xl font-bold tracking-tight text-indigo-600 font-mono mt-1 mb-1">
+                                <span id="cumulTotalQuotes">72</span>
+                                <span id="bentoEstimatesCount" class="hidden">72 Quotes</span>
+                            </div>
+                            <span class="text-xs text-zinc-400">₹78.4L Pipeline value</span>
+                        </div>
+
+                        <!-- Card 5: Cumulative Leads -->
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle hover:border-zinc-300 hover:shadow-card transition-all flex flex-col justify-between col-span-2 sm:col-span-1">
+                            <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Direct Inquiries</span>
+                            <div class="text-2xl font-bold tracking-tight text-zinc-900 font-mono mt-1 mb-1">
+                                <span id="cumulTotalLeads">31</span>
+                                <span id="bentoLeadsCount" class="hidden">31 Leads</span>
+                            </div>
+                            <span class="text-xs text-zinc-400">WhatsApp &amp; Calls</span>
+                        </div>
+
+                    </div>
+
+                    <!-- Secondary Cumulative All-Time Metrics Ribbon -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 mt-3.5">
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                            <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">This Month</span>
+                            <div class="text-base font-bold font-mono text-zinc-900 mt-0.5" id="cumulMonthVisitors">-- Views</div>
+                            <span class="text-[10px] text-zinc-400">Calendar month traffic</span>
+                        </div>
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                            <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Annual Sessions</span>
+                            <div class="text-base font-bold font-mono text-zinc-900 mt-0.5" id="cumulYearVisitors">-- Sessions</div>
+                            <span class="text-[10px] text-zinc-400">Fiscal year total</span>
+                        </div>
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                            <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Unique Sessions</span>
+                            <div class="text-base font-bold font-mono text-zinc-900 mt-0.5" id="cumulUniqueSessions">384</div>
+                            <span class="text-[10px] text-zinc-400">Deduplicated visitors</span>
+                        </div>
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                            <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">PWA App Installs</span>
+                            <div class="text-base font-bold font-mono text-zinc-900 mt-0.5" id="cumulTotalInstalls">24</div>
+                            <span class="text-[10px] text-zinc-400">Home screen installs</span>
+                        </div>
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle col-span-2 sm:col-span-1">
+                            <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Service Districts</span>
+                            <div class="text-base font-bold font-mono text-zinc-900 mt-0.5" id="cumulTotalDistricts">10 / 10</div>
+                            <span class="text-[10px] text-zinc-400">TN active coverage</span>
                         </div>
                     </div>
                 </section>
 
-                <!-- BENTO ROW 3: Secondary Deck (Conversion Funnel + Live Visitor Stream) -->
-                <section class="bento-secondary-grid">
-                    <!-- Bento Card Left: Conversion Funnel -->
-                    <div class="bento-card card-funnel">
-                        <div class="card-top-bar">
-                            <div class="card-heading">
-                                <span class="card-icon">🎯</span>
-                                <div>
-                                    <h3>Customer Conversion Funnel</h3>
-                                    <p>Interactions from page visit to confirmed rig quote</p>
-                                </div>
+                <!-- Status Strip (Vercel Style) -->
+                <div class="flex items-center justify-between p-3.5 bg-white border border-zinc-200/80 rounded-xl shadow-subtle">
+                    <div class="flex items-center gap-2.5 text-xs text-zinc-700">
+                        <span class="flex h-2 w-2 rounded-full bg-emerald-500"></span>
+                        <span><strong>Firebase Realtime Database:</strong> Asia-Southeast1 Singapore active • Continuous customer audit stream</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button type="button" class="px-2.5 py-1 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors" data-tab-switch="tabActiveUsers">
+                            Live Radar ↗
+                        </button>
+                        <button type="button" class="px-2.5 py-1 text-xs font-medium bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors" data-tab-switch="tabEstimatesLog">
+                            Quotes Audit
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Secondary Charts Grid: Traffic Wave & Hardware Distribution -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    
+                    <!-- Traffic Trends Chart (2 Columns Wide) -->
+                    <div class="lg:col-span-2 bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle flex flex-col justify-between">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h4 class="text-xs font-semibold text-zinc-900">Date-Wise Viewers &amp; Traffic Trends</h4>
+                                <p class="text-[11px] text-zinc-400">Daily visitor sessions &amp; cumulative engagement curve</p>
                             </div>
-                            <span class="badge-pill-cyan">Funnel Audit</span>
+                            <div class="flex items-center gap-2">
+                                <span class="px-2 py-0.5 text-[10px] font-semibold bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200/60" id="heroChartTotalVal">1,034 Views</span>
+                            </div>
                         </div>
-                        <div class="card-canvas-container">
+                        <div class="h-64 w-full">
+                            <canvas id="trafficTrendsChart"></canvas>
+                        </div>
+                        <div class="flex items-center justify-between pt-3 mt-3 border-t border-zinc-100 text-xs text-zinc-500">
+                            <span>Today: <strong class="text-zinc-800 font-mono" id="trafficStatToday">--</strong></span>
+                            <span>Peak Day: <strong class="text-zinc-800 font-mono" id="trafficStatPeak">--</strong></span>
+                            <span>All-Time: <strong class="text-zinc-800 font-mono" id="trafficStatTotal">--</strong></span>
+                        </div>
+                    </div>
+
+                    <!-- Hardware Ecosystem & OS Status -->
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle flex flex-col justify-between">
+                        <div class="mb-4">
+                            <h4 class="text-xs font-semibold text-zinc-900">Hardware &amp; Platform Share</h4>
+                            <p class="text-[11px] text-zinc-400">Mobile vs Desktop client proportion</p>
+                        </div>
+                        <div class="h-64 flex items-center justify-center">
+                            <canvas id="devicesChartOverview"></canvas>
+                        </div>
+                        <div class="pt-3 border-t border-zinc-100 text-[11px] text-zinc-400 text-center">
+                            Telemetric device telemetry from user-agent headers
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Conversion Funnel & Live Visitor Stream -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    
+                    <!-- Funnel Chart -->
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle">
+                        <div class="mb-3">
+                            <h4 class="text-xs font-semibold text-zinc-900">Customer Conversion Funnel</h4>
+                            <p class="text-[11px] text-zinc-400">Interactions from page visit to confirmed rig quote</p>
+                        </div>
+                        <div class="h-56">
                             <canvas id="engagementChartOverview"></canvas>
                         </div>
                     </div>
 
-                    <!-- Bento Card Right: Live Visitor Intelligence Preview -->
-                    <div class="bento-card card-live-intel">
-                        <div class="card-top-bar">
-                            <div class="card-heading">
-                                <span class="card-icon">👥</span>
-                                <div>
-                                    <h3>Live Visitor Intelligence</h3>
-                                    <p>Recent client sessions &amp; traffic channels</p>
-                                </div>
+                    <!-- Recent Intel Stream -->
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle flex flex-col">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <h4 class="text-xs font-semibold text-zinc-900">Live Visitor Stream</h4>
+                                <p class="text-[11px] text-zinc-400">Recent client sessions &amp; traffic channels</p>
                             </div>
-                            <button type="button" class="btn-link-action" data-tab-switch="tabLiveLogs">View All ➔</button>
+                            <button type="button" class="text-xs font-medium text-indigo-600 hover:text-indigo-800" data-tab-switch="tabLiveLogs">View All ➔</button>
                         </div>
-                        <div class="table-micro-scroll">
-                            <table class="micro-intel-table">
+                        <div class="overflow-x-auto flex-1">
+                            <table class="w-full text-left text-xs">
                                 <thead>
-                                    <tr>
-                                        <th>Timestamp</th>
-                                        <th>Traffic Channel</th>
-                                        <th>Location</th>
-                                        <th>Action Intent</th>
+                                    <tr class="border-b border-zinc-100 text-[11px] text-zinc-400 uppercase font-medium">
+                                        <th class="py-2 pr-3">Timestamp</th>
+                                        <th class="py-2 px-3">Channel</th>
+                                        <th class="py-2 px-3">Location</th>
+                                        <th class="py-2 pl-3">Action Intent</th>
                                     </tr>
                                 </thead>
-                                <tbody id="microIntelTableBody">
+                                <tbody id="microIntelTableBody" class="divide-y divide-zinc-50 font-sans">
                                     <!-- Dynamic rows -->
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </section>
+
+                </div>
+
             </div>
 
-            <!-- TAB PANE 2: LIVE ACTIVE USERS (Dedicated Realtime Online Radar) -->
-            <div class="admin-tab-pane" id="tabActiveUsers" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon: Online, Today, Yesterday, 1 Month & All-Time Total -->
-                <section class="tab-mini-kpi-ribbon">
-                    <div class="mini-kpi-card">
-                        <div class="m-label">CURRENT ACTIVE ON SITE</div>
-                        <div class="m-val text-green" id="activeUsersCountLive">0 Online Now</div>
-                        <div class="m-sub">15s Live Radar Pulse</div>
+            <!-- ================================================================= -->
+            <!-- TAB PANE 2: LIVE ACTIVE USERS -->
+            <!-- ================================================================= -->
+            <div class="admin-tab-pane flex flex-col gap-5" id="tabActiveUsers" style="display: none;">
+                
+                <!-- Quick KPI Row -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Live Online</span>
+                        <div class="text-xl font-bold font-mono text-emerald-600 mt-1" id="activeUsersCountLive">0 Online Now</div>
+                        <span class="text-[11px] text-zinc-400">15s Live Radar Pulse</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">TODAY'S VISITORS</div>
-                        <div class="m-val text-cyan" id="activeUsersTodayCount">-- Today</div>
-                        <div class="m-sub">Visitors Today (IST)</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Today's Total</span>
+                        <div class="text-xl font-bold font-mono text-zinc-900 mt-1" id="activeUsersTodayCount">-- Today</div>
+                        <span class="text-[11px] text-zinc-400">Unique visitors IST</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">YESTERDAY'S VISITORS</div>
-                        <div class="m-val text-amber" id="activeUsersYesterdayCount">-- Yesterday</div>
-                        <div class="m-sub">Previous Day Traffic</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Yesterday</span>
+                        <div class="text-xl font-bold font-mono text-zinc-700 mt-1" id="activeUsersYesterdayCount">-- Yesterday</div>
+                        <span class="text-[11px] text-zinc-400">Previous day total</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">THIS MONTH (1 MONTH)</div>
-                        <div class="m-val text-emerald" id="activeUsersMonthCount">-- Views</div>
-                        <div class="m-sub">Monthly Traffic Volume</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">This Month</span>
+                        <div class="text-xl font-bold font-mono text-zinc-900 mt-1" id="activeUsersMonthCount">-- Views</div>
+                        <span class="text-[11px] text-zinc-400">Monthly traffic volume</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">ALL-TIME TOTAL</div>
-                        <div class="m-val text-purple" id="activeUsersTotalCount">-- Total</div>
-                        <div class="m-sub">Strict Monotonic Counter</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">All-Time Cumulative</span>
+                        <div class="text-xl font-bold font-mono text-zinc-900 mt-1" id="activeUsersTotalCount">-- Total</div>
+                        <span class="text-[11px] text-zinc-400">Monotonic Counter</span>
                     </div>
-                </section>
+                </div>
 
-                <div class="data-table-container">
-                    <div class="table-toolbar">
-                        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                            <h4>🟢 Live Active Visitors Currently Browsing Website</h4>
-                            <span class="toolbar-stat-pill" id="activeUsersPill">Real-Time Heartbeat Radar</span>
-                            <span class="toolbar-stat-pill" style="border-color: #fde68a; background: #fffbeb; color: #b45309;" id="activeUsersTopDevice">📱 Mobile</span>
-                            <span class="toolbar-stat-pill" style="border-color: #a7f3d0; background: #ecfdf5; color: #059669;" id="activeUsersTopSection">🎯 Calculator</span>
+                <!-- Table Container -->
+                <div class="bg-white border border-zinc-200/80 rounded-xl shadow-subtle overflow-hidden">
+                    <div class="p-3.5 border-b border-zinc-200/80 flex flex-wrap items-center justify-between gap-3">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <h4 class="text-xs font-semibold text-zinc-900">Live Active Visitors Currently on Website</h4>
+                            <span class="px-2 py-0.5 text-[11px] font-medium bg-zinc-100 text-zinc-700 rounded-md border border-zinc-200" id="activeUsersPill">Real-Time Heartbeat</span>
+                            <span class="hidden sm:inline-flex px-2 py-0.5 text-[11px] font-medium bg-zinc-100 text-zinc-600 rounded-md" id="activeUsersTopDevice">📱 Mobile</span>
+                            <span class="hidden sm:inline-flex px-2 py-0.5 text-[11px] font-medium bg-zinc-100 text-zinc-600 rounded-md" id="activeUsersTopSection">🎯 Calculator</span>
                         </div>
-                        <div style="display: flex; gap: 8px; align-items: center;">
-                            <button type="button" class="ctrl-btn btn-sync" id="gotoVisitorHistoryBtn" style="background: #eff6ff; border: 1px solid #bae6fd; color: #0284c7; padding: 6px 14px; border-radius: 6px; font-size: 0.80rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;" title="View all historical visits and use advanced filters">
-                                <span>📜 View Full Visitor History &amp; Filters ➔</span>
-                            </button>
-                        </div>
+                        <button type="button" class="px-3 py-1 text-xs font-medium bg-zinc-900 text-white rounded-lg hover:bg-zinc-800 transition-colors" id="gotoVisitorHistoryBtn">
+                            View Full Visitor History &amp; Filters ➔
+                        </button>
                     </div>
 
-                    <div class="mobile-table-swipe-cue">
-                        <span>👈 Swipe table to inspect all columns 👉</span>
-                    </div>
-
-                    <div class="table-scroll-wrap">
-                        <table class="enterprise-table">
-                            <thead>
+                    <div class="overflow-x-auto relative max-h-[600px]">
+                        <table class="w-full text-left text-xs enterprise-table">
+                            <thead class="sticky top-0 bg-zinc-50/95 backdrop-blur-xs border-b border-zinc-200 text-zinc-500 font-semibold uppercase text-[11px] tracking-wider z-10">
                                 <tr>
-                                    <th>Status &amp; Heartbeat</th>
-                                    <th>Device / Hardware</th>
-                                    <th>Detected District &amp; State</th>
-                                    <th>Current Page Section</th>
-                                    <th>Traffic Channel</th>
-                                    <th>Session Duration</th>
-                                    <th>Connected Since (IST)</th>
+                                    <th class="px-4 py-3">Status</th>
+                                    <th class="px-4 py-3">Device / Hardware</th>
+                                    <th class="px-4 py-3">Location</th>
+                                    <th class="px-4 py-3">Page Section</th>
+                                    <th class="px-4 py-3">Traffic Channel</th>
+                                    <th class="px-4 py-3">Duration</th>
+                                    <th class="px-4 py-3">Connected Since</th>
                                 </tr>
                             </thead>
-                            <tbody id="activeUsersTableBody">
-                                <!-- Populated dynamically from Firebase /active_presence & /visitor_sessions -->
+                            <tbody id="activeUsersTableBody" class="divide-y divide-zinc-100 bg-white font-sans">
+                                <!-- Dynamic rows -->
                             </tbody>
                         </table>
                     </div>
                 </div>
+
             </div>
 
-            <!-- TAB PANE 3: VISITOR & IP LOGS -->
-            <div class="admin-tab-pane" id="tabLiveLogs" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon: Today, Month, Year, Online & All-Time Counters -->
-                <section class="tab-mini-kpi-ribbon">
-                    <div class="mini-kpi-card">
-                        <div class="m-label">CURRENT ONLINE NOW</div>
-                        <div class="m-val text-green" id="liveLogsActiveCount">1 Online</div>
-                        <div class="m-sub">15s Live Radar Pulse</div>
+            <!-- ================================================================= -->
+            <!-- TAB PANE 3: VISITOR & IP LOGS (REQUIREMENTS 3 & 4) -->
+            <!-- ================================================================= -->
+            <div class="admin-tab-pane flex flex-col gap-4" id="tabLiveLogs" style="display: none;">
+                
+                <!-- Live Logs Mini KPI Ribbon -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Live Online</span>
+                        <div class="text-base font-bold font-mono text-emerald-600 mt-0.5" id="liveLogsActiveCount">1 Online</div>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">TODAY'S VISITORS</div>
-                        <div class="m-val text-cyan" id="liveLogsTodayCount">-- Today</div>
-                        <div class="m-sub">Visitors Today (IST)</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Today</span>
+                        <div class="text-base font-bold font-mono text-zinc-900 mt-0.5" id="liveLogsTodayCount">-- Today</div>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">THIS MONTH</div>
-                        <div class="m-val text-emerald" id="liveLogsMonthCount">142 Views</div>
-                        <div class="m-sub">Monthly Traffic Volume</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">This Month</span>
+                        <div class="text-base font-bold font-mono text-zinc-900 mt-0.5" id="liveLogsMonthCount">-- Views</div>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">THIS YEAR (2026)</div>
-                        <div class="m-val text-purple" id="liveLogsYearCount">1,034 Sessions</div>
-                        <div class="m-sub">Annual Cumulative Visitors</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Annual</span>
+                        <div class="text-base font-bold font-mono text-zinc-900 mt-0.5" id="liveLogsYearCount">-- Sessions</div>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">ALL-TIME CUMULATIVE</div>
-                        <div class="m-val text-amber" id="liveLogsTotalCount">1,034+ Total</div>
-                        <div class="m-sub">Strict Monotonic Counter</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">All-Time Total</span>
+                        <div class="text-base font-bold font-mono text-zinc-900 mt-0.5" id="liveLogsTotalCount">1,034 Total</div>
                     </div>
-                </section>
-
-                <!-- Comprehensive Visitor Intelligence Filter Suite -->
-                <div class="visitor-filter-panel" id="visitorFilterConsole">
-                    <div class="v-filter-header">
-                        <div class="v-filter-title-group">
-                            <h4>⚡ Visitor Intelligence &amp; Session Audit Filters</h4>
-                            <p>Filter real-time and historical sessions by date range, online status, device category, or district</p>
-                        </div>
-                        <div class="v-preset-buttons-wrap">
-                            <button type="button" class="v-preset-btn active" data-range="all">All Time (முழு வரலாறு)</button>
-                            <button type="button" class="v-preset-btn" data-range="today">📅 Today</button>
-                            <button type="button" class="v-preset-btn" data-range="yesterday">Yesterday</button>
-                            <button type="button" class="v-preset-btn" data-range="last7">Last 7 Days</button>
-                            <button type="button" class="v-preset-btn" data-range="month">🗓️ This Month</button>
-                            <button type="button" class="v-preset-btn" data-range="year">📆 This Year</button>
-                        </div>
-                    </div>
-
-                    <div class="v-filter-row">
-                        <!-- Time Window Preset -->
-                        <div class="v-filter-group">
-                            <label for="visitorDatePresetSelect">Time Window</label>
-                            <select id="visitorDatePresetSelect" class="v-filter-select">
-                                <option value="all" selected>All Time (முழு வரலாறு)</option>
-                                <option value="today">📅 Today (இன்று)</option>
-                                <option value="yesterday">Yesterday (நேற்று)</option>
-                                <option value="last7">Last 7 Days (கடந்த 7 நாட்கள்)</option>
-                                <option value="month">🗓️ This Month (இந்த மாதம்)</option>
-                                <option value="year">📆 This Year (இந்த ஆண்டு)</option>
-                                <option value="custom">Custom Date Range...</option>
-                            </select>
-                        </div>
-
-                        <!-- Custom Date Range (hidden by default) -->
-                        <div class="v-filter-group" id="visitorCustomDateFromWrap" style="display: none;">
-                            <label for="visitorDateFrom">From Date</label>
-                            <input type="date" id="visitorDateFrom" class="v-filter-date">
-                        </div>
-                        <div class="v-filter-group" id="visitorCustomDateToWrap" style="display: none;">
-                            <label for="visitorDateTo">To Date</label>
-                            <input type="date" id="visitorDateTo" class="v-filter-date">
-                        </div>
-
-                        <!-- Online Status Filter -->
-                        <div class="v-filter-group">
-                            <label for="visitorStatusFilter">Online Status</label>
-                            <select id="visitorStatusFilter" class="v-filter-select">
-                                <option value="all" selected>All Sessions (அனைத்தும்)</option>
-                                <option value="online">🟢 Currently Online Only (ஆன்லைன் மட்டும்)</option>
-                                <option value="offline">⚪ Past / Offline Sessions</option>
-                            </select>
-                        </div>
-
-                        <!-- Device Filter -->
-                        <div class="v-filter-group">
-                            <label for="visitorDeviceFilter">Device Category</label>
-                            <select id="visitorDeviceFilter" class="v-filter-select">
-                                <option value="all" selected>All Devices (அனைத்து சாதனங்கள்)</option>
-                                <option value="mobile">📱 Mobile (Android &amp; iOS)</option>
-                                <option value="desktop">💻 Desktop / PC</option>
-                                <option value="pwa">📲 PWA Mobile App</option>
-                            </select>
-                        </div>
-
-                        <!-- District / Location Filter -->
-                        <div class="v-filter-group">
-                            <label for="visitorDistrictFilter">District / Region</label>
-                            <select id="visitorDistrictFilter" class="v-filter-select">
-                                <option value="all" selected>All Locations (அனைத்து இடங்கள்)</option>
-                                <option value="namakkal">Namakkal (HQ Hub)</option>
-                                <option value="salem">Salem</option>
-                                <option value="erode">Erode</option>
-                                <option value="karur">Karur</option>
-                                <option value="trichy">Tiruchirappalli</option>
-                                <option value="othertn">Other Tamil Nadu</option>
-                                <option value="global">Outside TN / Global NRI</option>
-                            </select>
-                        </div>
-
-                        <!-- Action / Intent Filter -->
-                        <div class="v-filter-group">
-                            <label for="visitorActionFilter">Visitor Action / Intent</label>
-                            <select id="visitorActionFilter" class="v-filter-select">
-                                <option value="all" selected>All Actions (அனைத்து செயல்பாடுகள்)</option>
-                                <option value="quote">💰 Quote Generated / Calculated</option>
-                                <option value="lead">📞 WhatsApp / Call Leads</option>
-                                <option value="pdf">📄 PDF / Image Export</option>
-                                <option value="engaged">🔍 Deep Page Engagements</option>
-                            </select>
-                        </div>
-
-                        <!-- Show Records (Page Size) -->
-                        <div class="v-filter-group">
-                            <label for="visitorPageSizeSelect">Display Records</label>
-                            <select id="visitorPageSizeSelect" class="v-filter-select">
-                                <option value="15">Show 15 per view</option>
-                                <option value="30" selected>Show 30 per view</option>
-                                <option value="50">Show 50 per view</option>
-                                <option value="100">Show 100 per view</option>
-                                <option value="all">All History (முழு வரலாறு)</option>
-                            </select>
-                        </div>
-
-                        <!-- Filter Action Buttons -->
-                        <div class="v-filter-actions">
-                            <button type="button" class="btn-v-apply" id="visitorApplyFilterBtn">
-                                <span>⚡ Apply Filters</span>
-                            </button>
-                            <button type="button" class="btn-v-reset" id="visitorResetFilterBtn" title="Reset all filters">
-                                <span>🔄 Reset</span>
-                            </button>
-                            <button type="button" class="btn-v-loadall" id="visitorLoadAllBtn" title="Load entire visitor history without limits">
-                                <span>📥 Load Full History</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Active Filter Summary & Export Strip -->
-                    <div class="v-filter-summary-strip">
-                        <div class="v-summary-left">
-                            <span class="v-summary-pill" id="visitorFilterSummaryPill">Showing All-Time Visitor History</span>
-                        </div>
-                        <div class="v-summary-right">
-                            <button type="button" class="btn-v-export" id="visitorExportCsvBtn" title="Export current filtered sessions as CSV">
-                                <span>📊 Export Filtered CSV</span>
-                            </button>
-                        </div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Leads &amp; WhatsApp</span>
+                        <div class="text-base font-bold font-mono text-emerald-700 mt-0.5" id="liveLogsLeadsCount">31 Leads</div>
                     </div>
                 </div>
-
-                <div class="data-table-container">
-                    <div class="table-toolbar">
-                        <div class="search-input-box">
-                            <span class="search-ico">🔍</span>
-                            <input type="text" id="telemetrySearchInput" placeholder="Filter by IP, District, Device, Browser, Channel, or Action...">
-                        </div>
-                        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                            <button type="button" id="toggleAllIpsBtn" style="background: #eff6ff; border: 1px solid #bae6fd; color: #0284c7; padding: 6px 12px; border-radius: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;" title="Reveal all unmasked client IP addresses">
-                                <span class="eye-ico">👁️</span> <span>Reveal All IPs</span>
-                            </button>
-                            <div class="toolbar-stat-pill" id="telemetryCountPill">
-                                Showing Real-Time Live Sessions (Scroll to load more)
-                            </div>
-                        </div>
+                
+                <!-- REQUIREMENT 3: Streamlined Single-Row Action Toolbar -->
+                <div class="bg-white border border-zinc-200/80 rounded-xl p-3 shadow-subtle flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3" id="visitorFilterConsole">
+                    
+                    <!-- Left: Global Search Input (⌘K Style) -->
+                    <div class="relative flex-1 max-w-md">
+                        <svg class="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" 
+                               id="telemetrySearchInput" 
+                               class="w-full pl-9 pr-12 py-1.5 text-xs bg-zinc-50/80 border border-zinc-200 rounded-lg text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 transition-all font-sans" 
+                               placeholder="Search IP, location, device... ⌘K">
+                        <kbd class="hidden sm:inline-flex items-center absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] font-mono text-zinc-400 bg-zinc-100 border border-zinc-200 rounded px-1.5 py-0.5">⌘K</kbd>
                     </div>
 
-                    <div class="mobile-table-swipe-cue">
-                        <span>👈 Swipe table to inspect all columns 👉</span>
+                    <!-- Center: Quick Date Range Segmented Control (Today | 7D | 30D | All) -->
+                    <div class="inline-flex items-center p-0.5 bg-zinc-100 rounded-lg border border-zinc-200/60 overflow-x-auto">
+                        <button type="button" class="v-preset-btn active px-2.5 py-1 text-xs font-semibold bg-white text-zinc-900 shadow-xs rounded-md transition-all" data-range="all">All</button>
+                        <button type="button" class="v-preset-btn px-2.5 py-1 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-md transition-all" data-range="today">Today</button>
+                        <button type="button" class="v-preset-btn px-2.5 py-1 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-md transition-all" data-range="yesterday">Yesterday</button>
+                        <button type="button" class="v-preset-btn px-2.5 py-1 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-md transition-all" data-range="last7">7D</button>
+                        <button type="button" class="v-preset-btn px-2.5 py-1 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-md transition-all" data-range="month">Month</button>
+                        <button type="button" class="v-preset-btn px-2.5 py-1 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-md transition-all" data-range="year">Year</button>
                     </div>
 
-                    <div class="table-scroll-wrap" id="telemetryTableScrollWrap">
-                        <table class="enterprise-table">
-                            <thead>
+                    <!-- Right: Secondary Filters & Action Buttons -->
+                    <div class="flex items-center gap-2 flex-wrap">
+                        
+                        <!-- Status Select -->
+                        <select id="visitorStatusFilter" class="h-8 text-xs bg-white border border-zinc-200 rounded-lg px-2 text-zinc-700 font-medium hover:bg-zinc-50 focus:outline-none focus:ring-1 focus:ring-zinc-400">
+                            <option value="all" selected>All Statuses</option>
+                            <option value="online">🟢 Online Only</option>
+                            <option value="offline">⚪ Offline</option>
+                        </select>
+
+                        <!-- District Select -->
+                        <select id="visitorDistrictFilter" class="h-8 text-xs bg-white border border-zinc-200 rounded-lg px-2 text-zinc-700 font-medium hover:bg-zinc-50 focus:outline-none focus:ring-1 focus:ring-zinc-400">
+                            <option value="all" selected>All Districts</option>
+                            <option value="namakkal">Namakkal</option>
+                            <option value="salem">Salem</option>
+                            <option value="erode">Erode</option>
+                            <option value="karur">Karur</option>
+                            <option value="trichy">Tiruchirappalli</option>
+                            <option value="othertn">Other TN</option>
+                            <option value="global">Outside TN / NRI</option>
+                        </select>
+
+                        <!-- Device Select -->
+                        <select id="visitorDeviceFilter" class="h-8 text-xs bg-white border border-zinc-200 rounded-lg px-2 text-zinc-700 font-medium hover:bg-zinc-50 focus:outline-none focus:ring-1 focus:ring-zinc-400">
+                            <option value="all" selected>All Devices</option>
+                            <option value="mobile">📱 Mobile</option>
+                            <option value="desktop">💻 Desktop</option>
+                        </select>
+
+                        <!-- Reveal IP Toggle Button -->
+                        <button type="button" 
+                                id="toggleAllIpsBtn" 
+                                class="h-8 px-2.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 border border-zinc-200 rounded-lg transition-colors inline-flex items-center gap-1.5" 
+                                title="Toggle reveal unmasked client IP addresses">
+                            <span>👁️</span> 
+                            <span class="hidden sm:inline">Reveal IPs</span>
+                        </button>
+
+                        <!-- Reset Ghost Button -->
+                        <button type="button" 
+                                class="h-8 px-2.5 text-xs font-medium text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 rounded-lg transition-colors inline-flex items-center gap-1" 
+                                id="visitorResetFilterBtn" 
+                                title="Reset all filters">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                            <span>Reset</span>
+                        </button>
+
+                        <!-- Export CSV Primary Button -->
+                        <button type="button" 
+                                class="h-8 px-3 text-xs font-medium text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg shadow-subtle transition-colors inline-flex items-center gap-1.5" 
+                                id="visitorExportCsvBtn" 
+                                title="Export current filtered sessions as CSV">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span>Export CSV</span>
+                        </button>
+
+                    </div>
+
+                    <!-- Hidden Inputs & Selects to preserve complete JS compatibility -->
+                    <div style="display: none;">
+                        <select id="visitorDatePresetSelect"><option value="all">all</option></select>
+                        <div id="visitorCustomDateFromWrap"><input type="date" id="visitorDateFrom"></div>
+                        <div id="visitorCustomDateToWrap"><input type="date" id="visitorDateTo"></div>
+                        <select id="visitorActionFilter"><option value="all">all</option></select>
+                        <select id="visitorPageSizeSelect"><option value="all">all</option></select>
+                        <button type="button" id="visitorApplyFilterBtn"></button>
+                        <button type="button" id="visitorLoadAllBtn"></button>
+                        <span id="visitorFilterSummaryPill"></span>
+                    </div>
+
+                </div>
+
+                <!-- Active Filter Summary & Result Count -->
+                <div class="flex items-center justify-between text-xs text-zinc-500 px-1">
+                    <span id="telemetryCountPill">Showing real-time sessions</span>
+                    <span class="text-[11px] text-zinc-400 font-mono">100% Real Firebase RTDB Nodes</span>
+                </div>
+
+                <!-- REQUIREMENT 4: Telemetry Data Table (TanStack / Shadcn Table Styling) -->
+                <div class="w-full overflow-hidden border border-zinc-200/80 rounded-xl bg-white shadow-subtle">
+                    <div class="overflow-x-auto relative max-h-[640px]" id="telemetryTableScrollWrap">
+                        <table class="w-full text-left text-xs enterprise-table">
+                            <thead class="sticky top-0 z-10 bg-zinc-50/95 backdrop-blur-xs border-b border-zinc-200 text-zinc-500 font-semibold uppercase text-[11px] tracking-wider">
                                 <tr>
-                                    <th>Timestamp (IST)</th>
-                                    <th>Client IP / Session</th>
-                                    <th>Detected District</th>
-                                    <th>State / Country</th>
-                                    <th>Traffic Channel / Link Source</th>
-                                    <th>Device / Hardware</th>
-                                    <th>Browser Engine</th>
-                                    <th>Duration</th>
-                                    <th>Last Action &amp; Intent</th>
-                                    <th>Lead Status</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Timestamp</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Client IP / Session</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">District</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">State</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Channel</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Device</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Browser</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Duration</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Action Intent</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Lead Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="telemetryTableBody">
-                                <!-- Populated dynamically by admin.js -->
+                            <tbody id="telemetryTableBody" class="divide-y divide-zinc-100 bg-white font-sans">
+                                <!-- Populated dynamically by admin.js with TanStack/Shadcn row styling -->
                             </tbody>
                         </table>
                     </div>
-                    <div class="table-load-more-bar" id="telemetryLoadMoreBar" style="display: none;">
-                        <button type="button" class="btn-table-load-more" id="telemetryLoadMoreBtn">
-                            <span class="btn-icon">📥</span>
-                            <span class="btn-text" id="telemetryLoadMoreBtnText">Load More Sessions (மேலும் அமர்வுகளைக் காட்டு)</span>
+                    
+                    <!-- Load More Bar -->
+                    <div class="p-3 border-t border-zinc-100 bg-zinc-50/50 flex items-center justify-center" id="telemetryLoadMoreBar" style="display: none;">
+                        <button type="button" 
+                                class="px-4 py-1.5 text-xs font-medium text-zinc-700 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-50 shadow-subtle transition-all" 
+                                id="telemetryLoadMoreBtn">
+                            <span id="telemetryLoadMoreBtnText">Load More Sessions</span>
                         </button>
                     </div>
                 </div>
+
             </div>
 
+            <!-- ================================================================= -->
             <!-- TAB PANE 4: BOREWELL QUOTES LOG -->
-            <div class="admin-tab-pane" id="tabEstimatesLog" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon (Updated with Saved Count & WhatsApp Count) -->
-                <section class="tab-mini-kpi-ribbon">
-                    <div class="mini-kpi-card">
-                        <div class="m-label">TOTAL QUOTES COMPUTED</div>
-                        <div class="m-val text-amber" id="quotesTotalCount">72 Quotes</div>
-                        <div class="m-sub">Interactive Calculator Flow</div>
+            <!-- ================================================================= -->
+            <div class="admin-tab-pane flex flex-col gap-4" id="tabEstimatesLog" style="display: none;">
+                
+                <!-- Quotes Mini KPI Ribbon -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Total Computed</span>
+                        <div class="text-xl font-bold font-mono text-zinc-900 mt-1" id="quotesTotalCount">72 Quotes</div>
+                        <span class="text-[11px] text-zinc-400">Interactive estimator</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">SAVED QUOTES (PDF)</div>
-                        <div class="m-val text-cyan" id="quotesSavedCount">48 Saved</div>
-                        <div class="m-sub">Downloaded / Saved Offline</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Saved Quotes (PDF)</span>
+                        <div class="text-xl font-bold font-mono text-sky-600 mt-1" id="quotesSavedCount">48 Saved</div>
+                        <span class="text-[11px] text-zinc-400">Downloaded offline</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">WHATSAPP LEADS &amp; INQUIRIES</div>
-                        <div class="m-val text-green" id="quotesWhatsAppCount">24 Leads</div>
-                        <div class="m-sub">Direct WhatsApp Submissions</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">WhatsApp Leads</span>
+                        <div class="text-xl font-bold font-mono text-emerald-600 mt-1" id="quotesWhatsAppCount">24 Leads</div>
+                        <span class="text-[11px] text-zinc-400">Direct booking requests</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">ESTIMATED PIPELINE VALUE</div>
-                        <div class="m-val text-emerald" id="quotesPipelineValue">₹78.4 Lakhs</div>
-                        <div class="m-sub">Cumulative Quoted Value</div>
-                    </div>
-                </section>
-
-                <!-- Dedicated Date Filter & Range Filtering Suite for Quotes -->
-                <div class="quotes-filter-panel">
-                    <div class="q-filter-row">
-                        <div class="q-filter-group">
-                            <label for="quotesDatePresetSelect">📅 Date Preset</label>
-                            <select id="quotesDatePresetSelect" class="q-filter-select">
-                                <option value="all">All-Time Cumulative</option>
-                                <option value="today">Today</option>
-                                <option value="yesterday">Yesterday</option>
-                                <option value="week">Last 7 Days</option>
-                                <option value="month">This Month</option>
-                                <option value="custom">Custom Date Range...</option>
-                            </select>
-                        </div>
-                        <div class="q-filter-group" id="quotesDateFromGroup">
-                            <label for="quotesDateFrom">From Date</label>
-                            <input type="date" id="quotesDateFrom" class="q-filter-date">
-                        </div>
-                        <div class="q-filter-group" id="quotesDateToGroup">
-                            <label for="quotesDateTo">To Date</label>
-                            <input type="date" id="quotesDateTo" class="q-filter-date">
-                        </div>
-                        <div class="q-filter-group">
-                            <label for="quotesTypeFilter">⚡ Action / Type</label>
-                            <select id="quotesTypeFilter" class="q-filter-select">
-                                <option value="all">All (Saved + WhatsApp)</option>
-                                <option value="saved">📥 Saved / PDF Download</option>
-                                <option value="whatsapp">💬 WhatsApp Lead</option>
-                            </select>
-                        </div>
-                        <div class="q-filter-actions">
-                            <button type="button" id="quotesApplyFilterBtn" class="btn-q-filter btn-q-apply">🔍 Apply Filter</button>
-                            <button type="button" id="quotesResetFilterBtn" class="btn-q-filter btn-q-reset">↺ Reset</button>
-                        </div>
-                    </div>
-
-                    <!-- Filter Status & Overall Count Banner -->
-                    <div class="quotes-count-summary-strip">
-                        <div class="q-count-badge">
-                            <span class="q-badge-dot"></span>
-                            <span id="quotesFilterStatusText">Showing <strong>72</strong> of <strong>72</strong> Total Quotes (All-Time Overall Count)</span>
-                        </div>
-                        <div class="q-count-breakdown">
-                            <span class="q-chip chip-saved" id="quotesChipSaved">📥 <strong>48</strong> Saved</span>
-                            <span class="q-chip chip-wa" id="quotesChipWa">💬 <strong>24</strong> WhatsApp</span>
-                            <span class="q-chip chip-val" id="quotesChipVal">💎 <strong>₹78.4L</strong> Pipeline</span>
-                        </div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Pipeline Value</span>
+                        <div class="text-xl font-bold font-mono text-indigo-600 mt-1" id="quotesPipelineValue">₹78.4 Lakhs</div>
+                        <span class="text-[11px] text-zinc-400">Cumulative estimated cost</span>
                     </div>
                 </div>
 
-                <div class="data-table-container">
-                    <div class="table-toolbar">
-                        <div class="search-input-box" style="flex: 1; max-width: 450px;">
-                            <span class="search-ico">🔍</span>
-                            <input type="text" id="quotesSearchInput" placeholder="Filter quotes by Mobile, Depth, Casing, Cost, or District...">
-                        </div>
-                        <span class="toolbar-stat-pill" id="quotesCountPill">Showing Real-Time Depth Logs</span>
+                <!-- Quotes Action Toolbar -->
+                <div class="bg-white border border-zinc-200/80 rounded-xl p-3 shadow-subtle flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
+                    <div class="relative flex-1 max-w-md">
+                        <svg class="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" 
+                               id="quotesSearchInput" 
+                               class="w-full pl-9 pr-4 py-1.5 text-xs bg-zinc-50/80 border border-zinc-200 rounded-lg text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 transition-all font-sans" 
+                               placeholder="Filter quotes by Mobile, Depth, Casing, Cost...">
                     </div>
 
-                    <div class="mobile-table-swipe-cue">
-                        <span>👈 Swipe table to inspect all columns 👉</span>
-                    </div>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <select id="quotesDatePresetSelect" class="h-8 text-xs bg-white border border-zinc-200 rounded-lg px-2 text-zinc-700 font-medium hover:bg-zinc-50">
+                            <option value="all">All-Time Cumulative</option>
+                            <option value="today">Today</option>
+                            <option value="yesterday">Yesterday</option>
+                            <option value="week">Last 7 Days</option>
+                            <option value="month">This Month</option>
+                            <option value="custom">Custom Date Range...</option>
+                        </select>
 
-                    <div class="table-scroll-wrap" id="estimatesTableScrollWrap">
-                        <table class="enterprise-table">
-                            <thead>
-                                <tr>
-                                    <th>Date &amp; Time (IST)</th>
-                                    <th>Customer WhatsApp Mobile</th>
-                                    <th>Total Depth &amp; Type</th>
-                                    <th>Base Rate</th>
-                                    <th>Old Bore (ft)</th>
-                                    <th>Casing Pipe Size</th>
-                                    <th>Total Estimated Cost</th>
-                                    <th>Client District</th>
-                                    <th>Quotation Status</th>
-                                </tr>
-                            </thead>
-                            <tbody id="estimatesTableBody">
-                                <!-- Populated dynamically with infinite scroll -->
-                            </tbody>
-                        </table>
-                        <div class="scroll-lazy-loader" id="estimatesLazyLoader" style="display: none;">
-                            <span class="loader-spinner">🔄</span>
-                            <span>Loading more quotation records...</span>
+                        <div id="quotesDateFromGroup" style="display: none;">
+                            <input type="date" id="quotesDateFrom" class="h-8 text-xs bg-white border border-zinc-200 rounded-lg px-2 text-zinc-700">
                         </div>
+                        <div id="quotesDateToGroup" style="display: none;">
+                            <input type="date" id="quotesDateTo" class="h-8 text-xs bg-white border border-zinc-200 rounded-lg px-2 text-zinc-700">
+                        </div>
+
+                        <select id="quotesTypeFilter" class="h-8 text-xs bg-white border border-zinc-200 rounded-lg px-2 text-zinc-700 font-medium hover:bg-zinc-50">
+                            <option value="all">All (Saved + WhatsApp)</option>
+                            <option value="saved">📥 Saved / PDF</option>
+                            <option value="whatsapp">💬 WhatsApp Lead</option>
+                        </select>
+
+                        <button type="button" id="quotesApplyFilterBtn" class="h-8 px-2.5 text-xs font-medium text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg transition-colors">Filter</button>
+                        <button type="button" id="quotesResetFilterBtn" class="h-8 px-2.5 text-xs font-medium text-zinc-500 hover:text-zinc-800 hover:bg-zinc-100 rounded-lg transition-colors">Reset</button>
                     </div>
                 </div>
-            </div>
 
-            <!-- TAB PANE: CUMULATIVE PAGES & SECTION FILTER ANALYTICS -->
-            <div class="admin-tab-pane" id="tabCumulativePages" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon -->
-                <section class="tab-mini-kpi-ribbon">
-                    <div class="mini-kpi-card">
-                        <div class="m-label">ALL-TIME CUMULATIVE VIEWS</div>
-                        <div class="m-val text-cyan" id="cumulPagesTotalViews">507+</div>
-                        <div class="m-sub">Strict Monotonic Counter</div>
+                <!-- Quotes Summary Strip -->
+                <div class="flex items-center justify-between text-xs text-zinc-500 px-1">
+                    <span id="quotesFilterStatusText">Showing all quotes</span>
+                    <div class="flex items-center gap-3">
+                        <span id="quotesChipSaved" class="font-medium text-sky-700">📥 48 Saved</span>
+                        <span id="quotesChipWa" class="font-medium text-emerald-700">💬 24 WhatsApp</span>
+                        <span id="quotesChipVal" class="font-medium text-indigo-700">₹78.4L Pipeline</span>
+                        <span id="quotesCountPill" class="text-zinc-400"></span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">ACTIVE FILTERED TRAFFIC</div>
-                        <div class="m-val text-emerald" id="cumulPagesFilteredViews">507 (100%)</div>
-                        <div class="m-sub">Matches Selected Scope</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">FILTERED ACTION CONVERSIONS</div>
-                        <div class="m-val text-amber" id="cumulPagesFilteredConversions">103 Actions</div>
-                        <div class="m-sub">Quotes, Calls, WhatsApp</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">TOP ENGAGEMENT SECTION</div>
-                        <div class="m-val text-rose" id="cumulPagesTopSection">Cost Calculator</div>
-                        <div class="m-sub">78.2% Interactivity Share</div>
-                    </div>
-                </section>
+                </div>
 
-                <!-- Filter Controls Bar -->
-                <div class="data-table-container">
-                    <div class="table-toolbar table-toolbar-filters">
-                        <div class="filter-header-title">
-                            <h4>📈 Cumulative Page &amp; Section Intelligence</h4>
-                            <p class="filter-subtitle">Filter cumulative visitor traffic by time window, device category, or specific page module</p>
-                        </div>
-                        <div class="filter-controls-wrap">
-                            <div class="filter-group">
-                                <label for="cumulTimeFilter">📅 Timeframe:</label>
-                                <select id="cumulTimeFilter" class="admin-select-ctrl">
-                                    <option value="all" selected>All-Time (Cumulative Total)</option>
-                                    <option value="month">This Month (Sep 2026)</option>
-                                    <option value="week">Last 7 Days (Weekly)</option>
-                                    <option value="today">Today (Realtime 24h)</option>
-                                </select>
-                            </div>
-                            <div class="filter-group">
-                                <label for="cumulDeviceFilter">📱 Platform:</label>
-                                <select id="cumulDeviceFilter" class="admin-select-ctrl">
-                                    <option value="all" selected>All Platforms (Mobile + PC)</option>
-                                    <option value="mobile">Mobile Devices (Android &amp; iOS)</option>
-                                    <option value="desktop">Desktop &amp; Laptop</option>
-                                </select>
-                            </div>
-                            <div class="filter-group">
-                                <label for="cumulSectionFilter">📑 Section Scope:</label>
-                                <select id="cumulSectionFilter" class="admin-select-ctrl">
-                                    <option value="all" selected>All Website Sections (Summary)</option>
-                                    <option value="hero">Hero Banner &amp; Quick Contact</option>
-                                    <option value="slogan">Thiruvalluvar Slogan ("நீரின்றி அமையாது உலகு")</option>
-                                    <option value="calculator">Cost Calculator (Slabs &amp; Depth)</option>
-                                    <option value="services">Borewell Service Categories</option>
-                                    <option value="gallery">Rig Fleet &amp; Sensor Scanning Gallery</option>
-                                    <option value="reviews">Google Reviews (4.9 ★ 312+)</option>
-                                    <option value="contact">Hotline &amp; WhatsApp Booking</option>
-                                    <option value="admin">Enterprise Admin Command Center</option>
-                                </select>
-                            </div>
-                            <div class="filter-search-box">
-                                <input type="text" id="cumulSearchInput" placeholder="🔍 Search section or feature..." class="admin-search-input">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Filtered Interactive Breakdown Table -->
-                    <div class="mobile-table-swipe-cue">
-                        <span>👈 Swipe table to inspect all columns 👉</span>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="enterprise-data-table">
-                            <thead>
+                <!-- Quotes Table Container -->
+                <div class="w-full overflow-hidden border border-zinc-200/80 rounded-xl bg-white shadow-subtle">
+                    <div class="overflow-x-auto relative max-h-[640px]" id="estimatesTableScrollWrap">
+                        <table class="w-full text-left text-xs enterprise-table">
+                            <thead class="sticky top-0 z-10 bg-zinc-50/95 backdrop-blur-xs border-b border-zinc-200 text-zinc-500 font-semibold uppercase text-[11px] tracking-wider">
                                 <tr>
-                                    <th># Rank</th>
-                                    <th>Page Module / Section</th>
-                                    <th>Cumulative Impressions</th>
-                                    <th>Unique Visitors</th>
-                                    <th>Avg Dwell Time</th>
-                                    <th>Direct Actions</th>
-                                    <th>Conversion Rate</th>
-                                    <th>Traffic Share %</th>
-                                    <th>Status</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Date &amp; Time</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Customer Mobile</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Total Depth</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Base Rate</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Old Bore</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Casing Pipe</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Estimated Cost</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">District</th>
+                                    <th class="px-4 py-3 whitespace-nowrap">Status</th>
                                 </tr>
                             </thead>
-                            <tbody id="cumulPagesTableBody">
+                            <tbody id="estimatesTableBody" class="divide-y divide-zinc-100 bg-white font-sans">
                                 <!-- Populated dynamically by admin.js -->
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-
-            <!-- TAB PANE 4: TERRITORY & GEO MAP (100% Real Live Distribution) -->
-            <div class="admin-tab-pane" id="tabGeoBreakdown" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon -->
-                <section class="tab-mini-kpi-ribbon">
-                    <div class="mini-kpi-card">
-                        <div class="m-label">PRIMARY DRILLING ZONE</div>
-                        <div class="m-val text-emerald" id="geoPrimaryZone">Tamil Nadu (95%+)</div>
-                        <div class="m-sub">HQ &amp; Core Operational Hubs</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">TOP ACTIVE DISTRICT</div>
-                        <div class="m-val text-cyan" id="geoTopDistrict">Namakkal (HQ Hub)</div>
-                        <div class="m-sub">Highest Quote &amp; Call Inquiries</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">REGIONAL HUBS REACH</div>
-                        <div class="m-val text-amber" id="geoTotalDistrictsCount">38 Districts &amp; Metros</div>
-                        <div class="m-sub">Active Real-Time Telemetry</div>
-                    </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">GLOBAL NRI INQUIRIES</div>
-                        <div class="m-val text-purple" id="geoNriShare">Active Cloud Feed</div>
-                        <div class="m-sub">US, Gulf, Singapore &amp; SEA</div>
-                    </div>
-                </section>
-
-                <div class="geo-split-grid">
-                    <!-- Column 1: Tamil Nadu Core Operational Districts -->
-                    <div class="geo-panel geo-panel-primary">
-                        <div class="panel-header-flex">
-                            <div>
-                                <h4 style="display: flex; align-items: center; gap: 8px;">
-                                    <span style="font-size: 1.2rem;">🚜</span>
-                                    <span>Tamil Nadu Operational Districts</span>
-                                </h4>
-                                <small style="color: #64748b; font-size: 0.78rem;">Live district drilling demand, rig deployment priority &amp; traffic ranking</small>
-                            </div>
-                            <span class="geo-live-pill">🟢 Live Cloud Telemetry</span>
-                        </div>
-                        <div class="geo-territory-list" id="geoDistrictsList">
-                            <!-- Populated dynamically from Firebase /locations.json -->
-                        </div>
-                    </div>
-
-                    <!-- Column 2: Indian States & Global NRI Inquiries -->
-                    <div class="geo-panel-stack">
-                        <!-- Card A: Indian States & Metros -->
-                        <div class="geo-panel">
-                            <div class="panel-header-flex">
-                                <div>
-                                    <h4 style="display: flex; align-items: center; gap: 8px;">
-                                        <span style="font-size: 1.15rem;">🏛️</span>
-                                        <span>Indian States &amp; Metro Hubs</span>
-                                    </h4>
-                                    <small style="color: #64748b; font-size: 0.78rem;">Interstate farmer &amp; commercial borewell inquiries</small>
-                                </div>
-                                <span class="geo-live-pill" style="background: #fffbeb; border-color: #fde68a; color: #b45309;">All-India Telemetry</span>
-                            </div>
-                            <div class="geo-structured-list" id="geoStatesList">
-                                <!-- Populated dynamically from Firebase /states.json -->
-                            </div>
-                        </div>
-
-                        <!-- Card B: Global & NRI Traffic -->
-                        <div class="geo-panel">
-                            <div class="panel-header-flex">
-                                <div>
-                                    <h4 style="display: flex; align-items: center; gap: 8px;">
-                                        <span style="font-size: 1.15rem;">🌍</span>
-                                        <span>Global &amp; NRI Demand Radar</span>
-                                    </h4>
-                                    <small style="color: #64748b; font-size: 0.78rem;">International NRI inquiries for ancestral farmland drilling</small>
-                                </div>
-                                <span class="geo-live-pill" style="background: #f5f3ff; border-color: #ddd6fe; color: #7c3aed;">International Feed</span>
-                            </div>
-                            <div class="geo-structured-list" id="geoCountriesList">
-                                <!-- Populated dynamically from Firebase /countries.json -->
-                            </div>
-                        </div>
+                    <div class="p-3 border-t border-zinc-100 text-center text-xs text-zinc-400" id="estimatesLazyLoader" style="display: none;">
+                        Loading more quotation records...
                     </div>
                 </div>
+
             </div>
 
-            <!-- TAB PANE 8: SYSTEM ARCHITECTURE DOCS -->
-            <div class="admin-tab-pane" id="tabSystemDocs" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon -->
-                <section class="tab-mini-kpi-ribbon">
-                    <div class="mini-kpi-card">
-                        <div class="m-label">ENTERPRISE VERSION</div>
-                        <div class="m-val text-cyan">v3.7.0 Release</div>
-                        <div class="m-sub">Production Stable</div>
+            <!-- ================================================================= -->
+            <!-- TAB PANE 5: CUMULATIVE PAGES & SECTION FILTER ANALYTICS -->
+            <!-- ================================================================= -->
+            <div class="admin-tab-pane flex flex-col gap-4" id="tabCumulativePages" style="display: none;">
+                
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Total Views</span>
+                        <div class="text-xl font-bold font-mono text-zinc-900 mt-1" id="cumulPagesTotalViews">507+</div>
+                        <span class="text-[11px] text-zinc-400">Strict Monotonic</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">CLOUD DATABASE</div>
-                        <div class="m-val text-emerald">Google RTDB (SG)</div>
-                        <div class="m-sub">Monotonic Latch Floor</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Filtered Traffic</span>
+                        <div class="text-xl font-bold font-mono text-emerald-600 mt-1" id="cumulPagesFilteredViews">507 (100%)</div>
+                        <span class="text-[11px] text-zinc-400">Selected Scope</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">ENCRYPTION SUITE</div>
-                        <div class="m-val text-purple">256-Bit TLS 1.3</div>
-                        <div class="m-sub">PIN 5599 &amp; Email SuperAdmin</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Direct Actions</span>
+                        <div class="text-xl font-bold font-mono text-amber-600 mt-1" id="cumulPagesFilteredConversions">103 Actions</div>
+                        <span class="text-[11px] text-zinc-400">Quotes &amp; Calls</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">SMART POLLING CYCLE</div>
-                        <div class="m-val text-green">60s Polling</div>
-                        <div class="m-sub">&lt; 15 MB/mo Low Data Quota</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Top Engagement Module</span>
+                        <div class="text-xl font-bold text-zinc-900 mt-1" id="cumulPagesTopSection">Cost Calculator</div>
+                        <span class="text-[11px] text-zinc-400">78.2% Interactivity Share</span>
                     </div>
-                </section>
+                </div>
 
-                <div class="data-table-container">
-                    <div class="table-toolbar">
-                        <h4>📘 Anjaneya Borewells — Master System Architecture &amp; Operations Manual</h4>
-                        <a href="PROJECT_DOCUMENTATION.md" target="_blank" download class="ctrl-btn btn-sync" style="text-decoration:none;">
-                            ⬇️ Download Markdown Manual (.md)
+                <div class="bg-white border border-zinc-200/80 rounded-xl p-3 shadow-subtle flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <select id="cumulTimeFilter" class="h-8 text-xs bg-white border border-zinc-200 rounded-lg px-2 text-zinc-700 font-medium">
+                            <option value="all" selected>All-Time (Cumulative)</option>
+                            <option value="month">This Month</option>
+                            <option value="week">Last 7 Days</option>
+                            <option value="today">Today</option>
+                        </select>
+                        <select id="cumulDeviceFilter" class="h-8 text-xs bg-white border border-zinc-200 rounded-lg px-2 text-zinc-700 font-medium">
+                            <option value="all" selected>All Platforms</option>
+                            <option value="mobile">Mobile</option>
+                            <option value="desktop">Desktop</option>
+                        </select>
+                        <select id="cumulSectionFilter" class="h-8 text-xs bg-white border border-zinc-200 rounded-lg px-2 text-zinc-700 font-medium">
+                            <option value="all" selected>All Modules</option>
+                            <option value="hero">Hero Banner</option>
+                            <option value="calculator">Cost Calculator</option>
+                            <option value="services">Services</option>
+                            <option value="reviews">Reviews</option>
+                            <option value="contact">Hotline</option>
+                        </select>
+                    </div>
+                    <input type="text" id="cumulSearchInput" placeholder="Search section..." class="h-8 text-xs bg-zinc-50/80 border border-zinc-200 rounded-lg px-3 text-zinc-900 placeholder:text-zinc-400 focus:bg-white w-56">
+                </div>
+
+                <div class="w-full overflow-hidden border border-zinc-200/80 rounded-xl bg-white shadow-subtle">
+                    <table class="w-full text-left text-xs enterprise-data-table">
+                        <thead class="bg-zinc-50/95 border-b border-zinc-200 text-zinc-500 font-semibold uppercase text-[11px] tracking-wider">
+                            <tr>
+                                <th class="px-4 py-3"># Rank</th>
+                                <th class="px-4 py-3">Page Module / Section</th>
+                                <th class="px-4 py-3">Impressions</th>
+                                <th class="px-4 py-3">Unique Visitors</th>
+                                <th class="px-4 py-3">Avg Dwell</th>
+                                <th class="px-4 py-3">Actions</th>
+                                <th class="px-4 py-3">Conversion Rate</th>
+                                <th class="px-4 py-3">Share %</th>
+                                <th class="px-4 py-3">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cumulPagesTableBody" class="divide-y divide-zinc-100 bg-white font-sans">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+            <!-- ================================================================= -->
+            <!-- TAB PANE 6: TERRITORY & GEO MAP -->
+            <!-- ================================================================= -->
+            <div class="admin-tab-pane flex flex-col gap-4" id="tabGeoBreakdown" style="display: none;">
+                
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Primary Drilling Zone</span>
+                        <div class="text-xl font-bold text-zinc-900 mt-1" id="geoPrimaryZone">Tamil Nadu (95%+)</div>
+                        <span class="text-[11px] text-zinc-400">HQ &amp; Core Hubs</span>
+                    </div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Top Active District</span>
+                        <div class="text-xl font-bold text-indigo-600 mt-1" id="geoTopDistrict">Namakkal</div>
+                        <span class="text-[11px] text-zinc-400">Highest Inquiries</span>
+                    </div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Regional Coverage</span>
+                        <div class="text-xl font-bold font-mono text-zinc-900 mt-1" id="geoTotalDistrictsCount">38 Districts</div>
+                        <span class="text-[11px] text-zinc-400">Active telemetry</span>
+                    </div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Global NRI Traffic</span>
+                        <div class="text-xl font-bold text-zinc-900 mt-1" id="geoNriShare">Active Feed</div>
+                        <span class="text-[11px] text-zinc-400">US, Gulf, Singapore</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div class="bg-white border border-zinc-200/80 rounded-xl p-4 shadow-subtle">
+                        <h4 class="text-xs font-semibold text-zinc-900 mb-1">Tamil Nadu Operational Districts</h4>
+                        <p class="text-[11px] text-zinc-400 mb-3">Live district drilling demand &amp; traffic ranking</p>
+                        <div class="space-y-1" id="geoDistrictsList"></div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-white border border-zinc-200/80 rounded-xl p-4 shadow-subtle">
+                            <h4 class="text-xs font-semibold text-zinc-900 mb-1">Indian States &amp; Metro Hubs</h4>
+                            <p class="text-[11px] text-zinc-400 mb-3">Interstate agricultural &amp; commercial inquiries</p>
+                            <div class="space-y-1" id="geoStatesList"></div>
+                        </div>
+
+                        <div class="bg-white border border-zinc-200/80 rounded-xl p-4 shadow-subtle">
+                            <h4 class="text-xs font-semibold text-zinc-900 mb-1">Global &amp; NRI Telemetry</h4>
+                            <p class="text-[11px] text-zinc-400 mb-3">International inquiries for ancestral farmlands</p>
+                            <div class="space-y-1" id="geoCountriesList"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ================================================================= -->
+            <!-- TAB PANE 7: SYSTEM ARCHITECTURE DOCS -->
+            <!-- ================================================================= -->
+            <div class="admin-tab-pane flex flex-col gap-4" id="tabSystemDocs" style="display: none;">
+                
+                <div class="bg-white border border-zinc-200/80 rounded-xl p-4 shadow-subtle">
+                    <div class="flex items-center justify-between pb-3 mb-3 border-b border-zinc-100">
+                        <div>
+                            <h4 class="text-sm font-semibold text-zinc-900">System Architecture &amp; Operations Manual</h4>
+                            <p class="text-xs text-zinc-400">Technical documentation, APIs, and recovery protocols</p>
+                        </div>
+                        <a href="PROJECT_DOCUMENTATION.md" target="_blank" download class="px-3 py-1.5 text-xs font-medium text-zinc-700 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-50 shadow-subtle inline-flex items-center gap-1.5">
+                            <span>⬇️</span> Download Markdown (.md)
                         </a>
                     </div>
-                    <div class="docs-reader-box" id="docsViewBox">
-                        <!-- Loaded dynamically from PROJECT_DOCUMENTATION.md -->
+                    <div class="docs-reader-box text-xs text-zinc-700 leading-relaxed font-sans max-h-[600px] overflow-y-auto" id="docsViewBox">
+                        <!-- Loaded dynamically -->
                     </div>
                 </div>
+
             </div>
 
-            <!-- TAB PANE: DEVELOPER COMMAND & DIAGNOSTICS HUB -->
-            <div class="admin-tab-pane" id="tabDevTools" style="display: none;">
-                <!-- Tab Mini Analytics Ribbon -->
-                <section class="tab-mini-kpi-ribbon">
-                    <div class="mini-kpi-card">
-                        <div class="m-label">SYSTEM VERSION</div>
-                        <div class="m-val text-cyan">v4.0.0 Final</div>
-                        <div class="m-sub">Production Stable Release</div>
+            <!-- ================================================================= -->
+            <!-- TAB PANE 8: DEVELOPER HUB -->
+            <!-- ================================================================= -->
+            <div class="admin-tab-pane flex flex-col gap-4" id="tabDevTools" style="display: none;">
+                
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">System Version</span>
+                        <div class="text-xl font-bold font-mono text-zinc-900 mt-1">v6.0.5 Release</div>
+                        <span class="text-[11px] text-zinc-400">Production Stable</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">HOST &amp; EDGE CDN</div>
-                        <div class="m-val text-emerald">GitHub Pages CDN</div>
-                        <div class="m-sub">Fastly Anycast + TLS 1.3</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Hosting &amp; Edge CDN</span>
+                        <div class="text-xl font-bold text-zinc-900 mt-1">GitHub Pages CDN</div>
+                        <span class="text-[11px] text-zinc-400">TLS 1.3 Anycast</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">SERVICE WORKER CACHE</div>
-                        <div class="m-val text-amber">v4.0.0 Active</div>
-                        <div class="m-sub">Network-First Strategy</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">PWA Cache</span>
+                        <div class="text-xl font-bold font-mono text-emerald-600 mt-1">v6.0.5 Active</div>
+                        <span class="text-[11px] text-zinc-400">Network-First Engine</span>
                     </div>
-                    <div class="mini-kpi-card">
-                        <div class="m-label">FIREBASE CLOUD RTDB</div>
-                        <div class="m-val text-green" id="devFirebasePingStatus">18ms Online</div>
-                        <div class="m-sub">Asia-Southeast1 (Singapore)</div>
+                    <div class="bg-white rounded-xl border border-zinc-200/80 p-3.5 shadow-subtle">
+                        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Firebase RTDB</span>
+                        <div class="text-xl font-bold font-mono text-emerald-600 mt-1" id="devFirebasePingStatus">18ms Online</div>
+                        <span class="text-[11px] text-zinc-400">Singapore Node</span>
                     </div>
-                </section>
+                </div>
 
-                <!-- Developer Quick Action & Tools Grid -->
-                <div class="dev-tools-grid">
-                    <!-- Card 1: System Environment & Architecture -->
-                    <div class="dev-card">
-                        <div class="dev-card-header">
-                            <span class="dev-card-icon">⚙️</span>
-                            <h4>System Runtime Environment</h4>
-                            <span class="badge-dev">CORE</span>
-                        </div>
-                        <div class="dev-card-body">
-                            <div class="dev-info-row">
-                                <span class="k">App Version:</span>
-                                <span class="v code-highlight">v4.0.0 (Final Release)</span>
-                            </div>
-                            <div class="dev-info-row">
-                                <span class="k">Production Host:</span>
-                                <span class="v">anjaneyaborewells.com</span>
-                            </div>
-                            <div class="dev-info-row">
-                                <span class="k">Service Worker Scope:</span>
-                                <span class="v code-highlight" id="devSwScope">/</span>
-                            </div>
-                            <div class="dev-info-row">
-                                <span class="k">Active Cache Bucket:</span>
-                                <span class="v code-highlight">anjaneya-borewells-cache-v4.3.0</span>
-                            </div>
-                            <div class="dev-info-row">
-                                <span class="k">Firebase Database:</span>
-                                <span class="v">anjaneya-borewells-live-count</span>
-                            </div>
-                            <div class="dev-info-row">
-                                <span class="k">Google Analytics 4:</span>
-                                <span class="v text-cyan">G-MZCG8MXW6P (Active)</span>
-                            </div>
-                            <div class="dev-info-row">
-                                <span class="k">Search Console (SEO):</span>
-                                <span class="v text-emerald">Domain Verified (Active)</span>
-                            </div>
-                            <div class="dev-info-row">
-                                <span class="k">Strict Monotonic Latch:</span>
-                                <span class="v text-green">Active (Floor: 507+)</span>
-                            </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    
+                    <!-- System Details -->
+                    <div class="bg-white border border-zinc-200/80 rounded-xl p-4 shadow-subtle">
+                        <h4 class="text-xs font-semibold text-zinc-900 mb-3">System Runtime Environment</h4>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between py-1 border-b border-zinc-100"><span class="text-zinc-500">App Version:</span><span class="font-mono font-medium text-zinc-900">v6.0.5 (Enterprise SaaS)</span></div>
+                            <div class="flex justify-between py-1 border-b border-zinc-100"><span class="text-zinc-500">Host Domain:</span><span class="font-mono text-zinc-900">anjaneyaborewells.com</span></div>
+                            <div class="flex justify-between py-1 border-b border-zinc-100"><span class="text-zinc-500">Service Worker Scope:</span><span class="font-mono text-zinc-900" id="devSwScope">/</span></div>
+                            <div class="flex justify-between py-1 border-b border-zinc-100"><span class="text-zinc-500">Cache Bucket:</span><span class="font-mono text-zinc-900">anjaneya-borewells-cache-v6.0.5</span></div>
+                            <div class="flex justify-between py-1 border-b border-zinc-100"><span class="text-zinc-500">GA4 Analytics:</span><span class="font-mono text-emerald-600">G-MZCG8MXW6P (Active)</span></div>
                         </div>
                     </div>
 
-                    <!-- Card 2: Developer Quick Links -->
-                    <div class="dev-card">
-                        <div class="dev-card-header">
-                            <span class="dev-card-icon">🚀</span>
-                            <h4>Developer Portals &amp; Repositories</h4>
-                            <span class="badge-dev">EXTERNAL</span>
+                    <!-- Developer Actions -->
+                    <div class="bg-white border border-zinc-200/80 rounded-xl p-4 shadow-subtle flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-xs font-semibold text-zinc-900 mb-1">Cache Storage &amp; Diagnostic Tools</h4>
+                            <p class="text-[11px] text-zinc-400 mb-3">ServiceWorker resets, ping tests, and export utilities</p>
                         </div>
-                        <div class="dev-card-body">
-                            <div class="dev-links-list">
-                                <a href="https://github.com/maniraja5599/AnjaneyaBorewells" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
-                                    <span>🐙 GitHub Source Repository</span>
-                                    <span class="ext-arrow">↗</span>
-                                </a>
-                                <a href="https://github.com/maniraja5599/AnjaneyaBorewells/releases/tag/v4.0.0" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
-                                    <span>🏷️ GitHub Release v4.0.0 Tag</span>
-                                    <span class="ext-arrow">↗</span>
-                                </a>
-                                <a href="https://console.firebase.google.com/project/anjaneya-borewells-live-count/database" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
-                                    <span>🔥 Google Firebase Console RTDB</span>
-                                    <span class="ext-arrow">↗</span>
-                                </a>
-                                <a href="https://analytics.google.com/analytics/web/" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
-                                    <span>📈 Google Analytics 4 Dashboard (G-MZCG8MXW6P)</span>
-                                    <span class="ext-arrow">↗</span>
-                                </a>
-                                <a href="https://search.google.com/search-console?resource_id=sc-domain%3Aanjaneyaborewells.com" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
-                                    <span>🔍 Google Search Console (anjaneyaborewells.com)</span>
-                                    <span class="ext-arrow">↗</span>
-                                </a>
-                                <a href="https://maps.google.com/?cid=12648719234857193245" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
-                                    <span>⭐ Google Business Profile (312+ Reviews)</span>
-                                    <span class="ext-arrow">↗</span>
-                                </a>
-                                <a href="https://www.instagram.com/anjaneyaborewells/" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
-                                    <span>📸 Instagram Profile (@anjaneyaborewells)</span>
-                                    <span class="ext-arrow">↗</span>
-                                </a>
-                                <a href="https://www.youtube.com/@AnjaneyaBorewells" target="_blank" rel="noopener noreferrer" class="dev-link-btn">
-                                    <span>🎥 YouTube Channel (@AnjaneyaBorewells)</span>
-                                    <span class="ext-arrow">↗</span>
-                                </a>
-                                <a href="PROJECT_DOCUMENTATION.md" target="_blank" class="dev-link-btn">
-                                    <span>📘 Master System Documentation</span>
-                                    <span class="ext-arrow">↗</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 3: Cache Storage & PWA Management -->
-                    <div class="dev-card">
-                        <div class="dev-card-header">
-                            <span class="dev-card-icon">🧹</span>
-                            <h4>Cache Storage &amp; Hard Reset</h4>
-                            <span class="badge-dev text-amber">RESET</span>
-                        </div>
-                        <div class="dev-card-body">
-                            <p class="dev-card-desc">Safely unregister obsolete Service Workers, wipe old cache buckets, and force client browser clean refresh.</p>
-                            <div class="dev-actions-stack">
-                                <button type="button" class="dev-btn btn-danger-action" id="devHardPurgeBtn">
-                                    <span>💥 Hard Purge All Caches &amp; Unregister SW</span>
-                                </button>
-                                <button type="button" class="dev-btn btn-primary-action" id="devTestPingBtn">
-                                    <span>⚡ Run Live Cloud &amp; CDN Ping Test</span>
-                                </button>
-                                <button type="button" class="dev-btn btn-secondary-action" id="devCopyDiagnosticsBtn">
-                                    <span>📋 Copy Diagnostic System Report (MD)</span>
-                                </button>
-                                <button type="button" class="dev-btn btn-secondary-action" id="devDownloadRawJsonBtn">
-                                    <span>💾 Export Raw RTDB Telemetry Dump (JSON)</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Card 4: Local Storage & Telemetry State Inspector -->
-                    <div class="dev-card">
-                        <div class="dev-card-header">
-                            <span class="dev-card-icon">🗄️</span>
-                            <h4>Client Storage Inspector</h4>
-                            <span class="badge-dev">STORAGE</span>
-                        </div>
-                        <div class="dev-card-body">
-                            <div class="storage-inspector-box" id="devStorageInspector">
-                                <!-- Populated dynamically -->
-                            </div>
-                            <button type="button" class="dev-btn btn-sm-action" id="devRefreshStorageBtn" style="margin-top: 10px;">
-                                🔄 Refresh Storage Keys
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <button type="button" class="px-3 py-2 text-xs font-medium text-red-600 bg-red-50 hover:bg-red-100 border border-red-200/60 rounded-lg transition-colors text-left" id="devHardPurgeBtn">
+                                💥 Purge Caches &amp; Reset
+                            </button>
+                            <button type="button" class="px-3 py-2 text-xs font-medium text-zinc-800 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 rounded-lg transition-colors text-left" id="devTestPingBtn">
+                                ⚡ Test Cloud Ping
+                            </button>
+                            <button type="button" class="px-3 py-2 text-xs font-medium text-zinc-800 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 rounded-lg transition-colors text-left" id="devCopyDiagnosticsBtn">
+                                📋 Copy Report (MD)
+                            </button>
+                            <button type="button" class="px-3 py-2 text-xs font-medium text-zinc-800 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200 rounded-lg transition-colors text-left" id="devDownloadRawJsonBtn">
+                                💾 Raw JSON Dump
                             </button>
                         </div>
+                        <div class="mt-4 pt-3 border-t border-zinc-100">
+                            <button type="button" class="text-xs text-indigo-600 hover:text-indigo-800 font-medium" id="devRefreshStorageBtn">
+                                🔄 Refresh Storage Keys
+                            </button>
+                            <div class="mt-2 text-[11px] font-mono text-zinc-500 max-h-24 overflow-y-auto" id="devStorageInspector"></div>
+                        </div>
                     </div>
+
                 </div>
 
-                <!-- Live Developer Event & Telemetry Console Stream -->
-                <div class="data-table-container" style="margin-top: 24px;">
-                    <div class="table-toolbar">
-                        <h4>🖥️ Real-Time Client Telemetry &amp; System Event Stream</h4>
-                        <button type="button" class="ctrl-btn btn-sync" id="devClearConsoleBtn">🧹 Clear Console</button>
+                <!-- Event Console Stream -->
+                <div class="bg-white border border-zinc-200/80 rounded-xl p-4 shadow-subtle">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="text-xs font-semibold text-zinc-900">Real-Time Client Telemetry Console</h4>
+                        <button type="button" class="text-xs text-zinc-500 hover:text-zinc-800" id="devClearConsoleBtn">Clear</button>
                     </div>
-                    <div class="dev-console-box" id="devConsoleStream">
-                        <!-- Populated dynamically with live log events -->
-                    </div>
+                    <div class="bg-zinc-900 text-zinc-200 p-3 rounded-lg font-mono text-[11px] h-48 overflow-y-auto space-y-1" id="devConsoleStream"></div>
                 </div>
+
             </div>
-
-            <!-- Cloud Health & Infrastructure Status Strip -->
-            <section class="infrastructure-strip">
-                <div class="infra-card">
-                    <span class="infra-icon">☁️</span>
-                    <div>
-                        <strong>Google Firebase RTDB</strong>
-                        <span class="infra-status status-online">Connected &amp; Healthy (Singapore)</span>
-                    </div>
-                </div>
-
-                <div class="infra-card">
-                    <span class="infra-icon">🔒</span>
-                    <div>
-                        <strong>Enterprise SSL / TLS</strong>
-                        <span class="infra-status status-online">256-bit TLS 1.3 Active</span>
-                    </div>
-                </div>
-
-                <div class="infra-card">
-                    <span class="infra-icon">⚡</span>
-                    <div>
-                        <strong>PWA Cache Engine</strong>
-                        <span class="infra-status status-online">v4.0.0 Network-First Active</span>
-                    </div>
-                </div>
-
-                <div class="infra-card">
-                    <span class="infra-icon">💾</span>
-                    <div>
-                        <strong>Database Bandwidth</strong>
-                        <span class="infra-status status-online">Smart 60s Polling (&lt;15 MB/mo)</span>
-                    </div>
-                </div>
-            </section>
 
         </div>
     </main>
 
     <!-- Floating Bottom Navigation for Mobile (SaaS Luxury Style matching reference) -->
-    <nav class="admin-mobile-bottom-nav" id="adminMobileBottomNav">
-        <div class="mobile-bottom-nav-inner">
-            <button type="button" class="m-bottom-tab active" data-tab-switch="tabOverview">
-                <div class="m-tab-icon-wrap"><span class="m-tab-icon">📊</span></div>
-                <span class="m-tab-label">Overview</span>
+    <nav class="md:hidden fixed bottom-3 left-4 right-4 z-40 bg-white/95 backdrop-blur-md border border-zinc-200/80 shadow-elevated rounded-full p-1.5" id="adminMobileBottomNav">
+        <div class="flex items-center justify-around">
+            <button type="button" class="m-bottom-tab active flex flex-col items-center justify-center py-1 px-3 rounded-full text-zinc-500 hover:text-zinc-900" data-tab-switch="tabOverview">
+                <span class="text-base">📊</span>
+                <span class="text-[10px] font-medium tracking-tight">Overview</span>
             </button>
-            <button type="button" class="m-bottom-tab" data-tab-switch="tabActiveUsers">
-                <div class="m-tab-icon-wrap"><span class="m-tab-icon">🟢</span></div>
-                <span class="m-tab-label">Live</span>
+            <button type="button" class="m-bottom-tab flex flex-col items-center justify-center py-1 px-3 rounded-full text-zinc-500 hover:text-zinc-900" data-tab-switch="tabActiveUsers">
+                <span class="text-base">🟢</span>
+                <span class="text-[10px] font-medium tracking-tight">Live</span>
             </button>
-            <button type="button" class="m-bottom-tab" data-tab-switch="tabEstimatesLog">
-                <div class="m-tab-icon-wrap"><span class="m-tab-icon">💰</span></div>
-                <span class="m-tab-label">Quotes</span>
+            <button type="button" class="m-bottom-tab flex flex-col items-center justify-center py-1 px-3 rounded-full text-zinc-500 hover:text-zinc-900" data-tab-switch="tabEstimatesLog">
+                <span class="text-base">💰</span>
+                <span class="text-[10px] font-medium tracking-tight">Quotes</span>
             </button>
-            <button type="button" class="m-bottom-tab" data-tab-switch="tabGeoBreakdown">
-                <div class="m-tab-icon-wrap"><span class="m-tab-icon">🗺️</span></div>
-                <span class="m-tab-label">Geo</span>
+            <button type="button" class="m-bottom-tab flex flex-col items-center justify-center py-1 px-3 rounded-full text-zinc-500 hover:text-zinc-900" data-tab-switch="tabLiveLogs">
+                <span class="text-base">👥</span>
+                <span class="text-[10px] font-medium tracking-tight">Visitors</span>
             </button>
-            <button type="button" class="m-bottom-tab" data-tab-switch="tabLiveLogs">
-                <div class="m-tab-icon-wrap"><span class="m-tab-icon">👥</span></div>
-                <span class="m-tab-label">Visitors</span>
-            </button>
-            <a href="index.html" class="m-bottom-tab" title="Open Public Website">
-                <div class="m-tab-icon-wrap"><span class="m-tab-icon">🌐</span></div>
-                <span class="m-tab-label">App</span>
+            <a href="index.html" class="flex flex-col items-center justify-center py-1 px-3 rounded-full text-zinc-500 hover:text-zinc-900" title="Open Public Website">
+                <span class="text-base">🌐</span>
+                <span class="text-[10px] font-medium tracking-tight">Site</span>
             </a>
         </div>
     </nav>
 
-    <!-- Executive Master Footer -->
-    <footer class="admin-footer">
-        <div class="footer-inner">
-            <div class="footer-left">
-                <span>&copy; 2026 Anjaneya Borewells — Enterprise Admin Command Center HQ. All rights reserved.</span>
-            </div>
-            <div class="footer-right">
-                <span>Designed &amp; Developed by <strong>Mani Raja</strong> (+91-8300030123 | <a href="https://www.instagram.com/maniraja__/" target="_blank" class="insta-link">@maniraja__</a>)</span>
-            </div>
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-zinc-200/80 bg-white py-4 text-xs text-zinc-500">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <span>&copy; 2026 Anjaneya Borewells Enterprise HQ. All rights reserved.</span>
+            <span>Architected &amp; Designed by <strong>Mani Raja</strong></span>
         </div>
     </footer>
 
-    <script src="admin.js?v=6.0.4"></script>
+    <!-- Compatibility Elements for Admin Engine -->
+    <div class="hidden" aria-hidden="true">
+        <span id="fleetTotalCount"></span>
+        <span id="hwMedianPing"></span>
+        <div id="installsTableScrollWrap">
+            <table><tbody id="installsTableBody"></tbody></table>
+        </div>
+        <span id="installsCountPill"></span>
+        <div id="installsLazyLoader"></div>
+    </div>
+
+    <script src="admin.js?v=6.0.5"></script>
 </body>
 </html>
