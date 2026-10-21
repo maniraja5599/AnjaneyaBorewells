@@ -318,8 +318,9 @@ class StandaloneAdminCommandCenter {
                     }
                 });
 
-                // Sync active page title
+                // Sync active page title & breadcrumb
                 const pageTitleEl = document.getElementById('activePageTitle');
+                const breadcrumbEl = document.getElementById('activeBreadcrumbTitle');
                 const titleMap = {
                     tabOverview: 'Executive Telemetry Overview',
                     tabActiveUsers: 'Live Active Radar',
@@ -330,7 +331,18 @@ class StandaloneAdminCommandCenter {
                     tabDevTools: 'Developer Hub & Storage',
                     tabSystemDocs: 'Architecture & System Docs'
                 };
+                const breadcrumbMap = {
+                    tabOverview: 'Overview',
+                    tabActiveUsers: 'Live Radar',
+                    tabLiveLogs: 'Visitor Intel',
+                    tabEstimatesLog: 'Quotes Log',
+                    tabCumulativePages: 'Pages',
+                    tabGeoBreakdown: 'Territory',
+                    tabDevTools: 'Dev Hub',
+                    tabSystemDocs: 'Docs'
+                };
                 if (pageTitleEl && titleMap[target]) pageTitleEl.textContent = titleMap[target];
+                if (breadcrumbEl && breadcrumbMap[target]) breadcrumbEl.textContent = breadcrumbMap[target];
 
                 if (target === 'tabOverview') {
                     Object.values(this.charts).forEach(c => c && c.resize && c.resize());
@@ -844,7 +856,16 @@ class StandaloneAdminCommandCenter {
             ]);
 
             const pingMs = Math.max(18, Date.now() - startTime);
-            if (this.pingVal) this.pingVal.textContent = `${pingMs}ms Latency`;
+            if (this.pingVal) {
+                this.pingVal.textContent = `${pingMs}ms`;
+                if (pingMs < 500) {
+                    this.pingVal.className = 'font-mono text-[11px] font-semibold text-emerald-700';
+                } else if (pingMs < 1500) {
+                    this.pingVal.className = 'font-mono text-[11px] font-semibold text-amber-700';
+                } else {
+                    this.pingVal.className = 'font-mono text-[11px] font-semibold text-rose-700';
+                }
+            }
 
             const rawWhatsAppLeads = whatsappLeadsRes.ok ? await whatsappLeadsRes.json() : null;
             const rawActiveSessions = activeSessionsRes.ok ? await activeSessionsRes.json() : null;

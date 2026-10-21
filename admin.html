@@ -50,7 +50,7 @@
             }
         };
     </script>
-    <link rel="stylesheet" href="admin.css?v=6.0.6">
+    <link rel="stylesheet" href="admin.css?v=6.0.7">
 </head>
 <body class="min-h-screen bg-zinc-50/60 font-sans text-zinc-900 antialiased selection:bg-zinc-900 selection:text-white">
 
@@ -124,8 +124,8 @@
         <!-- Slide-Over Drawer Overlay for Mobile -->
         <div class="admin-sidebar-overlay fixed inset-0 bg-zinc-950/40 backdrop-blur-xs z-50 transition-opacity lg:hidden" id="adminSidebarOverlay"></div>
 
-        <!-- Sleek Collapsible Left Sidebar Navigation (Persistent on lg:flex, slide-over drawer on mobile) -->
-        <aside class="admin-sidebar-drawer fixed lg:sticky top-0 left-0 z-50 h-screen w-64 bg-white border-r border-zinc-200/80 flex flex-col justify-between shrink-0 select-none shadow-xs" id="adminSidebarDrawer" aria-label="HQ Left Sidebar Navigation">
+        <!-- Sleek Collapsible Left Sidebar Navigation (260px fixed width on lg:flex, slide-over drawer on mobile) -->
+        <aside class="admin-sidebar-drawer fixed lg:sticky top-0 left-0 z-50 h-screen w-[260px] bg-zinc-50/50 dark:bg-zinc-950 border-r border-zinc-200/80 dark:border-zinc-800/80 flex flex-col justify-between shrink-0 select-none shadow-xs" id="adminSidebarDrawer" aria-label="HQ Left Sidebar Navigation">
             
             <!-- Top Brand Identity -->
             <div class="h-14 px-4 border-b border-zinc-200/80 flex items-center justify-between">
@@ -138,20 +138,20 @@
                         <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-zinc-100 text-zinc-700 border border-zinc-200 uppercase tracking-wide">HQ</span>
                     </div>
                 </a>
-                <!-- Mobile Close Button -->
-                <button type="button" class="lg:hidden p-1.5 text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 rounded-lg transition-colors" id="adminSidebarCloseBtn" aria-label="Close Sidebar">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                <!-- Mobile Close Button (Touch Target 44x44) -->
+                <button type="button" class="lg:hidden p-2 text-zinc-400 hover:text-zinc-700 hover:bg-zinc-100 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center" id="adminSidebarCloseBtn" aria-label="Close Sidebar">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
 
-            <!-- Grouped Navigation Links with Lucide Outline Icons -->
+            <!-- Grouped Navigation Links with Lucide Outline Icons (36px Item Height) -->
             <div class="flex-1 overflow-y-auto px-3 py-4 space-y-5">
                 
                 <!-- Group 1: Core Operations -->
                 <div>
                     <span class="px-2 mb-2 block text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Core Operations</span>
-                    <nav class="space-y-0.5">
-                        <button type="button" class="sidebar-nav-item menu-tab-btn active w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-700 hover:text-zinc-900 transition-colors" data-tab="tabOverview">
+                    <nav class="space-y-1">
+                        <button type="button" class="sidebar-nav-item menu-tab-btn active w-full flex items-center justify-between px-2.5 rounded-lg text-xs font-medium text-zinc-700 hover:text-zinc-900 transition-colors" data-tab="tabOverview">
                             <span class="flex items-center gap-2.5">
                                 <svg class="w-4 h-4 text-blue-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
                                 <span>Overview</span>
@@ -159,22 +159,25 @@
                             <span class="text-[10px] font-semibold bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded-full border border-emerald-200">Live</span>
                         </button>
 
-                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabActiveUsers">
+                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabActiveUsers">
                             <span class="flex items-center gap-2.5">
                                 <svg class="w-4 h-4 text-zinc-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg>
                                 <span>Live Radar</span>
                             </span>
-                            <span class="text-[10px] font-semibold bg-zinc-100 text-zinc-700 px-1.5 py-0.5 rounded-full" id="sidebarLiveUsersBadge">1 Online</span>
+                            <span class="inline-flex items-center gap-1 text-[10px] font-semibold bg-zinc-100 text-zinc-700 px-1.5 py-0.5 rounded-full" id="sidebarLiveUsersBadge">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                                1 Online
+                            </span>
                         </button>
 
-                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabLiveLogs">
+                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabLiveLogs">
                             <span class="flex items-center gap-2.5">
                                 <svg class="w-4 h-4 text-zinc-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                                 <span>Visitor Intel</span>
                             </span>
                         </button>
 
-                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabEstimatesLog">
+                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabEstimatesLog">
                             <span class="flex items-center gap-2.5">
                                 <svg class="w-4 h-4 text-zinc-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/><path d="M8 17h2"/><path d="M14 17h2"/></svg>
                                 <span>Quotes Log</span>
@@ -187,15 +190,15 @@
                 <!-- Group 2: Analytics & Regions -->
                 <div>
                     <span class="px-2 mb-2 block text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Analytics &amp; Regions</span>
-                    <nav class="space-y-0.5">
-                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabCumulativePages">
+                    <nav class="space-y-1">
+                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabCumulativePages">
                             <span class="flex items-center gap-2.5">
                                 <svg class="w-4 h-4 text-zinc-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 12.65-8.58 3.9a2 2 0 0 1-1.66 0L2.6 12.65"/><path d="m22 17.65-8.58 3.9a2 2 0 0 1-1.66 0L2.6 17.65"/></svg>
                                 <span>Page Analytics</span>
                             </span>
                         </button>
 
-                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabGeoBreakdown">
+                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabGeoBreakdown">
                             <span class="flex items-center gap-2.5">
                                 <svg class="w-4 h-4 text-zinc-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
                                 <span>Territory &amp; Geo</span>
@@ -207,15 +210,15 @@
                 <!-- Group 3: System & Engineering -->
                 <div>
                     <span class="px-2 mb-2 block text-[10px] font-bold text-zinc-400 uppercase tracking-wider">System &amp; Engineering</span>
-                    <nav class="space-y-0.5">
-                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabDevTools">
+                    <nav class="space-y-1">
+                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabDevTools">
                             <span class="flex items-center gap-2.5">
                                 <svg class="w-4 h-4 text-zinc-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" x2="20" y1="19" y2="19"/></svg>
                                 <span>Developer Hub</span>
                             </span>
                         </button>
 
-                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 py-2 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabSystemDocs">
+                        <button type="button" class="sidebar-nav-item menu-tab-btn w-full flex items-center justify-between px-2.5 rounded-lg text-xs font-medium text-zinc-600 hover:text-zinc-900 transition-colors" data-tab="tabSystemDocs">
                             <span class="flex items-center gap-2.5">
                                 <svg class="w-4 h-4 text-zinc-500 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                                 <span>System Docs</span>
@@ -227,7 +230,7 @@
             </div>
 
             <!-- Bottom Anchored User Profile & Role Badge -->
-            <div class="p-3 border-t border-zinc-200/80 bg-zinc-50/60 flex items-center justify-between gap-2">
+            <div class="p-3 border-t border-zinc-200/80 bg-zinc-50/60 dark:bg-zinc-900/40 flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2.5 min-w-0">
                     <div class="w-8 h-8 rounded-full bg-zinc-900 text-white text-xs font-bold flex items-center justify-center shrink-0">MR</div>
                     <div class="min-w-0">
@@ -235,7 +238,7 @@
                         <span class="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">SuperAdmin</span>
                     </div>
                 </div>
-                <button type="button" class="p-1.5 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shrink-0" id="sidebarLogoutBtn" title="Sign Out">
+                <button type="button" class="p-2 text-zinc-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors shrink-0 min-h-[36px] min-w-[36px] flex items-center justify-center" id="sidebarLogoutBtn" title="Sign Out">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                 </button>
             </div>
@@ -246,58 +249,66 @@
         <div class="flex-1 flex flex-col min-w-0 min-h-screen">
             
             <!-- Modern 56px Top Sticky Header -->
-            <header class="sticky top-0 z-30 h-14 bg-white/80 backdrop-blur-md border-b border-zinc-200/80 flex items-center justify-between px-4 sm:px-6" id="adminTopMenuBar">
+            <header class="sticky top-0 z-30 h-14 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-md border-b border-zinc-200/80 dark:border-zinc-800/80 flex items-center justify-between px-4 sm:px-6" id="adminTopMenuBar">
                 
-                <!-- Left: Mobile Toggle + Page Title + ⌘K Search Trigger -->
-                <div class="flex items-center gap-3 min-w-0">
-                    <button type="button" class="lg:hidden p-1.5 -ml-1 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors" id="adminSidebarToggleBtn" aria-label="Open Navigation">
+                <!-- Left: Mobile Toggle + Breadcrumb + ⌘K Search Trigger -->
+                <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                    <button type="button" class="lg:hidden p-2 -ml-1 text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center" id="adminSidebarToggleBtn" aria-label="Open Navigation">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
                     </button>
                     
-                    <h1 class="text-sm font-semibold text-zinc-900 tracking-tight truncate" id="activePageTitle">Executive Telemetry Overview</h1>
+                    <!-- Clean Minimalist Breadcrumb -->
+                    <div class="flex items-center gap-1.5 text-xs font-medium">
+                        <span class="text-zinc-400 font-semibold uppercase tracking-wider text-[11px]">HQ</span>
+                        <span class="text-zinc-300">/</span>
+                        <span class="text-zinc-900 font-semibold truncate" id="activeBreadcrumbTitle">Overview</span>
+                    </div>
+
+                    <!-- Hidden Active Page Title element to preserve JS compatibility -->
+                    <span id="activePageTitle" class="hidden">Executive Telemetry Overview</span>
 
                     <!-- ⌘K Quick Search Trigger -->
                     <button type="button" 
                             onclick="const t = document.querySelector('.menu-tab-btn[data-tab=\'tabLiveLogs\']'); if (t) t.click(); setTimeout(() => document.getElementById('telemetrySearchInput')?.focus(), 120);" 
-                            class="hidden md:inline-flex items-center gap-2 ml-2 px-2.5 py-1 text-xs text-zinc-400 bg-zinc-50 hover:bg-zinc-100/80 border border-zinc-200/80 rounded-lg transition-colors cursor-pointer" 
-                            title="Jump to Telemetry Search">
+                            class="hidden md:inline-flex items-center gap-2 ml-2 px-2.5 py-1.5 text-xs text-zinc-400 bg-zinc-100/70 hover:bg-zinc-100 border border-zinc-200/70 rounded-lg transition-colors cursor-pointer" 
+                            title="Jump to Telemetry Search (Ctrl+K)">
                         <svg class="w-3.5 h-3.5 text-zinc-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
                         <span>Search telemetry...</span>
-                        <kbd class="font-mono text-[10px] text-zinc-400 bg-white border border-zinc-200 px-1 py-0.2 rounded shadow-2xs">⌘K</kbd>
+                        <kbd class="font-mono text-[10px] text-zinc-400 bg-white border border-zinc-200 px-1 py-0.5 rounded shadow-2xs">⌘K</kbd>
                     </button>
                 </div>
 
-                <!-- Right: Heartbeat Status + Refresh + Export + Profile -->
+                <!-- Right: Telemetry Pill + Refresh + Export + Profile -->
                 <div class="flex items-center gap-2 sm:gap-2.5">
                     
-                    <!-- Firebase Realtime Live Status Chip -->
-                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70" id="adminSyncStatusPill" title="Firebase RTDB Singapore Active • Continuous Sync">
+                    <!-- Firebase Realtime Live Status Chip with Dynamic Color Coding -->
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/70 shadow-2xs" id="adminSyncStatusPill" title="Firebase RTDB Singapore Active • Continuous Sync">
                         <span class="relative flex h-2 w-2">
                             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                         </span>
                         <span id="adminSyncStatusText" class="font-medium tracking-tight">Live</span>
                         <span class="text-emerald-300">|</span>
-                        <span class="font-mono text-[11px] text-emerald-800" id="adminPingVal">12ms</span>
+                        <span class="font-mono text-[11px] font-semibold text-emerald-700 transition-colors" id="adminPingVal">12ms</span>
                     </div>
 
                     <!-- Hidden Desktop Clock IST -->
-                    <div class="hidden xl:inline-flex items-center text-xs font-mono text-zinc-500 bg-zinc-100/70 border border-zinc-200 px-2 py-0.5 rounded-md" id="adminClockVal">
+                    <div class="hidden xl:inline-flex items-center text-xs font-mono text-zinc-500 bg-zinc-100/70 border border-zinc-200 px-2 py-1 rounded-md" id="adminClockVal">
                         12:00:00 PM IST
                     </div>
 
-                    <!-- Manual Refresh / Sync Button -->
+                    <!-- Manual Refresh / Sync Outline Icon Button (44px touch container, 32px visual) -->
                     <button type="button" 
-                            class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 shadow-2xs transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/10" 
+                            class="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-zinc-200 bg-white text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 shadow-2xs transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/10 cursor-pointer" 
                             id="adminRefreshBtn" 
                             title="Fetch latest data from Firebase">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                     </button>
 
-                    <!-- Export Dropdown -->
+                    <!-- Export Outline Icon Button & Dropdown -->
                     <div class="relative inline-flex" id="adminExportWrapper">
                         <button type="button" 
-                                class="inline-flex items-center gap-1.5 px-2.5 h-8 text-xs font-medium text-zinc-700 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-50 hover:text-zinc-900 shadow-2xs transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/10" 
+                                class="inline-flex items-center gap-1.5 px-2.5 h-8 text-xs font-medium text-zinc-700 bg-white border border-zinc-200 rounded-lg hover:bg-zinc-50 hover:text-zinc-900 shadow-2xs transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/10 cursor-pointer" 
                                 id="adminExportToggleBtn" 
                                 title="Export Reports">
                             <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
@@ -322,10 +333,10 @@
                         </div>
                     </div>
 
-                    <!-- Profile Dropdown -->
+                    <!-- Profile Dropdown Aligned Far Right -->
                     <div class="relative inline-flex" id="superAdminBadge">
                         <button type="button" 
-                                class="inline-flex items-center gap-1.5 p-1 sm:px-2 h-8 rounded-lg border border-zinc-200/80 bg-white hover:bg-zinc-50 shadow-2xs transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/10" 
+                                class="inline-flex items-center gap-1.5 p-1 sm:px-2 h-8 rounded-lg border border-zinc-200/80 bg-white hover:bg-zinc-50 shadow-2xs transition-all focus:outline-none focus:ring-2 focus:ring-zinc-900/10 cursor-pointer" 
                                 id="adminProfileToggleBtn" 
                                 title="Admin Profile">
                             <span class="w-6 h-6 rounded-full bg-zinc-900 text-white text-[10px] font-bold flex items-center justify-center">MR</span>
@@ -366,19 +377,30 @@
                 <!-- ================================================================= -->
                 <div class="admin-tab-pane active flex flex-col gap-6" id="tabOverview">
                     
-                    <!-- KPI Metric Bento Grid (Tiered Hierarchy) -->
-                    <section>
-                        <!-- Header strip -->
-                        <div class="flex items-center justify-between mb-3">
-                            <div>
-                                <h3 class="text-sm font-semibold text-zinc-900 tracking-tight">Executive Telemetry Overview</h3>
-                                <p class="text-xs text-zinc-500">Live aggregated visitor sessions, quote conversions, and cloud telemetry</p>
-                            </div>
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-zinc-100 text-zinc-700 border border-zinc-200">
-                                <span>⚡</span> Monotonic Telemetry
-                            </span>
+                    <!-- Canonical Page Header & Integrated Quick Operations -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-zinc-200/70">
+                        <div>
+                            <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-zinc-900">Executive Telemetry Overview</h1>
+                            <p class="text-xs sm:text-sm text-zinc-500 font-normal mt-0.5">Live aggregated visitor sessions, quote conversions, and cloud telemetry</p>
                         </div>
+                        <div class="flex items-center gap-2 self-start sm:self-auto flex-wrap">
+                            <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-xs font-medium text-zinc-700 bg-white hover:bg-zinc-50 border border-zinc-200/80 rounded-lg shadow-2xs transition-colors" data-tab-switch="tabActiveUsers">
+                                <span class="relative flex h-2 w-2">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                                <span>Live Radar ↗</span>
+                            </button>
+                            <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 min-h-[36px] text-xs font-medium text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg shadow-2xs transition-colors" data-tab-switch="tabEstimatesLog">
+                                <svg class="w-3.5 h-3.5 text-indigo-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/></svg>
+                                <span>Quotes Audit</span>
+                            </button>
+                        </div>
+                    </div>
 
+                    <!-- Metric Bento Grid (Tiered Hierarchy) -->
+                    <section class="space-y-4">
+                        
                         <!-- Primary Tier: Top 4 High-Impact Metric Cards (4-Column Responsive Grid) -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                             
@@ -394,11 +416,11 @@
                                         Active Now
                                     </span>
                                 </div>
-                                <div class="text-3xl font-bold tracking-tight text-emerald-600 font-mono my-2">
+                                <div class="text-3xl font-bold tracking-tight text-emerald-600 font-mono sm:font-sans my-2.5">
                                     <span id="cumulActiveOnline">1 Online</span>
                                     <span id="bentoActiveUsers" class="hidden">1 Online</span>
                                 </div>
-                                <div class="text-xs text-zinc-400 flex items-center justify-between pt-1 border-t border-zinc-100">
+                                <div class="text-xs text-zinc-400 flex items-center justify-between pt-2 border-t border-zinc-100">
                                     <span>15s Heartbeat Pulse</span>
                                     <span class="text-emerald-600 font-medium font-mono text-[11px]">Real-time</span>
                                 </div>
@@ -412,11 +434,11 @@
                                         ↑ 18.4%
                                     </span>
                                 </div>
-                                <div class="text-3xl font-bold tracking-tight text-zinc-900 font-mono my-2">
+                                <div class="text-3xl font-bold tracking-tight text-zinc-900 font-mono sm:font-sans my-2.5">
                                     <span id="cumulTodayVisitors">-- Today</span>
                                     <span id="bentoAvgDuration" class="hidden">2m 45s</span>
                                 </div>
-                                <div class="text-xs text-zinc-400 flex items-center justify-between pt-1 border-t border-zinc-100">
+                                <div class="text-xs text-zinc-400 flex items-center justify-between pt-2 border-t border-zinc-100">
                                     <span>Daily Unique Traffic</span>
                                     <span class="text-zinc-600 font-medium text-[11px]">vs yesterday</span>
                                 </div>
@@ -430,11 +452,11 @@
                                         ₹78.4L Pipeline
                                     </span>
                                 </div>
-                                <div class="text-3xl font-bold tracking-tight text-indigo-600 font-mono my-2">
+                                <div class="text-3xl font-bold tracking-tight text-indigo-600 font-mono sm:font-sans my-2.5">
                                     <span id="cumulTotalQuotes">72</span>
                                     <span id="bentoEstimatesCount" class="hidden">72 Quotes</span>
                                 </div>
-                                <div class="text-xs text-zinc-400 flex items-center justify-between pt-1 border-t border-zinc-100">
+                                <div class="text-xs text-zinc-400 flex items-center justify-between pt-2 border-t border-zinc-100">
                                     <span>Automated Depth Estimator</span>
                                     <span class="text-indigo-600 font-medium text-[11px]">High Intent</span>
                                 </div>
@@ -448,11 +470,11 @@
                                         43% Conv.
                                     </span>
                                 </div>
-                                <div class="text-3xl font-bold tracking-tight text-zinc-900 font-mono my-2">
+                                <div class="text-3xl font-bold tracking-tight text-zinc-900 font-mono sm:font-sans my-2.5">
                                     <span id="cumulTotalLeads">31</span>
                                     <span id="bentoLeadsCount" class="hidden">31 Leads</span>
                                 </div>
-                                <div class="text-xs text-zinc-400 flex items-center justify-between pt-1 border-t border-zinc-100">
+                                <div class="text-xs text-zinc-400 flex items-center justify-between pt-2 border-t border-zinc-100">
                                     <span>WhatsApp &amp; Calls</span>
                                     <span class="text-emerald-700 font-medium text-[11px]">Verified</span>
                                 </div>
@@ -460,112 +482,90 @@
 
                         </div>
 
-                        <!-- Secondary Tier: Compact 6-Column Micro-Metric Bar -->
-                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mt-4">
+                        <!-- Secondary Tier: Compact 6-Column Micro-Metric Bar (Desktop Hairline Dividers, Mobile Grid) -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 lg:divide-x lg:divide-zinc-200/80 bg-white border border-zinc-200/80 rounded-xl shadow-subtle overflow-hidden">
                             
-                            <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                            <div class="p-3.5 border-b sm:border-b-0 border-zinc-100">
                                 <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Total Pageviews</span>
-                                <div class="text-base font-bold font-mono text-zinc-900 mt-1">
+                                <div class="text-lg font-semibold font-mono text-zinc-900 mt-1">
                                     <span id="cumulTotalPageviews">1,034+</span>
                                     <span id="bentoTotalViews" class="hidden">1,034+</span>
                                 </div>
-                                <span class="text-[10px] text-zinc-400">Strict Monotonic</span>
+                                <span class="text-[10px] text-zinc-400 block mt-0.5">Strict Monotonic</span>
                             </div>
 
-                            <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                            <div class="p-3.5 border-b sm:border-b-0 border-zinc-100">
                                 <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Unique Sessions</span>
-                                <div class="text-base font-bold font-mono text-zinc-900 mt-1" id="cumulUniqueSessions">384</div>
-                                <span class="text-[10px] text-zinc-400">Deduplicated</span>
+                                <div class="text-lg font-semibold font-mono text-zinc-900 mt-1" id="cumulUniqueSessions">384</div>
+                                <span class="text-[10px] text-zinc-400 block mt-0.5">Deduplicated</span>
                             </div>
 
-                            <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                            <div class="p-3.5 border-b sm:border-b-0 border-zinc-100">
                                 <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Monthly Views</span>
-                                <div class="text-base font-bold font-mono text-zinc-900 mt-1" id="cumulMonthVisitors">-- Views</div>
-                                <span class="text-[10px] text-zinc-400">Current cycle</span>
+                                <div class="text-lg font-semibold font-mono text-zinc-900 mt-1" id="cumulMonthVisitors">-- Views</div>
+                                <span class="text-[10px] text-zinc-400 block mt-0.5">Current cycle</span>
                             </div>
 
-                            <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                            <div class="p-3.5">
                                 <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">Annual Sessions</span>
-                                <div class="text-base font-bold font-mono text-zinc-900 mt-1" id="cumulYearVisitors">-- Sessions</div>
-                                <span class="text-[10px] text-zinc-400">Fiscal year</span>
+                                <div class="text-lg font-semibold font-mono text-zinc-900 mt-1" id="cumulYearVisitors">-- Sessions</div>
+                                <span class="text-[10px] text-zinc-400 block mt-0.5">Fiscal year</span>
                             </div>
 
-                            <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle">
+                            <div class="p-3.5">
                                 <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">PWA Installs</span>
-                                <div class="text-base font-bold font-mono text-zinc-900 mt-1" id="cumulTotalInstalls">24</div>
-                                <span class="text-[10px] text-zinc-400">Home screen</span>
+                                <div class="text-lg font-semibold font-mono text-zinc-900 mt-1" id="cumulTotalInstalls">24</div>
+                                <span class="text-[10px] text-zinc-400 block mt-0.5">Home screen</span>
                             </div>
 
-                            <div class="bg-white rounded-xl border border-zinc-200/80 p-3 shadow-subtle col-span-2 sm:col-span-1">
+                            <div class="p-3.5 col-span-2 sm:col-span-1">
                                 <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">District Reach</span>
-                                <div class="text-base font-bold font-mono text-zinc-900 mt-1" id="cumulTotalDistricts">10 / 10</div>
-                                <span class="text-[10px] text-zinc-400">TN Active</span>
+                                <div class="text-lg font-semibold font-mono text-zinc-900 mt-1" id="cumulTotalDistricts">10 / 10</div>
+                                <span class="text-[10px] text-zinc-400 block mt-0.5">TN Active</span>
                             </div>
 
                         </div>
                     </section>
 
-                    <!-- Quick Operations Toolbar -->
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-zinc-50/70 border border-zinc-200/80 rounded-xl">
-                        <div class="flex items-center gap-2.5 text-xs text-zinc-600">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                            <span><strong>Quick Operations:</strong> Jump directly to live audit streams and customer logs</span>
-                        </div>
-                        <div class="flex items-center gap-2 flex-wrap">
-                            <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-700 bg-white hover:bg-zinc-100 border border-zinc-200 rounded-lg shadow-2xs transition-colors" data-tab-switch="tabActiveUsers">
-                                <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9"/><path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5"/><circle cx="12" cy="12" r="2"/><path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5"/><path d="M19.1 4.9C23 8.8 23 15.1 19.1 19"/></svg>
-                                <span>Live Radar ↗</span>
-                            </button>
-                            <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg shadow-2xs transition-colors" data-tab-switch="tabEstimatesLog">
-                                <svg class="w-3.5 h-3.5 text-indigo-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M8 13h2"/><path d="M14 13h2"/></svg>
-                                <span>Quotes Audit</span>
-                            </button>
-                            <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-700 bg-white hover:bg-zinc-100 border border-zinc-200 rounded-lg shadow-2xs transition-colors" data-tab-switch="tabLiveLogs">
-                                <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                                <span>Visitor Stream</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Visual Analytics & Charts Section -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                    <!-- Visual Analytics & Charts Section (3-Column Grid) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         
                         <!-- Traffic Trends Chart (2 Columns) -->
-                        <div class="lg:col-span-2 bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle flex flex-col justify-between">
-                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                        <div class="lg:col-span-2 bg-white rounded-xl border border-zinc-200/80 p-5 shadow-subtle flex flex-col justify-between">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                                 <div>
-                                    <h4 class="text-xs font-semibold text-zinc-900 tracking-tight">Visitor Traffic &amp; Engagement Curve</h4>
+                                    <h4 class="text-xs sm:text-sm font-semibold text-zinc-900 tracking-tight">Visitor Traffic &amp; Engagement Curve</h4>
                                     <p class="text-[11px] text-zinc-400">Daily visitor trajectory and cumulative sessions</p>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <span class="px-2 py-0.5 text-[10px] font-semibold bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200/60" id="heroChartTotalVal">1,034 Views</span>
-                                    <div class="inline-flex items-center p-0.5 bg-zinc-100 rounded-lg border border-zinc-200/70 text-[11px] font-medium">
-                                        <button type="button" class="px-2 py-0.5 rounded-md bg-white text-zinc-900 shadow-2xs font-semibold">7D</button>
-                                        <button type="button" class="px-2 py-0.5 rounded-md text-zinc-500 hover:text-zinc-900">30D</button>
-                                        <button type="button" class="px-2 py-0.5 rounded-md text-zinc-500 hover:text-zinc-900">All</button>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="px-2.5 py-1 text-[11px] font-semibold bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200/60" id="heroChartTotalVal">1,034 Views</span>
+                                    <div class="inline-flex items-center p-0.5 bg-zinc-100 rounded-lg border border-zinc-200/70 text-xs font-medium">
+                                        <button type="button" class="px-2.5 py-1 min-h-[32px] rounded-md bg-white text-zinc-900 shadow-2xs font-semibold cursor-pointer">7D</button>
+                                        <button type="button" class="px-2.5 py-1 min-h-[32px] rounded-md text-zinc-500 hover:text-zinc-900 cursor-pointer">30D</button>
+                                        <button type="button" class="px-2.5 py-1 min-h-[32px] rounded-md text-zinc-500 hover:text-zinc-900 cursor-pointer">All</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="h-64 w-full">
+                            <div class="h-64 sm:h-72 w-full">
                                 <canvas id="trafficTrendsChart"></canvas>
                             </div>
-                            <div class="flex items-center justify-between pt-3 mt-3 border-t border-zinc-100 text-xs text-zinc-500">
-                                <span>Today: <strong class="text-zinc-900 font-mono" id="trafficStatToday">--</strong></span>
-                                <span>Peak Day: <strong class="text-zinc-900 font-mono" id="trafficStatPeak">--</strong></span>
-                                <span>All-Time: <strong class="text-zinc-900 font-mono" id="trafficStatTotal">--</strong></span>
+                            <div class="flex items-center justify-between pt-3 mt-4 border-t border-zinc-100 text-xs text-zinc-500">
+                                <span>Today: <strong class="text-zinc-900 font-mono ml-1" id="trafficStatToday">--</strong></span>
+                                <span>Peak Day: <strong class="text-zinc-900 font-mono ml-1" id="trafficStatPeak">--</strong></span>
+                                <span>All-Time: <strong class="text-zinc-900 font-mono ml-1" id="trafficStatTotal">--</strong></span>
                             </div>
                         </div>
 
                         <!-- Platform Share Donut (1 Column) -->
-                        <div class="bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle flex flex-col justify-between">
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-5 shadow-subtle flex flex-col justify-between">
                             <div class="mb-3">
-                                <h4 class="text-xs font-semibold text-zinc-900 tracking-tight">Hardware &amp; Ecosystem Share</h4>
+                                <h4 class="text-xs sm:text-sm font-semibold text-zinc-900 tracking-tight">Hardware &amp; Ecosystem Share</h4>
                                 <p class="text-[11px] text-zinc-400">User-Agent hardware proportion</p>
                             </div>
                             <div class="h-60 flex items-center justify-center">
                                 <canvas id="devicesChartOverview"></canvas>
                             </div>
-                            <div class="pt-3 border-t border-zinc-100 flex items-center justify-center gap-4 text-xs">
+                            <div class="pt-3 border-t border-zinc-100 flex items-center justify-center gap-5 text-xs">
                                 <div class="flex items-center gap-1.5 text-zinc-600">
                                     <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                                     <span>Mobile 82%</span>
@@ -580,12 +580,12 @@
                     </div>
 
                     <!-- Customer Conversion Funnel & Live Visitor Stream Table -->
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         
                         <!-- Funnel Chart -->
-                        <div class="bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle">
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-5 shadow-subtle">
                             <div class="mb-3">
-                                <h4 class="text-xs font-semibold text-zinc-900 tracking-tight">Customer Conversion Funnel</h4>
+                                <h4 class="text-xs sm:text-sm font-semibold text-zinc-900 tracking-tight">Customer Conversion Funnel</h4>
                                 <p class="text-[11px] text-zinc-400">Visitor session pipeline to confirmed customer inquiry</p>
                             </div>
                             <div class="h-56">
@@ -593,20 +593,21 @@
                             </div>
                         </div>
 
-                        <!-- Live Visitor Stream Table -->
-                        <div class="bg-white rounded-xl border border-zinc-200/80 p-4 shadow-subtle flex flex-col justify-between">
+                        <!-- Live Visitor Stream Table (Mobile-Adaptive Smooth Scroll) -->
+                        <div class="bg-white rounded-xl border border-zinc-200/80 p-5 shadow-subtle flex flex-col justify-between">
                             <div class="flex items-center justify-between mb-3">
                                 <div>
-                                    <h4 class="text-xs font-semibold text-zinc-900 tracking-tight">Live Visitor Stream</h4>
+                                    <h4 class="text-xs sm:text-sm font-semibold text-zinc-900 tracking-tight">Live Visitor Stream</h4>
                                     <p class="text-[11px] text-zinc-400">Real-time incoming telemetry &amp; attribution</p>
                                 </div>
-                                <button type="button" class="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors inline-flex items-center gap-1" data-tab-switch="tabLiveLogs">
+                                <button type="button" class="text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors inline-flex items-center gap-1 cursor-pointer" data-tab-switch="tabLiveLogs">
                                     <span>View Full Stream</span>
                                     <span>➔</span>
                                 </button>
                             </div>
-                            <div class="overflow-x-auto flex-1">
-                                <table class="w-full text-left text-xs">
+                            <!-- Smooth Horizontal Scroll Wrapper with Padding Compensation -->
+                            <div class="overflow-x-auto -mx-5 px-5 flex-1">
+                                <table class="w-full min-w-[480px] text-left text-xs">
                                     <thead class="sticky top-0 bg-zinc-50 border-b border-zinc-200 text-zinc-500 font-semibold uppercase text-[11px] tracking-wider">
                                         <tr>
                                             <th class="py-2.5 px-3">Timestamp</th>
@@ -1263,6 +1264,6 @@
         <div id="installsLazyLoader"></div>
     </div>
 
-    <script src="admin.js?v=6.0.6"></script>
+    <script src="admin.js?v=6.0.7"></script>
 </body>
 </html>
