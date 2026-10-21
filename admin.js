@@ -599,7 +599,7 @@ class StandaloneAdminCommandCenter {
         }
 
         // Global Reveal All Full IPs button in toolbar
-        const toggleAllBtn = document.getElementById('toggleAllIpsBtn');
+        const toggleAllBtn = document.getElementById('toggleAllIpsBtn') || document.getElementById('visitorMaskIpBtn');
         if (toggleAllBtn) {
             toggleAllBtn.addEventListener('click', () => {
                 this.isGlobalIpRevealed = !this.isGlobalIpRevealed;
@@ -607,15 +607,15 @@ class StandaloneAdminCommandCenter {
                     toggleAllBtn.classList.add('bg-zinc-900', 'text-white', 'border-zinc-900');
                     toggleAllBtn.classList.remove('bg-white', 'text-zinc-700', 'border-zinc-200');
                     toggleAllBtn.innerHTML = `
-                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
-                        <span class="hidden sm:inline">Mask IPs</span>
+                        <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                        <span>Mask IPs</span>
                     `;
                 } else {
                     toggleAllBtn.classList.remove('bg-zinc-900', 'text-white', 'border-zinc-900');
                     toggleAllBtn.classList.add('bg-white', 'text-zinc-700', 'border-zinc-200');
                     toggleAllBtn.innerHTML = `
-                        <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                        <span class="hidden sm:inline">Reveal IPs</span>
+                        <svg class="w-3.5 h-3.5 text-zinc-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        <span>Reveal IPs</span>
                     `;
                 }
                 this.renderTelemetryTablePage();
@@ -672,6 +672,20 @@ class StandaloneAdminCommandCenter {
                 this.closeSidebar();
                 if (this.exportDropdownMenu) this.exportDropdownMenu.style.display = 'none';
                 if (this.profileDropdownMenu) this.profileDropdownMenu.style.display = 'none';
+            } else if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) {
+                // Global ⌘K / Ctrl+K shortcut: switch to Visitor Intel tab and focus search input
+                e.preventDefault();
+                const visitorTabBtn = document.querySelector('.menu-tab-btn[data-tab="tabLiveLogs"]');
+                if (visitorTabBtn && (!visitorTabBtn.classList.contains('active'))) {
+                    visitorTabBtn.click();
+                }
+                setTimeout(() => {
+                    const searchInput = document.getElementById('telemetrySearchInput');
+                    if (searchInput) {
+                        searchInput.focus();
+                        searchInput.select();
+                    }
+                }, 100);
             }
         });
 
@@ -1069,9 +1083,45 @@ class StandaloneAdminCommandCenter {
                         ? rawIp.replace(/\.\d+$/, '.***')
                         : (rawIp.includes(':') ? rawIp.split(':').slice(0, 4).join(':') + ':****' : rawIp);
 
-                    // District / State
-                    const dist = s.city || 'Namakkal';
-                    const state = `${s.region || 'Tamil Nadu'}, ${s.country === 'India' ? 'IN' : (s.country || 'IN')}`;
+                    // District / State / Country parsing (clean 2-letter country code & zero duplicate suffixes)
+                    let dist = (s.city || '').trim();
+                    let region = (s.region || '').trim();
+                    let country = (s.country || '').trim();
+
+                    if ((!dist || !region) && s.loc) {
+                        const rawLoc = s.loc.replace(/📍/g, '').trim();
+                        const parts = rawLoc.split(/[,/]/).map(p => p.trim()).filter(Boolean);
+                        if (!dist && parts.length > 0) dist = parts[0];
+                        if (!region && parts.length > 1) region = parts[1];
+                        if (!country && parts.length > 2) country = parts[2];
+                    }
+
+                    dist = dist || 'Namakkal';
+                    region = region || 'Tamil Nadu';
+
+                    // Clean country code mapping
+                    let cCode = 'IN';
+                    if (country) {
+                        const cLower = country.toLowerCase();
+                        if (cLower === 'india' || cLower === 'in') cCode = 'IN';
+                        else if (cLower.includes('united states') || cLower === 'usa' || cLower === 'us') cCode = 'US';
+                        else if (cLower.includes('emirates') || cLower === 'uae' || cLower === 'ae') cCode = 'AE';
+                        else if (cLower.includes('kingdom') || cLower === 'uk' || cLower === 'gb' || cLower === 'great britain') cCode = 'GB';
+                        else if (cLower.includes('singapore') || cLower === 'sg') cCode = 'SG';
+                        else if (cLower.includes('canada') || cLower === 'ca') cCode = 'CA';
+                        else if (cLower.includes('australia') || cLower === 'au') cCode = 'AU';
+                        else if (cLower.includes('malaysia') || cLower === 'my') cCode = 'MY';
+                        else if (cLower.includes('germany') || cLower === 'de') cCode = 'DE';
+                        else if (country.length === 2) cCode = country.toUpperCase();
+                        else cCode = country;
+                    } else if (dist.toLowerCase().includes('philadelphia') || region.toLowerCase().includes('pennsylvania')) {
+                        cCode = 'US';
+                        if (!region || region === 'Tamil Nadu') region = 'Pennsylvania';
+                    }
+
+                    // Remove redundant country suffixes if already in region
+                    region = region.replace(/(,\s*(IN|US|AE|GB|SG|CA|AU|India|United States))+$/i, '').trim();
+                    const state = `${region}, ${cCode}`;
 
                     // Channel / Source
                     let channelName = 'Direct Website';
@@ -2115,16 +2165,18 @@ class StandaloneAdminCommandCenter {
 
             const isRaw = this.isGlobalIpRevealed;
             const displayIp = isRaw ? (s.rawIp || s.ip) : s.ip;
-            const ipColor = isRaw ? 'text-emerald-700 font-bold' : 'text-zinc-800 font-semibold';
-            const lockIcon = isRaw ? '🔓' : '👁️';
+            const ipColor = isRaw ? 'text-amber-700 font-bold' : 'text-zinc-800 font-semibold';
+            const lockIcon = isRaw 
+                ? '<svg class="w-3 h-3 text-amber-500 inline shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>'
+                : '<svg class="w-3 h-3 text-zinc-400 inline shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>';
 
             html += `
                 <tr class="hover:bg-zinc-50/80 transition-colors">
-                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap border-b border-zinc-100">
+                    <td class="px-4 py-3.5 font-mono text-xs whitespace-nowrap border-b border-zinc-100">
                         <div class="text-zinc-900 font-semibold text-xs">${s.dateStr || ''}</div>
                         <div class="text-zinc-400 font-mono text-[11px] mt-0.5">${s.timeStr || ''} IST</div>
                     </td>
-                    <td class="px-4 py-3 font-mono text-xs ip-cell-action cursor-pointer select-text border-b border-zinc-100" 
+                    <td class="px-4 py-3.5 font-mono text-xs ip-cell-action cursor-pointer select-text border-b border-zinc-100" 
                         data-masked="${s.ip}" 
                         data-raw="${s.rawIp}" 
                         data-state="${isRaw ? 'raw' : 'masked'}"
@@ -2133,24 +2185,26 @@ class StandaloneAdminCommandCenter {
                             <span class="ip-text font-semibold ${ipColor}">${displayIp}</span>
                             <span class="ip-toggle-btn text-[10px] text-zinc-500 hover:text-zinc-900 p-0.5" title="Toggle Full IP">${lockIcon}</span>
                         </div>
-                        ${s.isp ? `<div class="text-[10px] text-zinc-400 font-sans mt-0.5 truncate max-w-[180px]">${s.isp}</div>` : ''}
+                        ${s.isp ? `<div class="text-[10px] text-zinc-400 font-sans mt-0.5 truncate max-w-[200px]">${s.isp}</div>` : ''}
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap border-b border-zinc-100">
+                    <td class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-100">
                         <div class="font-semibold text-zinc-900 text-xs">${s.dist || 'Namakkal'}</div>
-                        <div class="text-[11px] text-zinc-400 font-normal mt-0.5">${s.state || 'Tamil Nadu'}, IN</div>
+                        <div class="text-[11px] text-zinc-400 font-normal mt-0.5">${s.state || 'Tamil Nadu, IN'}</div>
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap border-b border-zinc-100">
+                    <td class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-100">
                         <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-zinc-100 text-zinc-700 border border-zinc-200/60">${s.source || 'Direct'}</span>
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap border-b border-zinc-100">
+                    <td class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-100">
                         <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-zinc-100 text-zinc-700 border border-zinc-200/60">${s.device || 'Mobile'}</span>
-                        <span class="text-zinc-400 text-[11px] ml-1.5">${s.browser || 'Chrome'}</span>
+                        <span class="text-zinc-500 text-[11px] ml-1.5 font-medium">${s.browser || 'Chrome'}</span>
                     </td>
-                    <td class="px-4 py-3 whitespace-nowrap border-b border-zinc-100">
+                    <td class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-100">
                         <span class="${durationClass}">${s.duration || '15s'}</span>
                     </td>
-                    <td class="px-4 py-3 text-zinc-700 text-xs max-w-[200px] truncate border-b border-zinc-100" title="${s.action || ''}">${s.action || 'Page Exploration'}</td>
-                    <td class="px-4 py-3 whitespace-nowrap border-b border-zinc-100">
+                    <td class="px-4 py-3.5 text-zinc-700 text-xs border-b border-zinc-100" title="${s.action || ''}">
+                        <span class="font-medium text-zinc-800">${s.action || 'Page Exploration'}</span>
+                    </td>
+                    <td class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-100">
                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border ${statusBadgeClass}">${s.status || 'Active'}</span>
                     </td>
                 </tr>

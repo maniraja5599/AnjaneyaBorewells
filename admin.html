@@ -50,7 +50,7 @@
             }
         };
     </script>
-    <link rel="stylesheet" href="admin.css?v=6.0.9">
+    <link rel="stylesheet" href="admin.css?v=6.1.0">
 </head>
 <body class="min-h-screen bg-zinc-50/60 font-sans text-zinc-900 antialiased selection:bg-zinc-900 selection:text-white">
 
@@ -703,155 +703,157 @@
             <!-- ================================================================= -->
             <div class="admin-tab-pane flex flex-col gap-4" id="tabLiveLogs" style="display: none;">
                 
-                <!-- Live Logs Mini KPI Ribbon (Clean Flex Columns & No Collision) -->
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+                <!-- Live Logs Mini KPI Ribbon (Responsive Grid & No Text Truncation) -->
+                <div class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
                     
                     <!-- Card 1: Live Online -->
-                    <div class="bg-white rounded-xl border border-zinc-200/80 p-4 min-h-[105px] shadow-subtle hover:border-zinc-300 transition-all flex flex-col justify-between">
-                        <div class="flex items-center justify-between gap-1">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500 truncate">Live Online</span>
-                            <span class="bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/20 text-[11px] font-medium px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0">
-                                <span class="relative flex h-1.5 w-1.5">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                                </span>
-                                <span>Live</span>
+                    <div class="flex flex-col justify-between p-4 rounded-xl border border-zinc-200/80 bg-white dark:bg-zinc-900 shadow-sm min-h-[96px] hover:border-zinc-300 transition-all">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                            <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 whitespace-nowrap">LIVE ONLINE</span>
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/20 shrink-0">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> Live
                             </span>
                         </div>
-                        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-emerald-600 font-mono my-0.5 truncate" id="liveLogsActiveCount">1 Online</div>
-                        <div class="text-xs text-zinc-400 truncate">Real-time Heartbeat</div>
+                        <div class="text-2xl font-bold tracking-tight text-emerald-600 font-mono" id="liveLogsActiveCount">1 Online</div>
+                        <div class="text-[11px] text-zinc-400">Real-time Heartbeat</div>
                     </div>
 
                     <!-- Card 2: Today -->
-                    <div class="bg-white rounded-xl border border-zinc-200/80 p-4 min-h-[105px] shadow-subtle hover:border-zinc-300 transition-all flex flex-col justify-between">
-                        <div class="flex items-center justify-between gap-1">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500 truncate">Today</span>
-                            <span class="bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/20 text-[11px] font-medium px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0">
+                    <div class="flex flex-col justify-between p-4 rounded-xl border border-zinc-200/80 bg-white dark:bg-zinc-900 shadow-sm min-h-[96px] hover:border-zinc-300 transition-all">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                            <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 whitespace-nowrap">TODAY</span>
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/20 shrink-0">
                                 <span>↑ 18.4%</span>
                             </span>
                         </div>
-                        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-mono my-0.5 truncate" id="liveLogsTodayCount">-- Today</div>
-                        <div class="text-xs text-zinc-400 truncate">IST Calendar Day</div>
+                        <div class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 font-mono" id="liveLogsTodayCount">-- Today</div>
+                        <div class="text-[11px] text-zinc-400">IST Calendar Day</div>
                     </div>
 
                     <!-- Card 3: This Month -->
-                    <div class="bg-white rounded-xl border border-zinc-200/80 p-4 min-h-[105px] shadow-subtle hover:border-zinc-300 transition-all flex flex-col justify-between">
-                        <div class="flex items-center justify-between gap-1">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500 truncate">This Month</span>
-                            <span class="bg-zinc-100 text-zinc-600 text-[11px] font-medium px-2 py-0.5 rounded-full inline-flex items-center shrink-0">
+                    <div class="flex flex-col justify-between p-4 rounded-xl border border-zinc-200/80 bg-white dark:bg-zinc-900 shadow-sm min-h-[96px] hover:border-zinc-300 transition-all">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                            <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 whitespace-nowrap">THIS MONTH</span>
+                            <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 shrink-0">
                                 <span>Cycle</span>
                             </span>
                         </div>
-                        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-mono my-0.5 truncate" id="liveLogsMonthCount">-- Views</div>
-                        <div class="text-xs text-zinc-400 truncate">Active Cycle</div>
+                        <div class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 font-mono" id="liveLogsMonthCount">-- Views</div>
+                        <div class="text-[11px] text-zinc-400">Active Cycle</div>
                     </div>
 
                     <!-- Card 4: Annual -->
-                    <div class="bg-white rounded-xl border border-zinc-200/80 p-4 min-h-[105px] shadow-subtle hover:border-zinc-300 transition-all flex flex-col justify-between">
-                        <div class="flex items-center justify-between gap-1">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500 truncate">Annual</span>
-                            <span class="bg-zinc-100 text-zinc-600 text-[11px] font-medium px-2 py-0.5 rounded-full inline-flex items-center shrink-0">
+                    <div class="flex flex-col justify-between p-4 rounded-xl border border-zinc-200/80 bg-white dark:bg-zinc-900 shadow-sm min-h-[96px] hover:border-zinc-300 transition-all">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                            <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 whitespace-nowrap">ANNUAL</span>
+                            <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 shrink-0">
                                 <span>FY26</span>
                             </span>
                         </div>
-                        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-mono my-0.5 truncate" id="liveLogsYearCount">-- Sessions</div>
-                        <div class="text-xs text-zinc-400 truncate">Cumulative Fiscal</div>
+                        <div class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 font-mono" id="liveLogsYearCount">-- Sessions</div>
+                        <div class="text-[11px] text-zinc-400">Cumulative Fiscal</div>
                     </div>
 
-                    <!-- Card 5: All-Time Total -->
-                    <div class="bg-white rounded-xl border border-zinc-200/80 p-4 min-h-[105px] shadow-subtle hover:border-zinc-300 transition-all flex flex-col justify-between">
-                        <div class="flex items-center justify-between gap-1">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500 truncate">All-Time Total</span>
-                            <span class="bg-zinc-100 text-zinc-600 text-[11px] font-medium px-2 py-0.5 rounded-full inline-flex items-center shrink-0">
+                    <!-- Card 5: Total Sessions -->
+                    <div class="flex flex-col justify-between p-4 rounded-xl border border-zinc-200/80 bg-white dark:bg-zinc-900 shadow-sm min-h-[96px] hover:border-zinc-300 transition-all">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                            <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 whitespace-nowrap">TOTAL SESSIONS</span>
+                            <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-400 shrink-0">
                                 <span>Strict</span>
                             </span>
                         </div>
-                        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-zinc-900 font-mono my-0.5 truncate" id="liveLogsTotalCount">1,034 Total</div>
-                        <div class="text-xs text-zinc-400 truncate">Monotonic Counter</div>
+                        <div class="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 font-mono" id="liveLogsTotalCount">1,034 Total</div>
+                        <div class="text-[11px] text-zinc-400">Monotonic Counter</div>
                     </div>
 
                     <!-- Card 6: Leads & WhatsApp -->
-                    <div class="bg-white rounded-xl border border-zinc-200/80 p-4 min-h-[105px] shadow-subtle hover:border-zinc-300 transition-all flex flex-col justify-between">
-                        <div class="flex items-center justify-between gap-1">
-                            <span class="text-xs font-semibold uppercase tracking-wider text-zinc-500 truncate">Leads &amp; WA</span>
-                            <span class="bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/20 text-[11px] font-medium px-2 py-0.5 rounded-full inline-flex items-center gap-1 shrink-0">
+                    <div class="flex flex-col justify-between p-4 rounded-xl border border-zinc-200/80 bg-white dark:bg-zinc-900 shadow-sm min-h-[96px] hover:border-zinc-300 transition-all">
+                        <div class="flex items-center justify-between gap-1 mb-1">
+                            <span class="text-[11px] font-semibold uppercase tracking-wider text-zinc-500 whitespace-nowrap">LEADS &amp; WA</span>
+                            <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-emerald-50 text-emerald-700 ring-1 ring-emerald-500/20 shrink-0">
                                 <span>Verified</span>
                             </span>
                         </div>
-                        <div class="text-2xl sm:text-3xl font-bold tracking-tight text-emerald-700 font-mono my-0.5 truncate" id="liveLogsLeadsCount">31 Leads</div>
-                        <div class="text-xs text-zinc-400 truncate">Direct Inquiries</div>
+                        <div class="text-2xl font-bold tracking-tight text-emerald-600 font-mono" id="liveLogsLeadsCount">31 Leads</div>
+                        <div class="text-[11px] text-zinc-400">Direct Inquiries</div>
                     </div>
 
                 </div>
                 
-                <!-- Unified Single-Row Command Toolbar -->
-                <div class="bg-white border border-zinc-200/80 rounded-xl p-3 sm:p-4 shadow-subtle flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3" id="visitorFilterConsole">
+                <!-- Two-Row Responsive Action Bar -->
+                <div class="bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 rounded-xl p-3 sm:p-4 shadow-sm flex flex-col gap-3" id="visitorFilterConsole">
                     
-                    <!-- Left: Global Search Input (⌘K Style with real-time 300ms debounce) -->
-                    <div class="flex-1 min-w-[240px] max-w-md relative">
-                        <svg class="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
-                        <input type="text" 
-                               id="telemetrySearchInput" 
-                               class="w-full pl-9 pr-14 h-9 text-xs bg-zinc-50/80 border border-zinc-200 rounded-lg text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 transition-all font-sans" 
-                               placeholder="Search IP, location, device, ISP... ⌘K">
-                        <div class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
-                            <kbd class="hidden sm:inline-flex items-center text-[10px] font-mono text-zinc-400 bg-zinc-100 border border-zinc-200 rounded px-1.5 py-0.5 shadow-2xs">⌘K</kbd>
+                    <!-- Top Row: Search Input + Date Range Segmented Control -->
+                    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                        <!-- Search Bar -->
+                        <div class="flex-1 min-w-[280px] relative">
+                            <svg class="w-4 h-4 text-zinc-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <input type="text" 
+                                   id="telemetrySearchInput" 
+                                   class="w-full pl-9 pr-14 h-9 text-xs bg-zinc-50/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 rounded-lg text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-zinc-900/10 focus:border-zinc-400 transition-all font-sans" 
+                                   placeholder="Search IP, location, device, ISP... ⌘K">
+                            <div class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none flex items-center">
+                                <kbd class="hidden sm:inline-flex items-center text-[10px] font-mono text-zinc-400 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded px-1.5 py-0.5 shadow-2xs">⌘K</kbd>
+                            </div>
+                        </div>
+
+                        <!-- Quick Date Range Segmented Control (Today | 7D | 30D | All) -->
+                        <div class="bg-zinc-100 dark:bg-zinc-800 p-1 rounded-lg inline-flex items-center text-xs font-medium text-zinc-600 dark:text-zinc-300 border border-zinc-200/60 dark:border-zinc-700 overflow-x-auto shrink-0 gap-0.5">
+                            <button type="button" class="v-preset-btn px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-md transition-all cursor-pointer whitespace-nowrap" data-range="today">Today</button>
+                            <button type="button" class="v-preset-btn px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-md transition-all cursor-pointer whitespace-nowrap" data-range="last7">7D</button>
+                            <button type="button" class="v-preset-btn px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white rounded-md transition-all cursor-pointer whitespace-nowrap" data-range="month">30D</button>
+                            <button type="button" class="v-preset-btn active px-3 py-1.5 text-xs font-semibold bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-xs rounded-md transition-all cursor-pointer whitespace-nowrap" data-range="all">All</button>
                         </div>
                     </div>
 
-                    <!-- Center: Quick Date Range Segmented Control (Today | 7D | 30D | All) -->
-                    <div class="bg-zinc-100 p-1 rounded-lg inline-flex items-center text-xs font-medium text-zinc-600 border border-zinc-200/60 overflow-x-auto shrink-0 gap-0.5">
-                        <button type="button" class="v-preset-btn px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-md transition-all cursor-pointer whitespace-nowrap" data-range="today">Today</button>
-                        <button type="button" class="v-preset-btn px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-md transition-all cursor-pointer whitespace-nowrap" data-range="last7">7D</button>
-                        <button type="button" class="v-preset-btn px-3 py-1.5 text-xs font-medium text-zinc-600 hover:text-zinc-900 rounded-md transition-all cursor-pointer whitespace-nowrap" data-range="month">30D</button>
-                        <button type="button" class="v-preset-btn active px-3 py-1.5 text-xs font-semibold bg-white text-zinc-900 shadow-xs rounded-md transition-all cursor-pointer whitespace-nowrap" data-range="all">All</button>
-                    </div>
-
-                    <!-- Right: Secondary Filters & Action Buttons -->
-                    <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                    <!-- Bottom Row: Filter Dropdowns + Action Buttons -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-zinc-100 dark:border-zinc-800">
                         
-                        <!-- Status Select -->
-                        <select id="visitorStatusFilter" class="h-9 text-xs bg-white border border-zinc-200 rounded-lg px-3 text-zinc-700 font-medium hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 cursor-pointer shrink-0">
-                            <option value="all" selected>All Statuses</option>
-                            <option value="online">🟢 Online Only</option>
-                            <option value="offline">⚪ Offline</option>
-                        </select>
+                        <!-- Left Side: 3 Filter Selects -->
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <!-- Status Select -->
+                            <select id="visitorStatusFilter" class="h-9 text-xs bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 text-zinc-700 dark:text-zinc-200 font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 cursor-pointer shrink-0">
+                                <option value="all" selected>All Statuses</option>
+                                <option value="online">🟢 Online Only</option>
+                                <option value="offline">⚪ Offline</option>
+                            </select>
 
-                        <!-- District Select -->
-                        <select id="visitorDistrictFilter" class="h-9 text-xs bg-white border border-zinc-200 rounded-lg px-3 text-zinc-700 font-medium hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 cursor-pointer shrink-0">
-                            <option value="all" selected>All Districts</option>
-                            <option value="namakkal">Namakkal</option>
-                            <option value="salem">Salem</option>
-                            <option value="erode">Erode</option>
-                            <option value="karur">Karur</option>
-                            <option value="trichy">Tiruchirappalli</option>
-                            <option value="othertn">Other TN</option>
-                            <option value="global">Outside TN / NRI</option>
-                        </select>
+                            <!-- District Select -->
+                            <select id="visitorDistrictFilter" class="h-9 text-xs bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 text-zinc-700 dark:text-zinc-200 font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 cursor-pointer shrink-0">
+                                <option value="all" selected>All Districts</option>
+                                <option value="namakkal">Namakkal</option>
+                                <option value="salem">Salem</option>
+                                <option value="erode">Erode</option>
+                                <option value="karur">Karur</option>
+                                <option value="trichy">Tiruchirappalli</option>
+                                <option value="othertn">Other TN</option>
+                                <option value="global">Outside TN / NRI</option>
+                            </select>
 
-                        <!-- Device Select -->
-                        <select id="visitorDeviceFilter" class="h-9 text-xs bg-white border border-zinc-200 rounded-lg px-3 text-zinc-700 font-medium hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 cursor-pointer shrink-0">
-                            <option value="all" selected>All Devices</option>
-                            <option value="mobile">📱 Mobile</option>
-                            <option value="desktop">💻 Desktop</option>
-                        </select>
+                            <!-- Device Select -->
+                            <select id="visitorDeviceFilter" class="h-9 text-xs bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-lg px-3 text-zinc-700 dark:text-zinc-200 font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-900/10 cursor-pointer shrink-0">
+                                <option value="all" selected>All Devices</option>
+                                <option value="mobile">📱 Mobile</option>
+                                <option value="desktop">💻 Desktop</option>
+                            </select>
+                        </div>
 
-                        <!-- Action Button Group -->
+                        <!-- Right Side: Action Button Group -->
                         <div class="flex items-center gap-2 shrink-0">
                             <!-- Reveal IP Toggle Button -->
                             <button type="button" 
                                     id="toggleAllIpsBtn" 
-                                    class="h-9 px-3 text-xs font-medium text-zinc-700 hover:text-zinc-900 bg-white hover:bg-zinc-50 border border-zinc-200 rounded-lg shadow-2xs transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap" 
+                                    class="h-9 px-3 text-xs font-medium text-zinc-700 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-2xs transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap" 
                                     title="Toggle reveal unmasked client IP addresses">
                                 <svg class="w-3.5 h-3.5 text-zinc-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-                                <span class="hidden sm:inline">Reveal IPs</span>
+                                <span>Reveal IPs</span>
                             </button>
 
                             <!-- Reset Ghost Button -->
                             <button type="button" 
-                                    class="h-9 px-3 text-xs font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-lg transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap border border-transparent hover:border-zinc-200" 
+                                    class="h-9 px-3 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700" 
                                     id="visitorResetFilterBtn" 
                                     title="Reset all filters to default 15 rows">
                                 <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -862,7 +864,7 @@
 
                             <!-- Export CSV Primary Button -->
                             <button type="button" 
-                                    class="h-9 px-3.5 text-xs font-semibold text-white bg-zinc-900 hover:bg-zinc-800 rounded-lg shadow-sm transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap" 
+                                    class="h-9 px-3.5 text-xs font-semibold text-white bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white rounded-lg shadow-sm transition-colors inline-flex items-center justify-center gap-1.5 cursor-pointer whitespace-nowrap" 
                                     id="visitorExportCsvBtn" 
                                     title="Export current filtered sessions as CSV">
                                 <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -882,6 +884,7 @@
                         <select id="visitorActionFilter"><option value="all">all</option></select>
                         <button type="button" id="visitorApplyFilterBtn"></button>
                         <button type="button" id="visitorLoadAllBtn"></button>
+                        <button type="button" id="visitorMaskIpBtn"></button>
                         <span id="visitorFilterSummaryPill"></span>
                     </div>
 
@@ -896,17 +899,17 @@
                 <!-- Telemetry Data Table & Functional Pagination Shell -->
                 <div class="w-full rounded-xl border border-zinc-200/80 bg-white shadow-sm overflow-hidden">
                     <div class="w-full overflow-x-auto relative max-h-[640px]" id="telemetryTableScrollWrap">
-                        <table class="w-full min-w-[1100px] text-left border-collapse enterprise-table">
-                            <thead class="sticky top-0 z-10 bg-zinc-50/95 dark:bg-zinc-900/95 backdrop-blur-xs border-b border-zinc-200 text-zinc-500 font-semibold uppercase text-[11px] tracking-wider">
+                        <table class="w-full min-w-[1280px] text-left border-collapse enterprise-table">
+                            <thead class="sticky top-0 z-10 bg-zinc-50/95 dark:bg-zinc-900/95 backdrop-blur-xs border-b border-zinc-200 dark:border-zinc-800 text-zinc-500 font-semibold uppercase text-[11px] tracking-wider">
                                 <tr>
-                                    <th class="px-4 py-3 whitespace-nowrap border-b border-zinc-200">Timestamp</th>
-                                    <th class="px-4 py-3 whitespace-nowrap border-b border-zinc-200">Client IP &amp; ISP</th>
-                                    <th class="px-4 py-3 whitespace-nowrap border-b border-zinc-200">District &amp; State</th>
-                                    <th class="px-4 py-3 whitespace-nowrap border-b border-zinc-200">Channel</th>
-                                    <th class="px-4 py-3 whitespace-nowrap border-b border-zinc-200">Device &amp; Browser</th>
-                                    <th class="px-4 py-3 whitespace-nowrap border-b border-zinc-200">Duration</th>
-                                    <th class="px-4 py-3 whitespace-nowrap border-b border-zinc-200">Action Intent</th>
-                                    <th class="px-4 py-3 whitespace-nowrap border-b border-zinc-200">Lead Status</th>
+                                    <th class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-200 dark:border-zinc-800 min-w-[150px]">TIMESTAMP</th>
+                                    <th class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-200 dark:border-zinc-800 min-w-[220px]">CLIENT IP &amp; ISP</th>
+                                    <th class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-200 dark:border-zinc-800 min-w-[180px]">DISTRICT &amp; STATE</th>
+                                    <th class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-200 dark:border-zinc-800 min-w-[130px]">CHANNEL</th>
+                                    <th class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-200 dark:border-zinc-800 min-w-[200px]">DEVICE &amp; BROWSER</th>
+                                    <th class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-200 dark:border-zinc-800 min-w-[100px]">DURATION</th>
+                                    <th class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-200 dark:border-zinc-800 min-w-[260px]">ACTION INTENT</th>
+                                    <th class="px-4 py-3.5 whitespace-nowrap border-b border-zinc-200 dark:border-zinc-800 min-w-[110px]">LEAD STATUS</th>
                                 </tr>
                             </thead>
                             <tbody id="telemetryTableBody" class="divide-y divide-zinc-100 bg-white font-sans">
@@ -1348,6 +1351,6 @@
         <div id="installsLazyLoader"></div>
     </div>
 
-    <script src="admin.js?v=6.0.9"></script>
+    <script src="admin.js?v=6.1.0"></script>
 </body>
 </html>
