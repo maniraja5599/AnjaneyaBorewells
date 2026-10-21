@@ -318,6 +318,20 @@ class StandaloneAdminCommandCenter {
                     }
                 });
 
+                // Sync active page title
+                const pageTitleEl = document.getElementById('activePageTitle');
+                const titleMap = {
+                    tabOverview: 'Executive Telemetry Overview',
+                    tabActiveUsers: 'Live Active Radar',
+                    tabLiveLogs: 'Visitor Intelligence Logs',
+                    tabEstimatesLog: 'Quotation & Leads Audit',
+                    tabCumulativePages: 'Cumulative Page Analytics',
+                    tabGeoBreakdown: 'Territory & Geo Map',
+                    tabDevTools: 'Developer Hub & Storage',
+                    tabSystemDocs: 'Architecture & System Docs'
+                };
+                if (pageTitleEl && titleMap[target]) pageTitleEl.textContent = titleMap[target];
+
                 if (target === 'tabOverview') {
                     Object.values(this.charts).forEach(c => c && c.resize && c.resize());
                 } else if (target === 'tabSystemDocs') {
@@ -1549,7 +1563,7 @@ class StandaloneAdminCommandCenter {
         if (sessions.length === 0) {
             this.microIntelTableBody.innerHTML = `
                 <tr>
-                    <td colspan="4" style="text-align: center; color: #64748b; padding: 24px 12px;">
+                    <td colspan="4" class="text-center text-zinc-400 py-6 text-xs font-sans">
                         Scanning live telemetry sessions...
                     </td>
                 </tr>
@@ -1558,14 +1572,22 @@ class StandaloneAdminCommandCenter {
         }
 
         this.microIntelTableBody.innerHTML = sessions.map(s => `
-            <tr>
-                <td style="font-family: var(--font-mono); font-size: 0.70rem; color: #475569; white-space: nowrap;">
-                    <span style="color: #0f172a; font-weight: 600;">${s.dateStr || ''}</span>
-                    <span style="color: #64748b; font-size: 0.68rem; margin-left: 4px;">${s.timeStr || ''}</span>
+            <tr class="hover:bg-zinc-50/80 transition-colors">
+                <td class="py-2.5 px-3 font-mono text-xs text-zinc-600 whitespace-nowrap">
+                    <span class="font-semibold text-zinc-900">${s.dateStr || ''}</span>
+                    <span class="text-zinc-400 text-[11px] ml-1">${s.timeStr || ''}</span>
                 </td>
-                <td><span class="badge-source ${s.sourceBadge || 'badge-source-direct'}">${s.source}</span></td>
-                <td style="font-weight: 600; color: #0284c7;">📍 ${s.dist}, TN</td>
-                <td style="color: #059669; font-weight: 600;">${s.action}</td>
+                <td class="py-2.5 px-3">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-zinc-100 text-zinc-700 ring-1 ring-inset ring-zinc-200">
+                        ${s.source}
+                    </span>
+                </td>
+                <td class="py-2.5 px-3 font-medium text-xs text-zinc-800">
+                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] bg-blue-50 text-blue-700 border border-blue-200/60">
+                        <span>📍</span> ${s.dist}, TN
+                    </span>
+                </td>
+                <td class="py-2.5 px-3 text-xs font-semibold text-emerald-700">${s.action}</td>
             </tr>
         `).join('');
     }

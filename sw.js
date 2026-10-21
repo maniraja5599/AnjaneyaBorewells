@@ -1,4 +1,4 @@
-const CACHE_NAME = 'anjaneya-borewells-cache-v6.0.5';
+const CACHE_NAME = 'anjaneya-borewells-cache-v6.0.6';
 const ASSETS = [
   './',
   './index.html',
