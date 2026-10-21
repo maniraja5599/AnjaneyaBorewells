@@ -24,9 +24,12 @@ class StandaloneAdminCommandCenter {
         this.latestPing = 24;
         this.isGlobalIpRevealed = false;
 
-        // Progressive Scroll & Pagination States
+        // Progressive Scroll & Sliced Pagination States (Default 15 rows)
         this.telemetryRenderedCount = 0;
-        this.telemetryBatchSize = 30;
+        this.telemetryBatchSize = 15;
+        this.telemetryPage = 1;
+        this.telemetryPageSize = 15;
+        this.telemetrySearchDebounceTimer = null;
         this.estimatesRenderedCount = 0;
         this.estimatesBatchSize = 15;
         this.installsRenderedCount = 0;
@@ -126,6 +129,11 @@ class StandaloneAdminCommandCenter {
         this.telemetryLoadMoreBar = document.getElementById('telemetryLoadMoreBar');
         this.telemetryLoadMoreBtn = document.getElementById('telemetryLoadMoreBtn');
         this.telemetryLoadMoreBtnText = document.getElementById('telemetryLoadMoreBtnText');
+        this.telemetryPaginationFooter = document.getElementById('telemetryPaginationFooter');
+        this.telemetryPaginationInfo = document.getElementById('telemetryPaginationInfo');
+        this.telemetryPrevPageBtn = document.getElementById('telemetryPrevPageBtn');
+        this.telemetryNextPageBtn = document.getElementById('telemetryNextPageBtn');
+        this.telemetryPageIndicator = document.getElementById('telemetryPageIndicator');
 
         this.estimatesTableBody = document.getElementById('estimatesTableBody');
         this.estimatesTableScrollWrap = document.getElementById('estimatesTableScrollWrap');
@@ -381,24 +389,30 @@ class StandaloneAdminCommandCenter {
             });
         }
 
-        // Visitor Intelligence Preset Buttons (Today, Month, Year, All Time, etc.)
+        // Visitor Intelligence Preset Buttons (Today, 7D, 30D, All Time)
         if (this.visitorPresetBtns && this.visitorPresetBtns.length) {
             this.visitorPresetBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    this.visitorPresetBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
+                    this.visitorPresetBtns.forEach(b => {
+                        b.classList.remove('active', 'bg-white', 'shadow-xs', 'text-zinc-900', 'font-semibold');
+                        b.classList.add('text-zinc-600', 'hover:text-zinc-900', 'font-medium');
+                    });
+                    btn.classList.add('active', 'bg-white', 'shadow-xs', 'text-zinc-900', 'font-semibold');
+                    btn.classList.remove('text-zinc-600', 'hover:text-zinc-900', 'font-medium');
+
                     const range = btn.getAttribute('data-range') || 'all';
                     if (this.visitorDatePresetSelect) {
                         this.visitorDatePresetSelect.value = range;
                         if (this.visitorCustomDateFromWrap) this.visitorCustomDateFromWrap.style.display = 'none';
                         if (this.visitorCustomDateToWrap) this.visitorCustomDateToWrap.style.display = 'none';
                     }
+                    this.telemetryPage = 1;
                     this.applyVisitorFilters();
                 });
             });
         }
 
-        // Visitor Date Preset Select Dropdown
+        // Visitor Date Preset Select Dropdown (for legacy compatibility)
         if (this.visitorDatePresetSelect) {
             this.visitorDatePresetSelect.addEventListener('change', () => {
                 const val = this.visitorDatePresetSelect.value;
@@ -408,11 +422,15 @@ class StandaloneAdminCommandCenter {
                 } else {
                     if (this.visitorCustomDateFromWrap) this.visitorCustomDateFromWrap.style.display = 'none';
                     if (this.visitorCustomDateToWrap) this.visitorCustomDateToWrap.style.display = 'none';
-                    // Update active preset button highlight
                     this.visitorPresetBtns.forEach(b => {
-                        if (b.getAttribute('data-range') === val) b.classList.add('active');
-                        else b.classList.remove('active');
+                        const isMatch = b.getAttribute('data-range') === val;
+                        b.classList.toggle('active', isMatch);
+                        b.classList.toggle('bg-white', isMatch);
+                        b.classList.toggle('shadow-xs', isMatch);
+                        b.classList.toggle('text-zinc-900', isMatch);
+                        b.classList.toggle('font-semibold', isMatch);
                     });
+                    this.telemetryPage = 1;
                     this.applyVisitorFilters();
                 }
             });
@@ -420,29 +438,55 @@ class StandaloneAdminCommandCenter {
 
         // Visitor Dropdown Filter Listeners (Status, Device, District, Action)
         [this.visitorStatusFilter, this.visitorDeviceFilter, this.visitorDistrictFilter, this.visitorActionFilter].forEach(el => {
-            if (el) el.addEventListener('change', () => this.applyVisitorFilters());
+            if (el) el.addEventListener('change', () => {
+                this.telemetryPage = 1;
+                this.applyVisitorFilters();
+            });
         });
 
-        // Visitor Page Size / Show Records Select
+        // Visitor Page Size / Slicing Select (15, 30, 50, 100)
         if (this.visitorPageSizeSelect) {
             this.visitorPageSizeSelect.addEventListener('change', () => {
-                const val = this.visitorPageSizeSelect.value;
-                if (val === 'all') {
-                    this.telemetryBatchSize = 999999;
-                } else {
-                    this.telemetryBatchSize = parseInt(val, 10) || 15;
+                this.telemetryPageSize = parseInt(this.visitorPageSizeSelect.value, 10) || 15;
+                this.telemetryPage = 1;
+                this.renderTelemetryTablePage();
+                if (this.telemetryTableScrollWrap) this.telemetryTableScrollWrap.scrollTop = 0;
+            });
+        }
+
+        // Pagination Previous Button
+        if (this.telemetryPrevPageBtn) {
+            this.telemetryPrevPageBtn.addEventListener('click', () => {
+                if (this.telemetryPage > 1) {
+                    this.telemetryPage--;
+                    this.renderTelemetryTablePage();
+                    if (this.telemetryTableScrollWrap) this.telemetryTableScrollWrap.scrollTop = 0;
                 }
-                this.telemetryRenderedCount = 0;
-                this.renderNextTelemetryBatch(true);
+            });
+        }
+
+        // Pagination Next Button
+        if (this.telemetryNextPageBtn) {
+            this.telemetryNextPageBtn.addEventListener('click', () => {
+                const data = this.filteredTelemetrySessions || this.allTelemetrySessions || [];
+                const totalPages = Math.max(1, Math.ceil(data.length / (this.telemetryPageSize || 15)));
+                if (this.telemetryPage < totalPages) {
+                    this.telemetryPage++;
+                    this.renderTelemetryTablePage();
+                    if (this.telemetryTableScrollWrap) this.telemetryTableScrollWrap.scrollTop = 0;
+                }
             });
         }
 
         // Visitor Apply Filter Button
         if (this.visitorApplyFilterBtn) {
-            this.visitorApplyFilterBtn.addEventListener('click', () => this.applyVisitorFilters());
+            this.visitorApplyFilterBtn.addEventListener('click', () => {
+                this.telemetryPage = 1;
+                this.applyVisitorFilters();
+            });
         }
 
-        // Visitor Reset Filter Button
+        // Visitor Reset Filter Button (Returns to Recent 15 default)
         if (this.visitorResetFilterBtn) {
             this.visitorResetFilterBtn.addEventListener('click', () => {
                 if (this.visitorDatePresetSelect) this.visitorDatePresetSelect.value = 'all';
@@ -455,23 +499,32 @@ class StandaloneAdminCommandCenter {
                 if (this.visitorDistrictFilter) this.visitorDistrictFilter.value = 'all';
                 if (this.visitorActionFilter) this.visitorActionFilter.value = 'all';
                 if (this.searchInput) this.searchInput.value = '';
-                if (this.visitorPageSizeSelect) this.visitorPageSizeSelect.value = 'all';
-                this.telemetryBatchSize = 999999;
+                if (this.visitorPageSizeSelect) this.visitorPageSizeSelect.value = '15';
+                this.telemetryPageSize = 15;
+                this.telemetryPage = 1;
 
                 this.visitorPresetBtns.forEach(b => {
-                    if (b.getAttribute('data-range') === 'all') b.classList.add('active');
-                    else b.classList.remove('active');
+                    const isAll = b.getAttribute('data-range') === 'all';
+                    b.classList.toggle('active', isAll);
+                    b.classList.toggle('bg-white', isAll);
+                    b.classList.toggle('shadow-xs', isAll);
+                    b.classList.toggle('text-zinc-900', isAll);
+                    b.classList.toggle('font-semibold', isAll);
+                    b.classList.toggle('text-zinc-600', !isAll);
+                    b.classList.toggle('hover:text-zinc-900', !isAll);
+                    b.classList.toggle('font-medium', !isAll);
                 });
 
                 this.applyVisitorFilters();
             });
         }
 
-        // Visitor Load Full History Button (Load entire history without caps)
+        // Visitor Load Full History Button
         if (this.visitorLoadAllBtn) {
             this.visitorLoadAllBtn.addEventListener('click', () => {
-                if (this.visitorPageSizeSelect) this.visitorPageSizeSelect.value = 'all';
-                this.telemetryBatchSize = 999999;
+                if (this.visitorPageSizeSelect) this.visitorPageSizeSelect.value = '100';
+                this.telemetryPageSize = 100;
+                this.telemetryPage = 1;
                 this.applyVisitorFilters();
             });
         }
@@ -481,12 +534,32 @@ class StandaloneAdminCommandCenter {
             this.visitorExportCsvBtn.addEventListener('click', () => this.exportFilteredVisitorSessionsCsv());
         }
 
-        // Search Filter with progressive reset (Integrated with all filters)
+        // Search Filter with 300ms Debounce & Real-Time In-Memory Filtering
         if (this.searchInput) {
             this.searchInput.addEventListener('input', () => {
-                this.applyVisitorFilters();
+                clearTimeout(this.telemetrySearchDebounceTimer);
+                this.telemetrySearchDebounceTimer = setTimeout(() => {
+                    this.telemetryPage = 1;
+                    this.applyVisitorFilters();
+                }, 300);
             });
         }
+
+        // Global Keyboard Shortcut (⌘K / Ctrl+K) to focus Search
+        window.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                const searchInput = document.getElementById('telemetrySearchInput');
+                if (searchInput) {
+                    e.preventDefault();
+                    const logsTab = document.querySelector('.menu-tab-btn[data-tab="tabLiveLogs"]');
+                    if (logsTab) logsTab.click();
+                    setTimeout(() => {
+                        searchInput.focus();
+                        searchInput.select();
+                    }, 120);
+                }
+            }
+        });
 
         // Click on Client IP to reveal Full IP / Toggle & Copy
         if (this.telemetryTableBody) {
@@ -530,38 +603,26 @@ class StandaloneAdminCommandCenter {
         if (toggleAllBtn) {
             toggleAllBtn.addEventListener('click', () => {
                 this.isGlobalIpRevealed = !this.isGlobalIpRevealed;
-                toggleAllBtn.innerHTML = this.isGlobalIpRevealed
-                    ? '<span class="eye-ico">🔒</span> <span>Mask All IPs</span>'
-                    : '<span class="eye-ico">👁️</span> <span>Reveal All IPs</span>';
-                toggleAllBtn.style.color = this.isGlobalIpRevealed ? '#4ade80' : '#38bdf8';
-                toggleAllBtn.style.borderColor = this.isGlobalIpRevealed ? 'rgba(74, 222, 128, 0.4)' : 'rgba(56, 189, 248, 0.35)';
-
-                const cells = document.querySelectorAll('.ip-cell-action');
-                cells.forEach(cell => {
-                    const raw = cell.getAttribute('data-raw');
-                    const masked = cell.getAttribute('data-masked');
-                    const textSpan = cell.querySelector('.ip-text');
-                    const toggleBtn = cell.querySelector('.ip-toggle-btn');
-                    if (this.isGlobalIpRevealed) {
-                        if (textSpan) {
-                            textSpan.textContent = raw;
-                            textSpan.style.color = '#4ade80';
-                        }
-                        if (toggleBtn) toggleBtn.textContent = '🔓';
-                        cell.setAttribute('data-state', 'raw');
-                    } else {
-                        if (textSpan) {
-                            textSpan.textContent = masked;
-                            textSpan.style.color = '#f8fafc';
-                        }
-                        if (toggleBtn) toggleBtn.textContent = '👁️';
-                        cell.setAttribute('data-state', 'masked');
-                    }
-                });
+                if (this.isGlobalIpRevealed) {
+                    toggleAllBtn.classList.add('bg-zinc-900', 'text-white', 'border-zinc-900');
+                    toggleAllBtn.classList.remove('bg-white', 'text-zinc-700', 'border-zinc-200');
+                    toggleAllBtn.innerHTML = `
+                        <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                        <span class="hidden sm:inline">Mask IPs</span>
+                    `;
+                } else {
+                    toggleAllBtn.classList.remove('bg-zinc-900', 'text-white', 'border-zinc-900');
+                    toggleAllBtn.classList.add('bg-white', 'text-zinc-700', 'border-zinc-200');
+                    toggleAllBtn.innerHTML = `
+                        <svg class="w-3.5 h-3.5 text-zinc-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        <span class="hidden sm:inline">Reveal IPs</span>
+                    `;
+                }
+                this.renderTelemetryTablePage();
             });
         }
 
-        // Manual Load More for Visitor Telemetry (Disables runaway auto-scroll so horizontal scrolling is 100% fluid)
+        // Compatibility Load More for Visitor Telemetry
         if (this.telemetryLoadMoreBtn) {
             this.telemetryLoadMoreBtn.addEventListener('click', () => {
                 this.renderNextTelemetryBatch(false);
@@ -1737,13 +1798,9 @@ class StandaloneAdminCommandCenter {
         const actionFilter = this.visitorActionFilter?.value || 'all';
         const searchQ = (this.searchInput?.value || '').toLowerCase().trim();
 
-        // 0. Synchronize Display Records Batch Size
-        const pageSizeVal = this.visitorPageSizeSelect?.value || '30';
-        if (pageSizeVal === 'all') {
-            this.telemetryBatchSize = 999999;
-        } else {
-            this.telemetryBatchSize = parseInt(pageSizeVal, 10) || 30;
-        }
+        // 0. Synchronize Display Records Batch & Page Size
+        const pageSizeVal = this.visitorPageSizeSelect?.value || '15';
+        this.telemetryPageSize = parseInt(pageSizeVal, 10) || 15;
 
         // 1. Calculate Date Range Bounds in IST
         const tzOffset = 5.5 * 60 * 60 * 1000;
@@ -1839,9 +1896,9 @@ class StandaloneAdminCommandCenter {
                 if (!act.includes('survey') && !act.includes('casing') && !act.includes('depth') && !act.includes('engaged') && !stat.includes('engaged')) return false;
             }
 
-            // F. Text Search Query
+            // F. Text Search Query (Across IP, Location, Device, ISP, Action Intent, Status)
             if (searchQ) {
-                const rowText = `${s.ip || ''} ${s.rawIp || ''} ${s.dist || ''} ${s.state || ''} ${s.device || ''} ${s.browser || ''} ${s.source || ''} ${s.action || ''} ${s.status || ''} ${s.dateStr || ''} ${s.timeStr || ''}`.toLowerCase();
+                const rowText = `${s.ip || ''} ${s.rawIp || ''} ${s.isp || ''} ${s.dist || ''} ${s.state || ''} ${s.device || ''} ${s.browser || ''} ${s.source || ''} ${s.action || ''} ${s.status || ''} ${s.dateStr || ''} ${s.timeStr || ''}`.toLowerCase();
                 if (!rowText.includes(searchQ)) return false;
             }
 
@@ -1868,9 +1925,9 @@ class StandaloneAdminCommandCenter {
             this.visitorFilterSummaryPill.innerHTML = `Showing <strong>${filteredCount}</strong> of <strong>${allTotal}</strong> sessions (${label})`;
         }
 
-        // 4. Reset pagination and render table
-        this.telemetryRenderedCount = 0;
-        this.renderNextTelemetryBatch(true);
+        // 4. Reset to Page 1 and render sliced page (Default 15 rows)
+        this.telemetryPage = 1;
+        this.renderTelemetryTablePage();
     }
 
     filterQuotes() {
@@ -1989,89 +2046,125 @@ class StandaloneAdminCommandCenter {
     }
 
     renderNextTelemetryBatch(isReset = false) {
-        if (!this.telemetryTableBody) return;
-        if (isReset) this.telemetryTableBody.innerHTML = '';
+        if (isReset) this.telemetryPage = 1;
+        this.renderTelemetryTablePage();
+    }
 
-        const data = this.filteredTelemetrySessions || this.allTelemetrySessions;
+    renderTelemetryTablePage() {
+        if (!this.telemetryTableBody) return;
+
+        const data = this.filteredTelemetrySessions || this.allTelemetrySessions || [];
         const total = data.length;
 
         if (total === 0) {
             this.telemetryTableBody.innerHTML = `
                 <tr>
-                    <td colspan="10" style="text-align: center; padding: 48px 16px; color: #64748b;">
-                        <span style="font-size: 2rem; display: block; margin-bottom: 8px;">📡</span>
-                        <strong style="font-size: 1rem; color: #0f172a;">Scanning Live Visitor Sessions...</strong>
-                        <div style="font-size: 0.85rem; color: #64748b; margin-top: 6px;">
-                            Connecting to cloud telemetry node to retrieve real visitor IP and device logs.
-                        </div>
+                    <td colspan="8" class="text-center py-14 px-4 text-zinc-500">
+                        <span class="text-3xl block mb-2">📡</span>
+                        <strong class="text-sm font-semibold text-zinc-900 block">No Visitor Sessions Match Filters</strong>
+                        <p class="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">Adjust your search query or click "Reset" to view recent sessions from the Firebase RTDB node.</p>
                     </td>
                 </tr>
             `;
-            if (this.telemetryCountPill) this.telemetryCountPill.textContent = '0 Real Sessions';
-            if (this.telemetryLoadMoreBar) this.telemetryLoadMoreBar.style.display = 'none';
+            if (this.telemetryPaginationInfo) this.telemetryPaginationInfo.textContent = 'Showing 0 of 0 sessions';
+            if (this.telemetryCountPill) this.telemetryCountPill.textContent = 'Showing 0 sessions';
+            if (this.telemetryPageIndicator) this.telemetryPageIndicator.textContent = 'Page 1 of 1';
+            if (this.telemetryPrevPageBtn) this.telemetryPrevPageBtn.disabled = true;
+            if (this.telemetryNextPageBtn) this.telemetryNextPageBtn.disabled = true;
             return;
         }
 
-        if (this.telemetryRenderedCount >= total) {
-            if (this.telemetryLoadMoreBar) this.telemetryLoadMoreBar.style.display = 'none';
-            if (this.telemetryCountPill) {
-                this.telemetryCountPill.textContent = `Showing all ${total} real sessions (Complete Audit)`;
-            }
-            return;
-        }
+        const pageSize = this.telemetryPageSize || 15;
+        const totalPages = Math.max(1, Math.ceil(total / pageSize));
+        if (this.telemetryPage > totalPages) this.telemetryPage = totalPages;
+        if (this.telemetryPage < 1) this.telemetryPage = 1;
 
-        const nextBatch = data.slice(this.telemetryRenderedCount, this.telemetryRenderedCount + this.telemetryBatchSize);
-        this.telemetryRenderedCount += nextBatch.length;
+        const startIdx = (this.telemetryPage - 1) * pageSize;
+        const endIdx = Math.min(startIdx + pageSize, total);
+        const pageRows = data.slice(startIdx, endIdx);
 
         let html = '';
-        nextBatch.forEach(s => {
-            const statusClass = s.status === 'Direct Lead' ? 'badge-verified' : (s.status === 'Quote Sent' ? 'badge-quote' : 'badge-active');
+        pageRows.forEach(s => {
+            // Duration accent styling
+            let durationClass = 'font-mono text-xs text-zinc-700 font-medium';
+            const durStr = String(s.duration || '0s');
+            if (durStr.includes('m') || durStr.includes('h')) {
+                const minMatch = durStr.match(/(\d+)\s*m/);
+                const hrMatch = durStr.match(/(\d+)\s*h/);
+                if (hrMatch || (minMatch && parseInt(minMatch[1], 10) >= 5)) {
+                    durationClass = 'font-mono text-xs font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200/60';
+                } else {
+                    durationClass = 'font-mono text-xs font-medium text-emerald-600';
+                }
+            } else {
+                const secMatch = durStr.match(/(\d+)\s*s/);
+                if (secMatch && parseInt(secMatch[1], 10) < 30) {
+                    durationClass = 'font-mono text-xs text-zinc-400';
+                }
+            }
+
+            // Status badge styling
+            let statusBadgeClass = 'bg-zinc-100 text-zinc-700 border-zinc-200';
+            if (s.status === 'Direct Lead' || (s.action && (s.action.includes('WhatsApp') || s.action.includes('Call')))) {
+                statusBadgeClass = 'bg-emerald-50 text-emerald-700 border-emerald-200 ring-1 ring-emerald-600/20';
+            } else if (s.status === 'Quote Sent' || (s.action && s.action.includes('Quote'))) {
+                statusBadgeClass = 'bg-indigo-50 text-indigo-700 border-indigo-200 ring-1 ring-indigo-600/20';
+            } else if (s.status === 'Engaged' || s.status === 'Active') {
+                statusBadgeClass = 'bg-blue-50 text-blue-700 border-blue-200 ring-1 ring-blue-600/20';
+            }
+
+            const isRaw = this.isGlobalIpRevealed;
+            const displayIp = isRaw ? (s.rawIp || s.ip) : s.ip;
+            const ipColor = isRaw ? 'text-emerald-700 font-bold' : 'text-zinc-800 font-semibold';
+            const lockIcon = isRaw ? '🔓' : '👁️';
+
             html += `
                 <tr class="hover:bg-zinc-50/80 transition-colors">
-                    <td class="px-4 py-3 font-mono text-zinc-500 text-xs whitespace-nowrap">
-                        <div class="text-zinc-900 font-semibold">${s.dateStr || ''}</div>
-                        <div class="text-zinc-400 text-[11px]">${s.timeStr || ''} IST</div>
+                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap border-b border-zinc-100">
+                        <div class="text-zinc-900 font-semibold text-xs">${s.dateStr || ''}</div>
+                        <div class="text-zinc-400 font-mono text-[11px] mt-0.5">${s.timeStr || ''} IST</div>
                     </td>
-                    <td class="px-4 py-3 font-mono text-xs ip-cell-action cursor-pointer select-text" 
+                    <td class="px-4 py-3 font-mono text-xs ip-cell-action cursor-pointer select-text border-b border-zinc-100" 
                         data-masked="${s.ip}" 
                         data-raw="${s.rawIp}" 
-                        data-state="${this.isGlobalIpRevealed ? 'raw' : 'masked'}"
+                        data-state="${isRaw ? 'raw' : 'masked'}"
                         title="Click to reveal Full IP / Copy to clipboard">
-                        <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-zinc-100/80 border border-zinc-200/80 hover:bg-zinc-200/60 transition-all">
-                            <span class="ip-text font-semibold ${this.isGlobalIpRevealed ? 'text-emerald-700' : 'text-zinc-900'}">${this.isGlobalIpRevealed ? s.rawIp : s.ip}</span>
-                            <span class="ip-toggle-btn text-[10px] text-zinc-500 hover:text-zinc-900 p-0.5" title="Toggle Full IP">${this.isGlobalIpRevealed ? '🔓' : '👁️'}</span>
+                        <div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-zinc-100/90 border border-zinc-200/80 hover:bg-zinc-200/60 transition-all">
+                            <span class="ip-text font-semibold ${ipColor}">${displayIp}</span>
+                            <span class="ip-toggle-btn text-[10px] text-zinc-500 hover:text-zinc-900 p-0.5" title="Toggle Full IP">${lockIcon}</span>
                         </div>
                         ${s.isp ? `<div class="text-[10px] text-zinc-400 font-sans mt-0.5 truncate max-w-[180px]">${s.isp}</div>` : ''}
                     </td>
-                    <td class="px-4 py-3 font-medium text-zinc-900">${s.dist}</td>
-                    <td class="px-4 py-3 text-zinc-600">${s.state}</td>
-                    <td class="px-4 py-3"><span class="badge-source ${s.sourceBadge}">${s.source}</span></td>
-                    <td class="px-4 py-3 text-zinc-700">${s.device}</td>
-                    <td class="px-4 py-3 text-zinc-500">${s.browser}</td>
-                    <td class="px-4 py-3 font-mono text-zinc-700 font-medium">${s.duration}</td>
-                    <td class="px-4 py-3 text-zinc-700 max-w-[200px] truncate" title="${s.action}">${s.action}</td>
-                    <td class="px-4 py-3"><span class="badge-status ${statusClass}">${s.status}</span></td>
+                    <td class="px-4 py-3 whitespace-nowrap border-b border-zinc-100">
+                        <div class="font-semibold text-zinc-900 text-xs">${s.dist || 'Namakkal'}</div>
+                        <div class="text-[11px] text-zinc-400 font-normal mt-0.5">${s.state || 'Tamil Nadu'}, IN</div>
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap border-b border-zinc-100">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-zinc-100 text-zinc-700 border border-zinc-200/60">${s.source || 'Direct'}</span>
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap border-b border-zinc-100">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium bg-zinc-100 text-zinc-700 border border-zinc-200/60">${s.device || 'Mobile'}</span>
+                        <span class="text-zinc-400 text-[11px] ml-1.5">${s.browser || 'Chrome'}</span>
+                    </td>
+                    <td class="px-4 py-3 whitespace-nowrap border-b border-zinc-100">
+                        <span class="${durationClass}">${s.duration || '15s'}</span>
+                    </td>
+                    <td class="px-4 py-3 text-zinc-700 text-xs max-w-[200px] truncate border-b border-zinc-100" title="${s.action || ''}">${s.action || 'Page Exploration'}</td>
+                    <td class="px-4 py-3 whitespace-nowrap border-b border-zinc-100">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border ${statusBadgeClass}">${s.status || 'Active'}</span>
+                    </td>
                 </tr>
             `;
         });
 
-        this.telemetryTableBody.insertAdjacentHTML('beforeend', html);
+        this.telemetryTableBody.innerHTML = html;
 
-        if (this.telemetryCountPill) {
-            this.telemetryCountPill.textContent = `Showing ${this.telemetryRenderedCount} of ${total} real sessions`;
-        }
-
-        if (this.telemetryLoadMoreBar) {
-            if (this.telemetryRenderedCount < total) {
-                this.telemetryLoadMoreBar.style.display = 'flex';
-                const rem = total - this.telemetryRenderedCount;
-                if (this.telemetryLoadMoreBtnText) {
-                    this.telemetryLoadMoreBtnText.textContent = `Load More Sessions (${rem} remaining / மேலும் பார்க்க)`;
-                }
-            } else {
-                this.telemetryLoadMoreBar.style.display = 'none';
-            }
-        }
+        const showingText = `Showing ${(startIdx + 1).toLocaleString('en-IN')}–${endIdx.toLocaleString('en-IN')} of ${total.toLocaleString('en-IN')} sessions`;
+        if (this.telemetryPaginationInfo) this.telemetryPaginationInfo.textContent = showingText;
+        if (this.telemetryCountPill) this.telemetryCountPill.textContent = showingText;
+        if (this.telemetryPageIndicator) this.telemetryPageIndicator.textContent = `Page ${this.telemetryPage} of ${totalPages}`;
+        if (this.telemetryPrevPageBtn) this.telemetryPrevPageBtn.disabled = this.telemetryPage <= 1;
+        if (this.telemetryNextPageBtn) this.telemetryNextPageBtn.disabled = this.telemetryPage >= totalPages;
     }
 
     renderNextEstimatesBatch(isReset = false) {
