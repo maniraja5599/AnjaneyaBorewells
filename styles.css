@@ -9373,8 +9373,8 @@ img {
 .road-welcoming-people {
     position: absolute;
     right: 12px;
-    bottom: 24px;
-    height: 52px;
+    bottom: 16px;
+    height: 56px;
     width: auto;
     z-index: 4;
     pointer-events: auto;
@@ -9383,6 +9383,20 @@ img {
     align-items: flex-end;
     filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.28));
     transition: transform 0.25s ease;
+}
+
+.road-welcoming-people picture,
+.road-welcoming-people .welcoming-people-pic {
+    display: flex !important;
+    align-items: flex-end !important;
+    height: 100% !important;
+    width: auto !important;
+}
+
+.rig-vibe-wrap picture {
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .road-welcoming-people:hover {
@@ -9416,10 +9430,11 @@ img {
 }
 
 .welcoming-people-img {
-    height: 100%;
-    width: auto;
-    display: block;
-    object-fit: contain;
+    height: 100% !important;
+    max-height: 56px !important;
+    width: auto !important;
+    display: block !important;
+    object-fit: contain !important;
     animation: peopleWave 1.4s ease-in-out infinite alternate;
     transform-origin: 50% 100%;
 }
@@ -9461,8 +9476,11 @@ img {
     }
     .road-welcoming-people {
         right: 8px;
-        bottom: 20px;
-        height: 44px;
+        bottom: 12px;
+        height: 48px;
+    }
+    .welcoming-people-img {
+        max-height: 48px !important;
     }
 }
 
