@@ -5,8 +5,8 @@
     <!-- Homepage (Canonical Root) -->
     <url>
         <loc>https://anjaneyaborewells.com/</loc>
-        <lastmod>2026-11-09</lastmod>
-        <changefreq>weekly</changefreq>
+        <lastmod>2026-11-15</lastmod>
+        <changefreq>daily</changefreq>
         <priority>1.0</priority>
         <image:image>
             <image:loc>https://anjaneyaborewells.com/logo.jpg</image:loc>
@@ -18,11 +18,55 @@
             <image:title>Anjaneya Borewells High Power Rig Truck</image:title>
         </image:image>
     </url>
+
+    <!-- Regional & District Drilling Hubs (High Priority SEO) -->
+    <url>
+        <loc>https://anjaneyaborewells.com/tiruchengode.html</loc>
+        <lastmod>2026-11-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://anjaneyaborewells.com/karur.html</loc>
+        <lastmod>2026-11-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://anjaneyaborewells.com/salem.html</loc>
+        <lastmod>2026-11-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://anjaneyaborewells.com/paramathi-velur.html</loc>
+        <lastmod>2026-11-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://anjaneyaborewells.com/mohanur.html</loc>
+        <lastmod>2026-11-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://anjaneyaborewells.com/rasipuram.html</loc>
+        <lastmod>2026-11-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+    <url>
+        <loc>https://anjaneyaborewells.com/erode.html</loc>
+        <lastmod>2026-11-15</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
     
     <!-- Legal, Trust & Privacy Policy -->
     <url>
         <loc>https://anjaneyaborewells.com/privacy.html</loc>
-        <lastmod>2026-11-09</lastmod>
+        <lastmod>2026-11-15</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
     </url>
