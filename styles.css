@@ -9203,8 +9203,10 @@ img {
     transition: opacity 1.4s ease;
 }
 
-.fixed-scroll-rig-bar.is-night .rig-night-overlay {
-    opacity: 1;
+.fixed-scroll-rig-bar.is-night .rig-night-overlay,
+.rig-night-overlay {
+    display: none !important;
+    opacity: 0 !important;
 }
 
 .fixed-rig-truck {
@@ -9221,7 +9223,7 @@ img {
     pointer-events: auto;
     z-index: 5;
     touch-action: none;
-    transition: transform 0.08s cubic-bezier(0.25, 1, 0.5, 1);
+    transition: none !important;
 }
 
 .fixed-rig-truck:active {
@@ -14363,3 +14365,252 @@ label.gst-toggle-action-pill,
       }
     }
   
+
+
+/* ==========================================================================
+   DrillRig. (https://drillrig.in) Ecosystem Promotion Styles
+   ========================================================================== */
+
+/* 1. Header Nav Pill */
+.drillrig-nav-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 12px;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    border-radius: 9999px;
+    color: #ffffff !important;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+    backdrop-filter: blur(8px);
+}
+.drillrig-nav-pill:hover {
+    background: rgba(2, 132, 199, 0.95);
+    border-color: #38bdf8;
+    transform: translateY(-1.5px);
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.45);
+    color: #ffffff !important;
+}
+.drillrig-nav-pill .pill-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #38bdf8;
+    box-shadow: 0 0 8px #38bdf8;
+    animation: drillrigPulse 2s infinite;
+}
+.drillrig-nav-pill .pill-tag {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+@keyframes drillrigPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.45; transform: scale(0.85); }
+}
+
+/* 2. Mobile Nav Drawer Card */
+.mobile-drawer-app-card {
+    margin: 12px 14px 6px 14px;
+    padding: 12px 14px;
+    background: linear-gradient(145deg, #0f172a, #1e293b);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease;
+}
+.mobile-drawer-app-card:active {
+    transform: scale(0.98);
+}
+.m-app-badge {
+    align-self: flex-start;
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.15);
+    padding: 2px 7px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+}
+.m-app-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+.m-app-desc {
+    font-size: 0.74rem;
+    color: #94a3b8;
+    line-height: 1.35;
+}
+.m-app-cta {
+    font-size: 0.76rem;
+    font-weight: 600;
+    color: #38bdf8;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* 3. Calculator Results Promo Card */
+.drillrig-calc-promo-card {
+    margin-top: 20px;
+    padding: 16px 18px;
+    background: linear-gradient(145deg, #0b1329 0%, #112240 100%);
+    border: 1.5px dashed rgba(56, 189, 248, 0.5);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.18);
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+}
+.drillrig-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+.drillrig-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    padding: 2px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+}
+.drillrig-free-badge {
+    font-size: 0.68rem;
+    font-weight: 800;
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 2px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+}
+.drillrig-card-title {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 6px 0;
+}
+.drillrig-card-desc {
+    font-size: 0.82rem;
+    color: #cbd5e1;
+    line-height: 1.45;
+    margin: 0 0 12px 0;
+}
+.drillrig-pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+.drillrig-pill {
+    font-size: 0.72rem;
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.07);
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.drillrig-card-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    transition: all 0.25s ease;
+    box-sizing: border-box;
+}
+.drillrig-card-btn:hover {
+    background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+    color: #ffffff !important;
+}
+.drillrig-card-btn small {
+    font-size: 0.74rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+/* 4. Services Grid Highlight Card */
+.service-card.drillrig-highlight-card {
+    background: linear-gradient(155deg, #ffffff 0%, #f0f9ff 100%);
+    border: 2px solid #0284c7;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(2, 132, 199, 0.12);
+}
+.service-badge-pill {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #0284c7;
+    background: #e0f2fe;
+    border: 1px solid #bae6fd;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    letter-spacing: 0.5px;
+}
+.drillrig-service-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 8px 14px;
+    background: #0284c7;
+    color: #ffffff !important;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+}
+.drillrig-service-link:hover {
+    background: #0369a1;
+    transform: translateY(-1px);
+}
+
+/* 5. Footer Link Badge */
+.footer-mini-badge {
+    background: #10b981;
+    color: #ffffff;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 4px;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .drillrig-nav-pill {
+    display: none !important;
+  }
+}

@@ -3748,12 +3748,8 @@ function initScrollLorry() {
     const progressStripEl = document.getElementById('rigRoadProgressStrip');
     let lastScrollActivity = 0;
 
-    // Automatic Day & Night cycle every 6 seconds when idle so visitors notice the night headlights
-    setInterval(() => {
-        if (Date.now() - lastScrollActivity > 3500) {
-            fixedBar.classList.toggle('is-night');
-        }
-    }, 6000);
+    // Ensure day mode is fixed and stable (no day/night flashing)
+    fixedBar.classList.remove('is-night');
 
     function applyTruckTransform(x, y, tilt, progress, centerPosPct) {
         const transformStr = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) rotate(${tilt.toFixed(1)}deg)`;
@@ -3763,11 +3759,6 @@ function initScrollLorry() {
         if (typeof progress === 'number') {
             if (progressStripEl && typeof centerPosPct === 'number') {
                 progressStripEl.style.width = `${Math.max(4, centerPosPct * 100).toFixed(1)}%`;
-            }
-            if (progress > 0.02) {
-                lastScrollActivity = Date.now();
-                const shouldBeNight = (progress >= 0.22 && progress < 0.55) || progress >= 0.78;
-                fixedBar.classList.toggle('is-night', shouldBeNight);
             }
         }
     }
