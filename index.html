@@ -47,8 +47,7 @@
     <meta name="ICBM" content="11.2194, 78.1672">
     
     <!-- High Speed Asset Preloading -->
-    <link rel="preload" href="logo.png" as="image">
-    <link rel="preload" href="logo.jpg" as="image">
+    <link rel="preload" href="logo.webp" as="image" type="image/webp">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -392,7 +391,10 @@
                 <div class="preloader-pulse-ring"></div>
                 <div class="preloader-pulse-ring ring-delay"></div>
                 <div class="preloader-logo-badge">
-                    <img src="logo.png" alt="Anjaneya Borewells Logo" class="preloader-logo-img">
+                    <picture>
+                        <source srcset="logo.webp" type="image/webp">
+                        <img src="logo.png" alt="Anjaneya Borewells Logo" class="preloader-logo-img" width="88" height="88" fetchpriority="high" decoding="async">
+                    </picture>
                 </div>
             </div>
             <div class="preloader-brand">
@@ -464,7 +466,10 @@
 
     <!-- Center Logo Watermark (Kept completely clear of leaves) -->
     <div class="global-bg-logo">
-      <img src="logo.png" alt="" onerror="this.style.display='none'">
+      <picture>
+        <source srcset="logo.webp" type="image/webp">
+        <img src="logo.png" alt="" aria-hidden="true" loading="lazy" decoding="async" onerror="this.style.display='none'">
+      </picture>
     </div>
   </div>
 
@@ -473,7 +478,10 @@
     <div class="header-container">
       <a href="#home" class="brand-box">
         <div class="brand-logo-circle">
-          <img src="logo.png" alt="Anjaneya Logo" onerror="this.src='favicon.png'">
+          <picture>
+            <source srcset="logo.webp" type="image/webp">
+            <img src="logo.png" alt="Anjaneya Logo" width="48" height="48" fetchpriority="high" decoding="async" onerror="this.src='favicon.png'">
+          </picture>
         </div>
         <div class="brand-text-col">
           <div class="brand-main-title">
@@ -744,7 +752,10 @@
 
           <!-- Valluvar Portrait with Green Aura & Leaf BG -->
           <div class="slogan-valluvar-avatar">
-            <img src="valluvar-with-bg.png" alt="திருவள்ளுவர்" onerror="this.src='valluvar.png'">
+            <picture>
+              <source srcset="valluvar-with-bg.webp" type="image/webp">
+              <img src="valluvar-with-bg.png" alt="திருவள்ளுவர்" width="90" height="75" loading="lazy" decoding="async" onerror="this.src='valluvar.png'">
+            </picture>
           </div>
 
           <!-- Slogan Typography -->
@@ -764,7 +775,10 @@
 
           <!-- Right Leaf Accent -->
           <div class="slogan-right-leaves-wrap">
-            <img src="slogan-right-leaves.png" alt="" aria-hidden="true">
+            <picture>
+              <source srcset="slogan-right-leaves.webp" type="image/webp">
+              <img src="slogan-right-leaves.png" alt="" aria-hidden="true" width="40" height="60" loading="lazy" decoding="async">
+            </picture>
           </div>
 
         </div>
@@ -1063,37 +1077,55 @@
                 </h3>
                 <div class="photo-gallery">
                     <div class="photo-item">
-                        <img src="images/1.jpg" alt="Anjaneya Borewells Drilling Truck - Sunset" loading="lazy">
+                        <picture>
+                            <source srcset="images/1.webp" type="image/webp">
+                            <img src="images/1.jpg" alt="Anjaneya Borewells Drilling Truck - Sunset" loading="lazy" decoding="async" width="400" height="250">
+                        </picture>
                         <div class="photo-overlay">
                             <p>Professional Drilling Equipment</p>
                         </div>
                     </div>
                     <div class="photo-item">
-                        <img src="images/2.jpg" alt="Anjaneya Borewells Drilling Truck - Reflection" loading="lazy">
+                        <picture>
+                            <source srcset="images/2.webp" type="image/webp">
+                            <img src="images/2.jpg" alt="Anjaneya Borewells Drilling Truck - Reflection" loading="lazy" decoding="async" width="400" height="250">
+                        </picture>
                         <div class="photo-overlay">
                             <p>Advanced Drilling Technology</p>
                         </div>
                     </div>
                     <div class="photo-item">
-                        <img src="images/3.jpg" alt="Anjaneya Borewells Drilling Truck - Tropical" loading="lazy">
+                        <picture>
+                            <source srcset="images/3.webp" type="image/webp">
+                            <img src="images/3.jpg" alt="Anjaneya Borewells Drilling Truck - Tropical" loading="lazy" decoding="async" width="400" height="250">
+                        </picture>
                         <div class="photo-overlay">
                             <p>Water Testing & Analysis</p>
                         </div>
                     </div>
                     <div class="photo-item">
-                        <img src="images/4.jpg" alt="Anjaneya Borewells Fleet - Multiple Trucks" loading="lazy">
+                        <picture>
+                            <source srcset="images/4.webp" type="image/webp">
+                            <img src="images/4.jpg" alt="Anjaneya Borewells Fleet - Multiple Trucks" loading="lazy" decoding="async" width="400" height="250">
+                        </picture>
                         <div class="photo-overlay">
                             <p>Successful Project Completion</p>
                         </div>
                     </div>
                     <div class="photo-item">
-                        <img src="images/5.jpg" alt="Anjaneya Borewells Branded Truck" loading="lazy">
+                        <picture>
+                            <source srcset="images/5.webp" type="image/webp">
+                            <img src="images/5.jpg" alt="Anjaneya Borewells Branded Truck" loading="lazy" decoding="async" width="400" height="250">
+                        </picture>
                         <div class="photo-overlay">
                             <p>Professional Equipment Setup</p>
                         </div>
                     </div>
                     <div class="photo-item">
-                        <img src="images/6.jpg" alt="Anjaneya Borewells Drilling Rig - Sky View" loading="lazy">
+                        <picture>
+                            <source srcset="images/6.webp" type="image/webp">
+                            <img src="images/6.jpg" alt="Anjaneya Borewells Drilling Rig - Sky View" loading="lazy" decoding="async" width="400" height="250">
+                        </picture>
                         <div class="photo-overlay">
                             <p>Drilling Process in Action</p>
                         </div>
@@ -1123,7 +1155,10 @@
                 <div class="instagram-profile-card">
                     <div class="insta-avatar-wrapper">
                         <div class="insta-gradient-ring">
-                            <img src="logo.png" alt="Anjaneya Borewells Rig Logo" class="insta-avatar-img">
+                            <picture>
+                                <source srcset="logo.webp" type="image/webp">
+                                <img src="logo.png" alt="Anjaneya Borewells Rig Logo" class="insta-avatar-img" width="40" height="40" loading="lazy" decoding="async">
+                            </picture>
                         </div>
                     </div>
                     <div class="insta-profile-info">
@@ -1478,7 +1513,10 @@
                         <div class="results-header-flex">
                             <div class="results-header-brand-wrap">
                                 <div class="results-header-logo-circle">
-                                    <img src="logo.png" alt="Anjaneya Logo" class="results-header-logo">
+                                    <picture>
+                                        <source srcset="logo.webp" type="image/webp">
+                                        <img src="logo.png" alt="Anjaneya Logo" class="results-header-logo" width="48" height="48" loading="lazy" decoding="async">
+                                    </picture>
                                 </div>
                                 <div class="results-header-title-group">
                                     <div class="results-brand-name"><span class="white-part">ANJANEYA</span> <span class="yellow-part">BOREWELLS</span></div>
@@ -2890,13 +2928,19 @@
             <span class="rig-star s7"></span>
         </div>
         <div class="fixed-rig-road" id="fixedRigRoad">
-            <img src="scenic-rural-track.png" class="scenic-track-img" alt="Borewell Terrain Track" draggable="false">
+            <picture>
+                <source srcset="scenic-rural-track.webp" type="image/webp">
+                <img src="scenic-rural-track.png" class="scenic-track-img" alt="Borewell Terrain Track" draggable="false" loading="lazy" decoding="async">
+            </picture>
             <div class="rig-night-overlay" aria-hidden="true"></div>
             <div class="fixed-rig-truck" id="fixedRigTruck">
                 <div class="rig-exhaust-puff puff-1" aria-hidden="true"></div>
                 <div class="rig-exhaust-puff puff-2" aria-hidden="true"></div>
                 <div class="rig-vibe-wrap">
-                    <img src="rig-illustration.png" alt="Anjaneya Drilling Rig" class="fixed-rig-img">
+                    <picture>
+                        <source srcset="rig-illustration.webp" type="image/webp">
+                        <img src="rig-illustration.png" alt="Anjaneya Drilling Rig" class="fixed-rig-img" width="66" height="56" loading="lazy" decoding="async">
+                    </picture>
                     <!-- Exact Bumper-Locked Headlight Bulbs & Night Beams -->
                     <div class="rig-bumper-lights" aria-hidden="true">
                         <span class="rig-hl-bulb hl-left"></span>
@@ -2909,7 +2953,10 @@
             </div>
             <div class="road-welcoming-people" id="roadWelcomingPeople" title="Welcome Anjaneya Rig!">
                 <span class="aarti-night-glow" aria-hidden="true"></span>
-                <img src="welcoming-people.png" alt="Happy Villagers Welcoming Rig" class="welcoming-people-img" draggable="false">
+                <picture>
+                    <source srcset="welcoming-people.webp" type="image/webp">
+                    <img src="welcoming-people.png" alt="Happy Villagers Welcoming Rig" class="welcoming-people-img" draggable="false" width="52" height="52" loading="lazy" decoding="async">
+                </picture>
             </div>
         </div>
     </div>
