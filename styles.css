@@ -13199,11 +13199,25 @@ label.gst-toggle-action-pill,
       box-shadow: 0 4px 10px rgba(0,0,0,0.22);
     }
 
+    .brand-logo-circle picture {
+      width: 100% !important;
+      height: 100% !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      border-radius: 50% !important;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
     .brand-logo-circle img {
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      object-fit: cover;
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 50% !important;
+      object-fit: cover !important;
+      display: block !important;
+      margin: 0 auto !important;
     }
 
     .brand-text-col {
@@ -13328,6 +13342,9 @@ label.gst-toggle-action-pill,
       display: none !important; /* Strictly hidden on desktop */
       width: 40px;
       height: 40px;
+      padding: 0 !important;
+      margin: 0 !important;
+      box-sizing: border-box !important;
       background: rgba(255, 255, 255, 0.12);
       border: 1px solid rgba(255, 255, 255, 0.2);
       border-radius: 12px;
@@ -14111,43 +14128,179 @@ label.gst-toggle-action-pill,
       }
     }
 
+    /* Anti-Font-Inflation & System Zoom Normalization */
+    .top-header,
+    .top-header * {
+      -webkit-text-size-adjust: 100% !important;
+      -moz-text-size-adjust: 100% !important;
+      text-size-adjust: 100% !important;
+      max-height: 999999px;
+    }
+
     @media (max-width: 768px) {
       .top-header {
-        padding: 8px 12px;
-        border-radius: 0 0 18px 18px;
+        padding: 8px 14px !important;
+        border-radius: 0 0 18px 18px !important;
+        box-sizing: border-box !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+      }
+      .header-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        gap: 8px !important;
+        box-sizing: border-box !important;
       }
       .brand-box {
-        gap: 8px;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
       }
       .brand-logo-circle {
-        width: 36px;
-        height: 36px;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        min-height: 38px !important;
+        flex-shrink: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        padding: 2px !important;
+        box-sizing: border-box !important;
+      }
+      .brand-logo-circle picture {
+        width: 100% !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 50% !important;
+        overflow: hidden !important;
+      }
+      .brand-logo-circle img {
+        width: 100% !important;
+        height: 100% !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        display: block !important;
+        margin: 0 auto !important;
+      }
+      .brand-text-col {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+        overflow: hidden !important;
       }
       .brand-main-title {
-        font-size: clamp(0.74rem, 3.5vw, 0.92rem);
-        line-height: 1.1;
-        letter-spacing: 0.03em;
+        font-size: 13.5px !important;
+        line-height: 1.15 !important;
+        letter-spacing: 0.02em !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
       }
       .brand-tamil-sub {
-        font-size: clamp(0.56rem, 2.4vw, 0.68rem);
+        font-size: 9.5px !important;
+        line-height: 1.1 !important;
+        margin-top: 1px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
       }
       .header-actions {
-        gap: 16px;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        flex-shrink: 0 !important;
       }
       .rate-btn {
-        padding: 5px 11px;
-        font-size: 0.74rem;
-        gap: 4px;
+        padding: 5px 12px !important;
+        font-size: 11.5px !important;
+        height: 32px !important;
+        gap: 4px !important;
+        box-sizing: border-box !important;
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      .rate-btn svg {
+        width: 14px !important;
+        height: 14px !important;
+        flex-shrink: 0 !important;
       }
       .menu-toggle-btn {
-        width: 34px;
-        height: 34px;
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4.5px !important;
+        flex-shrink: 0 !important;
       }
       .menu-toggle-btn span {
-        width: 17px;
+        width: 17px !important;
+        height: 2px !important;
+        margin: 0 auto !important;
+        display: block !important;
       }
       .main-wrapper {
         padding: 74px 18px 75px 18px; /* Adjusted for 60px mobile fixed header + 14px margin */
+      }
+    }
+
+    @media (max-width: 370px) {
+      .top-header {
+        padding: 8px 10px !important;
+      }
+      .header-container {
+        gap: 6px !important;
+      }
+      .brand-box {
+        gap: 6px !important;
+      }
+      .brand-logo-circle {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
+      }
+      .brand-main-title {
+        font-size: 12px !important;
+      }
+      .brand-tamil-sub {
+        font-size: 8.5px !important;
+      }
+      .header-actions {
+        gap: 6px !important;
+      }
+      .rate-btn {
+        padding: 4px 9px !important;
+        font-size: 11px !important;
+        height: 30px !important;
+      }
+      .menu-toggle-btn {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+      }
+      .menu-toggle-btn span {
+        width: 15px !important;
       }
 
       /* Mobile Top Badges: 1 Single Row */
