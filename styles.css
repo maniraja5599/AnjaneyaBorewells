@@ -31,6 +31,7 @@ html {
     -webkit-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
     text-size-adjust: 100%;
+    touch-action: pan-x pan-y;
 }
 
 body {
@@ -57,6 +58,7 @@ body {
     position: relative;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    touch-action: pan-x pan-y;
 }
 
 /* Initial Page Load Logo Splash Screen */
@@ -13167,6 +13169,21 @@ label.gst-toggle-action-pill,
       transition: all 0.3s ease;
       flex-shrink: 0;
       margin: 0 !important;
+      touch-action: manipulation !important;
+      user-select: none !important;
+      -webkit-user-select: none !important;
+      -webkit-touch-callout: none !important;
+    }
+
+    /* Global App Stability: Prevent Double-Tap Zoom across interactive UI */
+    .btn,
+    .rate-btn,
+    .menu-toggle-btn,
+    button,
+    a,
+    .cat-box-card,
+    .fixed-scroll-rig-bar {
+      touch-action: manipulation !important;
     }
 
     .header-container {
@@ -14128,13 +14145,16 @@ label.gst-toggle-action-pill,
       }
     }
 
-    /* Anti-Font-Inflation & System Zoom Normalization */
+    /* Anti-Font-Inflation, System Zoom Normalization & Stability */
     .top-header,
     .top-header * {
       -webkit-text-size-adjust: 100% !important;
       -moz-text-size-adjust: 100% !important;
       text-size-adjust: 100% !important;
       max-height: 999999px;
+      touch-action: manipulation !important;
+      -webkit-user-select: none !important;
+      user-select: none !important;
     }
 
     @media (max-width: 768px) {
@@ -14635,163 +14655,6 @@ label.gst-toggle-action-pill,
     display: flex;
     align-items: center;
     gap: 4px;
-}
-
-/* 3. Floating Mini Toast Popup (10s Delay + Auto-Disappear) */
-.drillrig-mini-toast {
-    position: fixed;
-    bottom: 92px;
-    right: 20px;
-    width: 290px;
-    max-width: calc(100vw - 32px);
-    background: linear-gradient(145deg, rgba(11, 22, 44, 0.96) 0%, rgba(17, 34, 64, 0.96) 100%);
-    border: 1px solid rgba(56, 189, 248, 0.35);
-    border-radius: 14px;
-    padding: 12px 14px 11px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 16px rgba(2, 132, 199, 0.25);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    z-index: 10001;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px) scale(0.95);
-    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
-    pointer-events: none;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-
-.drillrig-mini-toast.is-visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-}
-
-.drillrig-mini-toast.is-hiding {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(20px) scale(0.95);
-    pointer-events: none;
-}
-
-.drillrig-toast-progress {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 3px;
-    width: 100%;
-    background: linear-gradient(90deg, #38bdf8, #10b981);
-    border-radius: 14px 14px 0 0;
-}
-
-.drillrig-toast-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 6px;
-    padding-top: 2px;
-}
-
-.drillrig-toast-badges {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.drillrig-toast-tag {
-    font-size: 10.5px;
-    font-weight: 700;
-    color: #38bdf8;
-    background: rgba(56, 189, 248, 0.12);
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    padding: 1.5px 7px;
-    border-radius: 5px;
-    letter-spacing: 0.3px;
-}
-
-.drillrig-toast-free {
-    font-size: 9.5px;
-    font-weight: 800;
-    color: #10b981;
-    background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.35);
-    padding: 1.5px 6px;
-    border-radius: 5px;
-}
-
-.drillrig-toast-close {
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #94a3b8;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-    transition: all 0.2s ease;
-}
-
-.drillrig-toast-close:hover {
-    background: rgba(239, 68, 68, 0.2);
-    border-color: rgba(239, 68, 68, 0.4);
-    color: #f87171;
-}
-
-.drillrig-toast-title {
-    font-size: 12.5px;
-    font-weight: 700;
-    color: #ffffff;
-    margin: 0 0 3px 0;
-    line-height: 1.25;
-}
-
-.drillrig-toast-desc {
-    font-size: 10.5px;
-    color: #cbd5e1;
-    line-height: 1.35;
-    margin: 0 0 8px 0;
-}
-
-.drillrig-toast-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 28px;
-    padding: 0 12px;
-    background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
-    color: #ffffff !important;
-    text-decoration: none;
-    border-radius: 7px;
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 0.2px;
-    box-sizing: border-box;
-    transition: all 0.2s ease;
-}
-
-.drillrig-toast-btn:hover {
-    background: linear-gradient(135deg, #0369a1 0%, #075985 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
-}
-
-@media (max-width: 768px) {
-    .drillrig-mini-toast {
-        bottom: 78px;
-        right: 12px;
-        width: 280px;
-        max-width: calc(100vw - 24px);
-        padding: 10px 12px 10px;
-    }
 }
 
 /* 4. Services Grid Highlight Card */

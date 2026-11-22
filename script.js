@@ -6026,3 +6026,33 @@ class AdminCommandCenter {
         URL.revokeObjectURL(url);
     }
 }
+
+
+/* ==========================================================================
+   Anti-Double-Tap Zoom & App Stability Protection (Mobile PWA & Touch Web)
+   ========================================================================== */
+(function initAntiDoubleTapZoom() {
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(e) {
+        const now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+            const tag = e.target && e.target.tagName;
+            if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+                e.preventDefault();
+            }
+        }
+        lastTouchEnd = now;
+    }, { passive: false });
+
+    document.addEventListener('gesturestart', function(e) { e.preventDefault(); }, { passive: false });
+    document.addEventListener('gesturechange', function(e) { e.preventDefault(); }, { passive: false });
+    document.addEventListener('gestureend', function(e) { e.preventDefault(); }, { passive: false });
+
+    // Rock-solid fixed top-header stability
+    const topHeader = document.querySelector('.top-header');
+    if (topHeader) {
+        topHeader.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+        });
+    }
+})();

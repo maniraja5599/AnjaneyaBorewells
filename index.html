@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Anjaneya Borewells | #1 Best Borewell Drilling Services in Namakkal & Tamil Nadu (2200+ Ft Drilling & Instant Cost Calculator)</title>
 
     <!-- Google tag (gtag.js) - Google Analytics 4 -->
@@ -3021,90 +3021,34 @@
     })();
     </script>
 
-    <!-- DrillRig.in Floating Mini Toast Popup (10s Delay + Auto-Disappear) -->
-    <aside id="drillrigToast" class="drillrig-mini-toast" aria-hidden="true" role="dialog" aria-label="DrillRig App Promotion">
-        <div class="drillrig-toast-progress" id="drillrigToastProgress"></div>
-        <div class="drillrig-toast-header">
-            <div class="drillrig-toast-badges">
-                <span class="drillrig-toast-tag">🚜 DrillRig.in</span>
-                <span class="drillrig-toast-free">FREE</span>
-            </div>
-            <button type="button" class="drillrig-toast-close" id="drillrigToastClose" aria-label="Close DrillRig popup">✕</button>
-        </div>
-        <div class="drillrig-toast-body">
-            <h5 class="drillrig-toast-title">சொந்தமாக போர்வெல் லாரி உள்ளதா?</h5>
-            <p class="drillrig-toast-desc">சைட்டிலேயே ஸ்லாப் பில் &amp; வாட்ஸ்அப் ரசீது போடலாம். 100% ஆஃப்லைனில் இயங்கும்.</p>
-        </div>
-        <a href="https://drillrig.in/?utm_source=anjaneyaborewells&utm_medium=popup_toast&utm_campaign=rig_owners" target="_blank" rel="noopener noreferrer" class="drillrig-toast-btn">
-            <span>Open Free App ↗</span>
-        </a>
-    </aside>
-
+    <!-- Anti-Double-Tap Zoom & App Stability Handler -->
     <script>
     (function() {
-        const toast = document.getElementById('drillrigToast');
-        const closeBtn = document.getElementById('drillrigToastClose');
-        const progressBar = document.getElementById('drillrigToastProgress');
-        if (!toast) return;
-
-        if (sessionStorage.getItem('drillrig_toast_dismissed') === '1') {
-            return;
-        }
-
-        let dismissTimeout = null;
-        const DISPLAY_DURATION = 8000; // 8 seconds visible before auto-dismiss
-
-        function showToast() {
-            toast.classList.add('is-visible');
-            toast.setAttribute('aria-hidden', 'false');
-
-            if (progressBar) {
-                // Trigger CSS width transition
-                requestAnimationFrame(function() {
-                    progressBar.style.transition = 'width ' + DISPLAY_DURATION + 'ms linear';
-                    progressBar.style.width = '0%';
-                });
+        // Prevent Double-Tap-To-Zoom and pinch zoom across app to keep layout 100% stable
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                const tag = e.target && e.target.tagName;
+                if (tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+                    e.preventDefault();
+                }
             }
+            lastTouchEnd = now;
+        }, { passive: false });
 
-            dismissTimeout = setTimeout(hideToast, DISPLAY_DURATION);
-        }
+        // Prevent multi-touch gesture zooming (iOS Safari & Chrome)
+        document.addEventListener('gesturestart', function(e) { e.preventDefault(); }, { passive: false });
+        document.addEventListener('gesturechange', function(e) { e.preventDefault(); }, { passive: false });
+        document.addEventListener('gestureend', function(e) { e.preventDefault(); }, { passive: false });
 
-        function hideToast() {
-            if (dismissTimeout) clearTimeout(dismissTimeout);
-            toast.classList.remove('is-visible');
-            toast.classList.add('is-hiding');
-            toast.setAttribute('aria-hidden', 'true');
-            sessionStorage.setItem('drillrig_toast_dismissed', '1');
-            setTimeout(function() {
-                toast.style.display = 'none';
-            }, 400);
-        }
-
-        // Trigger after exactly 10 seconds
-        setTimeout(showToast, 10000);
-
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                hideToast();
+        // Ensure top-header is rock solid on double click/tap
+        const topHeader = document.querySelector('.top-header');
+        if (topHeader) {
+            topHeader.addEventListener('dblclick', function(e) {
+                e.preventDefault();
             });
         }
-
-        // Pause auto-dismiss on hover / touch so user has time to click
-        toast.addEventListener('mouseenter', function() {
-            if (dismissTimeout) {
-                clearTimeout(dismissTimeout);
-                if (progressBar) progressBar.style.transition = 'none';
-            }
-        });
-
-        toast.addEventListener('mouseleave', function() {
-            dismissTimeout = setTimeout(hideToast, 2500);
-            if (progressBar) {
-                progressBar.style.transition = 'width 2500ms linear';
-                progressBar.style.width = '0%';
-            }
-        });
     })();
     </script>
 
