@@ -14261,47 +14261,6 @@ label.gst-toggle-action-pill,
       .main-wrapper {
         padding: 74px 18px 75px 18px; /* Adjusted for 60px mobile fixed header + 14px margin */
       }
-    }
-
-    @media (max-width: 370px) {
-      .top-header {
-        padding: 8px 10px !important;
-      }
-      .header-container {
-        gap: 6px !important;
-      }
-      .brand-box {
-        gap: 6px !important;
-      }
-      .brand-logo-circle {
-        width: 34px !important;
-        height: 34px !important;
-        min-width: 34px !important;
-        min-height: 34px !important;
-      }
-      .brand-main-title {
-        font-size: 12px !important;
-      }
-      .brand-tamil-sub {
-        font-size: 8.5px !important;
-      }
-      .header-actions {
-        gap: 6px !important;
-      }
-      .rate-btn {
-        padding: 4px 9px !important;
-        font-size: 11px !important;
-        height: 30px !important;
-      }
-      .menu-toggle-btn {
-        width: 32px !important;
-        height: 32px !important;
-        min-width: 32px !important;
-        min-height: 32px !important;
-      }
-      .menu-toggle-btn span {
-        width: 15px !important;
-      }
 
       /* Mobile Top Badges: 1 Single Row */
       .hero-top-row {
@@ -14533,6 +14492,48 @@ label.gst-toggle-action-pill,
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+      }
+    }
+
+    /* Extra Small Mobile Overrides (<= 370px) */
+    @media (max-width: 370px) {
+      .top-header {
+        padding: 8px 10px !important;
+      }
+      .header-container {
+        gap: 6px !important;
+      }
+      .brand-box {
+        gap: 6px !important;
+      }
+      .brand-logo-circle {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
+      }
+      .brand-main-title {
+        font-size: 12px !important;
+      }
+      .brand-tamil-sub {
+        font-size: 8.5px !important;
+      }
+      .header-actions {
+        gap: 6px !important;
+      }
+      .rate-btn {
+        padding: 4px 9px !important;
+        font-size: 11px !important;
+        height: 30px !important;
+      }
+      .menu-toggle-btn {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+      }
+      .menu-toggle-btn span {
+        width: 15px !important;
       }
     }
   
